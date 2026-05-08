@@ -117,3 +117,22 @@
   background: rgba(255, 213, 79, 0.15);
   color: #ffd54f;
 }
+
+.songs__more {
+  width: 100%;
+  padding: 0.75rem;
+  margin-top: 0.4rem;
+  border-radius: 12px;
+  background: none;
+  border: 1px dashed rgba(255, 255, 255, 0.12);
+  color: var(--text-muted);
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: border-color 0.18s, color 0.18s;
+}
+
+.songs__more:hover {
+  border-color: rgba(244, 161, 176, 0.4);
+  color: var(--rose);
+}

@@ -10,48 +10,46 @@ import LocalAtmosphereCard from './LocalAtmosphereCard'
 import CompanionLine from './CompanionLine'
 import { songMoodMap } from '../data/songMoodMap'
 import { moodVoiceMap } from '../data/moodVoiceMap'
+import { resolveSongUrl } from '../data/songConfig'
 import { LONG_STAY } from '../utils/atmosphere'
 import './RadioStation.css'
 
 // ── song matching ─────────────────────────────────────────────────────────────
 
-// Only songs actually committed to git / deployed on Vercel
-const AVAILABLE_SONGS = new Set([
-  '/songs/24kGoldn%2Ciann%20dior%20-%20Mood.mp3',
-  '/songs/30%E5%B9%B4%E5%89%8D%EF%BC%8C50%E5%B9%B4%E5%90%8E%20-%20%E7%B2%BE%E5%8D%AB.mp3',
-  '/songs/670%20-%20%E5%BF%AB%E9%BB%9E%E7%9D%A1%E8%A6%BA.mp3',
-  '/songs/AGA%20-%20Wonderful%20U.mp3',
-  '/songs/AQVOL%20-%20Wassuh.mp3',
-  '/songs/Adam%20Christopher%2CDan%20Berk%20-%20Let%20Me%20Down%20Slowly%20(Acoustic).mp3',
-  '/songs/Adele%20-%20Easy%20On%20Me.mp3',
-  '/songs/Anthem%20Lights%20-%20As%20Long%20as%20You%20Love%20Me.mp3',
-  '/songs/Anthem%20Lights%2CMegan%20Davies%20-%20A%20Thousand%20Years.mp3',
-  '/songs/Ashe%20-%20In%20Disguise.mp3',
-  '/songs/Beyonc%C3%A9%20-%20If%20I%20Were%20a%20Boy.mp3',
-])
-
 const FALLBACK_TAGS = ['需要安慰', '想被抱抱', '想一个人发呆']
 
+// Deterministic daily shuffle — same order within a day, fresh each day.
+// Uses a seeded LCG so the radio feels "curated" rather than truly random.
+function seededShuffle(songs) {
+  const arr = [...songs]
+  const seed = new Date().toDateString()
+    .split('').reduce((n, c) => (n * 31 + c.charCodeAt(0)) | 0, 7)
+  let s = seed
+  for (let i = arr.length - 1; i > 0; i--) {
+    s = ((s * 1664525) + 1013904223) | 0
+    const j = Math.abs(s) % (i + 1);
+    [arr[i], arr[j]] = [arr[j], arr[i]]
+  }
+  return arr
+}
+
 function getStationSongs(moodLabel) {
-  const available = songMoodMap.filter(s => AVAILABLE_SONGS.has(s.src))
-  let matched = available.filter(s => s.moodTags.includes(moodLabel))
+  let matched = songMoodMap.filter(s => s.moodTags.includes(moodLabel))
 
-  console.log(`[RadioStation] Mood "${moodLabel}" — found ${matched.length} available song(s):`,
-    matched.map(s => s.title))
-
-  if (matched.length < 2) {
-    const extra = available.filter(
-      s => !matched.includes(s) && s.moodTags.some(t => FALLBACK_TAGS.includes(t))
+  if (matched.length === 0) {
+    // Fallback: use soft emotional moods so the player is never empty
+    matched = songMoodMap.filter(s =>
+      FALLBACK_TAGS.some(t => s.moodTags.includes(t))
     )
-    matched = [...matched, ...extra]
-    console.log(`[RadioStation] Padded with ${extra.length} fallback song(s)`)
+    console.warn(`[RadioStation] No songs for "${moodLabel}" — using fallback pool (${matched.length})`)
   }
 
-  const sorted = matched.sort((a, b) => {
-    const sc = s => [...s.title].reduce((n, c) => n + c.charCodeAt(0), 0)
-    return sc(a) - sc(b)
-  })
-  return sorted
+  // Resolve CDN URLs (no-op when CDN_BASE is empty)
+  const resolved = matched.map(s => ({ ...s, src: resolveSongUrl(s.src) }))
+
+  const shuffled = seededShuffle(resolved)
+  console.log(`[RadioStation] Mood "${moodLabel}" — ${shuffled.length} song(s) loaded`)
+  return shuffled
 }
 
 // ── VoiceIntroPlayer ──────────────────────────────────────────────────────────
@@ -166,11 +164,12 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
   const [longStayMsg, setLongStayMsg] = useState(null)
   const [songError, setSongError]     = useState(null)
 
-  const heartTimerRef   = useRef(null)
-  const readyTimerRef   = useRef(null)
-  const stayStartRef    = useRef(Date.now())
-  const shownStayRef    = useRef(new Set())
-  const stayIntervalRef = useRef(null)
+  const heartTimerRef    = useRef(null)
+  const readyTimerRef    = useRef(null)
+  const skipTimerRef     = useRef(null)
+  const stayStartRef     = useRef(Date.now())
+  const shownStayRef     = useRef(new Set())
+  const stayIntervalRef  = useRef(null)
 
   const songs    = getStationSongs(mood.id)
   const voiceSrc = moodVoiceMap[mood.id]
@@ -185,6 +184,7 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
     setDjVisible(false)
     setAudioUrl(null)
     clearTimeout(readyTimerRef.current)
+    clearTimeout(skipTimerRef.current)
 
     if (voiceSrc) {
       console.log('[RadioStation] Has voice intro → setting introPhase = "playing"')
@@ -240,6 +240,16 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
 
   const nextSong = useCallback(() => { setSongError(null); setSongIndex(i => (i + 1) % songs.length) }, [songs.length])
   const prevSong = useCallback(() => { setSongError(null); setSongIndex(i => (i - 1 + songs.length) % songs.length) }, [songs.length])
+
+  // Auto-skip when a song fails to load (e.g. missing file on CDN/Vercel)
+  const handleSongError = useCallback((msg) => {
+    setSongError(msg)
+    clearTimeout(skipTimerRef.current)
+    skipTimerRef.current = setTimeout(() => {
+      setSongError(null)
+      setSongIndex(i => (i + 1) % songs.length)
+    }, 2000)
+  }, [songs.length])
 
   const currentSong = songs[songIndex]
     ? { ...songs[songIndex], reason: songs[songIndex].romanticReason, duration: '--:--' }
@@ -332,7 +342,7 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
             audioUrl={audioUrl}
             audioLabel={audioLabel}
             introPhase={introPhase}
-            onSongError={msg => setSongError(msg)}
+            onSongError={handleSongError}
           />
         )}
 
