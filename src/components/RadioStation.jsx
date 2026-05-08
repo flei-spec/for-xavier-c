@@ -53,6 +53,24 @@ function getStationSongs(moodLabel) {
 }
 
 // ── VoiceIntroPlayer ──────────────────────────────────────────────────────────
+//
+// Two bugs killed the original implementation in React 18 Strict Mode (dev):
+//
+//  1. Strict Mode runs every effect twice: effect → cleanup → effect again.
+//     The cleanup called audio.pause() + removeAttribute('src'), which caused
+//     the pending play() Promise to reject with AbortError.  The catch handler
+//     treated AbortError as a real failure and called onEnded(), skipping the
+//     intro entirely before a note had played.
+//
+//  2. The cleanup removed the src attribute.  The second effect invocation
+//     then called audio.load() + audio.play() on a src-less element, which
+//     always fails (MediaError code 4 — SRC_NOT_SUPPORTED).
+//
+// Fix: use an `active` closure flag.
+//  • On cleanup: pause but keep src intact; mark `active = false`.
+//  • On AbortError / any rejection while !active: ignore silently (the next
+//    effect run will resume playback from the same position).
+//  • Only call onEnded() when truly failed AND the effect is still current.
 
 function VoiceIntroPlayer({ src, onEnded }) {
   const audioRef = useRef(null)
@@ -60,34 +78,41 @@ function VoiceIntroPlayer({ src, onEnded }) {
   useEffect(() => {
     const audio = audioRef.current
     if (!audio) {
-      console.warn('[VoiceIntro] audio ref missing — skipping intro')
+      console.log('[VoiceIntro] No intro found, starting playlist (no audio ref)')
       onEnded()
       return
     }
 
-    console.log('[VoiceIntro] Selected mood matched voice intro path:', src)
+    let active = true  // false after cleanup; guards against Strict Mode false-errors
+
+    console.log(`[VoiceIntro] Playing voice intro for mood: ${src}`)
 
     audio.volume = 0.96
-    audio.src = src
-    audio.load()   // explicitly load before play()
+    audio.src = src   // set src imperatively so we can control reload timing
+    audio.load()      // reset + start fetching
 
-    console.log('[VoiceIntro] Starting voice intro playback…')
-
-    const p = audio.play()
-    if (p) {
-      p.then(() => {
-        console.log('[VoiceIntro] ▶ Voice intro is playing:', src)
-      }).catch(err => {
-        console.error('[VoiceIntro] play() rejected:', err.name, err.message)
-        console.warn('[VoiceIntro] Falling through to songs without intro')
+    audio.play()
+      .then(() => {
+        if (!active) return
+        console.log('[VoiceIntro] ▶ Audio playing:', src)
+      })
+      .catch(err => {
+        // AbortError = play() was interrupted by cleanup's pause().
+        // This is harmless in Strict Mode: the next effect run will resume.
+        if (!active || err.name === 'AbortError') return
+        console.log(`[VoiceIntro] No intro found, starting playlist (${err.name}: ${err.message})`)
         onEnded()
       })
-    }
 
     return () => {
+      active = false
       audio.pause()
-      audio.removeAttribute('src')
+      // IMPORTANT: do NOT removeAttribute('src') here.
+      // Keeping src intact lets the second Strict Mode effect run resume the
+      // same audio from where it paused, without a full reload cycle.
     }
+  // `onEnded` is stable (wrapped in useCallback with []).
+  // `src` only changes when a new mood is selected (component remounts via key).
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [src])
 
@@ -95,15 +120,17 @@ function VoiceIntroPlayer({ src, onEnded }) {
     <audio
       ref={audioRef}
       onEnded={() => {
-        console.log('[VoiceIntro] ✓ Voice intro ended — starting songs now')
+        console.log('[VoiceIntro] Voice intro ended, starting playlist')
         onEnded()
       }}
       onError={e => {
-        const err = e.target.error
-        console.error('[VoiceIntro] Audio load error — code:', err?.code, 'message:', err?.message, 'src:', src)
-        console.warn('[VoiceIntro] File not found or format unsupported — check public/voice-intros/')
+        const code = e.target.error?.code
+        const msg  = e.target.error?.message ?? 'unknown'
+        console.log(`[VoiceIntro] No intro found, starting playlist (MediaError ${code}: ${msg})`)
         onEnded()
       }}
+      // preload=auto so the file is buffered while the DJ card animates in
+      preload="auto"
       style={{ display: 'none' }}
     />
   )
@@ -159,8 +186,11 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
   const [heartCount, setHeartCount]   = useState(0)
   const [showLetter, setShowLetter]   = useState(false)
   const [djVisible, setDjVisible]     = useState(false)
-  const [introPhase, setIntroPhase]   = useState('ready')
-  const [showBanner, setShowBanner]   = useState(false)
+  // Lazy-initialize so VoiceIntroPlayer is in the DOM on the very first render.
+  // Without this, VoiceIntroPlayer only mounts after the first useEffect fires,
+  // adding an extra render cycle between the user's click and audio.play().
+  const [introPhase, setIntroPhase]   = useState(() => moodVoiceMap[mood.id] ? 'playing' : 'ready')
+  const [showBanner, setShowBanner]   = useState(() => !!moodVoiceMap[mood.id])
   const [longStayMsg, setLongStayMsg] = useState(null)
   const [songError, setSongError]     = useState(null)
 
@@ -174,10 +204,17 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
   const songs    = getStationSongs(mood.id)
   const voiceSrc = moodVoiceMap[mood.id]
 
-  // Mood change: reset audio, banner, DJ, intro
+  // Mood change: reset playback state and kick off the DJ card animation.
+  // introPhase and showBanner are lazy-initialized above so they're already
+  // correct on the first render — this effect only matters if mood.id somehow
+  // changes without a full component remount.
   useEffect(() => {
     console.log('[RadioStation] Mood selected:', mood.id)
-    console.log('[RadioStation] Voice intro path:', voiceSrc || '(none — no file mapped)')
+    if (voiceSrc) {
+      console.log(`[RadioStation] Voice intro path: ${voiceSrc}`)
+    } else {
+      console.log('[RadioStation] No voice intro mapped — skipping to songs immediately')
+    }
 
     setSongIndex(0)
     setSongError(null)
@@ -185,16 +222,6 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
     setAudioUrl(null)
     clearTimeout(readyTimerRef.current)
     clearTimeout(skipTimerRef.current)
-
-    if (voiceSrc) {
-      console.log('[RadioStation] Has voice intro → setting introPhase = "playing"')
-      setIntroPhase('playing')
-      setShowBanner(true)
-    } else {
-      console.log('[RadioStation] No voice intro → skipping to songs immediately')
-      setIntroPhase('ready')
-      setShowBanner(false)
-    }
 
     const t = setTimeout(() => setDjVisible(true), 400)
     return () => clearTimeout(t)
@@ -221,7 +248,7 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
   }, [mood.id])
 
   const handleIntroEnded = useCallback(() => {
-    console.log('[RadioStation] introPhase → "ready" — song player will auto-start')
+    console.log('[RadioStation] Voice intro ended, starting playlist')
     setIntroPhase('ready')
     readyTimerRef.current = setTimeout(() => setShowBanner(false), 2500)
   }, [])
