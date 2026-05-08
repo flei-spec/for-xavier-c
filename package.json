@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
-    "gen": "node scripts/generateSongMoodMap.js"
+    "gen": "node scripts/generateSongMoodMap.js",
+    "upload": "node scripts/upload-to-r2.js"
   },
   "dependencies": {
     "react": "^18.2.0",
