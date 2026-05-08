@@ -1,42 +1,64 @@
 // ─────────────────────────────────────────────────────────────────────────────
 //  Song source configuration
+//  Controls where audio files are streamed from: local /songs/ or Cloudflare R2
+// ─────────────────────────────────────────────────────────────────────────────
 //
-//  LOCAL (current):  all MP3s live in public/songs/
-//  FUTURE (CDN):     set CDN_BASE to your Cloudflare R2 / CDN public URL
+//  HOW IT WORKS
+//  ─────────────
+//  CDN_BASE is read from the VITE_CDN_BASE environment variable at build time.
+//
+//  ┌──────────────────────────────────────────────────────────────────────────┐
+//  │  Local dev  — leave .env.local empty (or don't create it at all)         │
+//  │               songs load from   /songs/foo.mp3   (Vite public directory) │
+//  │                                                                            │
+//  │  Production — set VITE_CDN_BASE in the Vercel dashboard:                 │
+//  │    Dashboard → Project → Settings → Environment Variables                │
+//  │    Key:    VITE_CDN_BASE                                                  │
+//  │    Value:  https://pub-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.r2.dev            │
+//  │               songs load from   https://pub-xxx.r2.dev/songs/foo.mp3    │
+//  └──────────────────────────────────────────────────────────────────────────┘
+//
+//  QUICK LOCAL OVERRIDE (optional)
+//  ─────────────────────────────────
+//  To test CDN playback locally before deploying:
+//    1. Copy .env.example  →  .env.local
+//    2. Paste your R2 public URL after the = sign
+//    3. Restart the dev server (npm run dev)
+//  Your .env.local is gitignored — it will never be committed.
+//
 // ─────────────────────────────────────────────────────────────────────────────
 
-// Set CDN_BASE when you're ready to serve songs from Cloudflare R2 or any CDN.
-// Example: 'https://music.yoursite.com'  or  'https://pub-abc123.r2.dev'
-// Leave empty ('') to serve songs from local /songs/ (Vite public directory).
-export const CDN_BASE = ''
+// ▼▼▼  PASTE YOUR CLOUDFLARE R2 PUBLIC URL HERE FOR LOCAL TESTING  ▼▼▼
+//
+//   export const CDN_BASE = 'https://pub-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.r2.dev'
+//
+//   Or better: set it in .env.local so this file stays clean:
+//   VITE_CDN_BASE=https://pub-xxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx.r2.dev
+//
+// ▲▲▲──────────────────────────────────────────────────────────────────▲▲▲
+
+export const CDN_BASE = (import.meta.env.VITE_CDN_BASE ?? '').trim()
 
 /**
- * Resolve a song's src path to the final playback URL.
+ * Resolve a song's local src path to the final playback URL.
  *
- * Local  → /songs/foo.mp3
- * CDN    → https://cdn.yoursite.com/songs/foo.mp3
+ * Examples
+ *   CDN_BASE = ''                         (local dev)
+ *   resolveSongUrl('/songs/foo.mp3')  →   '/songs/foo.mp3'
+ *
+ *   CDN_BASE = 'https://pub-abc.r2.dev'   (production)
+ *   resolveSongUrl('/songs/foo.mp3')  →   'https://pub-abc.r2.dev/songs/foo.mp3'
+ *
+ * The path-join logic strips any trailing slash from CDN_BASE and any leading
+ * slash from src, so both 'https://cdn/' + '/songs/x' and 'https://cdn' + 'songs/x'
+ * produce the correct 'https://cdn/songs/x'.
  */
 export function resolveSongUrl(src) {
-  if (!CDN_BASE) return src
+  if (!CDN_BASE) return src   // local fallback — Vite serves public/songs/
   return `${CDN_BASE.replace(/\/$/, '')}/${src.replace(/^\//, '')}`
 }
 
-// ─── Cloudflare R2 Integration Guide (future) ─────────────────────────────────
-//
-//  Step 1: Create a Cloudflare R2 bucket and enable public access
-//          (or attach a custom domain via Cloudflare DNS).
-//
-//  Step 2: Upload your full MP3 library to the bucket:
-//            rclone copy public/songs/ r2:your-bucket/songs/ --progress
-//
-//  Step 3: Set CDN_BASE here, for example:
-//            export const CDN_BASE = 'https://music.yoursite.com'
-//
-//  Step 4: Add public/songs/ to .gitignore so large files leave the repo:
-//            echo "public/songs/" >> .gitignore
-//            git rm -r --cached public/songs/
-//
-//  Step 5: Redeploy — songs now stream from Cloudflare's global edge network,
-//          with zero origin bandwidth and automatic caching.
-//
+// ─────────────────────────────────────────────────────────────────────────────
+//  Voice intros (public/Voice-intros/*.m4a) are small and stay on Vercel.
+//  Only the MP3 library in public/songs/ moves to R2.
 // ─────────────────────────────────────────────────────────────────────────────
