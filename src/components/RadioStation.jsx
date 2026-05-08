@@ -15,21 +15,43 @@ import './RadioStation.css'
 
 // ── song matching ─────────────────────────────────────────────────────────────
 
+// Only songs actually committed to git / deployed on Vercel
+const AVAILABLE_SONGS = new Set([
+  '/songs/24kGoldn%2Ciann%20dior%20-%20Mood.mp3',
+  '/songs/30%E5%B9%B4%E5%89%8D%EF%BC%8C50%E5%B9%B4%E5%90%8E%20-%20%E7%B2%BE%E5%8D%AB.mp3',
+  '/songs/670%20-%20%E5%BF%AB%E9%BB%9E%E7%9D%A1%E8%A6%BA.mp3',
+  '/songs/AGA%20-%20Wonderful%20U.mp3',
+  '/songs/AQVOL%20-%20Wassuh.mp3',
+  '/songs/Adam%20Christopher%2CDan%20Berk%20-%20Let%20Me%20Down%20Slowly%20(Acoustic).mp3',
+  '/songs/Adele%20-%20Easy%20On%20Me.mp3',
+  '/songs/Anthem%20Lights%20-%20As%20Long%20as%20You%20Love%20Me.mp3',
+  '/songs/Anthem%20Lights%2CMegan%20Davies%20-%20A%20Thousand%20Years.mp3',
+  '/songs/Ashe%20-%20In%20Disguise.mp3',
+  '/songs/Beyonc%C3%A9%20-%20If%20I%20Were%20a%20Boy.mp3',
+])
+
 const FALLBACK_TAGS = ['需要安慰', '想被抱抱', '想一个人发呆']
 
 function getStationSongs(moodLabel) {
-  let matched = songMoodMap.filter(s => s.moodTags.includes(moodLabel))
-  if (matched.length < 5) {
-    const extra = songMoodMap.filter(
+  const available = songMoodMap.filter(s => AVAILABLE_SONGS.has(s.src))
+  let matched = available.filter(s => s.moodTags.includes(moodLabel))
+
+  console.log(`[RadioStation] Mood "${moodLabel}" — found ${matched.length} available song(s):`,
+    matched.map(s => s.title))
+
+  if (matched.length < 2) {
+    const extra = available.filter(
       s => !matched.includes(s) && s.moodTags.some(t => FALLBACK_TAGS.includes(t))
     )
     matched = [...matched, ...extra]
+    console.log(`[RadioStation] Padded with ${extra.length} fallback song(s)`)
   }
+
   const sorted = matched.sort((a, b) => {
     const sc = s => [...s.title].reduce((n, c) => n + c.charCodeAt(0), 0)
     return sc(a) - sc(b)
   })
-  return sorted.slice(0, 5)
+  return sorted
 }
 
 // ── VoiceIntroPlayer ──────────────────────────────────────────────────────────
@@ -142,6 +164,7 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
   const [introPhase, setIntroPhase]   = useState('ready')
   const [showBanner, setShowBanner]   = useState(false)
   const [longStayMsg, setLongStayMsg] = useState(null)
+  const [songError, setSongError]     = useState(null)
 
   const heartTimerRef   = useRef(null)
   const readyTimerRef   = useRef(null)
@@ -158,6 +181,7 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
     console.log('[RadioStation] Voice intro path:', voiceSrc || '(none — no file mapped)')
 
     setSongIndex(0)
+    setSongError(null)
     setDjVisible(false)
     setAudioUrl(null)
     clearTimeout(readyTimerRef.current)
@@ -214,8 +238,8 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
     }
   }
 
-  const nextSong = useCallback(() => setSongIndex(i => (i + 1) % songs.length), [songs.length])
-  const prevSong = useCallback(() => setSongIndex(i => (i - 1 + songs.length) % songs.length), [songs.length])
+  const nextSong = useCallback(() => { setSongError(null); setSongIndex(i => (i + 1) % songs.length) }, [songs.length])
+  const prevSong = useCallback(() => { setSongError(null); setSongIndex(i => (i - 1 + songs.length) % songs.length) }, [songs.length])
 
   const currentSong = songs[songIndex]
     ? { ...songs[songIndex], reason: songs[songIndex].romanticReason, duration: '--:--' }
@@ -291,6 +315,13 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
         {/* rotating companion message */}
         <CompanionLine moodId={mood.id} />
 
+        {/* song load error */}
+        {songError && (
+          <p style={{ color: '#f88', textAlign: 'center', fontSize: '0.85rem', margin: '0.5rem 0' }}>
+            ⚠️ 歌曲加载失败：{songError}
+          </p>
+        )}
+
         {/* player */}
         {currentSong && (
           <RadioPlayer
@@ -301,6 +332,7 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
             audioUrl={audioUrl}
             audioLabel={audioLabel}
             introPhase={introPhase}
+            onSongError={msg => setSongError(msg)}
           />
         )}
 

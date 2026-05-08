@@ -21,7 +21,7 @@ function fadeVolume(audio, from, to, ms) {
 export default function RadioPlayer({
   mood, song, onNext, onPrev,
   audioUrl, audioLabel,
-  introPhase,
+  introPhase, onSongError,
 }) {
   const [playing, setPlaying]   = useState(false)
   const [elapsed, setElapsed]   = useState(0)
@@ -36,6 +36,8 @@ export default function RadioPlayer({
   useEffect(() => {
     const audio = audioRef.current
     if (!audio) return
+
+    console.log('[RadioPlayer] Track source →', activeSrc || '(none)')
 
     const switchTrack = async () => {
       if (isSwitching.current) return
@@ -66,9 +68,11 @@ export default function RadioPlayer({
         audio.volume = 0
         try {
           await audio.play()
+          console.log('[RadioPlayer] ▶ Song playing:', activeSrc)
           await fadeVolume(audio, 0, 0.88, 900)
         } catch (err) {
-          console.warn('[RadioPlayer] Song auto-play blocked:', err.message)
+          console.error('[RadioPlayer] play() failed:', err.name, err.message, 'src:', activeSrc)
+          onSongError?.(`play() blocked — ${err.message}`)
         }
       }, 150)
       return () => clearTimeout(t)
@@ -134,11 +138,17 @@ export default function RadioPlayer({
           ref={audioRef}
           src={activeSrc}
           preload="metadata"
-          onPlay={() => setPlaying(true)}
+          onPlay={() => { console.log('[RadioPlayer] onPlay fired:', activeSrc); setPlaying(true) }}
           onPause={() => setPlaying(false)}
           onEnded={handleEnded}
           onLoadedMetadata={e => setRealDur(e.target.duration)}
           onTimeUpdate={e => setElapsed(e.target.currentTime)}
+          onError={e => {
+            const err = e.target.error
+            const msg = `code ${err?.code} — ${err?.message ?? 'unknown'}`
+            console.error('[RadioPlayer] Audio load error:', msg, 'src:', activeSrc)
+            onSongError?.(`无法加载：${activeSrc?.split('/').pop() ?? ''} (${msg})`)
+          }}
         />
       )}
 
