@@ -4,8 +4,8 @@ export const profile = {
   nickname: '小宝',
   fromName: 'Triston.L',
 
-  startDate: '2025-03-14',
-  anniversaryDate: '2026-03-14',
+  startDate: '2026-03-14',
+  anniversaryDate: '2027-03-14',
 
   favoriteStyles: [
     '华语情绪流行', '深夜伤感情歌', 'Emotional Mandopop',
