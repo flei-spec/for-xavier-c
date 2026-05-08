@@ -1,0 +1,75 @@
+.atm {
+  position: relative;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 16px;
+  padding: 1.1rem 1.3rem 0.95rem;
+  overflow: hidden;
+  animation: atm-in 0.5s ease both;
+}
+
+@keyframes atm-in {
+  from { opacity: 0; transform: translateY(-6px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* Thin accent line at top */
+.atm::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 12%; right: 12%;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, rgba(212, 175, 122, 0.35), transparent);
+  pointer-events: none;
+}
+
+.atm__top {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+  margin-bottom: 0.55rem;
+}
+
+.atm__location {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  letter-spacing: 0.02em;
+}
+
+.atm__icon { font-size: 1rem; line-height: 1; }
+
+.atm__time {
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  letter-spacing: 0.05em;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.atm__message {
+  font-size: 0.87rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  line-height: 1.6;
+  letter-spacing: 0.02em;
+}
+
+/* compact */
+.atm--compact { padding: 0.65rem 1rem; border-radius: 12px; }
+.atm--compact .atm__message { font-size: 0.79rem; }
+
+/* skeleton */
+.atm--skeleton { display: flex; flex-direction: column; gap: 0.5rem; padding: 1rem 1.3rem; }
+
+.atm__skeleton-line {
+  height: 11px;
+  border-radius: 5px;
+  background: rgba(255,255,255,0.05);
+}
+
+.atm__skeleton-line--short { width: 50%; }
+.atm__skeleton-line--long  { width: 88%; }

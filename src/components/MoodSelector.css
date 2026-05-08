@@ -1,0 +1,116 @@
+.mood {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 3rem 1.5rem;
+}
+
+.mood__inner {
+  max-width: 720px;
+  width: 100%;
+  text-align: center;
+  animation: rise 0.6s ease both;
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(20px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.mood__heading {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.6rem, 5vw, 2.5rem);
+  font-weight: 600;
+  line-height: 1.25;
+  margin-bottom: 0.65rem;
+}
+
+.mood__sub {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  font-style: italic;
+  margin-bottom: 2.5rem;
+}
+
+.mood__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 0.75rem;
+  margin-bottom: 2.5rem;
+}
+
+.mood__card {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 18px;
+  padding: 1.8rem 1rem 1.4rem;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.45rem;
+  /* Only transition border and background — no transform */
+  transition: border-color 0.15s, background 0.15s;
+}
+
+.mood__card:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--accent);
+}
+
+.mood__card--active {
+  background: var(--bg-card-hover);
+  border-color: var(--accent);
+  box-shadow: 0 0 0 1px var(--accent);
+}
+
+.mood__check {
+  position: absolute;
+  top: 0.75rem;
+  right: 0.75rem;
+  width: 20px;
+  height: 20px;
+  border-radius: 50%;
+  background: var(--accent);
+  color: #080812;
+  font-size: 0.65rem;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.mood__icon  { font-size: 2rem; display: block; }
+.mood__label { font-size: 0.93rem; font-weight: 500; color: var(--text-primary); }
+.mood__desc  { font-size: 0.74rem; color: var(--text-muted); font-style: italic; }
+
+.mood__card--active .mood__label { color: var(--accent); }
+
+.mood__start {
+  padding: 0.95rem 3rem;
+  border-radius: 60px;
+  font-size: 1rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  transition: opacity 0.15s;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+}
+
+.mood__start--ready {
+  background: linear-gradient(135deg, var(--rose-dark) 0%, #c97090 100%);
+  border-color: transparent;
+  color: white;
+  box-shadow: 0 4px 24px rgba(224, 117, 142, 0.28);
+}
+
+.mood__start--ready:hover  { opacity: 0.88; }
+.mood__start:disabled      { cursor: not-allowed; }
+
+@media (max-width: 360px) {
+  .mood__grid { grid-template-columns: 1fr 1fr; }
+}

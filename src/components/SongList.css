@@ -1,0 +1,119 @@
+.songs {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 1.4rem;
+}
+
+.songs__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.8rem;
+}
+
+.songs__label {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+}
+
+.songs__count {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+}
+
+.songs__list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.songs__row {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.9rem;
+  padding: 0.85rem 0.65rem;
+  border-radius: 12px;
+  background: none;
+  width: 100%;
+  text-align: left;
+  transition: background 0.18s;
+  color: var(--text-primary);
+}
+
+.songs__row:hover         { background: rgba(255,255,255,0.05); }
+.songs__row--active       { background: rgba(244,161,176,0.07); }
+
+.songs__num {
+  width: 22px;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  text-align: center;
+  flex-shrink: 0;
+  padding-top: 2px;
+}
+
+.songs__row--active .songs__num { color: var(--row-accent, var(--rose)); }
+
+.songs__info {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.songs__title {
+  font-size: 0.93rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.songs__row--active .songs__title { color: var(--row-accent, var(--rose)); }
+
+.songs__artist {
+  font-size: 0.76rem;
+  color: var(--text-muted);
+}
+
+.songs__reason {
+  font-size: 0.75rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  line-height: 1.45;
+  white-space: normal;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-top: 2px;
+}
+
+.songs__energy {
+  font-size: 0.65rem;
+  padding: 2px 7px;
+  border-radius: 10px;
+  flex-shrink: 0;
+  align-self: flex-start;
+  margin-top: 3px;
+  letter-spacing: 0.04em;
+}
+
+.songs__energy--低 {
+  background: rgba(179, 157, 219, 0.15);
+  color: #b39ddb;
+}
+
+.songs__energy--中 {
+  background: rgba(244, 161, 176, 0.15);
+  color: var(--rose);
+}
+
+.songs__energy--高 {
+  background: rgba(255, 213, 79, 0.15);
+  color: #ffd54f;
+}

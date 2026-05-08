@@ -1,0 +1,209 @@
+.player {
+  position: relative;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 24px;
+  padding: 2rem;
+  overflow: hidden;
+}
+
+.player__top-bar {
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0.5;
+}
+
+.player__now {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-muted);
+  margin-bottom: 1.6rem;
+}
+
+.player__pulse {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  display: inline-block;
+  transition: background 0.4s;
+  flex-shrink: 0;
+}
+
+/* Intro: simple opacity blink */
+.player__pulse--intro {
+  animation: dot-blink 1.4s ease-in-out infinite;
+}
+
+@keyframes dot-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.3; }
+}
+
+.player__track {
+  display: flex;
+  gap: 1.2rem;
+  align-items: flex-start;
+  margin-bottom: 1.8rem;
+}
+
+.player__art {
+  width: 72px;
+  height: 72px;
+  border-radius: 14px;
+  background: rgba(255,255,255,0.04);
+  border: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  flex-shrink: 0;
+}
+
+.player__art-icon { font-size: 2rem; }
+
+.player__wave {
+  display: flex;
+  gap: 2px;
+  align-items: center;
+}
+
+.player__bar {
+  width: 3px;
+  border-radius: 2px;
+  background: var(--accent);
+  animation: wave 0.9s ease-in-out infinite;
+  animation-delay: var(--d);
+}
+
+@keyframes wave {
+  0%, 100% { height: 4px; }
+  50%       { height: 20px; }
+}
+
+.player__bar--intro { background: var(--accent); opacity: 0.7; }
+
+.player__meta { flex: 1; min-width: 0; }
+
+.player__title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.3rem;
+  font-weight: 600;
+  color: var(--text-primary);
+  margin-bottom: 0.28rem;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.player__artist {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  margin-bottom: 0.55rem;
+}
+
+.player__reason {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  line-height: 1.55;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.player__reason--intro { color: var(--text-muted); }
+
+/* Progress */
+.player__progress-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  margin-bottom: 1.5rem;
+}
+
+.player__time {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  min-width: 2.6rem;
+  flex-shrink: 0;
+}
+
+.player__time:last-child { text-align: right; }
+
+.player__track-bar {
+  flex: 1;
+  height: 3px;
+  background: rgba(255,255,255,0.07);
+  border-radius: 3px;
+  overflow: hidden;
+}
+
+.player__fill {
+  height: 100%;
+  border-radius: 3px;
+  transition: width 0.8s linear;
+}
+
+/* Controls */
+.player__controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.1rem;
+}
+
+.player__skip {
+  background: none;
+  color: var(--text-muted);
+  font-size: 1.3rem;
+  width: 42px;
+  height: 42px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: color 0.15s;
+}
+
+.player__skip:hover { color: var(--text-secondary); }
+
+.player__play {
+  width: 58px;
+  height: 58px;
+  border-radius: 50%;
+  background: linear-gradient(135deg, var(--rose-dark) 0%, #c97090 100%);
+  color: white;
+  font-size: 1.3rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 4px 20px rgba(224,117,142,0.3);
+  transition: opacity 0.15s;
+}
+
+.player__play:hover  { opacity: 0.88; }
+.player__play:active { opacity: 0.72; }
+
+/* Intro: dimmed static style, no animation */
+.player__play--intro {
+  background: rgba(255,255,255,0.06);
+  box-shadow: none;
+  border: 1px solid rgba(255,255,255,0.1);
+  opacity: 0.7;
+}
+
+@media (max-width: 480px) {
+  .player       { padding: 1.5rem; }
+  .player__title { font-size: 1.1rem; }
+  .player__art  { width: 62px; height: 62px; }
+  .player__art-icon { font-size: 1.6rem; }
+}

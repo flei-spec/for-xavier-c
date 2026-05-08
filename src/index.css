@@ -1,0 +1,121 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* ── Base design tokens ──────────────────────────────────────────────────────── */
+:root {
+  --bg-deep:       #080812;
+  --bg-dark:       #0d0d1f;
+  --bg-card:       rgba(255, 255, 255, 0.042);
+  --bg-card-hover: rgba(255, 255, 255, 0.072);
+  --border:        rgba(255, 255, 255, 0.08);
+  --rose:          #f4a1b0;
+  --rose-dark:     #e0758e;
+  --gold:          #d4af7a;
+  --gold-light:    #e8c99a;
+  --lavender:      #b39ddb;
+  --text-primary:  #f8f0e8;
+  --text-secondary:rgba(248, 240, 232, 0.6);
+  --text-muted:    rgba(248, 240, 232, 0.32);
+
+  /* atmosphere glow (overridden by theme) */
+  --atm-glow-1: rgba(244, 161, 176, 0.06);
+  --atm-glow-2: rgba(100, 80, 160, 0.04);
+}
+
+/* ── Atmosphere themes ───────────────────────────────────────────────────────── */
+
+/* Rain: cooler, slightly blue-shifted */
+[data-atm="rain"] {
+  --bg-deep:    #060910;
+  --bg-dark:    #090e1a;
+  --bg-card:    rgba(255, 255, 255, 0.038);
+  --atm-glow-1: rgba(100, 140, 220, 0.06);
+  --atm-glow-2: rgba(80, 100, 180, 0.04);
+  --border:     rgba(160, 180, 230, 0.09);
+}
+
+/* Deep night: deeper, more purple */
+[data-atm="deepnight"] {
+  --bg-deep:    #040410;
+  --bg-dark:    #07071a;
+  --bg-card:    rgba(255, 255, 255, 0.036);
+  --atm-glow-1: rgba(120, 90, 200, 0.07);
+  --atm-glow-2: rgba(80, 60, 160, 0.05);
+  --text-muted: rgba(248, 240, 232, 0.28);
+}
+
+/* Snow: clean, cold white */
+[data-atm="snow"] {
+  --bg-deep: #07090f;
+  --bg-dark: #0b0e18;
+  --atm-glow-1: rgba(200, 215, 255, 0.05);
+}
+
+/* Sunny morning: warmer amber shift */
+[data-atm="sunny"] {
+  --bg-deep:    #0e0a07;
+  --bg-dark:    #160f09;
+  --rose:       #f4a898;
+  --gold:       #e2bc82;
+  --atm-glow-1: rgba(220, 180, 100, 0.07);
+  --atm-glow-2: rgba(240, 140, 100, 0.04);
+}
+
+/* Cold */
+[data-atm="cold"] {
+  --bg-deep: #070810;
+  --bg-dark: #0a0c1c;
+  --atm-glow-1: rgba(140, 160, 220, 0.05);
+}
+
+/* ── Global ──────────────────────────────────────────────────────────────────── */
+
+html { scroll-behavior: smooth; }
+
+body {
+  background-color: var(--bg-deep);
+  color: var(--text-primary);
+  font-family: 'Inter', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
+  min-height: 100vh;
+  overflow-x: hidden;
+  line-height: 1.6;
+  -webkit-font-smoothing: antialiased;
+  background-image:
+    radial-gradient(ellipse 70% 45% at 18% 18%, var(--atm-glow-1) 0%, transparent 55%),
+    radial-gradient(ellipse 55% 38% at 82% 82%, var(--atm-glow-2) 0%, transparent 50%);
+}
+
+/* ── Scrollbar ───────────────────────────────────────────────────────────────── */
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: var(--bg-dark); }
+::-webkit-scrollbar-thumb { background: rgba(224, 117, 142, 0.4); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: var(--rose-dark); }
+
+/* ── Buttons ─────────────────────────────────────────────────────────────────── */
+button {
+  cursor: pointer;
+  border: none;
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  outline: none;
+}
+button:focus-visible {
+  outline: 2px solid var(--rose);
+  outline-offset: 2px;
+}
+
+/* ── Glassmorphism helper class ──────────────────────────────────────────────── */
+.glass {
+  background: var(--bg-card);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
+  border: 1px solid var(--border);
+}
+
+/* ── Fade-in animation (used by many components) ─────────────────────────────── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}

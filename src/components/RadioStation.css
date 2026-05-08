@@ -1,0 +1,296 @@
+.station {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+}
+
+/* ── Header ── */
+.station__header {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.1rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  background: rgba(8, 8, 18, 0.80);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.station__back {
+  background: none;
+  color: var(--text-muted);
+  font-size: 0.84rem;
+  padding: 0.38rem 0.75rem;
+  border-radius: 20px;
+  transition: color 0.15s;
+  border: 1px solid transparent;
+}
+
+.station__back:hover {
+  color: var(--text-secondary);
+}
+
+.station__title {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  font-weight: 500;
+}
+
+/* Simple opacity blink — no box-shadow, GPU-friendly */
+.station__live-dot {
+  width: 7px;
+  height: 7px;
+  border-radius: 50%;
+  background: #4caf50;
+  flex-shrink: 0;
+  animation: live-blink 2.8s ease-in-out infinite;
+}
+
+@keyframes live-blink {
+  0%, 100% { opacity: 1; }
+  50%       { opacity: 0.35; }
+}
+
+.station__badge {
+  padding: 0.18rem 0.6rem;
+  border-radius: 12px;
+  border: 1px solid;
+  font-size: 0.72rem;
+}
+
+.station__heart {
+  position: relative;
+  background: none;
+  font-size: 1.3rem;
+  padding: 0.35rem;
+  border-radius: 50%;
+  line-height: 1;
+  transition: transform 0.15s;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.station__heart--beat {
+  animation: heartbeat 0.4s ease;
+}
+
+@keyframes heartbeat {
+  0%   { transform: scale(1); }
+  30%  { transform: scale(1.45); }
+  65%  { transform: scale(0.9); }
+  100% { transform: scale(1); }
+}
+
+.station__heart-count {
+  position: absolute;
+  bottom: 0;
+  right: -2px;
+  font-size: 0.5rem;
+  background: var(--rose-dark);
+  color: white;
+  border-radius: 8px;
+  padding: 1px 4px;
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  line-height: 1.4;
+}
+
+/* ── Content ── */
+.station__content {
+  max-width: 780px;
+  margin: 0 auto;
+  padding: 2rem 1.5rem 4rem;
+  display: flex;
+  flex-direction: column;
+  gap: 1.4rem;
+}
+
+/* DJ card — entrance animation only */
+.station__dj {
+  display: flex;
+  gap: 1rem;
+  align-items: flex-start;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: 20px;
+  padding: 1.4rem;
+  animation: rise 0.5s ease both;
+}
+
+@keyframes rise {
+  from { opacity: 0; transform: translateY(16px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.station__dj-avatar {
+  font-size: 1.8rem;
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: rgba(244,161,176,0.08);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.station__dj-label {
+  font-size: 0.68rem;
+  color: var(--rose);
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  font-weight: 500;
+  margin-bottom: 0.45rem;
+}
+
+.station__dj-text {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  font-size: 0.97rem;
+  color: var(--text-secondary);
+  line-height: 1.72;
+}
+
+/* Bottom grid */
+.station__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+}
+
+@media (min-width: 560px) {
+  .station__grid { grid-template-columns: 1fr 1fr; }
+  .station__grid > :first-child { grid-column: 1 / -1; }
+}
+
+@media (min-width: 720px) {
+  .station__grid { grid-template-columns: 1fr 1fr 1fr; }
+  .station__grid > :first-child { grid-column: auto; }
+}
+
+.station__hint {
+  text-align: center;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  font-style: italic;
+  padding-top: 0.5rem;
+}
+
+@media (max-width: 480px) {
+  .station__title   { font-size: 0.8rem; }
+  .station__badge   { display: none; }
+  .station__content { padding: 1.5rem 1rem 3rem; }
+}
+
+/* ── Voice intro banner ── */
+.vb {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 16px;
+  padding: 0.9rem 1.2rem;
+  position: relative;
+  overflow: hidden;
+  animation: rise 0.4s ease both;
+}
+
+/* top accent line */
+.vb::before {
+  content: '';
+  position: absolute;
+  top: 0; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(90deg, transparent, var(--vb-accent, var(--rose)), transparent);
+}
+
+.vb__mic {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  line-height: 1;
+}
+
+.vb__text {
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.03em;
+  font-style: italic;
+}
+
+.vb__text--ready {
+  color: var(--vb-accent, var(--rose));
+  animation: vb-fade-out 2.5s ease forwards;
+}
+
+@keyframes vb-fade-out {
+  0%, 65% { opacity: 1; }
+  100%    { opacity: 0; }
+}
+
+/* wave bars */
+.vb__waves {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  height: 20px;
+}
+
+.vb__bar {
+  width: 3px;
+  border-radius: 2px;
+  background: var(--vb-accent, var(--rose));
+  opacity: 0.7;
+  animation: vb-wave 0.9s ease-in-out infinite;
+  animation-delay: calc(var(--i) * 0.1s);
+}
+
+@keyframes vb-wave {
+  0%, 100% { height: 4px; }
+  50%       { height: 16px; }
+}
+
+/* ── Long-stay toast ── */
+.ls-toast {
+  position: fixed;
+  bottom: 2.2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: rgba(18, 14, 28, 0.92);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 1px solid rgba(244, 161, 176, 0.18);
+  border-radius: 40px;
+  padding: 0.65rem 1.4rem;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  letter-spacing: 0.04em;
+  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.4);
+  animation: ls-up 0.4s ease both, ls-out 0.5s ease 4.5s forwards;
+  white-space: nowrap;
+}
+
+.ls-toast__icon { font-size: 1rem; }
+
+@keyframes ls-up {
+  from { opacity: 0; transform: translateX(-50%) translateY(12px); }
+  to   { opacity: 1; transform: translateX(-50%) translateY(0); }
+}
+
+@keyframes ls-out {
+  to { opacity: 0; transform: translateX(-50%) translateY(6px); }
+}

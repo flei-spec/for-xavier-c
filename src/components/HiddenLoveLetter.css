@@ -1,0 +1,115 @@
+.letter__overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.88);
+  backdrop-filter: blur(14px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  transition: opacity 0.38s ease;
+}
+
+.letter__overlay--in { opacity: 1; }
+
+.letter__modal {
+  background: #0e0e20;
+  border: 1px solid rgba(244,161,176,0.18);
+  border-radius: 26px;
+  padding: 2.8rem 2.4rem;
+  max-width: 520px;
+  width: 100%;
+  max-height: 88vh;
+  overflow-y: auto;
+  position: relative;
+  box-shadow:
+    0 40px 80px rgba(0,0,0,0.6),
+    0 0 60px rgba(244,161,176,0.07),
+    inset 0 1px 0 rgba(255,255,255,0.04);
+  animation: letter-in 0.45s cubic-bezier(0.16,1,0.3,1) both;
+}
+
+@keyframes letter-in {
+  from { transform: scale(0.88) translateY(24px); opacity: 0; }
+  to   { transform: scale(1)    translateY(0);    opacity: 1; }
+}
+
+.letter__close {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.2rem;
+  background: rgba(255,255,255,0.05);
+  color: var(--text-muted);
+  width: 32px;
+  height: 32px;
+  border-radius: 50%;
+  font-size: 0.82rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s;
+}
+
+.letter__close:hover {
+  background: rgba(255,255,255,0.1);
+  color: var(--text-primary);
+}
+
+.letter__header {
+  text-align: center;
+  margin-bottom: 2rem;
+}
+
+.letter__seal {
+  font-size: 2.8rem;
+  display: block;
+  margin-bottom: 0.6rem;
+  animation: float 3.5s ease-in-out infinite;
+}
+
+@keyframes float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-7px); }
+}
+
+.letter__stamp {
+  font-size: 0.68rem;
+  text-transform: uppercase;
+  letter-spacing: 0.15em;
+  color: var(--rose);
+  opacity: 0.65;
+}
+
+.letter__body {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
+.letter__para {
+  font-family: 'Playfair Display', serif;
+  font-size: 1rem;
+  line-height: 1.82;
+  color: var(--text-secondary);
+  white-space: pre-line;
+}
+
+.letter__para--first {
+  color: var(--text-primary);
+  font-size: 1.04rem;
+}
+
+.letter__footer {
+  text-align: center;
+  margin-top: 2.2rem;
+  color: var(--rose);
+  opacity: 0.35;
+  font-size: 0.9rem;
+}
+
+@media (max-width: 480px) {
+  .letter__modal { padding: 2rem 1.5rem; }
+  .letter__para  { font-size: 0.95rem; }
+}
