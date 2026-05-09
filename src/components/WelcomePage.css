@@ -144,7 +144,7 @@
   align-items: center;
   gap: 1.3rem;
   animation: fade-up 0.65s ease both;
-  animation-delay: 0.66s;   /* shifted slightly to let MemoryEcho appear first */
+  animation-delay: 0.62s;
 }
 
 .welcome__cta {

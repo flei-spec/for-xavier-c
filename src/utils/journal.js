@@ -1,12 +1,13 @@
 // ─────────────────────────────────────────────────────────────────────────────
-//  journal.js — local memory journal, stored in localStorage only.
+//  journal.js — local memory journal, localStorage only.
 //  No account, no backend, no network calls.
 //
 //  Entry shape:
 //  {
-//    id:         string   — Date.now() as string, unique
+//    id:         string   — Date.now() as string (creation, never changes)
 //    text:       string   — the user's written text
-//    date:       string   — ISO timestamp of when it was saved
+//    date:       string   — ISO timestamp of original creation
+//    updatedAt:  string   — ISO timestamp of last save (may equal date)
 //    moodId:     string | null
 //    moodLabel:  string | null
 //    moodIcon:   string | null
@@ -29,25 +30,32 @@ export function loadEntries() {
 
 // ── Write ─────────────────────────────────────────────────────────────────────
 
-export function saveEntry({ text, moodId, moodLabel, moodIcon, song }) {
+// Create or update the entry for today.
+// If one already exists for today, it is updated in-place (preserving original id + date).
+// If none exists, a new entry is prepended (newest first).
+export function saveTodayEntry({ text, moodId, moodLabel, moodIcon, song }) {
+  const all   = loadEntries()
+  const today = new Date().toDateString()
+  const idx   = all.findIndex(e => new Date(e.date).toDateString() === today)
+
   const entry = {
-    id:        String(Date.now()),
+    id:        idx >= 0 ? all[idx].id   : String(Date.now()),
     text:      text.trim(),
-    date:      new Date().toISOString(),
-    moodId:    moodId   ?? null,
+    date:      idx >= 0 ? all[idx].date : new Date().toISOString(),
+    updatedAt: new Date().toISOString(),
+    moodId:    moodId    ?? null,
     moodLabel: moodLabel ?? null,
     moodIcon:  moodIcon  ?? null,
     song:      song ?? null,
   }
 
-  try {
-    const all = loadEntries()
-    all.unshift(entry)   // newest first
-    localStorage.setItem(KEY, JSON.stringify(all))
-  } catch {
-    // localStorage full or unavailable — silently skip persistence
+  if (idx >= 0) {
+    all[idx] = entry
+  } else {
+    all.unshift(entry)
   }
 
+  try { localStorage.setItem(KEY, JSON.stringify(all)) } catch {}
   return entry
 }
 
@@ -60,6 +68,7 @@ export function todayEntry() {
 }
 
 // A random entry from a previous day (not today), or null.
+// Call this once and store in useState — do not call in a loop or on every render.
 export function randomOldEntry() {
   const today = new Date().toDateString()
   const old   = loadEntries().filter(e => new Date(e.date).toDateString() !== today)

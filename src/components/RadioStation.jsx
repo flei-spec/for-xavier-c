@@ -2,7 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import RadioPlayer from './RadioPlayer'
 import SongList from './SongList'
 import AnniversaryCountdown from './AnniversaryCountdown'
-import MemoryWriter from './MemoryWriter'
+import MemoryDiary from './MemoryDiary'
 import HiddenLoveLetter from './HiddenLoveLetter'
 import LocalPlaylist from './LocalPlaylist'
 import LocalAtmosphereCard from './LocalAtmosphereCard'
@@ -182,6 +182,7 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
   const [songIndex, setSongIndex]     = useState(0)
   const [heartCount, setHeartCount]   = useState(0)
   const [showLetter, setShowLetter]   = useState(false)
+  const [showDiary,  setShowDiary]    = useState(false)
   const [djVisible, setDjVisible]     = useState(false)
   // Lazy-initialize so VoiceIntroPlayer is in the DOM on the very first render.
   // Without this, VoiceIntroPlayer only mounts after the first useEffect fires,
@@ -256,6 +257,7 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
     heartTimerRef.current = setTimeout(() => setHeartCount(0), 3500)
     if (next >= 5) {
       setShowLetter(true)
+      setShowDiary(true)    // diary queued — appears after the love letter closes
       setHeartCount(0)
       localStorage.setItem('xavier_letter_seen', 'true')
     }
@@ -377,8 +379,6 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
 
         <AnniversaryCountdown />
 
-        <MemoryWriter mood={mood} currentSong={currentSong} />
-
         <p className="station__hint">
           轻点那个 🤍 五次，有个秘密在等你。
         </p>
@@ -386,7 +386,19 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
         <LocalPlaylist />
       </main>
 
-      {showLetter && <HiddenLoveLetter onClose={() => setShowLetter(false)} />}
+      {/* Love letter — shows first; closing it reveals the diary */}
+      {showLetter && (
+        <HiddenLoveLetter onClose={() => setShowLetter(false)} />
+      )}
+
+      {/* Memory diary — appears after the love letter is dismissed */}
+      {!showLetter && showDiary && (
+        <MemoryDiary
+          onClose={() => setShowDiary(false)}
+          mood={mood}
+          currentSong={currentSong}
+        />
+      )}
     </div>
   )
 }
