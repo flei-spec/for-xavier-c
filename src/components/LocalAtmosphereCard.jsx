@@ -49,13 +49,16 @@ export default function LocalAtmosphereCard({ atmosphere, compact = false }) {
 
   const { city, temp, weather, message, timezone } = atmosphere
 
+  // weather / temp are null when location was denied or the API is unavailable.
+  const hasWeather = weather !== null && temp !== null
+
   return (
     <div className={`atm ${compact ? 'atm--compact' : ''}`}>
       <div className="atm__top">
         <span className="atm__location">
-          <span className="atm__icon">{weather.icon}</span>
-          {city && <>{city} · </>}
-          {temp}°C · {weather.label}
+          {hasWeather && <span className="atm__icon">{weather.icon}</span>}
+          {city && <>{city}{hasWeather ? ' · ' : ''}</>}
+          {hasWeather ? `${temp}°C · ${weather.label}` : '时间模式'}
         </span>
         <LiveClock timezone={timezone} />
       </div>
