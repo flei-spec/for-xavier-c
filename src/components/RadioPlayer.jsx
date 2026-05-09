@@ -20,7 +20,6 @@ function fadeVolume(audio, from, to, ms) {
 // ── Component ─────────────────────────────────────────────────────────────────
 export default function RadioPlayer({
   mood, song, onNext, onPrev,
-  audioUrl, audioLabel,
   introPhase, onSongError,
 }) {
   const [playing, setPlaying]   = useState(false)
@@ -30,7 +29,7 @@ export default function RadioPlayer({
   const prevPhase  = useRef(introPhase)
   const isSwitching = useRef(false)
 
-  const activeSrc = audioUrl || song?.src
+  const activeSrc = song?.src
 
   // Reload + fade in when source changes
   useEffect(() => {
@@ -121,9 +120,9 @@ export default function RadioPlayer({
   const total        = realDur || 1
   const progress     = Math.min((elapsed / total) * 100, 100)
 
-  const displayTitle  = audioUrl ? audioLabel        : (song?.title  || '')
-  const displayArtist = audioUrl ? null              : (song?.artist || null)
-  const displayReason = audioUrl ? null              : (song?.reason || null)
+  const displayTitle  = song?.title  || ''
+  const displayArtist = song?.artist || null
+  const displayReason = song?.reason || null
 
   const statusText = introPlaying
     ? 'Xavier.C 的语音电台开场中…'

@@ -2,8 +2,6 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import RadioPlayer from './RadioPlayer'
 import SongList from './SongList'
 import AnniversaryCountdown from './AnniversaryCountdown'
-import VoiceRecorder from './VoiceRecorder'
-import AudioUploader from './AudioUploader'
 import HiddenLoveLetter from './HiddenLoveLetter'
 import LocalPlaylist from './LocalPlaylist'
 import LocalAtmosphereCard from './LocalAtmosphereCard'
@@ -181,8 +179,6 @@ function LongStayToast({ message, onDismiss }) {
 
 export default function RadioStation({ mood, onBack, atmosphere }) {
   const [songIndex, setSongIndex]     = useState(0)
-  const [audioUrl, setAudioUrl]       = useState(null)
-  const [audioLabel, setAudioLabel]   = useState('')
   const [heartCount, setHeartCount]   = useState(0)
   const [showLetter, setShowLetter]   = useState(false)
   const [djVisible, setDjVisible]     = useState(false)
@@ -219,7 +215,6 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
     setSongIndex(0)
     setSongError(null)
     setDjVisible(false)
-    setAudioUrl(null)
     clearTimeout(readyTimerRef.current)
     clearTimeout(skipTimerRef.current)
 
@@ -366,8 +361,6 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
             song={currentSong}
             onNext={nextSong}
             onPrev={prevSong}
-            audioUrl={audioUrl}
-            audioLabel={audioLabel}
             introPhase={introPhase}
             onSongError={handleSongError}
           />
@@ -381,16 +374,7 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
           accentColor={mood.accentColor}
         />
 
-        {/* bottom widgets */}
-        <div className="station__grid">
-          <AnniversaryCountdown />
-          <VoiceRecorder
-            onRecorded={url => { setAudioUrl(url); setAudioLabel('语音留言 💌') }}
-          />
-          <AudioUploader
-            onUploaded={(url, name) => { setAudioUrl(url); setAudioLabel(name) }}
-          />
-        </div>
+        <AnniversaryCountdown />
 
         <p className="station__hint">
           轻点那个 🤍 五次，有个秘密在等你。
