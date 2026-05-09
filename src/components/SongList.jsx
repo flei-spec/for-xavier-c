@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import './SongList.css'
 
-const PAGE_SIZE = 20
+const PAGE_SIZE = 10
 
 export default function SongList({ songs, currentIndex, onSelect, accentColor }) {
   const [limit, setLimit] = useState(PAGE_SIZE)
@@ -17,7 +17,7 @@ export default function SongList({ songs, currentIndex, onSelect, accentColor })
   return (
     <div className="songs">
       <div className="songs__header">
-        <p className="songs__label">今晚歌单</p>
+        <p className="songs__label">今日歌单</p>
         <p className="songs__count">{songs.length} 首</p>
       </div>
       <div className="songs__list">
