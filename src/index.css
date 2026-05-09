@@ -83,6 +83,14 @@ body {
   overflow-x: hidden;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
+
+  /* Smooth base-colour transition when time / weather changes */
+  transition: background-color 1.2s ease;
+
+  /* Ambient glow blobs — colours driven by --atm-glow-1 / --atm-glow-2 which
+     App.jsx updates whenever the atmosphere theme changes.
+     background-image itself doesn't animate, but the base colour does; together
+     they produce a perceptible, gentle shift as day turns to night. */
   background-image:
     radial-gradient(ellipse 70% 45% at 18% 18%, var(--atm-glow-1) 0%, transparent 55%),
     radial-gradient(ellipse 55% 38% at 82% 82%, var(--atm-glow-2) 0%, transparent 50%);
