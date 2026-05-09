@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import RadioPlayer from './RadioPlayer'
 import SongList from './SongList'
 import AnniversaryCountdown from './AnniversaryCountdown'
+import MeetingCountdown from './MeetingCountdown'
 import HeartUnlock from './HeartUnlock'
 import MemoryDiary from './MemoryDiary'
 import HiddenLoveLetter from './HiddenLoveLetter'
@@ -378,7 +379,10 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
           accentColor={mood.accentColor}
         />
 
-        <AnniversaryCountdown />
+        <div className="station__cards">
+          <AnniversaryCountdown />
+          <MeetingCountdown />
+        </div>
 
         <p className="station__hint">
           轻点那个 🤍 五次，有个秘密在等你。

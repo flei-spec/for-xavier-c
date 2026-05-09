@@ -7,6 +7,9 @@ export const profile = {
   startDate: '2026-03-14',
   anniversaryDate: '2027-03-14',
 
+  // ── 见面倒计时 ── change this date to update the countdown card
+  meetingDate: '2026-07-04',
+
   favoriteStyles: [
     '华语情绪流行', '深夜伤感情歌', 'Emotional Mandopop',
     'Late Night R&B', 'Bedroom Pop', '电影感OST',

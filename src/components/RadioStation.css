@@ -160,6 +160,22 @@
   line-height: 1.72;
 }
 
+/* Anniversary + meeting countdown side by side */
+.station__cards {
+  display: flex;
+  gap: 1rem;
+  align-items: stretch;
+}
+
+.station__cards > * {
+  flex: 1;
+  min-width: 0;  /* let flex children shrink below natural width */
+}
+
+@media (max-width: 560px) {
+  .station__cards { flex-direction: column; }
+}
+
 .station__hint {
   text-align: center;
   font-size: 0.75rem;
