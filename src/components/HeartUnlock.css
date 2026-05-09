@@ -1,0 +1,113 @@
+.hu__overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.82);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  z-index: 200;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  transition: opacity 0.35s ease;
+}
+
+.hu__overlay--in { opacity: 1; }
+
+.hu__card {
+  background: #0e0e20;
+  border: 1px solid rgba(244, 161, 176, 0.16);
+  border-radius: 24px;
+  padding: 2.2rem 2rem 2rem;
+  max-width: 320px;
+  width: 100%;
+  text-align: center;
+  box-shadow:
+    0 32px 64px rgba(0, 0, 0, 0.5),
+    0 0    50px rgba(244, 161, 176, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  animation: hu-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes hu-in {
+  from { transform: scale(0.88) translateY(18px); opacity: 0; }
+  to   { transform: scale(1)    translateY(0);    opacity: 1; }
+}
+
+.hu__seal {
+  font-size: 2rem;
+  color: var(--rose);
+  opacity: 0.75;
+  margin-bottom: 0.55rem;
+  display: block;
+  animation: hu-float 3s ease-in-out infinite;
+}
+
+@keyframes hu-float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-6px); }
+}
+
+.hu__label {
+  font-size: 0.68rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--rose);
+  opacity: 0.55;
+  margin-bottom: 1.8rem;
+}
+
+/* ── Choice buttons ──────────────────────────────────────────────────────────── */
+.hu__choices {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.hu__choice {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 0.9rem 1.2rem;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-secondary);
+  font-size: 0.9rem;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.15s;
+  text-align: left;
+}
+
+.hu__choice:hover {
+  background: rgba(244, 161, 176, 0.07);
+  border-color: rgba(244, 161, 176, 0.22);
+  color: var(--text-primary);
+  transform: translateY(-1px);
+}
+
+.hu__choice:active { transform: translateY(0); }
+
+.hu__choice-icon {
+  font-size: 1.1rem;
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+.hu__choice-text {
+  font-weight: 400;
+  flex: 1;
+}
+
+/* Diary button — slightly softer accent */
+.hu__choice--diary {
+  border-color: rgba(212, 175, 122, 0.10);
+}
+
+.hu__choice--diary:hover {
+  background: rgba(212, 175, 122, 0.07);
+  border-color: rgba(212, 175, 122, 0.25);
+}

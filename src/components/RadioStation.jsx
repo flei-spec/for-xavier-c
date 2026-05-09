@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import RadioPlayer from './RadioPlayer'
 import SongList from './SongList'
 import AnniversaryCountdown from './AnniversaryCountdown'
+import HeartUnlock from './HeartUnlock'
 import MemoryDiary from './MemoryDiary'
 import HiddenLoveLetter from './HiddenLoveLetter'
 import LocalPlaylist from './LocalPlaylist'
@@ -181,8 +182,9 @@ function LongStayToast({ message, onDismiss }) {
 export default function RadioStation({ mood, onBack, atmosphere }) {
   const [songIndex, setSongIndex]     = useState(0)
   const [heartCount, setHeartCount]   = useState(0)
-  const [showLetter, setShowLetter]   = useState(false)
-  const [showDiary,  setShowDiary]    = useState(false)
+  const [showUnlock, setShowUnlock]   = useState(false)   // choice picker
+  const [showLetter, setShowLetter]   = useState(false)   // love letter
+  const [showDiary,  setShowDiary]    = useState(false)   // memory diary
   const [djVisible, setDjVisible]     = useState(false)
   // Lazy-initialize so VoiceIntroPlayer is in the DOM on the very first render.
   // Without this, VoiceIntroPlayer only mounts after the first useEffect fires,
@@ -256,8 +258,7 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
     clearTimeout(heartTimerRef.current)
     heartTimerRef.current = setTimeout(() => setHeartCount(0), 3500)
     if (next >= 5) {
-      setShowLetter(true)
-      setShowDiary(true)    // diary queued — appears after the love letter closes
+      setShowUnlock(true)   // show choice picker; user selects letter or diary
       setHeartCount(0)
       localStorage.setItem('xavier_letter_seen', 'true')
     }
@@ -386,13 +387,22 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
         <LocalPlaylist />
       </main>
 
-      {/* Love letter — shows first; closing it reveals the diary */}
+      {/* Step 1 — choice picker: both options shown at once */}
+      {showUnlock && (
+        <HeartUnlock
+          onClose={() => setShowUnlock(false)}
+          onLetter={() => { setShowUnlock(false); setShowLetter(true) }}
+          onDiary={() => { setShowUnlock(false); setShowDiary(true) }}
+        />
+      )}
+
+      {/* Step 2a — love letter */}
       {showLetter && (
         <HiddenLoveLetter onClose={() => setShowLetter(false)} />
       )}
 
-      {/* Memory diary — appears after the love letter is dismissed */}
-      {!showLetter && showDiary && (
+      {/* Step 2b — private memory diary */}
+      {showDiary && (
         <MemoryDiary
           onClose={() => setShowDiary(false)}
           mood={mood}
