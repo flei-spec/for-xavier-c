@@ -6,3 +6,5 @@ dist/
 *.local
 .claude/
 public/songs/
+.vercel
+.wrangler/

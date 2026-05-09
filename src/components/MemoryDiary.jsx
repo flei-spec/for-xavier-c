@@ -7,22 +7,23 @@ const MAX = 160
 export default function MemoryDiary({ onClose, mood, currentSong }) {
   const [visible,  setVisible]  = useState(false)
   const [text,     setText]     = useState('')
-  const [existing, setExisting] = useState(false)  // today already had an entry
-  const [saved,    setSaved]    = useState(false)   // post-save confirmation tick
+  const [existing, setExisting] = useState(false)
+  const [saved,    setSaved]    = useState(false)
+  const [saving,   setSaving]   = useState(false)
   const textareaRef = useRef(null)
 
-  // Slide in + pre-fill if today has an entry
+  // Fetch today's entry from Supabase, then slide in
   useEffect(() => {
-    const entry = todayEntry()
-    if (entry) {
-      setText(entry.text)
-      setExisting(true)
-    }
-    const t = setTimeout(() => {
-      setVisible(true)
-      textareaRef.current?.focus()
-    }, 40)
-    return () => clearTimeout(t)
+    todayEntry().then(entry => {
+      if (entry) {
+        setText(entry.content)
+        setExisting(true)
+      }
+      setTimeout(() => {
+        setVisible(true)
+        textareaRef.current?.focus()
+      }, 40)
+    })
   }, [])
 
   const close = () => {
@@ -30,18 +31,20 @@ export default function MemoryDiary({ onClose, mood, currentSong }) {
     setTimeout(onClose, 380)
   }
 
-  const handleSave = () => {
-    if (!text.trim()) return
-    saveTodayEntry({
+  const handleSave = async () => {
+    console.log('[MemoryDiary] save button clicked, text:', text.trim())
+    if (!text.trim() || saving) return
+    setSaving(true)
+    console.log('[MemoryDiary] calling saveTodayEntry, mood:', mood?.label, 'song:', currentSong?.title)
+    await saveTodayEntry({
       text:      text.trim(),
-      moodId:    mood?.id    ?? null,
       moodLabel: mood?.label ?? null,
-      moodIcon:  mood?.icon  ?? null,
-      // Persist title + artist only — CDN URL is ephemeral
       song: currentSong?.title
         ? { title: currentSong.title, artist: currentSong.artist }
         : null,
     })
+    console.log('[MemoryDiary] saveTodayEntry returned, marking saved')
+    setSaving(false)
     setExisting(true)
     setSaved(true)
     setTimeout(() => setSaved(false), 2200)
@@ -85,9 +88,9 @@ export default function MemoryDiary({ onClose, mood, currentSong }) {
             <button
               className="diary__save"
               onClick={handleSave}
-              disabled={!text.trim() || saved}
+              disabled={!text.trim() || saved || saving}
             >
-              {existing ? '更新' : '保存'}
+              {saving ? '保存中…' : existing ? '更新' : '保存'}
             </button>
           </div>
         </div>

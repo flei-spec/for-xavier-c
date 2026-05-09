@@ -1,76 +1,81 @@
-// ─────────────────────────────────────────────────────────────────────────────
-//  journal.js — local memory journal, localStorage only.
-//  No account, no backend, no network calls.
-//
-//  Entry shape:
-//  {
-//    id:         string   — Date.now() as string (creation, never changes)
-//    text:       string   — the user's written text
-//    date:       string   — ISO timestamp of original creation
-//    updatedAt:  string   — ISO timestamp of last save (may equal date)
-//    moodId:     string | null
-//    moodLabel:  string | null
-//    moodIcon:   string | null
-//    song:       { title: string, artist: string } | null
-//  }
-// ─────────────────────────────────────────────────────────────────────────────
+import { supabase } from '../lib/supabase'
 
-const KEY = 'xavier_journal'
+// Table: diary_entries
+// Columns: id (uuid, auto), title (text), content (text), mood (text), created_at (timestamptz, auto)
 
-// ── Read ──────────────────────────────────────────────────────────────────────
+// ── Helpers ────────────────────────────────────────────────────────────────────
 
-export function loadEntries() {
-  try {
-    const raw = localStorage.getItem(KEY)
-    return raw ? JSON.parse(raw) : []
-  } catch {
-    return []
-  }
+function todayRange() {
+  const start = new Date(); start.setHours(0, 0, 0, 0)
+  const end   = new Date(); end.setHours(23, 59, 59, 999)
+  return { start: start.toISOString(), end: end.toISOString() }
 }
 
-// ── Write ─────────────────────────────────────────────────────────────────────
+// ── Queries ────────────────────────────────────────────────────────────────────
 
-// Create or update the entry for today.
-// If one already exists for today, it is updated in-place (preserving original id + date).
-// If none exists, a new entry is prepended (newest first).
-export function saveTodayEntry({ text, moodId, moodLabel, moodIcon, song }) {
-  const all   = loadEntries()
-  const today = new Date().toDateString()
-  const idx   = all.findIndex(e => new Date(e.date).toDateString() === today)
+export async function todayEntry() {
+  const { start, end } = todayRange()
+  console.log('[journal] todayEntry: querying diary_entries for today')
+  const { data, error } = await supabase
+    .from('diary_entries')
+    .select('*')
+    .gte('created_at', start)
+    .lte('created_at', end)
+    .order('created_at', { ascending: false })
+    .limit(1)
+    .maybeSingle()
+  if (error) { console.error('[journal] todayEntry error:', error.message); return null }
+  console.log('[journal] todayEntry result:', data)
+  return data
+}
 
-  const entry = {
-    id:        idx >= 0 ? all[idx].id   : String(Date.now()),
-    text:      text.trim(),
-    date:      idx >= 0 ? all[idx].date : new Date().toISOString(),
-    updatedAt: new Date().toISOString(),
-    moodId:    moodId    ?? null,
-    moodLabel: moodLabel ?? null,
-    moodIcon:  moodIcon  ?? null,
-    song:      song ?? null,
+export async function randomOldEntry() {
+  const { start } = todayRange()
+  const { data, error } = await supabase
+    .from('diary_entries')
+    .select('id, content, created_at')
+    .lt('created_at', start)
+  if (error) { console.error('[journal] randomOldEntry error:', error.message); return null }
+  const rows = data ?? []
+  return rows.length ? rows[Math.floor(Math.random() * rows.length)] : null
+}
+
+// ── Write ──────────────────────────────────────────────────────────────────────
+
+export async function saveTodayEntry({ text, moodLabel, song }) {
+  console.log('[journal] saveTodayEntry called with:', { text, moodLabel, song })
+
+  const existing = await todayEntry()
+
+  const payload = {
+    content: text,
+    title:   song?.title  ?? null,
+    mood:    moodLabel    ?? null,
   }
 
-  if (idx >= 0) {
-    all[idx] = entry
+  console.log('[journal] payload to send:', payload)
+
+  if (existing) {
+    console.log('[journal] updating existing entry id:', existing.id)
+    const { error } = await supabase
+      .from('diary_entries')
+      .update(payload)
+      .eq('id', existing.id)
+    if (error) {
+      console.error('[journal] update error:', error.message, error)
+    } else {
+      console.log('[journal] update success')
+    }
   } else {
-    all.unshift(entry)
+    console.log('[journal] inserting new entry')
+    const { data, error } = await supabase
+      .from('diary_entries')
+      .insert(payload)
+      .select()
+    if (error) {
+      console.error('[journal] insert error:', error.message, error)
+    } else {
+      console.log('[journal] insert success, row:', data)
+    }
   }
-
-  try { localStorage.setItem(KEY, JSON.stringify(all)) } catch {}
-  return entry
-}
-
-// ── Queries ───────────────────────────────────────────────────────────────────
-
-// The entry written today, or null.
-export function todayEntry() {
-  const today = new Date().toDateString()
-  return loadEntries().find(e => new Date(e.date).toDateString() === today) ?? null
-}
-
-// A random entry from a previous day (not today), or null.
-// Call this once and store in useState — do not call in a loop or on every render.
-export function randomOldEntry() {
-  const today = new Date().toDateString()
-  const old   = loadEntries().filter(e => new Date(e.date).toDateString() !== today)
-  return old.length ? old[Math.floor(Math.random() * old.length)] : null
 }

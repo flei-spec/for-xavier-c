@@ -2,21 +2,19 @@ import { useState, useEffect } from 'react'
 import { randomOldEntry } from '../utils/journal'
 import './MemoryEcho.css'
 
-// Picked once on mount and kept stable for the whole session.
-// Re-picks on next page load / refresh.
+// Fetched once on mount and kept stable for the whole session.
 export default function MemoryEcho() {
   const [entry, setEntry] = useState(undefined)  // undefined = not yet resolved
 
   useEffect(() => {
-    setEntry(randomOldEntry())  // null when no old entries exist
+    randomOldEntry().then(setEntry)
   }, [])
 
-  if (entry == null) return null
+  if (entry == null) return null  // covers undefined (loading) and null (no old entries)
 
-  // Truncate so it stays on one line on narrow screens
-  const preview = entry.text.length > 36
-    ? entry.text.slice(0, 36) + '…'
-    : entry.text
+  const preview = entry.content.length > 36
+    ? entry.content.slice(0, 36) + '…'
+    : entry.content
 
   return (
     <p className="echo">

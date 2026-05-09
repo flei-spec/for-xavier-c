@@ -11,6 +11,7 @@
     "upload": "node scripts/upload-to-r2.js"
   },
   "dependencies": {
+    "@supabase/supabase-js": "^2.105.4",
     "react": "^18.2.0",
     "react-dom": "^18.2.0"
   },
