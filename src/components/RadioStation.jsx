@@ -208,6 +208,9 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
   // Execute pending action once auth (and space, for diary/records) is ready
   useEffect(() => {
     if (!pendingAction || !user) return
+    console.log('[RadioStation] pendingAction effect —', pendingAction,
+      '| user:', user.id, '| space:', space?.id ?? 'none', '| loadingSpace:', loadingSpace)
+
     if (pendingAction === 'letter') {
       setPendingAction(null); setShowLetter(true); return
     }
@@ -215,12 +218,16 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
       setPendingAction(null); setShowSpaceGate(true); return
     }
     if (pendingAction === 'diary') {
-      if (!loadingSpace && !space) { setShowSpaceGate(true); return }
-      if (space) { setPendingAction(null); setShowDiary(true) }
+      if (loadingSpace) return                         // wait for space fetch to settle
+      if (!space) { setShowSpaceGate(true); return }
+      console.log('[RadioStation] opening diary — space:', space.id)
+      setPendingAction(null); setShowDiary(true)
     }
     if (pendingAction === 'records') {
-      if (!loadingSpace && !space) { setShowSpaceGate(true); return }
-      if (space) { setPendingAction(null); setShowRecords(true) }
+      if (loadingSpace) return
+      if (!space) { setShowSpaceGate(true); return }
+      console.log('[RadioStation] opening records — space:', space.id)
+      setPendingAction(null); setShowRecords(true)
     }
   }, [user, space, loadingSpace, pendingAction])
 
@@ -296,10 +303,14 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
     setShowLetter(true)
   }
 
-  const handleDiaryFromUnlock = () => {
+  const handleDiaryFromUnlock = async () => {
     setShowUnlock(false)
     if (!user) { setPendingAction('diary'); setShowAuthModal(true); return }
-    if (!space) { setPendingAction('diary'); setShowSpaceGate(true); return }
+    // Always call get_my_space RPC for a fresh result before opening diary
+    console.log('[RadioStation] calling get_my_space before diary...')
+    const freshSpace = await refreshSpace()
+    console.log('[RadioStation] currentSpace before diary:', freshSpace?.id ?? 'none')
+    if (!freshSpace) { setPendingAction('diary'); setShowSpaceGate(true); return }
     setShowDiary(true)
   }
 
@@ -309,10 +320,13 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
     setShowSpaceGate(true)
   }
 
-  const handleRecordsFromUnlock = () => {
+  const handleRecordsFromUnlock = async () => {
     setShowUnlock(false)
     if (!user) { setPendingAction('records'); setShowAuthModal(true); return }
-    if (!space) { setPendingAction('records'); setShowSpaceGate(true); return }
+    console.log('[RadioStation] calling get_my_space before records...')
+    const freshSpace = await refreshSpace()
+    console.log('[RadioStation] currentSpace before records:', freshSpace?.id ?? 'none')
+    if (!freshSpace) { setPendingAction('records'); setShowSpaceGate(true); return }
     setShowRecords(true)
   }
 

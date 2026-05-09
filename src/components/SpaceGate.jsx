@@ -20,7 +20,7 @@ function CodeRow({ code, copied, onCopy }) {
 // ── Has-space view ─────────────────────────────────────────────────────────────
 
 function StatusView({ onSuccess }) {
-  const { user, space, refreshSpace } = useAuth()
+  const { user, space, refreshSpace, applySpace } = useAuth()
 
   const [memberCount,   setMemberCount]   = useState(null)
   const [copied,        setCopied]        = useState(false)
@@ -63,17 +63,18 @@ function StatusView({ onSuccess }) {
       return
     }
 
-    const { error: joinErr } = await joinSpace(switchCode.trim())
+    const { space: joinedSpace, error: joinErr } = await joinSpace(switchCode.trim())
     if (joinErr) {
       console.error('[SpaceGate] join result:', joinErr)
-      await refreshSpace()
+      await refreshSpace()   // re-fetch to reflect actual state after leaving
       setSwitchError(joinErr)
       setSwitchLoading(false)
       return
     }
 
-    console.log('[SpaceGate] joined new space successfully')
-    await refreshSpace()
+    console.log('[SpaceGate] join success, calling get_my_space...')
+    const freshSpace = await refreshSpace()
+    console.log('[SpaceGate] currentSpace after switch:', freshSpace?.id ?? 'none')
     setSwitchLoading(false)
     onSuccess()
   }
@@ -118,8 +119,15 @@ function StatusView({ onSuccess }) {
         type="text"
         placeholder="输入邀请码"
         value={switchCode}
-        onChange={e => setSwitchCode(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ''))}
-        maxLength={6}
+        onChange={e => {
+          const v = e.target.value.replace(/\s+/g, '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 8)
+          console.log('[SpaceGate] switchCode input length:', v.length, 'value:', v)
+          setSwitchCode(v)
+        }}
+        autoComplete="off"
+        autoCorrect="off"
+        autoCapitalize="characters"
+        spellCheck={false}
       />
 
       {switchError && <p className="sg__error">{switchError}</p>}
@@ -127,7 +135,7 @@ function StatusView({ onSuccess }) {
       <button
         className="sg__enter"
         onClick={handleJoinAnother}
-        disabled={switchLoading || switchCode.trim().length < 6}
+        disabled={switchLoading || switchCode.trim().length < 8}
       >
         {switchLoading ? '处理中…' : '加入新空间'}
       </button>
@@ -170,7 +178,7 @@ function StatusView({ onSuccess }) {
 // ── No-space view (create / join) ──────────────────────────────────────────────
 
 function SetupView({ onSuccess }) {
-  const { refreshSpace } = useAuth()
+  const { user, refreshSpace, applySpace } = useAuth()
 
   const [mode,        setMode]        = useState('choose')
   const [createdCode, setCreatedCode] = useState('')
@@ -184,26 +192,34 @@ function SetupView({ onSuccess }) {
     setError('')
     const { space: newSpace, error: err } = await createSpace()
     if (err) { setMode('choose'); setError(err); return }
+    console.log('[SpaceGate] created space:', newSpace?.id, 'user:', user?.id)
+    // Confirm via get_my_space RPC so context reflects the real DB state
+    const freshSpace = await refreshSpace()
+    console.log('[SpaceGate] currentSpace after create:', freshSpace?.id ?? 'none')
     setCreatedCode(newSpace.invite_code)
     setMode('created')
   }
 
   const handleEnterCreated = async () => {
     setLoading(true)
-    await refreshSpace()
+    const freshSpace = await refreshSpace()
+    console.log('[SpaceGate] currentSpace on enter:', freshSpace?.id ?? 'none')
     setLoading(false)
     onSuccess()
   }
 
   const handleJoin = async () => {
-    if (joinCode.trim().length < 6 || loading) return
+    if (joinCode.trim().length < 8 || loading) return
     setLoading(true)
     setError('')
-    console.log('[SpaceGate] joining space with code:', joinCode)
+    console.log('[SpaceGate] joining space — user:', user?.id, 'code:', joinCode)
     const { error: err } = await joinSpace(joinCode.trim())
+    if (err) { setError(err); setLoading(false); return }
+    // Call get_my_space RPC immediately after join to get confirmed space state
+    console.log('[SpaceGate] join RPC success, calling get_my_space...')
+    const freshSpace = await refreshSpace()
+    console.log('[SpaceGate] currentSpace after join:', freshSpace?.id ?? 'none')
     setLoading(false)
-    if (err) { setError(err); return }
-    await refreshSpace()
     onSuccess()
   }
 
@@ -259,17 +275,24 @@ function SetupView({ onSuccess }) {
       <input
         className="sg__input"
         type="text"
-        placeholder="例如 AB3K7M"
+        placeholder="例如 6409796D"
         value={joinCode}
-        onChange={e => setJoinCode(e.target.value.toUpperCase().replace(/[^A-Z0-9]/g, ''))}
-        maxLength={6}
+        onChange={e => {
+          const v = e.target.value.replace(/\s+/g, '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 8)
+          console.log('[SpaceGate] joinCode input length:', v.length, 'value:', v)
+          setJoinCode(v)
+        }}
+        autoComplete="off"
+        autoCorrect="off"
+        autoCapitalize="characters"
+        spellCheck={false}
         autoFocus
       />
       {error && <p className="sg__error">{error}</p>}
       <button
         className="sg__enter"
         onClick={handleJoin}
-        disabled={loading || joinCode.trim().length < 6}
+        disabled={loading || joinCode.trim().length < 8}
       >
         {loading ? '加入中…' : '加入'}
       </button>

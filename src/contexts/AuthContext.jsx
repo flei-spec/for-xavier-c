@@ -11,13 +11,14 @@ export function AuthProvider({ children }) {
   const [loadingSpace, setLoadingSpace] = useState(false)
 
   const refreshSpace = useCallback(async (uid) => {
-    if (!uid) { setSpace(null); return }
+    if (!uid) { setSpace(null); return null }
     setLoadingSpace(true)
-    console.log('[AuthContext] refreshSpace for user:', uid)
+    console.log('[AuthContext] refreshSpace — userId:', uid)
     const s = await getMySpace(uid)
-    console.log('[AuthContext] space resolved:', s?.id ?? 'none')
+    console.log('[AuthContext] refreshSpace — space:', s?.id ?? 'none')
     setSpace(s)
     setLoadingSpace(false)
+    return s   // callers can await and use the result directly
   }, [])
 
   useEffect(() => {
@@ -48,8 +49,11 @@ export function AuthProvider({ children }) {
     space,
     loadingAuth,
     loadingSpace,
-    refreshSpace:  () => refreshSpace(user?.id),
-    signOut:       () => supabase.auth.signOut(),
+    refreshSpace:   () => refreshSpace(user?.id),
+    // Directly set space from an RPC response — avoids a second round-trip
+    // and eliminates the timing window where getMySpace can return null.
+    applySpace:     (s) => { console.log('[AuthContext] applySpace:', s?.id ?? 'none'); setSpace(s) },
+    signOut:        () => supabase.auth.signOut(),
   }
 
   return (

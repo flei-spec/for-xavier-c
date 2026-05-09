@@ -5,7 +5,7 @@ const CODE_CHARS = 'ABCDEFGHJKMNPQRSTUVWXYZ23456789'
 
 function generateCode() {
   let code = ''
-  for (let i = 0; i < 6; i++) {
+  for (let i = 0; i < 8; i++) {
     code += CODE_CHARS[Math.floor(Math.random() * CODE_CHARS.length)]
   }
   return code
@@ -14,21 +14,18 @@ function generateCode() {
 // ── Read ───────────────────────────────────────────────────────────────────────
 
 export async function getMySpace(userId) {
-  console.log('[spaces] getMySpace for user:', userId)
-  const { data, error } = await supabase
-    .from('space_members')
-    .select('space_id, spaces(*)')
-    .eq('user_id', userId)
-    .maybeSingle()
+  // userId kept for interface compatibility; the RPC uses auth.uid() internally.
+  console.log('[spaces] get_my_space RPC — userId:', userId)
+
+  const { data, error } = await supabase.rpc('get_my_space')
 
   if (error) {
-    console.error('[spaces] getMySpace error:', error.message, error)
+    console.error('[spaces] get_my_space RPC error:', error.message, error)
     return null
   }
 
-  const space = data?.spaces ?? null
-  console.log('[spaces] my space:', space?.id ?? 'none')
-  return space
+  console.log('[spaces] get_my_space result:', data)
+  return data?.space ?? null
 }
 
 // ── Write ──────────────────────────────────────────────────────────────────────
@@ -84,22 +81,29 @@ export async function leaveSpace(spaceId) {
 
 // Uses a security-definer RPC so a non-member can look up a space by invite code.
 export async function joinSpace(inviteCode) {
-  console.log('[spaces] joinSpace with code:', inviteCode)
+  // Strip every whitespace character (including internal spaces from copy-paste),
+  // then uppercase. This handles inputs like "AB 3K 7M" or "ab3k7m".
+  const normalizedCode = inviteCode.replace(/\s+/g, '').toUpperCase()
+
+  console.log('[spaces] joinSpace — raw input:', JSON.stringify(inviteCode))
+  console.log('[spaces] joinSpace — normalized code:', normalizedCode)
+
   const { data, error } = await supabase.rpc('join_space', {
-    p_invite_code: inviteCode.toUpperCase().trim(),
+    p_invite_code: normalizedCode,
   })
 
+  console.log('[spaces] joinSpace — rpc response data:', data)
   if (error) {
-    console.error('[spaces] rpc error:', error.message, error)
+    console.error('[spaces] joinSpace — rpc error:', error.message, error)
     return { space: null, error: error.message }
   }
 
   if (data?.error) {
-    console.error('[spaces] join rejected:', data.error)
+    console.error('[spaces] joinSpace — function rejected:', data.error)
     return { space: null, error: data.error }
   }
 
   const space = data?.space ?? null
-  console.log('[spaces] joined space:', space?.id ?? 'none')
+  console.log('[spaces] joinSpace — success, space id:', space?.id ?? 'none')
   return { space, error: null }
 }
