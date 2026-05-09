@@ -1275,8 +1275,8 @@ export const songMoodMap = [
   },
   {
     title: "风的颜色",
-    artist: "NINEONE#乃万",
-    src: "/songs/NINEONE#乃万 - 风的颜色.mp3",
+    artist: "NINEONE乃万",
+    src: "/songs/NINEONE乃万 - 风的颜色.mp3",
     moodTags: ["洗澡放松一下"],
     energyLevel: "中",
     emotionalDescription: "慵懒放松感",
@@ -4344,9 +4344,9 @@ export const songMoodMap = [
     romanticReason: "有一种悲伤，叫做明明爱你却说不出口。",
   },
   {
-    title: "#3：sH3 said she Just 2O & she couldn't do this ANYmore",
+    title: "3：sH3 said she Just 2O & she couldn't do this ANYmore",
     artist: "黄雨篱",
-    src: "/songs/黄雨篱 - #3：sH3 said she Just 2O & she couldn't do this ANYmore.mp3",
+    src: "/songs/黄雨篱 - 3：sH3 said she Just 2O & she couldn't do this ANYmore.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",

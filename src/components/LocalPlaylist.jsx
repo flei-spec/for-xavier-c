@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react'
 import songFilenames from 'virtual:songs-list'
+import { resolveSongUrl } from '../data/songConfig'
 import './LocalPlaylist.css'
 
 const specificReasons = {
@@ -217,7 +218,7 @@ function parseSong(filename, index) {
   }
 
   const reason = specificReasons[nameWithoutExt] || reasonPool[index % reasonPool.length]
-  const url = `/songs/${encodeURIComponent(filename)}`
+  const url = resolveSongUrl(`/songs/${filename}`)
 
   return { filename, title, artist, reason, url }
 }

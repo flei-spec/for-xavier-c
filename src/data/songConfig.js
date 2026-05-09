@@ -40,40 +40,53 @@
 export const CDN_BASE = (import.meta.env.VITE_CDN_BASE ?? '').trim()
 
 /**
- * Resolve a song src path to a final, correctly-encoded playback URL.
+ * Normalise a raw or pre-encoded song filename into a clean playback URL.
  *
- * Handles both raw paths  ("/songs/foo bar.mp3")  and already-encoded paths
- * ("/songs/foo%20bar.mp3") without double-encoding.  The strategy is:
- *   1. Decode each segment with decodeURIComponent  →  raw filename
- *   2. Re-encode with encodeURIComponent            →  exactly one level of encoding
+ * Accepts the raw filename (e.g. "30年前，50年后 - 精卫.mp3") or the path
+ * stored in songMoodMap ("/songs/30年前，50年后 - 精卫.mp3") in either raw or
+ * already-percent-encoded form.
  *
- * This makes the function idempotent: calling it on an already-encoded src
- * produces the same result as calling it on the raw src.
+ * Algorithm (idempotent — safe to call on raw OR pre-encoded input):
+ *   1. Split on "/" to isolate each path segment.
+ *   2. Decode each segment with decodeURIComponent → always land on raw text.
+ *      try/catch protects against any malformed % sequence in the input.
+ *   3. Re-encode each decoded segment with encodeURIComponent → exactly one
+ *      level of encoding, no double-encoding of % signs.
+ *   4. Prepend CDN_BASE when set, otherwise return the encoded local path
+ *      (Vite dev server decodes %XX before looking up public/).
  *
- * Handles: spaces, Chinese chars, commas, ampersands, non-breaking spaces, etc.
- * Parentheses ( ) are kept un-encoded — they are RFC 3986 safe path chars.
- * Voice intros (/Voice-intros/*.m4a) never pass through here.
+ * Handles: spaces → %20, Chinese → %E5…, commas → %2C, ampersands → %26,
+ *   apostrophes → %27, hashes → %23, non-breaking spaces → %C2%A0, etc.
+ *   Parentheses ( ) are intentionally left un-encoded (RFC 3986 safe chars).
+ *
+ * Voice intros (/Voice-intros/*.m4a) never pass through this function.
  */
 export function resolveSongUrl(src) {
-  // Step 1 — normalise: decode each segment so we always start from raw text.
-  // try/catch guards against any malformed % sequences in the input.
+  const DEV = import.meta.env.DEV
+
+  // 1 + 2: split and decode each segment to reach raw text
   const decoded = src.split('/').map(seg => {
     try { return decodeURIComponent(seg) } catch { return seg }
   }).join('/')
 
-  // Step 2 — encode: one clean pass with encodeURIComponent.
+  // 3: one clean encode pass
   const encoded = decoded.split('/').map(encodeURIComponent).join('/')
 
-  console.log('[Audio] src      :', src)
-  console.log('[Audio] normalized:', decoded)
-
   if (!CDN_BASE) {
-    console.log('[Audio] local     :', encoded)
+    if (DEV) {
+      console.log('[Audio] src      :', src)
+      console.log('[Audio] normalized:', decoded)
+      console.log('[Audio] local     :', encoded)
+    }
     return encoded
   }
 
   const url = `${CDN_BASE.replace(/\/$/, '')}${encoded}`
-  console.log('[Audio] CDN       :', url)
+  if (DEV) {
+    console.log('[Audio] src      :', src)
+    console.log('[Audio] normalized:', decoded)
+    console.log('[Audio] CDN       :', url)
+  }
   return url
 }
 
