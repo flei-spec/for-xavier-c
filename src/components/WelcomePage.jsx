@@ -1,11 +1,15 @@
 import { useState, useEffect } from 'react'
 import { profile } from '../data/romanticProfile'
+import { useAuth } from '../contexts/AuthContext'
 import LocalAtmosphereCard from './LocalAtmosphereCard'
 import MemoryEcho from './MemoryEcho'
+import AuthModal from './AuthModal'
 import './WelcomePage.css'
 
 export default function WelcomePage({ onEnter, atmosphere }) {
-  const [ready, setReady] = useState(false)
+  const { user, signOut } = useAuth()
+  const [ready,    setReady]    = useState(false)
+  const [showAuth, setShowAuth] = useState(false)
 
   useEffect(() => {
     const t = setTimeout(() => setReady(true), 80)
@@ -16,9 +20,30 @@ export default function WelcomePage({ onEnter, atmosphere }) {
     <div className={`welcome ${ready ? 'welcome--ready' : ''}`}>
       <div className="welcome__glow" />
 
+      {/* ── Auth indicator — top right ── */}
+      <div className="welcome__auth-bar">
+        {user ? (
+          <>
+            <span className="welcome__auth-name">
+              {user.email.split('@')[0]}
+            </span>
+            <button className="welcome__auth-action" onClick={signOut}>
+              退出
+            </button>
+          </>
+        ) : (
+          <button
+            className="welcome__auth-action welcome__auth-action--login"
+            onClick={() => setShowAuth(true)}
+          >
+            登录 / 注册
+          </button>
+        )}
+      </div>
+
       <div className="welcome__body">
 
-        {/* ── Weather / time / location card — always rendered so skeleton shows ── */}
+        {/* ── Weather / time / location card ── */}
         <div className="welcome__atm">
           <LocalAtmosphereCard atmosphere={atmosphere} compact />
         </div>
@@ -50,6 +75,10 @@ export default function WelcomePage({ onEnter, atmosphere }) {
         </div>
 
       </div>
+
+      {showAuth && (
+        <AuthModal onSuccess={() => setShowAuth(false)} />
+      )}
     </div>
   )
 }

@@ -1,0 +1,407 @@
+.sg__overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.88);
+  backdrop-filter: blur(16px);
+  -webkit-backdrop-filter: blur(16px);
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  opacity: 0;
+  transition: opacity 0.38s ease;
+}
+
+.sg__overlay--in { opacity: 1; }
+
+.sg__card {
+  background: #0e0e20;
+  border: 1px solid rgba(244, 161, 176, 0.16);
+  border-radius: 24px;
+  padding: 2.6rem 2.2rem 2.2rem;
+  max-width: 360px;
+  width: 100%;
+  text-align: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.85rem;
+  box-shadow:
+    0 40px 80px rgba(0, 0, 0, 0.55),
+    0 0 60px rgba(244, 161, 176, 0.06),
+    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  animation: sg-in 0.42s cubic-bezier(0.16, 1, 0.3, 1) both;
+  max-height: 88vh;
+  overflow-y: auto;
+  scrollbar-width: none;
+}
+.sg__card::-webkit-scrollbar { display: none; }
+
+@keyframes sg-in {
+  from { transform: scale(0.90) translateY(20px); opacity: 0; }
+  to   { transform: scale(1)    translateY(0);    opacity: 1; }
+}
+
+/* ── Header ── */
+.sg__seal {
+  display: block;
+  font-size: 2rem;
+  color: var(--rose);
+  opacity: 0.75;
+  margin-bottom: 0.6rem;
+  animation: sg-float 3s ease-in-out infinite;
+}
+
+@keyframes sg-float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-6px); }
+}
+
+.sg__title {
+  font-family: 'Playfair Display', serif;
+  font-size: 1.12rem;
+  font-style: italic;
+  color: var(--text-primary);
+  margin-bottom: 0.3rem;
+}
+
+.sg__sub {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  opacity: 0.6;
+  margin-bottom: 1.8rem;
+}
+
+.sg__loading {
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  padding: 1.5rem 0;
+  opacity: 0.6;
+}
+
+/* ── Choice buttons (mirrors HeartUnlock style) ── */
+.sg__choices {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+.sg__choice {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  width: 100%;
+  padding: 0.9rem 1.1rem;
+  border-radius: 14px;
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: rgba(255, 255, 255, 0.03);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.15s;
+  text-align: left;
+}
+
+.sg__choice:hover {
+  background: rgba(244, 161, 176, 0.07);
+  border-color: rgba(244, 161, 176, 0.22);
+  color: var(--text-primary);
+  transform: translateY(-1px);
+}
+
+.sg__choice:active { transform: translateY(0); }
+
+.sg__choice--join {
+  border-color: rgba(212, 175, 122, 0.10);
+}
+
+.sg__choice--join:hover {
+  background: rgba(212, 175, 122, 0.07);
+  border-color: rgba(212, 175, 122, 0.25);
+}
+
+.sg__choice-icon {
+  font-size: 1.2rem;
+  flex-shrink: 0;
+  opacity: 0.8;
+}
+
+.sg__choice-body {
+  display: flex;
+  flex-direction: column;
+  gap: 0.2rem;
+}
+
+.sg__choice-text {
+  font-size: 0.9rem;
+  font-weight: 400;
+}
+
+.sg__choice-hint {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
+/* ── Created: invite code display ── */
+.sg__created {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.sg__code-label {
+  font-size: 0.7rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  opacity: 0.6;
+}
+
+.sg__code-row {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  background: rgba(212, 175, 122, 0.06);
+  border: 1px solid rgba(212, 175, 122, 0.18);
+  border-radius: 14px;
+  padding: 0.7rem 1.2rem;
+}
+
+.sg__code {
+  font-size: 1.75rem;
+  font-family: 'Courier New', monospace;
+  letter-spacing: 0.2em;
+  color: var(--gold-light);
+  font-weight: 600;
+}
+
+.sg__copy {
+  font-size: 0.72rem;
+  color: var(--gold);
+  padding: 0.28rem 0.7rem;
+  border: 1px solid rgba(212, 175, 122, 0.25);
+  border-radius: 20px;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  white-space: nowrap;
+}
+
+.sg__copy:hover { opacity: 0.75; }
+
+.sg__code-hint {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  line-height: 1.7;
+  opacity: 0.65;
+}
+
+/* ── Enter / shared button ── */
+.sg__enter {
+  width: 100%;
+  padding: 0.62rem;
+  background: linear-gradient(135deg, var(--rose-dark), #c97090);
+  border-radius: 20px;
+  color: white;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.sg__enter:disabled { opacity: 0.30; cursor: default; }
+.sg__enter:not(:disabled):hover { opacity: 0.84; }
+
+/* ── Join form ── */
+.sg__join {
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  text-align: left;
+}
+
+.sg__label {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  opacity: 0.7;
+}
+
+.sg__input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(255, 255, 255, 0.09);
+  border-radius: 10px;
+  color: var(--text-primary);
+  font-size: 1.3rem;
+  letter-spacing: 0.25em;
+  font-family: 'Courier New', monospace;
+  font-weight: 600;
+  padding: 0.7rem 0.9rem;
+  outline: none;
+  text-align: center;
+  text-transform: uppercase;
+  transition: border-color 0.2s;
+}
+
+.sg__input:focus { border-color: rgba(244, 161, 176, 0.3); }
+
+.sg__input::placeholder {
+  color: var(--text-muted);
+  opacity: 0.35;
+  font-size: 0.9rem;
+  letter-spacing: 0.08em;
+  font-family: inherit;
+  font-weight: 400;
+}
+
+.sg__error {
+  font-size: 0.78rem;
+  color: #f48080;
+  text-align: center;
+  letter-spacing: 0.02em;
+  animation: sg-err-in 0.2s ease;
+}
+
+.sg__error--top { margin-bottom: 0.4rem; }
+
+@keyframes sg-err-in {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.sg__back {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  opacity: 0.5;
+  cursor: pointer;
+  text-align: center;
+  transition: opacity 0.2s;
+  padding: 0.2rem;
+}
+
+.sg__back:hover { opacity: 0.8; }
+
+/* ── Status view additions ── */
+.sg__section-title {
+  font-size: 0.62rem;
+  text-transform: uppercase;
+  letter-spacing: 0.14em;
+  color: var(--rose);
+  opacity: 0.5;
+  align-self: flex-start;
+  margin-bottom: -0.3rem;
+}
+
+.sg__member-count {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  opacity: 0.6;
+  letter-spacing: 0.03em;
+}
+
+.sg__member-full {
+  color: var(--gold);
+  opacity: 0.8;
+}
+
+.sg__divider {
+  width: 100%;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.06);
+  margin: 0.2rem 0;
+}
+
+.sg__warning {
+  font-size: 0.72rem;
+  color: var(--gold);
+  opacity: 0.55;
+  letter-spacing: 0.02em;
+  line-height: 1.5;
+  text-align: center;
+}
+
+/* Ghost variant of enter button */
+.sg__enter--ghost {
+  background: none;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-muted);
+  font-size: 0.82rem;
+}
+
+.sg__enter--ghost:not(:disabled):hover {
+  border-color: rgba(255, 255, 255, 0.2);
+  color: var(--text-secondary);
+  opacity: 1;
+}
+
+/* Leave button */
+.sg__leave {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  opacity: 0.3;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: opacity 0.2s, color 0.2s;
+  padding: 0.2rem;
+}
+
+.sg__leave:hover {
+  opacity: 0.75;
+  color: #f48080;
+}
+
+/* Leave inline confirmation */
+.sg__leave-confirm {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.55rem;
+  animation: sg-err-in 0.2s ease;
+}
+
+.sg__leave-confirm-text {
+  font-size: 0.78rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.02em;
+}
+
+.sg__leave-confirm-btns {
+  display: flex;
+  gap: 0.5rem;
+}
+
+.sg__leave-confirm-yes {
+  padding: 0.3rem 0.9rem;
+  border-radius: 20px;
+  background: rgba(244, 100, 100, 0.15);
+  border: 1px solid rgba(244, 100, 100, 0.3);
+  color: #f48080;
+  font-size: 0.76rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.sg__leave-confirm-yes:disabled { opacity: 0.4; cursor: default; }
+.sg__leave-confirm-yes:not(:disabled):hover { opacity: 0.75; }
+
+.sg__leave-confirm-no {
+  padding: 0.3rem 0.9rem;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: var(--text-muted);
+  font-size: 0.76rem;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.sg__leave-confirm-no:hover { opacity: 0.7; }
+
+@media (max-width: 400px) {
+  .sg__card { padding: 2rem 1.4rem 1.8rem; }
+  .sg__code { font-size: 1.5rem; }
+}

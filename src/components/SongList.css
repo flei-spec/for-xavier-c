@@ -118,6 +118,78 @@
   color: #ffd54f;
 }
 
+/* ── Search row ── */
+.songs__search-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 10px;
+  padding: 0.45rem 0.7rem;
+  margin-bottom: 0.7rem;
+  transition: border-color 0.2s;
+}
+
+.songs__search-row:focus-within {
+  border-color: rgba(244, 161, 176, 0.28);
+}
+
+.songs__search-icon {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  opacity: 0.4;
+  flex-shrink: 0;
+}
+
+.songs__search {
+  flex: 1;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font-size: 0.82rem;
+  font-family: inherit;
+  min-width: 0;
+}
+
+.songs__search::placeholder {
+  color: var(--text-muted);
+  opacity: 0.35;
+}
+
+.songs__search-clear {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  opacity: 0.35;
+  cursor: pointer;
+  padding: 0.1rem 0.2rem;
+  flex-shrink: 0;
+  transition: opacity 0.15s;
+}
+
+.songs__search-clear:hover { opacity: 0.7; }
+
+/* ── Empty state ── */
+.songs__empty {
+  text-align: center;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  opacity: 0.4;
+  padding: 1rem 0;
+  letter-spacing: 0.02em;
+}
+
+/* ── End of list ── */
+.songs__end {
+  text-align: center;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  opacity: 0.28;
+  padding: 0.6rem 0;
+  letter-spacing: 0.06em;
+}
+
 .songs__more {
   width: 100%;
   padding: 0.75rem;

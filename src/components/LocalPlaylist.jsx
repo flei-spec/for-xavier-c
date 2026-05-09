@@ -311,15 +311,30 @@ function SongCard({ song }) {
   )
 }
 
+const LP_PAGE = 6
+
 export default function LocalPlaylist() {
   const [search, setSearch] = useState('')
+  const [limit,  setLimit]  = useState(LP_PAGE)
 
-  const filtered = search.trim()
+  const q = search.trim().toLowerCase()
+
+  const filtered = q
     ? allSongs.filter(s =>
-        s.title.toLowerCase().includes(search.toLowerCase()) ||
-        s.artist.toLowerCase().includes(search.toLowerCase())
+        s.title.toLowerCase().includes(q) ||
+        s.artist.toLowerCase().includes(q)
       )
     : allSongs
+
+  // Reset to first page whenever search text changes
+  const handleSearch = (e) => {
+    setSearch(e.target.value)
+    setLimit(LP_PAGE)
+  }
+
+  const visible   = filtered.slice(0, limit)
+  const remaining = filtered.length - limit
+  const allLoaded = remaining <= 0
 
   return (
     <section className="local-playlist">
@@ -335,16 +350,37 @@ export default function LocalPlaylist() {
           type="text"
           placeholder="搜索歌曲或歌手…"
           value={search}
-          onChange={e => setSearch(e.target.value)}
+          onChange={handleSearch}
         />
-        <span className="lp-count">{filtered.length} 首</span>
+        <span className="lp-count">
+          {q && filtered.length !== allSongs.length
+            ? `${filtered.length} / ${allSongs.length} 首`
+            : `${allSongs.length} 首`}
+        </span>
       </div>
 
       <div className="lp-grid">
-        {filtered.map((song, i) => (
+        {visible.map(song => (
           <SongCard key={song.filename} song={song} />
         ))}
       </div>
+
+      {filtered.length === 0 && (
+        <p className="lp-empty">没有找到匹配的歌曲</p>
+      )}
+
+      {filtered.length > 0 && (
+        allLoaded ? (
+          <p className="lp-end">已经全部加载完啦</p>
+        ) : (
+          <button
+            className="lp-more"
+            onClick={() => setLimit(l => l + LP_PAGE)}
+          >
+            加载更多 · 还有 {remaining} 首
+          </button>
+        )
+      )}
     </section>
   )
 }

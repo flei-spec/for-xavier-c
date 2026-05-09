@@ -1,16 +1,18 @@
 import { useState, useEffect } from 'react'
 import { randomOldEntry } from '../utils/journal'
+import { useAuth } from '../contexts/AuthContext'
 import './MemoryEcho.css'
 
-// Fetched once on mount and kept stable for the whole session.
 export default function MemoryEcho() {
-  const [entry, setEntry] = useState(undefined)  // undefined = not yet resolved
+  const { user, space } = useAuth()
+  const [entry, setEntry] = useState(undefined)
 
   useEffect(() => {
-    randomOldEntry().then(setEntry)
-  }, [])
+    if (!user) { setEntry(null); return }
+    randomOldEntry({ spaceId: space?.id ?? null, userId: user.id }).then(setEntry)
+  }, [user?.id, space?.id])
 
-  if (entry == null) return null  // covers undefined (loading) and null (no old entries)
+  if (entry == null) return null
 
   const preview = entry.content.length > 36
     ? entry.content.slice(0, 36) + '…'

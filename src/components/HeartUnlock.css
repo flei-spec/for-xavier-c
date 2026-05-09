@@ -58,56 +58,85 @@
   margin-bottom: 1.8rem;
 }
 
-/* ── Choice buttons ──────────────────────────────────────────────────────────── */
-.hu__choices {
-  display: flex;
-  flex-direction: column;
-  gap: 0.75rem;
+/* ── 2x2 grid of choice buttons ─────────────────────────────────────────────── */
+.hu__grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 0.6rem;
 }
 
 .hu__choice {
   display: flex;
+  flex-direction: column;
   align-items: center;
-  gap: 0.75rem;
-  width: 100%;
-  padding: 0.9rem 1.2rem;
+  justify-content: center;
+  gap: 0.45rem;
+  padding: 0.9rem 0.5rem;
   border-radius: 14px;
   border: 1px solid rgba(255, 255, 255, 0.08);
   background: rgba(255, 255, 255, 0.03);
   color: var(--text-secondary);
-  font-size: 0.9rem;
-  letter-spacing: 0.02em;
   cursor: pointer;
   transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.15s;
-  text-align: left;
+  text-align: center;
 }
 
 .hu__choice:hover {
   background: rgba(244, 161, 176, 0.07);
   border-color: rgba(244, 161, 176, 0.22);
   color: var(--text-primary);
-  transform: translateY(-1px);
+  transform: translateY(-2px);
 }
 
 .hu__choice:active { transform: translateY(0); }
 
 .hu__choice-icon {
-  font-size: 1.1rem;
-  flex-shrink: 0;
-  opacity: 0.8;
+  font-size: 1.3rem;
+  opacity: 0.85;
+  line-height: 1;
 }
 
 .hu__choice-text {
+  font-size: 0.8rem;
   font-weight: 400;
-  flex: 1;
+  letter-spacing: 0.02em;
 }
 
-/* Diary button — slightly softer accent */
+/* Per-button accent colours */
 .hu__choice--diary {
   border-color: rgba(212, 175, 122, 0.10);
 }
-
 .hu__choice--diary:hover {
   background: rgba(212, 175, 122, 0.07);
   border-color: rgba(212, 175, 122, 0.25);
 }
+
+.hu__choice--space {
+  border-color: rgba(179, 157, 219, 0.10);
+}
+.hu__choice--space:hover {
+  background: rgba(179, 157, 219, 0.07);
+  border-color: rgba(179, 157, 219, 0.28);
+}
+
+.hu__choice--records {
+  border-color: rgba(100, 181, 246, 0.10);
+}
+.hu__choice--records:hover {
+  background: rgba(100, 181, 246, 0.06);
+  border-color: rgba(100, 181, 246, 0.25);
+}
+
+/* Logout — very subtle text link at the bottom */
+.hu__logout {
+  display: block;
+  margin: 1.1rem auto 0;
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  opacity: 0.35;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: opacity 0.2s;
+}
+
+.hu__logout:hover { opacity: 0.65; }

@@ -173,6 +173,58 @@
   letter-spacing: 0.01em;
 }
 
+/* ── Auth bar (top-right) ────────────────────────────────────────────────────── */
+.welcome__auth-bar {
+  position: absolute;
+  top: 1.2rem;
+  right: 1.4rem;
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  z-index: 10;
+  animation: fade-up 0.5s ease both;
+  animation-delay: 0.08s;
+}
+
+.welcome__auth-name {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  letter-spacing: 0.04em;
+  opacity: 0.55;
+  max-width: 100px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.welcome__auth-action {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  opacity: 0.45;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: opacity 0.2s, color 0.2s;
+  padding: 0.2rem 0;
+}
+
+.welcome__auth-action:hover {
+  opacity: 0.9;
+  color: var(--text-secondary);
+}
+
+.welcome__auth-action--login {
+  color: var(--rose);
+  opacity: 0.55;
+  border: 1px solid rgba(244, 161, 176, 0.2);
+  border-radius: 20px;
+  padding: 0.28rem 0.75rem;
+}
+
+.welcome__auth-action--login:hover {
+  opacity: 0.9;
+  border-color: rgba(244, 161, 176, 0.45);
+}
+
 /* ── Mobile ──────────────────────────────────────────────────────────────────── */
 @media (max-width: 480px) {
   .welcome {

@@ -1,7 +1,7 @@
 import { supabase } from '../lib/supabase'
 
 // Table: diary_entries
-// Columns: id (uuid, auto), title (text), content (text), mood (text), created_at (timestamptz, auto)
+// Columns: id, title, content, mood, space_id (nullable), user_id, created_at
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
@@ -11,71 +11,114 @@ function todayRange() {
   return { start: start.toISOString(), end: end.toISOString() }
 }
 
+// Apply the right ownership filter:
+//   - if spaceId: filter by space_id (shared space entries)
+//   - else:       filter by user_id where space_id is null (personal entries)
+function applyOwnerFilter(query, { spaceId, userId }) {
+  if (spaceId) return query.eq('space_id', spaceId)
+  return query.eq('user_id', userId).is('space_id', null)
+}
+
 // ── Queries ────────────────────────────────────────────────────────────────────
 
-export async function todayEntry() {
+export async function todayEntry({ spaceId, userId }) {
+  if (!spaceId && !userId) return null
   const { start, end } = todayRange()
-  console.log('[journal] todayEntry: querying diary_entries for today')
-  const { data, error } = await supabase
+  console.log('[journal] todayEntry — spaceId:', spaceId, 'userId:', userId)
+  let q = supabase
     .from('diary_entries')
     .select('*')
     .gte('created_at', start)
     .lte('created_at', end)
     .order('created_at', { ascending: false })
     .limit(1)
-    .maybeSingle()
-  if (error) { console.error('[journal] todayEntry error:', error.message); return null }
-  console.log('[journal] todayEntry result:', data)
+  q = applyOwnerFilter(q, { spaceId, userId })
+  const { data, error } = await q.maybeSingle()
+  if (error) { console.error('[journal] todayEntry error:', error.message, error); return null }
+  console.log('[journal] todayEntry result:', data?.id ?? 'none')
   return data
 }
 
-export async function randomOldEntry() {
+export async function randomOldEntry({ spaceId, userId }) {
+  if (!spaceId && !userId) return null
   const { start } = todayRange()
-  const { data, error } = await supabase
+  console.log('[journal] randomOldEntry — spaceId:', spaceId, 'userId:', userId)
+  let q = supabase
     .from('diary_entries')
     .select('id, content, created_at')
     .lt('created_at', start)
-  if (error) { console.error('[journal] randomOldEntry error:', error.message); return null }
+  q = applyOwnerFilter(q, { spaceId, userId })
+  const { data, error } = await q
+  if (error) { console.error('[journal] randomOldEntry error:', error.message, error); return null }
   const rows = data ?? []
-  return rows.length ? rows[Math.floor(Math.random() * rows.length)] : null
+  const result = rows.length ? rows[Math.floor(Math.random() * rows.length)] : null
+  console.log('[journal] randomOldEntry result:', result?.id ?? 'none', `(${rows.length} past entries)`)
+  return result
+}
+
+export async function fetchAllEntries({ spaceId, userId }) {
+  if (!spaceId && !userId) return []
+  console.log('[journal] fetchAllEntries — spaceId:', spaceId, 'userId:', userId)
+  let q = supabase
+    .from('diary_entries')
+    .select('id, title, content, mood, created_at')
+    .order('created_at', { ascending: false })
+    .limit(50)
+  q = applyOwnerFilter(q, { spaceId, userId })
+  const { data, error } = await q
+  if (error) { console.error('[journal] fetchAllEntries error:', error.message, error); return [] }
+  console.log('[journal] fetchAllEntries result:', data?.length ?? 0, 'entries')
+  return data ?? []
+}
+
+export async function deleteEntry(id) {
+  console.log('[journal] deleteEntry id:', id)
+  const { error } = await supabase
+    .from('diary_entries')
+    .delete()
+    .eq('id', id)
+  if (error) { console.error('[journal] deleteEntry error:', error.message, error); return false }
+  console.log('[journal] deleteEntry success')
+  return true
 }
 
 // ── Write ──────────────────────────────────────────────────────────────────────
 
-export async function saveTodayEntry({ text, moodLabel, song }) {
-  console.log('[journal] saveTodayEntry called with:', { text, moodLabel, song })
+export async function saveTodayEntry({ text, moodLabel, song, spaceId, userId }) {
+  console.log('[journal] saveTodayEntry — spaceId:', spaceId, 'userId:', userId)
 
-  const existing = await todayEntry()
-
-  const payload = {
-    content: text,
-    title:   song?.title  ?? null,
-    mood:    moodLabel    ?? null,
+  if (!userId) {
+    console.error('[journal] saveTodayEntry: missing userId — aborting')
+    return
   }
 
-  console.log('[journal] payload to send:', payload)
+  const existing = await todayEntry({ spaceId: spaceId ?? null, userId })
+
+  const payload = {
+    content:  text,
+    title:    song?.title ?? null,
+    mood:     moodLabel   ?? null,
+    user_id:  userId,
+    ...(spaceId ? { space_id: spaceId } : { space_id: null }),
+  }
+
+  console.log('[journal] saveTodayEntry payload:', payload)
 
   if (existing) {
-    console.log('[journal] updating existing entry id:', existing.id)
+    console.log('[journal] updating existing entry:', existing.id)
     const { error } = await supabase
       .from('diary_entries')
-      .update(payload)
+      .update({ content: text, title: payload.title, mood: payload.mood })
       .eq('id', existing.id)
-    if (error) {
-      console.error('[journal] update error:', error.message, error)
-    } else {
-      console.log('[journal] update success')
-    }
+    if (error) console.error('[journal] update error:', error.message, error)
+    else       console.log('[journal] update success')
   } else {
-    console.log('[journal] inserting new entry')
+    console.log('[journal] inserting new entry...')
     const { data, error } = await supabase
       .from('diary_entries')
       .insert(payload)
       .select()
-    if (error) {
-      console.error('[journal] insert error:', error.message, error)
-    } else {
-      console.log('[journal] insert success, row:', data)
-    }
+    if (error) console.error('[journal] insert error:', error.message, error)
+    else       console.log('[journal] insert success, row:', data)
   }
 }

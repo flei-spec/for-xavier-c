@@ -1,10 +1,12 @@
 import { useState, useEffect, useRef } from 'react'
 import { todayEntry, saveTodayEntry } from '../utils/journal'
+import { useAuth } from '../contexts/AuthContext'
 import './MemoryDiary.css'
 
 const MAX = 160
 
 export default function MemoryDiary({ onClose, mood, currentSong }) {
+  const { user, space } = useAuth()
   const [visible,  setVisible]  = useState(false)
   const [text,     setText]     = useState('')
   const [existing, setExisting] = useState(false)
@@ -14,7 +16,7 @@ export default function MemoryDiary({ onClose, mood, currentSong }) {
 
   // Fetch today's entry from Supabase, then slide in
   useEffect(() => {
-    todayEntry().then(entry => {
+    todayEntry({ spaceId: space?.id ?? null, userId: user?.id ?? null }).then(entry => {
       if (entry) {
         setText(entry.content)
         setExisting(true)
@@ -24,7 +26,7 @@ export default function MemoryDiary({ onClose, mood, currentSong }) {
         textareaRef.current?.focus()
       }, 40)
     })
-  }, [])
+  }, [space?.id])
 
   const close = () => {
     setVisible(false)
@@ -35,13 +37,15 @@ export default function MemoryDiary({ onClose, mood, currentSong }) {
     console.log('[MemoryDiary] save button clicked, text:', text.trim())
     if (!text.trim() || saving) return
     setSaving(true)
-    console.log('[MemoryDiary] calling saveTodayEntry, mood:', mood?.label, 'song:', currentSong?.title)
+    console.log('[MemoryDiary] calling saveTodayEntry — space:', space?.id, 'user:', user?.id)
     await saveTodayEntry({
       text:      text.trim(),
       moodLabel: mood?.label ?? null,
       song: currentSong?.title
         ? { title: currentSong.title, artist: currentSong.artist }
         : null,
+      spaceId: space?.id ?? null,
+      userId:  user?.id  ?? null,
     })
     console.log('[MemoryDiary] saveTodayEntry returned, marking saved')
     setSaving(false)

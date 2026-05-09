@@ -109,6 +109,21 @@
   font-size: 0.9rem;
 }
 
+.letter__state {
+  opacity: 0.45;
+  white-space: pre-line;
+  font-style: italic;
+}
+
+.letter__date {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  opacity: 0.45;
+  letter-spacing: 0.04em;
+  margin-top: 0.5rem;
+  text-align: right;
+}
+
 @media (max-width: 480px) {
   .letter__modal { padding: 2rem 1.5rem; }
   .letter__para  { font-size: 0.95rem; }

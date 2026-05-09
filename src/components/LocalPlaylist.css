@@ -180,6 +180,44 @@
   font-style: italic;
 }
 
+/* ── load more / end states ── */
+.lp-more {
+  display: block;
+  margin: 24px auto 0;
+  padding: 0.7rem 2rem;
+  border-radius: 20px;
+  border: 1px dashed rgba(255, 255, 255, 0.14);
+  background: none;
+  color: var(--text-muted);
+  font-size: 0.8rem;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: border-color 0.18s, color 0.18s;
+}
+
+.lp-more:hover {
+  border-color: rgba(244, 161, 176, 0.4);
+  color: var(--rose);
+}
+
+.lp-end {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  opacity: 0.3;
+  letter-spacing: 0.08em;
+}
+
+.lp-empty {
+  text-align: center;
+  margin-top: 24px;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  opacity: 0.4;
+  letter-spacing: 0.03em;
+}
+
 /* ── responsive ── */
 @media (max-width: 480px) {
   .local-playlist { padding: 36px 14px 56px; }

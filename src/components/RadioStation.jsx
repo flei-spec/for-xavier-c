@@ -9,6 +9,10 @@ import HiddenLoveLetter from './HiddenLoveLetter'
 import LocalPlaylist from './LocalPlaylist'
 import LocalAtmosphereCard from './LocalAtmosphereCard'
 import CompanionLine from './CompanionLine'
+import AuthModal from './AuthModal'
+import SpaceGate from './SpaceGate'
+import DiaryRecords from './DiaryRecords'
+import { useAuth } from '../contexts/AuthContext'
 import { songMoodMap } from '../data/songMoodMap'
 import { moodVoiceMap } from '../data/moodVoiceMap'
 import { resolveSongUrl } from '../data/songConfig'
@@ -181,26 +185,51 @@ function LongStayToast({ message, onDismiss }) {
 // ── Main ──────────────────────────────────────────────────────────────────────
 
 export default function RadioStation({ mood, onBack, atmosphere }) {
-  const [songIndex, setSongIndex]     = useState(0)
-  const [heartCount, setHeartCount]   = useState(0)
-  const [showUnlock, setShowUnlock]   = useState(false)   // choice picker
-  const [showLetter, setShowLetter]   = useState(false)   // love letter
-  const [showDiary,  setShowDiary]    = useState(false)   // memory diary
-  const [djVisible, setDjVisible]     = useState(false)
-  // Lazy-initialize so VoiceIntroPlayer is in the DOM on the very first render.
-  // Without this, VoiceIntroPlayer only mounts after the first useEffect fires,
-  // adding an extra render cycle between the user's click and audio.play().
-  const [introPhase, setIntroPhase]   = useState(() => moodVoiceMap[mood.id] ? 'playing' : 'ready')
-  const [showBanner, setShowBanner]   = useState(() => !!moodVoiceMap[mood.id])
-  const [longStayMsg, setLongStayMsg] = useState(null)
-  const [songError, setSongError]     = useState(null)
+  const { user, space, loadingSpace, signOut } = useAuth()
 
-  const heartTimerRef    = useRef(null)
-  const readyTimerRef    = useRef(null)
-  const skipTimerRef     = useRef(null)
-  const stayStartRef     = useRef(Date.now())
-  const shownStayRef     = useRef(new Set())
-  const stayIntervalRef  = useRef(null)
+  const [songIndex, setSongIndex]   = useState(0)
+  const [heartBeat, setHeartBeat]   = useState(false)   // brief pulse on click
+  const [showUnlock,  setShowUnlock]  = useState(false)   // choice picker
+  const [showLetter,  setShowLetter]  = useState(false)   // love letter
+  const [showDiary,   setShowDiary]   = useState(false)   // memory diary
+  const [showRecords, setShowRecords] = useState(false)   // diary records list
+  const [djVisible, setDjVisible]   = useState(false)
+  // Lazy-initialize so VoiceIntroPlayer is in the DOM on the very first render.
+  const [introPhase, setIntroPhase] = useState(() => moodVoiceMap[mood.id] ? 'playing' : 'ready')
+  const [showBanner, setShowBanner] = useState(() => !!moodVoiceMap[mood.id])
+  const [longStayMsg, setLongStayMsg] = useState(null)
+  const [songError, setSongError]   = useState(null)
+
+  // Auth gate — 'letter' | 'diary' | 'space' | 'records' | null
+  const [showAuthModal, setShowAuthModal] = useState(false)
+  const [showSpaceGate, setShowSpaceGate] = useState(false)
+  const [pendingAction, setPendingAction] = useState(null)
+
+  // Execute pending action once auth (and space, for diary/records) is ready
+  useEffect(() => {
+    if (!pendingAction || !user) return
+    if (pendingAction === 'letter') {
+      setPendingAction(null); setShowLetter(true); return
+    }
+    if (pendingAction === 'space') {
+      setPendingAction(null); setShowSpaceGate(true); return
+    }
+    if (pendingAction === 'diary') {
+      if (!loadingSpace && !space) { setShowSpaceGate(true); return }
+      if (space) { setPendingAction(null); setShowDiary(true) }
+    }
+    if (pendingAction === 'records') {
+      if (!loadingSpace && !space) { setShowSpaceGate(true); return }
+      if (space) { setPendingAction(null); setShowRecords(true) }
+    }
+  }, [user, space, loadingSpace, pendingAction])
+
+  const heartBeatRef    = useRef(null)
+  const readyTimerRef   = useRef(null)
+  const skipTimerRef    = useRef(null)
+  const stayStartRef    = useRef(Date.now())
+  const shownStayRef    = useRef(new Set())
+  const stayIntervalRef = useRef(null)
 
   const songs    = getStationSongs(mood.id)
   const voiceSrc = moodVoiceMap[mood.id]
@@ -254,15 +283,37 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
   }, [])
 
   const handleHeartClick = () => {
-    const next = heartCount + 1
-    setHeartCount(next)
-    clearTimeout(heartTimerRef.current)
-    heartTimerRef.current = setTimeout(() => setHeartCount(0), 3500)
-    if (next >= 5) {
-      setShowUnlock(true)   // show choice picker; user selects letter or diary
-      setHeartCount(0)
-      localStorage.setItem('xavier_letter_seen', 'true')
-    }
+    // Brief pulse animation
+    setHeartBeat(true)
+    clearTimeout(heartBeatRef.current)
+    heartBeatRef.current = setTimeout(() => setHeartBeat(false), 600)
+    setShowUnlock(true)
+  }
+
+  const handleLetterFromUnlock = () => {
+    setShowUnlock(false)
+    if (!user) { setPendingAction('letter'); setShowAuthModal(true); return }
+    setShowLetter(true)
+  }
+
+  const handleDiaryFromUnlock = () => {
+    setShowUnlock(false)
+    if (!user) { setPendingAction('diary'); setShowAuthModal(true); return }
+    if (!space) { setPendingAction('diary'); setShowSpaceGate(true); return }
+    setShowDiary(true)
+  }
+
+  const handleSpaceFromUnlock = () => {
+    setShowUnlock(false)
+    if (!user) { setPendingAction('space'); setShowAuthModal(true); return }
+    setShowSpaceGate(true)
+  }
+
+  const handleRecordsFromUnlock = () => {
+    setShowUnlock(false)
+    if (!user) { setPendingAction('records'); setShowAuthModal(true); return }
+    if (!space) { setPendingAction('records'); setShowSpaceGate(true); return }
+    setShowRecords(true)
   }
 
   const nextSong = useCallback(() => { setSongError(null); setSongIndex(i => (i + 1) % songs.length) }, [songs.length])
@@ -318,12 +369,11 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
         </div>
 
         <button
-          className={`station__heart ${heartCount > 0 ? 'station__heart--beat' : ''}`}
+          className={`station__heart ${heartBeat ? 'station__heart--beat' : ''}`}
           onClick={handleHeartClick}
           title="💌"
         >
-          {heartCount > 0 ? '❤️' : '🤍'}
-          {heartCount > 0 && <span className="station__heart-count">{heartCount}/5</span>}
+          🤍
         </button>
       </header>
 
@@ -385,7 +435,7 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
         </div>
 
         <p className="station__hint">
-          轻点那个 🤍 五次，有个秘密在等你。
+          轻点那个 🤍，有个秘密在等你。
         </p>
 
         <LocalPlaylist />
@@ -395,8 +445,11 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
       {showUnlock && (
         <HeartUnlock
           onClose={() => setShowUnlock(false)}
-          onLetter={() => { setShowUnlock(false); setShowLetter(true) }}
-          onDiary={() => { setShowUnlock(false); setShowDiary(true) }}
+          onLetter={handleLetterFromUnlock}
+          onDiary={handleDiaryFromUnlock}
+          onSpace={handleSpaceFromUnlock}
+          onRecords={handleRecordsFromUnlock}
+          onLogout={user ? () => { setShowUnlock(false); signOut() } : undefined}
         />
       )}
 
@@ -412,6 +465,21 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
           mood={mood}
           currentSong={currentSong}
         />
+      )}
+
+      {/* Auth gate — shown when user taps heart without being logged in */}
+      {showAuthModal && (
+        <AuthModal onSuccess={() => setShowAuthModal(false)} />
+      )}
+
+      {/* Space gate — shown after login when user has no space yet, or from 双人空间 button */}
+      {showSpaceGate && (
+        <SpaceGate onSuccess={() => setShowSpaceGate(false)} />
+      )}
+
+      {/* Records list */}
+      {showRecords && (
+        <DiaryRecords onClose={() => setShowRecords(false)} />
       )}
     </div>
   )
