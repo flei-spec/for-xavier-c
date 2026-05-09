@@ -1,0 +1,174 @@
+/* ── Shared shell ────────────────────────────────────────────────────────────── */
+.mw {
+  border-radius: 14px;
+}
+
+/* ── Collapsed trigger ───────────────────────────────────────────────────────── */
+.mw__trigger {
+  display: flex;
+  align-items: center;
+  gap: 0.55rem;
+  width: 100%;
+  padding: 0.85rem 1.2rem;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.07);
+  border-radius: 14px;
+  color: var(--text-muted);
+  font-size: 0.84rem;
+  letter-spacing: 0.05em;
+  transition: background 0.2s, border-color 0.2s, color 0.2s;
+  cursor: pointer;
+  text-align: left;
+}
+
+.mw__trigger:hover {
+  background: rgba(244, 161, 176, 0.055);
+  border-color: rgba(244, 161, 176, 0.18);
+  color: var(--text-secondary);
+}
+
+.mw__trigger-icon { font-size: 1rem; opacity: 0.55; }
+
+/* ── Editor open ─────────────────────────────────────────────────────────────── */
+@keyframes mw-in {
+  from { opacity: 0; transform: translateY(-5px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.mw--open {
+  background: rgba(255, 255, 255, 0.028);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  padding: 1rem 1.2rem 0.9rem;
+  animation: mw-in 0.2s ease;
+}
+
+.mw__prompt {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+  margin-bottom: 0.65rem;
+  text-transform: uppercase;
+}
+
+.mw__textarea {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.025);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-family: 'Noto Sans SC', 'PingFang SC', 'Inter', sans-serif;
+  font-size: 0.9rem;
+  line-height: 1.75;
+  padding: 0.65rem 0.9rem;
+  resize: none;
+  outline: none;
+  display: block;
+  margin-bottom: 0.65rem;
+  transition: border-color 0.2s;
+}
+
+.mw__textarea:focus {
+  border-color: rgba(244, 161, 176, 0.28);
+}
+
+.mw__textarea::placeholder {
+  color: var(--text-muted);
+  opacity: 0.5;
+}
+
+.mw__footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.8rem;
+}
+
+.mw__chars {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  font-variant-numeric: tabular-nums;
+  opacity: 0.6;
+}
+
+.mw__chars-max { opacity: 0.5; }
+
+.mw__btns { display: flex; gap: 0.55rem; }
+
+.mw__cancel {
+  padding: 0.38rem 1rem;
+  background: transparent;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 20px;
+  color: var(--text-muted);
+  font-size: 0.79rem;
+  transition: border-color 0.2s, color 0.2s;
+  cursor: pointer;
+}
+
+.mw__cancel:hover {
+  border-color: rgba(255, 255, 255, 0.18);
+  color: var(--text-secondary);
+}
+
+.mw__save {
+  padding: 0.38rem 1.15rem;
+  background: linear-gradient(135deg, var(--rose-dark), #c97090);
+  border-radius: 20px;
+  color: white;
+  font-size: 0.79rem;
+  font-weight: 500;
+  letter-spacing: 0.04em;
+  transition: opacity 0.2s;
+  cursor: pointer;
+}
+
+.mw__save:disabled  { opacity: 0.3; cursor: default; }
+.mw__save:not(:disabled):hover { opacity: 0.84; }
+
+/* ── Saved flash ─────────────────────────────────────────────────────────────── */
+@keyframes mw-flash {
+  0%   { opacity: 0; transform: scale(0.96); }
+  15%  { opacity: 1; transform: scale(1); }
+  80%  { opacity: 1; }
+  100% { opacity: 0; }
+}
+
+.mw--flash {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: 0.85rem 1.2rem;
+  background: rgba(244, 161, 176, 0.05);
+  border: 1px solid rgba(244, 161, 176, 0.12);
+  border-radius: 14px;
+  animation: mw-flash 2.8s ease forwards;
+}
+
+.mw__flash-icon { color: var(--rose); font-size: 0.85rem; opacity: 0.8; }
+.mw__flash-text { font-size: 0.84rem; color: var(--rose); opacity: 0.75; letter-spacing: 0.08em; }
+
+/* ── Today already written ───────────────────────────────────────────────────── */
+.mw--done {
+  padding: 0.85rem 1.2rem;
+  background: rgba(255, 255, 255, 0.022);
+  border: 1px solid rgba(255, 255, 255, 0.065);
+  border-radius: 14px;
+}
+
+.mw__done-label {
+  font-size: 0.65rem;
+  color: var(--text-muted);
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  margin-bottom: 0.42rem;
+  opacity: 0.7;
+}
+
+.mw__done-text {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  line-height: 1.68;
+  letter-spacing: 0.02em;
+}

@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback } from 'react'
 import RadioPlayer from './RadioPlayer'
 import SongList from './SongList'
 import AnniversaryCountdown from './AnniversaryCountdown'
+import MemoryWriter from './MemoryWriter'
 import HiddenLoveLetter from './HiddenLoveLetter'
 import LocalPlaylist from './LocalPlaylist'
 import LocalAtmosphereCard from './LocalAtmosphereCard'
@@ -375,6 +376,8 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
         />
 
         <AnniversaryCountdown />
+
+        <MemoryWriter mood={mood} currentSong={currentSong} />
 
         <p className="station__hint">
           轻点那个 🤍 五次，有个秘密在等你。
