@@ -448,8 +448,8 @@ function classify(filename) {
   return {
     title,
     artist,
-    // LOCAL path — prefix with CDN_BASE in songConfig.js when switching to R2/CDN
-    src: `/songs/${encodeURIComponent(filename)}`,
+    // Raw path — resolveSongUrl() in songConfig.js encodes this at runtime.
+    src: `/songs/${filename}`,
     moodTags: [...new Set(moodTags)],
     energyLevel,
     emotionalDescription,

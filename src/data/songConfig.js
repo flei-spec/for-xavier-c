@@ -40,22 +40,39 @@
 export const CDN_BASE = (import.meta.env.VITE_CDN_BASE ?? '').trim()
 
 /**
- * Resolve a song's local src path to the final playback URL.
+ * Resolve a raw song src path to a final, fully-encoded playback URL.
  *
- * Examples
- *   CDN_BASE = ''                         (local dev)
- *   resolveSongUrl('/songs/foo.mp3')  →   '/songs/foo.mp3'
+ * src is expected to be a raw (un-encoded) path like "/songs/foo bar,baz.mp3".
+ * Each path segment is individually percent-encoded so that Chinese characters,
+ * spaces, commas, parentheses, and other special bytes all survive transport to
+ * Cloudflare R2 or Vite's local static server.
  *
- *   CDN_BASE = 'https://pub-abc.r2.dev'   (production)
- *   resolveSongUrl('/songs/foo.mp3')  →   'https://pub-abc.r2.dev/songs/foo.mp3'
+ * Examples (CDN_BASE = 'https://pub-abc.r2.dev')
+ *   "/songs/30年前，50年后 - 精卫.mp3"
+ *     → "https://pub-abc.r2.dev/songs/30%E5%B9%B4%E5%89%8D%EF%BC%8C50%E5%B9%B4%E5%90%8E%20-%20%E7%B2%BE%E5%8D%AB.mp3"
  *
- * The path-join logic strips any trailing slash from CDN_BASE and any leading
- * slash from src, so both 'https://cdn/' + '/songs/x' and 'https://cdn' + 'songs/x'
- * produce the correct 'https://cdn/songs/x'.
+ *   "/songs/Aaron Smith,Luvli,Krono - Dancin (Krono Remix).mp3"
+ *     → "https://pub-abc.r2.dev/songs/Aaron%20Smith%2CLuvli%2CKrono%20-%20Dancin%20(Krono%20Remix).mp3"
+ *
+ * Voice intros (/Voice-intros/*.m4a) never pass through this function —
+ * they are served directly from Vercel using their plain ASCII paths.
  */
 export function resolveSongUrl(src) {
-  if (!CDN_BASE) return src   // local fallback — Vite serves public/songs/
-  return `${CDN_BASE.replace(/\/$/, '')}/${src.replace(/^\//, '')}`
+  // Encode each path segment individually; leave the "/" separators intact.
+  // encodeURIComponent handles: spaces → %20, Chinese → %EF…, commas → %2C,
+  // ampersands → %26, hashes → %23, non-breaking spaces → %C2%A0, etc.
+  // Parentheses ( ) are intentionally left un-encoded (RFC 3986 safe chars).
+  const encoded = src.split('/').map(encodeURIComponent).join('/')
+
+  if (!CDN_BASE) {
+    // Local dev: Vite decodes percent-encoded paths before looking up public/
+    console.log('[Audio] local →', encoded)
+    return encoded
+  }
+
+  const url = `${CDN_BASE.replace(/\/$/, '')}${encoded}`
+  console.log('[Audio] CDN →', url)
+  return url
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
