@@ -40,38 +40,40 @@
 export const CDN_BASE = (import.meta.env.VITE_CDN_BASE ?? '').trim()
 
 /**
- * Resolve a raw song src path to a final, fully-encoded playback URL.
+ * Resolve a song src path to a final, correctly-encoded playback URL.
  *
- * src is expected to be a raw (un-encoded) path like "/songs/foo bar,baz.mp3".
- * Each path segment is individually percent-encoded so that Chinese characters,
- * spaces, commas, parentheses, and other special bytes all survive transport to
- * Cloudflare R2 or Vite's local static server.
+ * Handles both raw paths  ("/songs/foo bar.mp3")  and already-encoded paths
+ * ("/songs/foo%20bar.mp3") without double-encoding.  The strategy is:
+ *   1. Decode each segment with decodeURIComponent  →  raw filename
+ *   2. Re-encode with encodeURIComponent            →  exactly one level of encoding
  *
- * Examples (CDN_BASE = 'https://pub-abc.r2.dev')
- *   "/songs/30年前，50年后 - 精卫.mp3"
- *     → "https://pub-abc.r2.dev/songs/30%E5%B9%B4%E5%89%8D%EF%BC%8C50%E5%B9%B4%E5%90%8E%20-%20%E7%B2%BE%E5%8D%AB.mp3"
+ * This makes the function idempotent: calling it on an already-encoded src
+ * produces the same result as calling it on the raw src.
  *
- *   "/songs/Aaron Smith,Luvli,Krono - Dancin (Krono Remix).mp3"
- *     → "https://pub-abc.r2.dev/songs/Aaron%20Smith%2CLuvli%2CKrono%20-%20Dancin%20(Krono%20Remix).mp3"
- *
- * Voice intros (/Voice-intros/*.m4a) never pass through this function —
- * they are served directly from Vercel using their plain ASCII paths.
+ * Handles: spaces, Chinese chars, commas, ampersands, non-breaking spaces, etc.
+ * Parentheses ( ) are kept un-encoded — they are RFC 3986 safe path chars.
+ * Voice intros (/Voice-intros/*.m4a) never pass through here.
  */
 export function resolveSongUrl(src) {
-  // Encode each path segment individually; leave the "/" separators intact.
-  // encodeURIComponent handles: spaces → %20, Chinese → %EF…, commas → %2C,
-  // ampersands → %26, hashes → %23, non-breaking spaces → %C2%A0, etc.
-  // Parentheses ( ) are intentionally left un-encoded (RFC 3986 safe chars).
-  const encoded = src.split('/').map(encodeURIComponent).join('/')
+  // Step 1 — normalise: decode each segment so we always start from raw text.
+  // try/catch guards against any malformed % sequences in the input.
+  const decoded = src.split('/').map(seg => {
+    try { return decodeURIComponent(seg) } catch { return seg }
+  }).join('/')
+
+  // Step 2 — encode: one clean pass with encodeURIComponent.
+  const encoded = decoded.split('/').map(encodeURIComponent).join('/')
+
+  console.log('[Audio] src      :', src)
+  console.log('[Audio] normalized:', decoded)
 
   if (!CDN_BASE) {
-    // Local dev: Vite decodes percent-encoded paths before looking up public/
-    console.log('[Audio] local →', encoded)
+    console.log('[Audio] local     :', encoded)
     return encoded
   }
 
   const url = `${CDN_BASE.replace(/\/$/, '')}${encoded}`
-  console.log('[Audio] CDN →', url)
+  console.log('[Audio] CDN       :', url)
   return url
 }
 
