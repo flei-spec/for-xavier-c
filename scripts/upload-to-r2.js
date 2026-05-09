@@ -54,6 +54,7 @@ async function uploadFile(filePath) {
       objectKey,
       '--file', filePath,
       '--content-type', CONTENT_TYPE,
+      '--remote',
     ])
     return { name, ok: true }
   } catch (err) {
