@@ -39,6 +39,18 @@
 
 export const CDN_BASE = (import.meta.env.VITE_CDN_BASE ?? '').trim()
 
+// In production, songs live on R2 — if CDN_BASE is empty they 404 on Vercel.
+// This fires immediately in the browser console so the missing env var is obvious.
+if (!import.meta.env.DEV && !CDN_BASE) {
+  console.error(
+    '[Audio] ⚠️  VITE_CDN_BASE is not set.\n' +
+    '  Songs will try to load from /songs/ which does not exist on Vercel.\n' +
+    '  Fix: Vercel Dashboard → Project → Settings → Environment Variables\n' +
+    '  Add:  VITE_CDN_BASE = https://pub-df1f48ab69e14f6b9bb0f39061a69a27.r2.dev\n' +
+    '  Then redeploy.'
+  )
+}
+
 /**
  * Normalise a raw or pre-encoded song filename into a clean playback URL.
  *

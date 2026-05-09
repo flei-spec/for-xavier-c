@@ -94,7 +94,11 @@ export default function RadioPlayer({
       audio.pause()
     } else {
       audio.volume = 0
-      audio.play().catch(() => {})
+      audio.play().catch(err => {
+        // Surface play() failures to the user instead of silently swallowing them.
+        console.error('[RadioPlayer] play() failed in toggle:', err.name, err.message, 'src:', activeSrc)
+        onSongError?.(`播放失败：${err.message}`)
+      })
       fadeVolume(audio, 0, 0.88, 700)
     }
   }
@@ -137,6 +141,7 @@ export default function RadioPlayer({
         <audio
           ref={audioRef}
           src={activeSrc}
+          crossOrigin="anonymous"
           preload="metadata"
           onPlay={() => { console.log('[RadioPlayer] onPlay fired:', activeSrc); setPlaying(true) }}
           onPause={() => setPlaying(false)}

@@ -299,6 +299,7 @@ function SongCard({ song }) {
       <audio
         ref={audioRef}
         src={song.url}
+        crossOrigin="anonymous"
         onPlay={() => setPlaying(true)}
         onPause={() => setPlaying(false)}
         onEnded={() => { setPlaying(false); setProgress(0) }}
