@@ -16,32 +16,35 @@ export default function WelcomePage({ onEnter, atmosphere }) {
       <div className="welcome__glow" />
 
       <div className="welcome__body">
-        <span className="welcome__badge">🎵 私人电台 · 只为你</span>
 
-        <h1 className="welcome__title">
-          For
-          <span className="welcome__name">{profile.fullName}</span>
-        </h1>
-
-        <p className="welcome__sub">为每日、想念、和你而存在。</p>
-
-        <div className="welcome__dots">
-          <span /><span /><span />
+        {/* ── Weather / time / location card — always rendered so skeleton shows ── */}
+        <div className="welcome__atm">
+          <LocalAtmosphereCard atmosphere={atmosphere} compact />
         </div>
 
-        <p className="welcome__tagline">这是一个只为你打开的私人频率。</p>
+        {/* ── Main title ── */}
+        <div className="welcome__hero">
+          <h1 className="welcome__title">
+            <span className="welcome__for">For</span>
+            <span className="welcome__name">{profile.fullName}</span>
+          </h1>
+        </div>
 
-        <button className="welcome__cta" onClick={onEnter}>
-          开始今日的电台
-        </button>
+        {/* ── Supporting copy ── */}
+        <div className="welcome__text">
+          <p className="welcome__sub">为每日、想念、和你而存在。</p>
+          <div className="welcome__dots"><span /><span /><span /></div>
+          <p className="welcome__tagline">这是一个只为你打开的私人频率。</p>
+        </div>
 
-        <p className="welcome__from">来自 {profile.fromName}，带着全部的心意 ♡</p>
+        {/* ── Call to action ── */}
+        <div className="welcome__actions">
+          <button className="welcome__cta" onClick={onEnter}>
+            开始今日的电台
+          </button>
+          <p className="welcome__from">来自 {profile.fromName}，带着全部的心意 ♡</p>
+        </div>
 
-        {atmosphere && (
-          <div className="welcome__atm">
-            <LocalAtmosphereCard atmosphere={atmosphere} compact />
-          </div>
-        )}
       </div>
     </div>
   )

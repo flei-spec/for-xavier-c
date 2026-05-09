@@ -1,3 +1,4 @@
+/* ── Page shell ──────────────────────────────────────────────────────────────── */
 .welcome {
   position: relative;
   z-index: 1;
@@ -6,84 +7,118 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  padding: 2rem 1.5rem;
+  padding: 3.5rem 1.5rem;
   opacity: 0;
-  transition: opacity 0.8s ease;
+  transition: opacity 0.5s ease;
   overflow: hidden;
 }
 
 .welcome--ready { opacity: 1; }
 
-/* Static glow — no animation */
+/* ── Ambient glow behind title area ─────────────────────────────────────────── */
 .welcome__glow {
   position: absolute;
-  top: 50%;
+  top: 48%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 500px;
-  height: 500px;
-  background: radial-gradient(circle, rgba(244, 161, 176, 0.055) 0%, transparent 65%);
+  width: 640px;
+  height: 640px;
+  background: radial-gradient(circle, rgba(244, 161, 176, 0.048) 0%, transparent 62%);
   pointer-events: none;
 }
 
+/* ── Body wrapper ────────────────────────────────────────────────────────────── */
 .welcome__body {
   position: relative;
   z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
   text-align: center;
-  max-width: 540px;
-  animation: rise 0.9s ease 0.2s both;
+  width: 100%;
+  max-width: 500px;
 }
 
-@keyframes rise {
-  from { opacity: 0; transform: translateY(24px); }
+/* ── Shared entrance animation ───────────────────────────────────────────────── */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(18px); }
   to   { opacity: 1; transform: translateY(0); }
 }
 
-.welcome__badge {
-  display: inline-block;
-  padding: 0.32rem 1rem;
-  border: 1px solid rgba(244, 161, 176, 0.28);
-  border-radius: 20px;
-  font-size: 0.72rem;
-  letter-spacing: 0.1em;
-  text-transform: uppercase;
-  color: var(--rose);
-  background: rgba(244, 161, 176, 0.05);
-  margin-bottom: 2rem;
+/* ── Atmosphere card (top) ───────────────────────────────────────────────────── */
+.welcome__atm {
+  width: 100%;
+  max-width: 360px;
+  margin-bottom: 3rem;
+  animation: fade-up 0.65s ease both;
+  animation-delay: 0.10s;
+}
+
+/* Suppress the card's own entrance so the wrapper drives it */
+.welcome__atm .atm {
+  animation: none;
+}
+
+/* ── Hero — "For / Xavier.C" ─────────────────────────────────────────────────── */
+.welcome__hero {
+  margin-bottom: 2.2rem;
+  animation: fade-up 0.65s ease both;
+  animation-delay: 0.28s;
 }
 
 .welcome__title {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(3rem, 9vw, 5.8rem);
-  font-weight: 700;
-  line-height: 1.08;
+  font-family: 'Playfair Display', 'Georgia', serif;
+  line-height: 1.15;
   color: var(--text-primary);
-  margin-bottom: 1.2rem;
 }
 
+/* Small label above the name */
+.welcome__for {
+  display: block;
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 300;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.6rem;
+}
+
+/* The name — intentionally smaller than before, more editorial */
 .welcome__name {
   display: block;
+  font-size: clamp(2rem, 6.5vw, 3.4rem);
+  font-weight: 500;
   font-style: italic;
+  letter-spacing: -0.01em;
   background: linear-gradient(135deg, var(--rose) 20%, var(--gold) 80%);
   -webkit-background-clip: text;
   -webkit-text-fill-color: transparent;
   background-clip: text;
 }
 
+/* ── Supporting copy ─────────────────────────────────────────────────────────── */
+.welcome__text {
+  margin-bottom: 3rem;
+  animation: fade-up 0.65s ease both;
+  animation-delay: 0.44s;
+}
+
 .welcome__sub {
-  font-size: 1.05rem;
+  font-size: 0.95rem;
   color: var(--text-secondary);
   font-weight: 300;
-  line-height: 1.75;
-  margin-bottom: 2rem;
+  line-height: 1.85;
+  margin-bottom: 1.3rem;
+  letter-spacing: 0.01em;
 }
 
 .welcome__dots {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 0.8rem;
-  margin-bottom: 2rem;
+  gap: 0.7rem;
+  margin-bottom: 1.3rem;
 }
 
 .welcome__dots span {
@@ -91,47 +126,63 @@
   height: 3px;
   border-radius: 50%;
   background: var(--rose);
-  opacity: 0.35;
+  opacity: 0.28;
 }
 
 .welcome__tagline {
-  font-size: 0.88rem;
+  font-size: 0.82rem;
   color: var(--text-muted);
   font-style: italic;
-  margin-bottom: 2.6rem;
   letter-spacing: 0.03em;
+  line-height: 1.75;
+}
+
+/* ── Call to action ──────────────────────────────────────────────────────────── */
+.welcome__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.3rem;
+  animation: fade-up 0.65s ease both;
+  animation-delay: 0.58s;
 }
 
 .welcome__cta {
-  padding: 1rem 3.2rem;
+  padding: 0.78rem 2.6rem;
   background: linear-gradient(135deg, var(--rose-dark) 0%, #c97090 100%);
   color: white;
-  font-size: 1rem;
+  font-size: 0.9rem;
   font-weight: 500;
-  letter-spacing: 0.04em;
+  letter-spacing: 0.06em;
   border-radius: 60px;
-  transition: opacity 0.2s;
-  box-shadow: 0 4px 24px rgba(224, 117, 142, 0.28);
-  margin-bottom: 2rem;
+  transition: opacity 0.22s ease, box-shadow 0.22s ease;
+  box-shadow: 0 3px 20px rgba(224, 117, 142, 0.22);
 }
 
-.welcome__cta:hover  { opacity: 0.88; }
-.welcome__cta:active { opacity: 0.75; }
+.welcome__cta:hover {
+  opacity: 0.88;
+  box-shadow: 0 5px 28px rgba(224, 117, 142, 0.32);
+}
+
+.welcome__cta:active { opacity: 0.74; }
 
 .welcome__from {
-  font-size: 0.8rem;
+  font-size: 0.77rem;
   color: var(--text-muted);
   font-style: italic;
+  letter-spacing: 0.01em;
 }
 
-.welcome__atm {
-  margin-top: 1.8rem;
-  max-width: 380px;
-  margin-left: auto;
-  margin-right: auto;
-}
-
+/* ── Mobile ──────────────────────────────────────────────────────────────────── */
 @media (max-width: 480px) {
-  .welcome__title { font-size: 3rem; }
-  .welcome__atm   { max-width: 100%; }
+  .welcome {
+    justify-content: flex-start;
+    padding-top: 3.5rem;
+  }
+
+  .welcome__atm  { margin-bottom: 2.4rem; max-width: 100%; }
+  .welcome__hero { margin-bottom: 1.8rem; }
+  .welcome__text { margin-bottom: 2.4rem; }
+
+  .welcome__name { font-size: clamp(1.9rem, 9vw, 2.6rem); }
 }
