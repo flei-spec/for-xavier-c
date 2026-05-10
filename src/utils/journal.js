@@ -64,7 +64,7 @@ export async function fetchAllEntries({ spaceId, userId }) {
   console.log('[journal] fetchAllEntries — records query filter:', filterDesc)
   let q = supabase
     .from('diary_entries')
-    .select('id, title, content, mood, created_at')
+    .select('id, title, content, mood, created_at, user_id')
     .order('created_at', { ascending: false })
     .limit(50)
   q = applyOwnerFilter(q, { spaceId, userId })

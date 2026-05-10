@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { fetchAllEntries, deleteEntry } from '../utils/journal'
+import { getProfiles } from '../lib/profiles'
 import { useAuth } from '../contexts/AuthContext'
 import './DiaryRecords.css'
 
@@ -15,10 +16,11 @@ function formatDate(iso) {
 
 export default function DiaryRecords({ onClose }) {
   const { user, space } = useAuth()
-  const [entries,  setEntries]  = useState([])
-  const [loading,  setLoading]  = useState(true)
-  const [deleting, setDeleting] = useState(null)
-  const [visible,  setVisible]  = useState(false)
+  const [entries,    setEntries]    = useState([])
+  const [profileMap, setProfileMap] = useState({})
+  const [loading,    setLoading]    = useState(true)
+  const [deleting,   setDeleting]   = useState(null)
+  const [visible,    setVisible]    = useState(false)
 
   useEffect(() => {
     const t = setTimeout(() => setVisible(true), 40)
@@ -27,8 +29,14 @@ export default function DiaryRecords({ onClose }) {
 
   useEffect(() => {
     if (!user) { setLoading(false); return }
-    fetchAllEntries({ spaceId: space?.id ?? null, userId: user.id }).then(rows => {
+    fetchAllEntries({ spaceId: space?.id ?? null, userId: user.id }).then(async rows => {
       setEntries(rows)
+      // Fetch display names for all unique authors in one query
+      const ids = [...new Set(rows.map(r => r.user_id).filter(Boolean))]
+      if (ids.length > 0) {
+        const map = await getProfiles(ids)
+        setProfileMap(map)
+      }
       setLoading(false)
     })
   }, [user?.id, space?.id])
@@ -69,27 +77,31 @@ export default function DiaryRecords({ onClose }) {
             <p className="dr__empty">还没有任何记录。</p>
           )}
 
-          {!loading && entries.map(entry => (
-            <div key={entry.id} className="dr__entry">
-              <div className="dr__entry-meta">
-                <span className="dr__entry-date">{formatDate(entry.created_at)}</span>
-                {entry.mood && (
-                  <span className="dr__entry-mood">{entry.mood}</span>
+          {!loading && entries.map(entry => {
+            const authorName = profileMap[entry.user_id] || '有人'
+            return (
+              <div key={entry.id} className="dr__entry">
+                <p className="dr__entry-author">{authorName} 记录了：</p>
+                <div className="dr__entry-meta">
+                  <span className="dr__entry-date">{formatDate(entry.created_at)}</span>
+                  {entry.mood && (
+                    <span className="dr__entry-mood">{entry.mood}</span>
+                  )}
+                </div>
+                {entry.title && (
+                  <p className="dr__entry-song">♪ {entry.title}</p>
                 )}
+                <p className="dr__entry-content">{entry.content}</p>
+                <button
+                  className="dr__delete"
+                  onClick={() => handleDelete(entry.id)}
+                  disabled={deleting === entry.id}
+                >
+                  {deleting === entry.id ? '删除中…' : '删除'}
+                </button>
               </div>
-              {entry.title && (
-                <p className="dr__entry-song">♪ {entry.title}</p>
-              )}
-              <p className="dr__entry-content">{entry.content}</p>
-              <button
-                className="dr__delete"
-                onClick={() => handleDelete(entry.id)}
-                disabled={deleting === entry.id}
-              >
-                {deleting === entry.id ? '删除中…' : '删除'}
-              </button>
-            </div>
-          ))}
+            )
+          })}
         </div>
 
       </div>

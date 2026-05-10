@@ -1,6 +1,7 @@
 import { createContext, useContext, useEffect, useState, useCallback } from 'react'
 import { supabase } from '../lib/supabase'
 import { getMySpace } from '../lib/spaces'
+import { ensureProfile } from '../lib/profiles'
 
 const AuthContext = createContext(null)
 
@@ -52,8 +53,14 @@ export function AuthProvider({ children }) {
         console.log('[AuthContext] auth change:', event, '| user:', u?.id ?? 'none')
         setUser(u)
         setLoadingAuth(false)
-        if (u) refreshSpace(u.id)
-        else { setSpace(null); setLoadingSpace(false) }
+        if (u) {
+          refreshSpace(u.id)
+          // Keep display name in profiles table current (fire-and-forget)
+          ensureProfile(u.id, u.email)
+        } else {
+          setSpace(null)
+          setLoadingSpace(false)
+        }
       }
     )
 

@@ -120,6 +120,15 @@
 
 .dr__entry:hover { border-color: rgba(244, 161, 176, 0.14); }
 
+.dr__entry-author {
+  font-size: 0.72rem;
+  color: var(--rose);
+  opacity: 0.65;
+  letter-spacing: 0.03em;
+  font-style: italic;
+  margin-bottom: 0.3rem;
+}
+
 .dr__entry-meta {
   display: flex;
   align-items: center;
