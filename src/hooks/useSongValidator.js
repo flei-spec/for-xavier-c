@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react'
-import { resolveSongUrl } from '../data/songConfig'
 
 const BATCH_SIZE   = 10    // parallel HEAD requests per batch
 const TIMEOUT_MS   = 6000  // per-request abort timeout
@@ -7,15 +6,20 @@ const TIMEOUT_MS   = 6000  // per-request abort timeout
 /**
  * Validate a list of songs against the actual CDN/local server.
  *
- * Fires HEAD requests in batches of BATCH_SIZE.  Songs that return a non-2xx
- * status or time out are collected in `invalidSrcs` (keyed by the raw src
- * from songMoodMap, e.g. "/songs/track-0298.mp3").
+ * IMPORTANT: `songs` must come from getStationSongs(), which already calls
+ * resolveSongUrl() on every entry.  Do NOT call resolveSongUrl() again here —
+ * double-resolving with a CDN base produces broken URLs like:
+ *   https://pub-xxx.r2.devhttps://pub-xxx.r2.dev/songs/foo.mp3
  *
- * The effect re-runs only when `songs` identity changes — callers must
- * memoize the array (e.g. via useMemo) to avoid redundant validation runs.
+ * Fires HEAD requests (batches of BATCH_SIZE) using the src value as-is.
+ * Songs that return non-2xx or time out are added to `invalidSrcs` and
+ * filtered from the playable queue by the caller.
  *
- * @param {Array<{src: string}>} songs  — memoized, stable reference per mood
- * @returns {Set<string>}               — raw src values that are unreachable
+ * The effect re-runs only when the `songs` array identity changes — callers
+ * must memoize with useMemo to prevent redundant runs.
+ *
+ * @param {Array<{src: string}>} songs  — already-resolved, memoized per mood
+ * @returns {Set<string>}               — resolved src values that are unreachable
  */
 export function useSongValidator(songs) {
   const [invalidSrcs, setInvalidSrcs] = useState(() => new Set())
@@ -32,11 +36,11 @@ export function useSongValidator(songs) {
     async function checkBatch(batch) {
       await Promise.allSettled(
         batch.map(async ({ src }) => {
-          const url = resolveSongUrl(src)
+          // src is already the resolved CDN or local URL — use it directly
           try {
             const ctrl = new AbortController()
             const t    = setTimeout(() => ctrl.abort(), TIMEOUT_MS)
-            const res  = await fetch(url, { method: 'HEAD', signal: ctrl.signal })
+            const res  = await fetch(src, { method: 'HEAD', signal: ctrl.signal })
             clearTimeout(t)
             if (!res.ok) {
               found.push(src)

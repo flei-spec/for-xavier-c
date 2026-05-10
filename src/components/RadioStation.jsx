@@ -41,7 +41,11 @@ function seededShuffle(songs) {
 }
 
 function getStationSongs(moodLabel) {
+  console.log('[RadioStation] All songs in map:', songMoodMap.length)
+  console.log('[RadioStation] Selected mood:', moodLabel)
+
   let matched = songMoodMap.filter(s => s.moodTags.includes(moodLabel))
+  console.log('[RadioStation] Songs matching mood:', matched.length)
 
   if (matched.length === 0) {
     // Fallback: use soft emotional moods so the player is never empty
@@ -51,11 +55,13 @@ function getStationSongs(moodLabel) {
     console.warn(`[RadioStation] No songs for "${moodLabel}" — using fallback pool (${matched.length})`)
   }
 
-  // Resolve CDN URLs (no-op when CDN_BASE is empty)
+  // Resolve CDN URLs (no-op when CDN_BASE is empty).
+  // NOTE: src is mutated to the full URL here — useSongValidator must NOT
+  // call resolveSongUrl() again or it will double-prepend the CDN base.
   const resolved = matched.map(s => ({ ...s, src: resolveSongUrl(s.src) }))
 
   const shuffled = seededShuffle(resolved)
-  console.log(`[RadioStation] Mood "${moodLabel}" — ${shuffled.length} song(s) loaded`)
+  console.log('[RadioStation] Valid playable songs (pre-filter):', shuffled.length)
   return shuffled
 }
 
@@ -297,7 +303,12 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
     const combined = headInvalidSrcs.size || runtimeInvalidSrcs.size
       ? new Set([...headInvalidSrcs, ...runtimeInvalidSrcs])
       : null
-    return combined ? allSongs.filter(s => !combined.has(s.src)) : allSongs
+    const filtered = combined ? allSongs.filter(s => !combined.has(s.src)) : allSongs
+    if (combined?.size) {
+      console.warn('[RadioStation] Invalid songs (removed from queue):', [...combined])
+      console.log('[RadioStation] Valid playable songs (post-filter):', filtered.length)
+    }
+    return filtered
   }, [allSongs, headInvalidSrcs, runtimeInvalidSrcs])
 
   // Dev-only: fire HEAD requests once to catch missing CDN files early
