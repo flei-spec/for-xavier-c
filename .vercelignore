@@ -1,0 +1,10 @@
+# MP3 files are served from Cloudflare R2 (VITE_CDN_BASE) — never upload to Vercel
+public/songs/
+
+# Voice intros are small enough but also served from elsewhere if needed
+# public/Voice-intros/
+
+# Dev artifacts
+node_modules/
+dist/
+.DS_Store
