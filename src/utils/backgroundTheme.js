@@ -58,42 +58,42 @@ export function getTimeOfDay(hour) {
 const THEMES = {
 
   // ── Daytime · sunny / clear ──────────────────────────────────────────────
-  // Soft white-blue sky: airy, light, dreamy — like looking up at a clear sky.
+  // Soft white-blue sky: light, airy, dreamy — clear daylight.
   morning_sunny: {
-    bgDeep: '#0b1828',                  // distinctly blue-tinted (not near-black)
-    glow1:  'rgba(160,218,255,0.26)',   // bright sky-blue, top-left
-    glow2:  'rgba(210,238,255,0.14)',   // pale white-blue, bottom-right
+    bgDeep: '#e2f2ff',                  // soft morning sky blue
+    glow1:  'rgba(90, 175, 255, 0.50)', // vivid sky-blue blob, top-left
+    glow2:  'rgba(180, 225, 255, 0.38)',// pale white-blue blob, bottom-right
   },
   afternoon_sunny: {
-    bgDeep: '#091522',                  // clear midday sky, slightly deeper
-    glow1:  'rgba(148,210,255,0.24)',   // clear sky-blue
-    glow2:  'rgba(200,232,255,0.13)',   // soft white-blue
+    bgDeep: '#d8edff',                  // clear midday sky, a touch deeper
+    glow1:  'rgba(80, 168, 255, 0.46)',
+    glow2:  'rgba(165, 215, 255, 0.32)',
   },
 
   // ── Daytime · cloudy ─────────────────────────────────────────────────────
-  // Pale blue-gray: muted, overcast, gentle.
+  // Pale blue-gray: muted overcast, still clearly daytime.
   morning_cloudy: {
-    bgDeep: '#09090f',
-    glow1:  'rgba(150,165,210,0.10)',   // cool gray-blue
-    glow2:  'rgba(120,140,195,0.06)',
+    bgDeep: '#e4eaf5',                  // overcast soft gray-blue
+    glow1:  'rgba(140, 160, 220, 0.28)',
+    glow2:  'rgba(115, 138, 200, 0.20)',
   },
   afternoon_cloudy: {
-    bgDeep: '#08090e',
-    glow1:  'rgba(135,150,200,0.09)',
-    glow2:  'rgba(110,130,185,0.05)',
+    bgDeep: '#e8ecf7',                  // pale overcast
+    glow1:  'rgba(130, 152, 215, 0.24)',
+    glow2:  'rgba(110, 132, 195, 0.18)',
   },
 
-  // ── Any time · rainy / stormy ────────────────────────────────────────────
-  // Muted gray-blue: heavy, damp, introspective.
+  // ── Daytime · rainy / stormy ─────────────────────────────────────────────
+  // Still lighter than night but muted: heavy, damp, overcast daylight.
   morning_rainy: {
-    bgDeep: '#070a11',
-    glow1:  'rgba(80,115,210,0.13)',    // deep sky-blue
-    glow2:  'rgba(60,90,185,0.07)',
+    bgDeep: '#d2dff0',                  // pale rain-blue, still light
+    glow1:  'rgba(80, 115, 210, 0.28)',
+    glow2:  'rgba(60,  90, 185, 0.20)',
   },
   afternoon_rainy: {
-    bgDeep: '#060910',
-    glow1:  'rgba(70,110,210,0.14)',
-    glow2:  'rgba(55,85,190,0.08)',
+    bgDeep: '#ccd9ec',
+    glow1:  'rgba(70, 110, 210, 0.30)',
+    glow2:  'rgba(55,  85, 190, 0.22)',
   },
   evening_rainy: {
     bgDeep: '#060810',
@@ -145,27 +145,25 @@ export function getBackgroundTheme({ timeOfDay, weather }) {
   const isCloudy = weather === 'cloudy' || weather === 'fog' || weather === 'snow'
   const isSunny  = weather === 'sunny'
 
+  const isDaytime = timeOfDay === 'morning' || timeOfDay === 'afternoon'
+
+  let theme
   if (timeOfDay === 'morning') {
-    if (isRainy)  return THEMES.morning_rainy
-    if (isCloudy) return THEMES.morning_cloudy
-    if (isSunny)  return THEMES.morning_sunny
-    return THEMES.morning_sunny           // default clear day → airy sky
+    if (isRainy)  theme = THEMES.morning_rainy
+    else if (isCloudy) theme = THEMES.morning_cloudy
+    else theme = THEMES.morning_sunny
+  } else if (timeOfDay === 'afternoon') {
+    if (isRainy)  theme = THEMES.afternoon_rainy
+    else if (isCloudy) theme = THEMES.afternoon_cloudy
+    else theme = THEMES.afternoon_sunny
+  } else if (timeOfDay === 'evening') {
+    if (isRainy)  theme = THEMES.evening_rainy
+    else if (isCloudy) theme = THEMES.evening_cloudy
+    else theme = THEMES.evening_sunny
+  } else {
+    // night (8 pm – 6 am)
+    theme = isRainy ? THEMES.night_rainy : THEMES.night
   }
 
-  if (timeOfDay === 'afternoon') {
-    if (isRainy)  return THEMES.afternoon_rainy
-    if (isCloudy) return THEMES.afternoon_cloudy
-    if (isSunny)  return THEMES.afternoon_sunny
-    return THEMES.afternoon_sunny         // default clear day → airy sky
-  }
-
-  if (timeOfDay === 'evening') {
-    if (isRainy)  return THEMES.evening_rainy
-    if (isCloudy) return THEMES.evening_cloudy
-    return THEMES.evening_sunny           // sunny + overcast → same warm sunset
-  }
-
-  // night (8 pm – 6 am)
-  if (isRainy) return THEMES.night_rainy
-  return THEMES.night
+  return { ...theme, isDaytime }
 }

@@ -45,6 +45,9 @@ export default function App() {
     const timeOfDay = getTimeOfDay(hour)
     const bg        = getBackgroundTheme({ timeOfDay, weather: weatherType })
 
+    // data-time drives the full light/dark CSS token swap in index.css
+    document.documentElement.setAttribute('data-time', bg.isDaytime ? 'day' : 'night')
+
     const root = document.documentElement.style
     root.setProperty('--bg-deep',    bg.bgDeep)
     root.setProperty('--atm-glow-1', bg.glow1)
@@ -52,6 +55,7 @@ export default function App() {
 
     return () => {
       document.documentElement.removeAttribute('data-atm')
+      document.documentElement.removeAttribute('data-time')
       root.removeProperty('--bg-deep')
       root.removeProperty('--atm-glow-1')
       root.removeProperty('--atm-glow-2')
