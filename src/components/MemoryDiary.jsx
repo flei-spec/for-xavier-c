@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { saveNewEntry } from '../utils/journal'
+// entry_type: 'daily_note' — shown immediately in Records
 import { useAuth } from '../contexts/AuthContext'
 import './MemoryDiary.css'
 
@@ -36,8 +37,9 @@ export default function MemoryDiary({ onClose, mood, currentSong }) {
       song: currentSong?.title
         ? { title: currentSong.title, artist: currentSong.artist }
         : null,
-      spaceId: space?.id ?? null,
-      userId:  user?.id  ?? null,
+      spaceId:   space?.id ?? null,
+      userId:    user?.id  ?? null,
+      entryType: 'daily_note',
     })
     setSaving(false)
     if (ok) {

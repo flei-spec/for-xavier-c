@@ -79,9 +79,13 @@ export default function DiaryRecords({ onClose }) {
 
           {!loading && entries.map(entry => {
             const authorName = profileMap[entry.user_id] || '有人'
+            const typeLabel  = entry.entry_type === 'secret_letter' ? '悄悄话' : '今天我想说'
             return (
               <div key={entry.id} className="dr__entry">
-                <p className="dr__entry-author">{authorName} 记录了：</p>
+                <div className="dr__entry-type-row">
+                  <span className="dr__entry-author">{authorName}</span>
+                  <span className="dr__entry-type">{typeLabel}</span>
+                </div>
                 <div className="dr__entry-meta">
                   <span className="dr__entry-date">{formatDate(entry.created_at)}</span>
                   {entry.mood && (

@@ -1,7 +1,9 @@
 import { supabase } from '../lib/supabase'
 
 // Table: diary_entries
-// Columns: id, title, content, mood, space_id (nullable), user_id, created_at
+// Columns: id, title, content, mood, space_id, user_id,
+//          entry_type ('daily_note'|'secret_letter'), is_read, read_at, read_by,
+//          created_at
 
 // ── Helpers ────────────────────────────────────────────────────────────────────
 
@@ -11,9 +13,6 @@ function todayRange() {
   return { start: start.toISOString(), end: end.toISOString() }
 }
 
-// Apply the right ownership filter:
-//   - if spaceId: filter by space_id (shared space entries)
-//   - else:       filter by user_id where space_id is null (personal entries)
 function applyOwnerFilter(query, { spaceId, userId }) {
   if (spaceId) return query.eq('space_id', spaceId)
   return query.eq('user_id', userId).is('space_id', null)
@@ -47,6 +46,7 @@ export async function randomOldEntry({ spaceId, userId }) {
     .from('diary_entries')
     .select('id, content, created_at')
     .lt('created_at', start)
+    .or('entry_type.is.null,entry_type.eq.daily_note')
   q = applyOwnerFilter(q, { spaceId, userId })
   const { data, error } = await q
   if (error) { console.error('[journal] randomOldEntry error:', error.message, error); return null }
@@ -56,22 +56,77 @@ export async function randomOldEntry({ spaceId, userId }) {
   return result
 }
 
+// Fetch records for display:
+//  - all daily_note entries (and legacy entries without entry_type)
+//  - secret_letter entries only if is_read = true
 export async function fetchAllEntries({ spaceId, userId }) {
   if (!spaceId && !userId) return []
   const filterDesc = spaceId
     ? `space_id = ${spaceId}`
     : `user_id = ${userId} AND space_id IS NULL`
   console.log('[journal] fetchAllEntries — records query filter:', filterDesc)
-  let q = supabase
+
+  // Two queries: daily notes (always visible) + read secret letters
+  let q1 = supabase
     .from('diary_entries')
-    .select('id, title, content, mood, created_at, user_id')
+    .select('id, title, content, mood, created_at, user_id, entry_type')
+    .or('entry_type.is.null,entry_type.eq.daily_note')
     .order('created_at', { ascending: false })
     .limit(50)
-  q = applyOwnerFilter(q, { spaceId, userId })
+  q1 = applyOwnerFilter(q1, { spaceId, userId })
+
+  let q2 = supabase
+    .from('diary_entries')
+    .select('id, title, content, mood, created_at, user_id, entry_type')
+    .eq('entry_type', 'secret_letter')
+    .eq('is_read', true)
+    .order('created_at', { ascending: false })
+    .limit(50)
+  q2 = applyOwnerFilter(q2, { spaceId, userId })
+
+  const [{ data: d1, error: e1 }, { data: d2, error: e2 }] = await Promise.all([q1, q2])
+  if (e1) console.error('[journal] fetchAllEntries (daily) error:', e1.message, e1)
+  if (e2) console.error('[journal] fetchAllEntries (secret) error:', e2.message, e2)
+
+  const all = [...(d1 ?? []), ...(d2 ?? [])]
+    .sort((a, b) => new Date(b.created_at) - new Date(a.created_at))
+    .slice(0, 50)
+
+  console.log('[journal] fetched records:', all.length, 'entries')
+  return all
+}
+
+// Get the most recent unread secret letter from a PARTNER (not current user).
+export async function fetchUnreadSecretLetters({ spaceId, userId }) {
+  if (!spaceId && !userId) return []
+  console.log('[journal] fetchUnreadSecretLetters — spaceId:', spaceId, 'userId:', userId)
+  let q = supabase
+    .from('diary_entries')
+    .select('id, content, created_at, user_id')
+    .eq('entry_type', 'secret_letter')
+    .eq('is_read', false)
+    .neq('user_id', userId)   // partner's letters only, not mine
+    .order('created_at', { ascending: false })
+    .limit(5)
+
+  if (spaceId) q = q.eq('space_id', spaceId)
+  else q = q.eq('user_id', userId).is('space_id', null)  // fallback: won't return any (partner letters need space)
+
   const { data, error } = await q
-  if (error) { console.error('[journal] fetchAllEntries error:', error.message, error); return [] }
-  console.log('[journal] fetched records:', data?.length ?? 0, 'entries')
+  if (error) { console.error('[journal] fetchUnreadSecretLetters error:', error.message, error); return [] }
+  console.log('[journal] unread secret letters:', data?.length ?? 0)
   return data ?? []
+}
+
+// Mark a secret letter as read.
+export async function markLetterAsRead(entryId, userId) {
+  console.log('[journal] markLetterAsRead — id:', entryId, 'by user:', userId)
+  const { error } = await supabase
+    .from('diary_entries')
+    .update({ is_read: true, read_at: new Date().toISOString(), read_by: userId })
+    .eq('id', entryId)
+  if (error) console.error('[journal] markLetterAsRead error:', error.message, error)
+  else       console.log('[journal] markLetterAsRead success')
 }
 
 export async function deleteEntry(id) {
@@ -87,9 +142,9 @@ export async function deleteEntry(id) {
 
 // ── Write ──────────────────────────────────────────────────────────────────────
 
-// Always inserts a new row — never updates an existing entry.
-export async function saveNewEntry({ text, moodLabel, song, spaceId, userId }) {
-  console.log('[journal] saveNewEntry — currentSpace.id:', spaceId ?? 'none (personal)', '| userId:', userId)
+// Create a new entry (daily note by default, secret letter when specified).
+export async function saveNewEntry({ text, moodLabel, song, spaceId, userId, entryType = 'daily_note' }) {
+  console.log('[journal] saveNewEntry — currentSpace.id:', spaceId ?? 'none (personal)', '| userId:', userId, '| type:', entryType)
 
   if (!userId) {
     console.error('[journal] saveNewEntry: missing userId — aborting')
@@ -97,10 +152,11 @@ export async function saveNewEntry({ text, moodLabel, song, spaceId, userId }) {
   }
 
   const payload = {
-    content:  text,
-    title:    song?.title ?? null,
-    mood:     moodLabel   ?? null,
-    user_id:  userId,
+    content:    text,
+    title:      song?.title ?? null,
+    mood:       moodLabel   ?? null,
+    user_id:    userId,
+    entry_type: entryType,
     ...(spaceId ? { space_id: spaceId } : { space_id: null }),
   }
 
@@ -116,42 +172,12 @@ export async function saveNewEntry({ text, moodLabel, song, spaceId, userId }) {
   return true
 }
 
-// Legacy: updates today's entry or creates one. Kept for potential future use.
+// Convenience: save a secret letter.
+export async function saveSecretLetter({ text, spaceId, userId }) {
+  return saveNewEntry({ text, spaceId, userId, entryType: 'secret_letter' })
+}
+
+// Legacy — kept for compatibility.
 export async function saveTodayEntry({ text, moodLabel, song, spaceId, userId }) {
-  console.log('[journal] saveTodayEntry — currentSpace.id:', spaceId ?? 'none (personal)', '| userId:', userId)
-
-  if (!userId) {
-    console.error('[journal] saveTodayEntry: missing userId — aborting')
-    return
-  }
-
-  const existing = await todayEntry({ spaceId: spaceId ?? null, userId })
-
-  const payload = {
-    content:  text,
-    title:    song?.title ?? null,
-    mood:     moodLabel   ?? null,
-    user_id:  userId,
-    ...(spaceId ? { space_id: spaceId } : { space_id: null }),
-  }
-
-  console.log('[journal] saveTodayEntry payload:', payload)
-
-  if (existing) {
-    console.log('[journal] updating existing entry:', existing.id)
-    const { error } = await supabase
-      .from('diary_entries')
-      .update({ content: text, title: payload.title, mood: payload.mood })
-      .eq('id', existing.id)
-    if (error) console.error('[journal] update error:', error.message, error)
-    else       console.log('[journal] update success')
-  } else {
-    console.log('[journal] inserting new entry...')
-    const { data, error } = await supabase
-      .from('diary_entries')
-      .insert(payload)
-      .select()
-    if (error) console.error('[journal] insert error:', error.message, error)
-    else       console.log('[journal] insert success, row:', data)
-  }
+  return saveNewEntry({ text, moodLabel, song, spaceId, userId, entryType: 'daily_note' })
 }
