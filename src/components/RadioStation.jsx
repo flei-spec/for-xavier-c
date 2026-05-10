@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef, useCallback } from 'react'
+import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import RadioPlayer from './RadioPlayer'
 import SongList from './SongList'
 import AnniversaryCountdown from './AnniversaryCountdown'
@@ -17,6 +17,7 @@ import { useAuth } from '../contexts/AuthContext'
 import { songMoodMap } from '../data/songMoodMap'
 import { moodVoiceMap } from '../data/moodVoiceMap'
 import { resolveSongUrl, devValidateSongs } from '../data/songConfig'
+import { useSongValidator } from '../hooks/useSongValidator'
 import { LONG_STAY } from '../utils/atmosphere'
 import './RadioStation.css'
 
@@ -280,11 +281,27 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
   const shownStayRef    = useRef(new Set())
   const stayIntervalRef = useRef(null)
 
-  const songs    = getStationSongs(mood.id)
+  // Stable reference — only recomputed when mood.id changes
+  const allSongs = useMemo(() => getStationSongs(mood.id), [mood.id])
   const voiceSrc = moodVoiceMap[mood.id]
 
+  // HEAD-validates all songs for this mood; returns a Set of missing src paths
+  const headInvalidSrcs = useSongValidator(allSongs)
+
+  // Runtime failures (caught by the audio element during playback) are stored
+  // separately so we can mark them invalid without mutating validator state.
+  const [runtimeInvalidSrcs, setRuntimeInvalidSrcs] = useState(() => new Set())
+
+  // Combined invalid set — filter the queue before playback
+  const songs = useMemo(() => {
+    const combined = headInvalidSrcs.size || runtimeInvalidSrcs.size
+      ? new Set([...headInvalidSrcs, ...runtimeInvalidSrcs])
+      : null
+    return combined ? allSongs.filter(s => !combined.has(s.src)) : allSongs
+  }, [allSongs, headInvalidSrcs, runtimeInvalidSrcs])
+
   // Dev-only: fire HEAD requests once to catch missing CDN files early
-  useEffect(() => { devValidateSongs(songs) }, [mood.id]) // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { devValidateSongs(allSongs) }, [mood.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Mood message card visibility ─────────────────────────────────────────
   const showDjCard  = user != null && space?.id === PRIVATE_SPACE_ID
@@ -313,6 +330,7 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
 
     setSongIndex(0)
     setSongError(null)
+    setRuntimeInvalidSrcs(new Set())
     setDjVisible(false)
     clearTimeout(readyTimerRef.current)
     clearTimeout(skipTimerRef.current)
@@ -402,18 +420,26 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
     setShowVoiceMailbox(true)
   }
 
-  const nextSong = useCallback(() => { setSongError(null); setSongIndex(i => (i + 1) % songs.length) }, [songs.length])
-  const prevSong = useCallback(() => { setSongError(null); setSongIndex(i => (i - 1 + songs.length) % songs.length) }, [songs.length])
+  const nextSong = useCallback(() => { setSongError(null); setSongIndex(i => (i + 1) % Math.max(songs.length, 1)) }, [songs.length])
+  const prevSong = useCallback(() => { setSongError(null); setSongIndex(i => (i - 1 + Math.max(songs.length, 1)) % Math.max(songs.length, 1)) }, [songs.length])
 
-  // Auto-skip when a song fails to load (e.g. missing file on CDN/Vercel)
+  // Auto-skip when a song fails to load.
+  // 400ms is enough to briefly show the error; 2000ms felt too slow.
   const handleSongError = useCallback((msg) => {
+    // Mark the failing src invalid so it is skipped on future playlist loops
+    const failingSrc = songs[songIndex]?.src
+    if (failingSrc) {
+      console.warn('[RadioStation] marking invalid after playback error:', failingSrc)
+      setRuntimeInvalidSrcs(prev => new Set([...prev, failingSrc]))
+    }
+
     setSongError(msg)
     clearTimeout(skipTimerRef.current)
     skipTimerRef.current = setTimeout(() => {
       setSongError(null)
-      setSongIndex(i => (i + 1) % songs.length)
-    }, 2000)
-  }, [songs.length])
+      setSongIndex(i => (i + 1) % Math.max(songs.length, 1))
+    }, 400)
+  }, [songs, songIndex])
 
   const currentSong = songs[songIndex]
     ? { ...songs[songIndex], reason: songs[songIndex].romanticReason, duration: '--:--' }
