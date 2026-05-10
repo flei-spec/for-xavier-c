@@ -188,6 +188,9 @@ function LongStayToast({ message, onDismiss }) {
 // Only this account hears the voice intro.
 const INTRO_AUTH_UID = '3f370ae9-a462-4a17-b2f4-5a05d4958c76'
 
+// Only this couple space sees the personal mood message card.
+const PRIVATE_SPACE_ID = '89f07d46-af87-4aea-b7e8-e4a804cb21d1'
+
 export default function RadioStation({ mood, onBack, atmosphere }) {
   const { user, space, loadingAuth, loadingSpace, refreshSpace, signOut } = useAuth()
 
@@ -279,6 +282,14 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
 
   const songs    = getStationSongs(mood.id)
   const voiceSrc = moodVoiceMap[mood.id]
+
+  // ── Mood message card visibility ─────────────────────────────────────────
+  const showDjCard  = user != null && space?.id === PRIVATE_SPACE_ID
+  const djTimeLabel = new Date().getHours() < 18 ? '今天的话' : '今晚的话'
+
+  console.log('[RadioStation] user id:', user?.id ?? 'none')
+  console.log('[RadioStation] currentSpace id:', space?.id ?? 'none')
+  console.log('[RadioStation] mood message visible:', showDjCard, '| time label:', djTimeLabel)
 
   // Mood change: reset playback state and kick off the DJ card animation.
   // introPhase and showBanner are lazy-initialized above so they're already
@@ -455,12 +466,12 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
         {/* atmosphere card */}
         <LocalAtmosphereCard atmosphere={atmosphere} />
 
-        {/* DJ card */}
-        {djVisible && (
+        {/* DJ card — only visible inside the private couple space */}
+        {djVisible && showDjCard && (
           <div className="station__dj">
             <div className="station__dj-avatar">🎙️</div>
             <div className="station__dj-bubble">
-              <p className="station__dj-label">今晚的话</p>
+              <p className="station__dj-label">{djTimeLabel}</p>
               <p className="station__dj-text">「{mood.djIntro}」</p>
             </div>
           </div>
