@@ -352,7 +352,7 @@ export default function LocalPlaylist() {
   return (
     <section className="local-playlist">
       <div className="lp-header">
-        <p className="lp-section-label">你喜欢的歌</p>
+        <p className="lp-section-label">Xavier喜欢的歌</p>
         <h2 className="lp-title">今晚想陪你听的歌</h2>
         <p className="lp-subtitle">有些歌，好像一开始就是为了某个人存在的。</p>
       </div>
