@@ -17,7 +17,6 @@ import { useAuth } from '../contexts/AuthContext'
 import { songMoodMap } from '../data/songMoodMap'
 import { moodVoiceMap } from '../data/moodVoiceMap'
 import { resolveSongUrl, devValidateSongs } from '../data/songConfig'
-import { useSongValidator } from '../hooks/useSongValidator'
 import { LONG_STAY } from '../utils/atmosphere'
 import './RadioStation.css'
 
@@ -291,25 +290,23 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
   const allSongs = useMemo(() => getStationSongs(mood.id), [mood.id])
   const voiceSrc = moodVoiceMap[mood.id]
 
-  // HEAD-validates all songs for this mood; returns a Set of missing src paths
-  const headInvalidSrcs = useSongValidator(allSongs)
-
-  // Runtime failures (caught by the audio element during playback) are stored
-  // separately so we can mark them invalid without mutating validator state.
+  // Runtime failures (caught by the audio element during playback).
+  // R2's CORS policy allows GET but not HEAD, so pre-flight HEAD validation
+  // is not possible from the browser — all HEAD fetch() calls would fail with
+  // CORS errors and remove every song from the queue.
+  // Instead, broken songs are discovered naturally during playback: the audio
+  // element's onError fires, handleSongError marks the src here, and the song
+  // is permanently skipped on all future loops in this session.
   const [runtimeInvalidSrcs, setRuntimeInvalidSrcs] = useState(() => new Set())
 
-  // Combined invalid set — filter the queue before playback
+  // Filter only songs that have already failed at runtime (safe — no CORS issue)
   const songs = useMemo(() => {
-    const combined = headInvalidSrcs.size || runtimeInvalidSrcs.size
-      ? new Set([...headInvalidSrcs, ...runtimeInvalidSrcs])
-      : null
-    const filtered = combined ? allSongs.filter(s => !combined.has(s.src)) : allSongs
-    if (combined?.size) {
-      console.warn('[RadioStation] Invalid songs (removed from queue):', [...combined])
-      console.log('[RadioStation] Valid playable songs (post-filter):', filtered.length)
-    }
+    if (!runtimeInvalidSrcs.size) return allSongs
+    const filtered = allSongs.filter(s => !runtimeInvalidSrcs.has(s.src))
+    console.warn('[RadioStation] Invalid songs (removed from queue):', [...runtimeInvalidSrcs])
+    console.log('[RadioStation] Valid playable songs (post-filter):', filtered.length)
     return filtered
-  }, [allSongs, headInvalidSrcs, runtimeInvalidSrcs])
+  }, [allSongs, runtimeInvalidSrcs])
 
   // Dev-only: fire HEAD requests once to catch missing CDN files early
   useEffect(() => { devValidateSongs(allSongs) }, [mood.id]) // eslint-disable-line react-hooks/exhaustive-deps
