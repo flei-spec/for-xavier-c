@@ -1,5 +1,5 @@
 import { useState, useEffect, useRef } from 'react'
-import { todayEntry, saveTodayEntry } from '../utils/journal'
+import { saveNewEntry } from '../utils/journal'
 import { useAuth } from '../contexts/AuthContext'
 import './MemoryDiary.css'
 
@@ -7,26 +7,19 @@ const MAX = 160
 
 export default function MemoryDiary({ onClose, mood, currentSong }) {
   const { user, space } = useAuth()
-  const [visible,  setVisible]  = useState(false)
-  const [text,     setText]     = useState('')
-  const [existing, setExisting] = useState(false)
-  const [saved,    setSaved]    = useState(false)
-  const [saving,   setSaving]   = useState(false)
+  const [visible, setVisible] = useState(false)
+  const [text,    setText]    = useState('')
+  const [saved,   setSaved]   = useState(false)
+  const [saving,  setSaving]  = useState(false)
   const textareaRef = useRef(null)
 
-  // Fetch today's entry from Supabase, then slide in
   useEffect(() => {
-    todayEntry({ spaceId: space?.id ?? null, userId: user?.id ?? null }).then(entry => {
-      if (entry) {
-        setText(entry.content)
-        setExisting(true)
-      }
-      setTimeout(() => {
-        setVisible(true)
-        textareaRef.current?.focus()
-      }, 40)
-    })
-  }, [space?.id])
+    const t = setTimeout(() => {
+      setVisible(true)
+      textareaRef.current?.focus()
+    }, 40)
+    return () => clearTimeout(t)
+  }, [])
 
   const close = () => {
     setVisible(false)
@@ -34,11 +27,10 @@ export default function MemoryDiary({ onClose, mood, currentSong }) {
   }
 
   const handleSave = async () => {
-    console.log('[MemoryDiary] save button clicked, text:', text.trim())
     if (!text.trim() || saving) return
+    console.log('[MemoryDiary] saving new entry — space:', space?.id ?? 'none', '| user:', user?.id)
     setSaving(true)
-    console.log('[MemoryDiary] calling saveTodayEntry — space:', space?.id, 'user:', user?.id)
-    await saveTodayEntry({
+    const ok = await saveNewEntry({
       text:      text.trim(),
       moodLabel: mood?.label ?? null,
       song: currentSong?.title
@@ -47,11 +39,12 @@ export default function MemoryDiary({ onClose, mood, currentSong }) {
       spaceId: space?.id ?? null,
       userId:  user?.id  ?? null,
     })
-    console.log('[MemoryDiary] saveTodayEntry returned, marking saved')
     setSaving(false)
-    setExisting(true)
-    setSaved(true)
-    setTimeout(() => setSaved(false), 2200)
+    if (ok) {
+      setText('')       // clear so a new entry can be written
+      setSaved(true)
+      setTimeout(() => setSaved(false), 2200)
+    }
   }
 
   return (
@@ -65,12 +58,7 @@ export default function MemoryDiary({ onClose, mood, currentSong }) {
 
         <div className="diary__header">
           <span className="diary__icon">✎</span>
-          <p className="diary__title">
-            {existing ? '今天的记忆' : '写一条今天的记忆'}
-          </p>
-          {existing && (
-            <p className="diary__subtitle">可以继续编辑</p>
-          )}
+          <p className="diary__title">今天我想对你说…</p>
         </div>
 
         <textarea
@@ -92,9 +80,9 @@ export default function MemoryDiary({ onClose, mood, currentSong }) {
             <button
               className="diary__save"
               onClick={handleSave}
-              disabled={!text.trim() || saved || saving}
+              disabled={!text.trim() || saving}
             >
-              {saving ? '保存中…' : existing ? '更新' : '保存'}
+              {saving ? '保存中…' : '保存'}
             </button>
           </div>
         </div>

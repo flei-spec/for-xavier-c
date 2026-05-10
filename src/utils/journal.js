@@ -87,6 +87,36 @@ export async function deleteEntry(id) {
 
 // ── Write ──────────────────────────────────────────────────────────────────────
 
+// Always inserts a new row — never updates an existing entry.
+export async function saveNewEntry({ text, moodLabel, song, spaceId, userId }) {
+  console.log('[journal] saveNewEntry — currentSpace.id:', spaceId ?? 'none (personal)', '| userId:', userId)
+
+  if (!userId) {
+    console.error('[journal] saveNewEntry: missing userId — aborting')
+    return false
+  }
+
+  const payload = {
+    content:  text,
+    title:    song?.title ?? null,
+    mood:     moodLabel   ?? null,
+    user_id:  userId,
+    ...(spaceId ? { space_id: spaceId } : { space_id: null }),
+  }
+
+  console.log('[journal] saveNewEntry insert payload:', payload)
+
+  const { data, error } = await supabase
+    .from('diary_entries')
+    .insert(payload)
+    .select()
+
+  if (error) { console.error('[journal] saveNewEntry error:', error.message, error); return false }
+  console.log('[journal] saveNewEntry success, row:', data)
+  return true
+}
+
+// Legacy: updates today's entry or creates one. Kept for potential future use.
 export async function saveTodayEntry({ text, moodLabel, song, spaceId, userId }) {
   console.log('[journal] saveTodayEntry — currentSpace.id:', spaceId ?? 'none (personal)', '| userId:', userId)
 
