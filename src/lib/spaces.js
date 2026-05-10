@@ -14,8 +14,15 @@ function generateCode() {
 // ── Read ───────────────────────────────────────────────────────────────────────
 
 export async function getMySpace(userId) {
-  // userId kept for interface compatibility; the RPC uses auth.uid() internally.
-  console.log('[spaces] get_my_space RPC — userId:', userId)
+  console.log('[spaces] get_my_space — userId:', userId)
+
+  // Debug: show ALL memberships for this user so we can see duplicates
+  const { data: memberships } = await supabase
+    .from('space_members')
+    .select('space_id, joined_at')
+    .eq('user_id', userId)
+    .order('joined_at', { ascending: false })
+  console.log('[spaces] all memberships for user:', memberships)
 
   const { data, error } = await supabase.rpc('get_my_space')
 
@@ -25,6 +32,7 @@ export async function getMySpace(userId) {
   }
 
   console.log('[spaces] get_my_space result:', data)
+  console.log('[spaces] selected currentSpace:', data?.space?.id ?? 'none', '| member_count:', data?.member_count ?? 0)
   return data?.space ?? null
 }
 
@@ -104,6 +112,7 @@ export async function joinSpace(inviteCode) {
   }
 
   const space = data?.space ?? null
-  console.log('[spaces] joinSpace — success, space id:', space?.id ?? 'none')
+  const memberCount = data?.member_count ?? null
+  console.log('[spaces] joinSpace — success, space id:', space?.id ?? 'none', '| member_count:', memberCount)
   return { space, error: null }
 }
