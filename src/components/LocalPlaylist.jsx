@@ -1,7 +1,12 @@
 import { useState, useRef } from 'react'
 import { songMoodMap } from '../data/songMoodMap'
 import { resolveSongUrl } from '../data/songConfig'
+import { useAuth } from '../contexts/AuthContext'
 import './LocalPlaylist.css'
+
+// This user sees "你喜欢的歌" (the playlist is for them).
+// All other accounts see "Xavier喜欢的歌".
+const PARTNER_UID = '3f370ae9-a462-4a17-b2f4-5a05d4958c76'
 
 const specificReasons = {
   '薛之谦 - 演员': '每个人心里都有一个角色，只是不想再演了。',
@@ -324,8 +329,11 @@ function SongCard({ song }) {
 const LP_PAGE = 6
 
 export default function LocalPlaylist() {
+  const { user } = useAuth()
   const [search, setSearch] = useState('')
   const [limit,  setLimit]  = useState(LP_PAGE)
+
+  const sectionLabel = user?.id === PARTNER_UID ? '你喜欢的歌' : 'Xavier喜欢的歌'
 
   const q = search.trim().toLowerCase()
   console.log('search query:', q || '(none)')
@@ -352,7 +360,7 @@ export default function LocalPlaylist() {
   return (
     <section className="local-playlist">
       <div className="lp-header">
-        <p className="lp-section-label">Xavier喜欢的歌</p>
+        <p className="lp-section-label">{sectionLabel}</p>
         <h2 className="lp-title">今晚想陪你听的歌</h2>
         <p className="lp-subtitle">有些歌，好像一开始就是为了某个人存在的。</p>
       </div>
