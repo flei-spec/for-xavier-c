@@ -39,16 +39,35 @@ export async function uploadVoiceMessage({ blob, mimeType, spaceId, userId, dura
     return { error: uploadErr.message }
   }
 
-  console.log('[voice] upload success — path:', uploadData.path)
+  const storagePath = uploadData.path
+  console.log('[voice] upload success — storagePath:', storagePath)
+
+  // Get the public URL for playback
+  const { data: publicUrlData } = supabase.storage
+    .from('voice-messages')
+    .getPublicUrl(storagePath)
+
+  console.log('[voice] publicUrlData:', publicUrlData)
+  const audioUrl = publicUrlData?.publicUrl ?? null
+  console.log('[voice] audio_url:', audioUrl)
+
+  if (!audioUrl) {
+    console.error('[voice] audio_url is missing — aborting insert')
+    return { error: '无法获取音频地址，请重试' }
+  }
+
+  const payload = {
+    storage_path: storagePath,
+    audio_url:    audioUrl,
+    user_id:      userId,
+    duration_ms:  durationMs ?? null,
+    ...(spaceId ? { space_id: spaceId } : { space_id: null }),
+  }
+  console.log('[voice] insert payload:', payload)
 
   const { error: insertErr } = await supabase
     .from('voice_messages')
-    .insert({
-      storage_path: uploadData.path,
-      user_id:      userId,
-      duration_ms:  durationMs ?? null,
-      ...(spaceId ? { space_id: spaceId } : { space_id: null }),
-    })
+    .insert(payload)
 
   if (insertErr) {
     console.error('[voice] insert metadata error:', insertErr.message, insertErr)
@@ -67,7 +86,7 @@ export async function fetchVoiceMessages({ spaceId, userId }) {
 
   let q = supabase
     .from('voice_messages')
-    .select('id, storage_path, duration_ms, created_at, user_id')
+    .select('id, storage_path, audio_url, duration_ms, created_at, user_id')
     .order('created_at', { ascending: false })
     .limit(30)
 

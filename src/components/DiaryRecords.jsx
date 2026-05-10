@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react'
 import { fetchAllEntries, deleteEntry } from '../utils/journal'
-import { fetchVoiceMessages, getSignedUrl, deleteVoiceMessage } from '../utils/voiceMessages'
+import { fetchVoiceMessages, deleteVoiceMessage } from '../utils/voiceMessages'
 import { getProfiles } from '../lib/profiles'
 import { useAuth } from '../contexts/AuthContext'
 import './DiaryRecords.css'
@@ -105,7 +105,6 @@ function TextTab({ user, space }) {
 function VoiceTab({ user, space }) {
   const [messages,   setMessages]   = useState([])
   const [profileMap, setProfileMap] = useState({})
-  const [audioUrls,  setAudioUrls]  = useState({})  // id → signed url
   const [loading,    setLoading]    = useState(true)
   const [deleting,   setDeleting]   = useState(null)
   const [confirmId,  setConfirmId]  = useState(null)
@@ -121,13 +120,6 @@ function VoiceTab({ user, space }) {
         const map = await getProfiles(ids)
         setProfileMap(map)
       }
-      // Fetch signed playback URLs for all messages
-      const urls = {}
-      await Promise.all(msgs.map(async m => {
-        const url = await getSignedUrl(m.storage_path)
-        if (url) urls[m.id] = url
-      }))
-      setAudioUrls(urls)
       setLoading(false)
     })
   }, [user?.id, space?.id])
@@ -168,15 +160,15 @@ function VoiceTab({ user, space }) {
                 <span className="dr__entry-duration">{fmtDuration(msg.duration_ms)}</span>
               )}
             </div>
-            {audioUrls[msg.id] ? (
+            {msg.audio_url ? (
               <audio
                 className="dr__audio"
-                src={audioUrls[msg.id]}
+                src={msg.audio_url}
                 controls
                 preload="metadata"
               />
             ) : (
-              <p className="dr__audio-loading">音频加载中…</p>
+              <p className="dr__audio-loading">音频地址不可用</p>
             )}
             {confirmId === msg.id ? (
               <div className="dr__confirm">
