@@ -5,6 +5,9 @@ import { loadMeetingDate, saveMeetingDate } from '../lib/meetingDate'
 import AuthModal from './AuthModal'
 import './AnniversaryCountdown.css'
 
+// Private meeting date is only the fallback for this couple space.
+const PRIVATE_SPACE_ID = '89f07d46-af87-4aea-b7e8-e4a804cb21d1'
+
 const WAITING_LINES = [
   '再等一下，我们就快见面了。',
   '倒计时的每一天都是你。',
@@ -17,6 +20,7 @@ function romanticLine(days) {
 }
 
 function calcDays(dateStr) {
+  if (!dateStr) return null
   const now    = new Date()
   const target = new Date(dateStr)
   now.setHours(0, 0, 0, 0)
@@ -25,8 +29,16 @@ function calcDays(dateStr) {
 }
 
 function formatChinese(dateStr) {
+  if (!dateStr) return ''
   const [y, m, d] = dateStr.split('-').map(Number)
   return `${y}年${m}月${d}日`
+}
+
+// Returns a sensible edit-form default when no date has been set yet.
+function nextMonthDate() {
+  const d = new Date()
+  d.setMonth(d.getMonth() + 1)
+  return d.toISOString().split('T')[0]
 }
 
 const THIS_YEAR = new Date().getFullYear()
@@ -37,7 +49,8 @@ const DAYS   = Array.from({ length: 31 }, (_, i) => i + 1)
 export default function MeetingCountdown() {
   const { user, space, loadingAuth, loadingSpace } = useAuth()
 
-  const [meetingDate, setMeetingDate] = useState(profile.meetingDate)
+  // null = no date set; avoids accidentally displaying the private profile date
+  const [meetingDate, setMeetingDate] = useState(null)
   const [loading,     setLoading]     = useState(true)
   const [showAuth,    setShowAuth]    = useState(false)
   const [editing,     setEditing]     = useState(false)
@@ -52,19 +65,34 @@ export default function MeetingCountdown() {
     if (loadingAuth || loadingSpace) return
     if (!user) { setLoading(false); return }
 
-    const userId  = user.id
-    const spaceId = space?.id ?? null
-    loadMeetingDate({ userId, spaceId }).then(date => {
-      if (date) setMeetingDate(date)
+    const isPrivate = space?.id === PRIVATE_SPACE_ID
+    const spaceId   = space?.id ?? null
+
+    console.log('[MeetingCountdown] currentSpace id:', spaceId ?? 'none')
+    console.log('[MeetingCountdown] isPrivateTargetSpace:', isPrivate)
+    console.log('[MeetingCountdown] countdown data source:',
+      isPrivate ? 'private profile (fallback) + Supabase' : 'Supabase only')
+
+    loadMeetingDate({ userId: user.id, spaceId }).then(date => {
+      if (date) {
+        // Custom date saved in Supabase for this space/user → use it
+        setMeetingDate(date)
+      } else if (isPrivate) {
+        // Private space with no saved date → fall back to profile default
+        setMeetingDate(profile.meetingDate)
+      }
+      // Non-private with no saved date → meetingDate stays null (shows placeholder)
       setLoading(false)
     })
   }, [user?.id, space?.id, loadingAuth, loadingSpace])
 
+  // days is null when meetingDate is null (no date set)
   const days = useMemo(() => calcDays(meetingDate), [meetingDate])
-  const met  = days <= 0
+  const met  = days !== null && days <= 0
 
   const startEditing = () => {
-    const [y, m, d] = meetingDate.split('-').map(Number)
+    const base = meetingDate ?? nextMonthDate()
+    const [y, m, d] = base.split('-').map(Number)
     setEditYear(y)
     setEditMonth(m)
     setEditDay(d)
@@ -76,7 +104,6 @@ export default function MeetingCountdown() {
     const y = editYear
     const m = editMonth
     const d = editDay
-    // Validate date is real (e.g. rejects Feb 30)
     const check = new Date(y, m - 1, d)
     if (check.getFullYear() !== y || check.getMonth() + 1 !== m || check.getDate() !== d) {
       setEditError('日期无效，请重新选择')
@@ -98,38 +125,72 @@ export default function MeetingCountdown() {
     }
   }
 
-  // Still loading auth — render the shell without content to avoid flashing
-  if (loadingAuth) {
-    return (
-      <div className="countdown">
-        <p className="countdown__label">见面倒计时</p>
-      </div>
-    )
+  // ── Loading shell ──────────────────────────────────────────────────────────
+  if (loadingAuth || loadingSpace) {
+    return <div className="countdown"><p className="countdown__label">见面倒计时</p></div>
   }
 
-  // Not logged in — show login prompt instead of countdown
+  // ── Not logged in ──────────────────────────────────────────────────────────
   if (!user) {
     return (
       <div className="countdown">
         <p className="countdown__label">见面倒计时</p>
-        <button
-          className="countdown__login-btn"
-          onClick={() => setShowAuth(true)}
-        >
+        <button className="countdown__login-btn" onClick={() => setShowAuth(true)}>
           请先登录 / 注册
         </button>
-        {showAuth && (
-          <AuthModal onSuccess={() => setShowAuth(false)} />
+        {showAuth && <AuthModal onSuccess={() => setShowAuth(false)} />}
+      </div>
+    )
+  }
+
+  // ── Logged in but no date set (non-private user or space not yet customized) ─
+  if (!loading && days === null) {
+    return (
+      <div className="countdown">
+        <p className="countdown__label">见面倒计时</p>
+        {editing ? (
+          // Reuse the same edit form
+          <div className="countdown__form">
+            <div className="countdown__selects">
+              <select className="countdown__select" value={editYear}  onChange={e => setEditYear(+e.target.value)}>
+                {YEARS.map(y => <option key={y} value={y}>{y}年</option>)}
+              </select>
+              <select className="countdown__select" value={editMonth} onChange={e => setEditMonth(+e.target.value)}>
+                {MONTHS.map(m => <option key={m} value={m}>{m}月</option>)}
+              </select>
+              <select className="countdown__select" value={editDay}   onChange={e => setEditDay(+e.target.value)}>
+                {DAYS.map(d => <option key={d} value={d}>{d}日</option>)}
+              </select>
+            </div>
+            {editError && <p className="countdown__form-error">{editError}</p>}
+            <div className="countdown__form-btns">
+              <button className="countdown__form-save" onClick={handleSave} disabled={saving}>
+                {saving ? '保存中…' : '保存'}
+              </button>
+              <button className="countdown__form-cancel" onClick={() => setEditing(false)}>取消</button>
+            </div>
+            {space && <p className="countdown__form-scope">将同步给你们两个人</p>}
+          </div>
+        ) : (
+          <>
+            <div className="countdown__line" />
+            <p className="countdown__note" style={{ opacity: 0.45 }}>「还没有设置见面日期」</p>
+            {space && (
+              <button className="countdown__edit-btn" onClick={startEditing} title="设置日期">
+                ✎ 设置
+              </button>
+            )}
+          </>
         )}
       </div>
     )
   }
 
+  // ── Full countdown (private space or user has saved a custom date) ─────────
   return (
     <div className="countdown">
       <p className="countdown__label">见面倒计时</p>
 
-      {/* Date display + edit button */}
       <div className="countdown__date-row">
         <span className="countdown__date">
           {loading ? '…' : formatChinese(meetingDate)}
@@ -139,7 +200,6 @@ export default function MeetingCountdown() {
         )}
       </div>
 
-      {/* Edit form */}
       {editing && (
         <div className="countdown__form">
           <div className="countdown__selects">
@@ -160,9 +220,7 @@ export default function MeetingCountdown() {
             </button>
             <button className="countdown__form-cancel" onClick={() => setEditing(false)}>取消</button>
           </div>
-          {space && (
-            <p className="countdown__form-scope">将同步给你们两个人</p>
-          )}
+          {space && <p className="countdown__form-scope">将同步给你们两个人</p>}
         </div>
       )}
 
