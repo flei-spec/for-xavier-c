@@ -59,6 +59,22 @@ export default function App() {
   const handleEnter = () => setPage('mood')
 
   const handleStartStation = (mood) => {
+    // Unlock Safari/iOS audio policy synchronously inside the user gesture.
+    // Once a buffer plays here, subsequent audio.play() calls from useEffects
+    // succeed on the same page session — no silent autoplay failures.
+    try {
+      const AudioCtx = window.AudioContext || window.webkitAudioContext
+      if (AudioCtx) {
+        const ctx = new AudioCtx()
+        const buf = ctx.createBuffer(1, 1, 22050)
+        const src = ctx.createBufferSource()
+        src.buffer = buf
+        src.connect(ctx.destination)
+        src.start(0)
+        ctx.close()
+      }
+    } catch (_) {}
+
     setSelectedMood(mood)
     localStorage.setItem('xavier_last_mood', mood.id)
     setPage('station')

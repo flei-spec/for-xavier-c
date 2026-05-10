@@ -23,9 +23,10 @@ export default function RadioPlayer({
   introPhase, onSongError,
   autoStart = false,  // if true, first song autoplays without waiting for intro
 }) {
-  const [playing, setPlaying]   = useState(false)
-  const [elapsed, setElapsed]   = useState(0)
-  const [realDur, setRealDur]   = useState(0)
+  const [playing,        setPlaying]        = useState(false)
+  const [elapsed,        setElapsed]        = useState(0)
+  const [realDur,        setRealDur]        = useState(0)
+  const [needsManualPlay, setNeedsManualPlay] = useState(false)
 
   const audioRef       = useRef(null)
   const prevPhase      = useRef(introPhase)
@@ -81,10 +82,15 @@ export default function RadioPlayer({
         try {
           await audio.play()
           console.log('[RadioPlayer] ▶ Song playback started:', activeSrc)
+          setNeedsManualPlay(false)
           await fadeVolume(audio, 0, 0.88, 700)
         } catch (err) {
           console.error('[RadioPlayer] Autoplay blocked:', err.name, err.message, '| src:', activeSrc)
-          onSongError?.('自动播放被阻止，请点击 ▶ 继续')
+          if (err.name === 'NotAllowedError') {
+            setNeedsManualPlay(true)
+          } else {
+            onSongError?.(`无法加载：${activeSrc?.split('/').pop() ?? ''} (${err.message})`)
+          }
         }
       }
     }
@@ -105,10 +111,15 @@ export default function RadioPlayer({
         try {
           await audio.play()
           console.log('[RadioPlayer] ▶ Song playing after intro:', activeSrc)
+          setNeedsManualPlay(false)
           await fadeVolume(audio, 0, 0.88, 900)
         } catch (err) {
           console.error('[RadioPlayer] play() failed after intro:', err.name, err.message)
-          onSongError?.(`播放失败：${err.message}`)
+          if (err.name === 'NotAllowedError') {
+            setNeedsManualPlay(true)
+          } else {
+            onSongError?.(`播放失败：${err.message}`)
+          }
         }
       }, 150)
       return () => clearTimeout(t)
@@ -136,11 +147,17 @@ export default function RadioPlayer({
       audio.pause()
     } else {
       audio.volume = 0
-      audio.play().catch(err => {
+      audio.play().then(() => {
+        setNeedsManualPlay(false)
+        fadeVolume(audio, 0, 0.88, 700)
+      }).catch(err => {
         console.error('[RadioPlayer] play() failed in toggle:', err.name, err.message, '| src:', activeSrc)
-        onSongError?.(`播放失败：${err.message}`)
+        if (err.name === 'NotAllowedError') {
+          setNeedsManualPlay(true)
+        } else {
+          onSongError?.(`播放失败：${err.message}`)
+        }
       })
-      fadeVolume(audio, 0, 0.88, 700)
     }
   }
 
@@ -188,6 +205,7 @@ export default function RadioPlayer({
           onPlay={() => {
             console.log('[RadioPlayer] onPlay fired:', activeSrc)
             setPlaying(true)
+            setNeedsManualPlay(false)
           }}
           onPause={() => setPlaying(false)}
           onEnded={handleEnded}
@@ -259,6 +277,12 @@ export default function RadioPlayer({
         </div>
         <span className="player__time">{introPlaying ? '--:--' : fmt(realDur)}</span>
       </div>
+
+      {needsManualPlay && !playing && !introPlaying && (
+        <button className="player__tap-play" onClick={toggle}>
+          ▶ 点击播放第一首歌
+        </button>
+      )}
 
       <div className="player__controls">
         <button
