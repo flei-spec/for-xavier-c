@@ -9,6 +9,7 @@ import AuthLanding from './components/AuthLanding'
 import WelcomePage from './components/WelcomePage'
 import MoodSelector from './components/MoodSelector'
 import RadioStation from './components/RadioStation'
+import { audioElement } from './audio/audioElement'
 import './App.css'
 
 export default function App() {
@@ -79,18 +80,14 @@ export default function App() {
       }
     } catch (_) {}
 
-    // 2. HTML5 <audio> unlock — iOS Safari requires play() to be called on a
-    //    real <audio> element during a user gesture to allow subsequent
-    //    audio.play() calls from effects/timers on the same page session.
-    //    A 0-sample silent WAV plays and ends instantly; its only purpose is
-    //    to satisfy Safari's "first play must be in gesture" requirement.
-    try {
-      const sil = new Audio(
-        'data:audio/wav;base64,' +
-        'UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA='
-      )
-      sil.play().catch(() => {})
-    } catch (_) {}
+    // 2. HTML5 <audio> unlock — iOS Safari grants audio permission per-element.
+    //    Calling play() on the SAME element that RadioPlayer will use for music
+    //    (audioElement singleton) registers THIS element with the gesture, so
+    //    subsequent play() calls on it from useEffect succeed without a button.
+    //    The play() fails immediately (no src yet) which is expected and harmless.
+    if (audioElement) {
+      audioElement.play().catch(() => {})
+    }
 
     setSelectedMood(mood)
     localStorage.setItem('xavier_last_mood', mood.id)
