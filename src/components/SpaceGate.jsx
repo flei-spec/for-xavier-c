@@ -38,15 +38,20 @@ function StatusView({ onSuccess }) {
 
   useEffect(() => {
     if (!space) return
-    console.log('[SpaceGate] currentSpace.id:', space.id, '| user:', user?.id)
-    supabase
-      .from('space_members')
-      .select('*', { count: 'exact', head: true })
-      .eq('space_id', space.id)
-      .then(({ count }) => {
-        console.log('[SpaceGate] member count:', count)
-        setMemberCount(count)
-      })
+    console.log('[SpaceGate] currentSpace.id:', space.id, '| invite_code:', space.invite_code, '| user:', user?.id)
+    // Use get_my_space RPC (security definer) so we can see ALL members,
+    // not just our own row. Direct space_members queries are blocked by RLS
+    // to only return the current user's row.
+    supabase.rpc('get_my_space').then(({ data, error }) => {
+      if (error) {
+        console.error('[SpaceGate] get_my_space error:', error.message, error)
+        return
+      }
+      const count = data?.member_count ?? 0
+      console.log('[SpaceGate] get_my_space result:', data)
+      console.log('[SpaceGate] member count:', count)
+      setMemberCount(count)
+    })
   }, [space?.id])
 
   // Load the current user's display name
@@ -116,10 +121,14 @@ function StatusView({ onSuccess }) {
       </p>
 
       {memberCount !== null && (
-        <p className="sg__member-count">
-          当前成员：{memberCount}/2
-          {memberCount >= 2 && <span className="sg__member-full"> · 已满</span>}
-        </p>
+        <div className="sg__member-info">
+          <p className="sg__member-count">当前成员：{memberCount}/2</p>
+          <p className="sg__member-msg">
+            {memberCount >= 2
+              ? '你们已经在同一个空间里了 ♡'
+              : '等待另一半加入'}
+          </p>
+        </div>
       )}
 
       <CodeRow code={space.invite_code} copied={copied} onCopy={handleCopy} />

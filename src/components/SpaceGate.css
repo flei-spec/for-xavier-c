@@ -313,11 +313,26 @@
   margin-bottom: -0.3rem;
 }
 
+.sg__member-info {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.2rem;
+}
+
 .sg__member-count {
   font-size: 0.75rem;
   color: var(--text-muted);
   opacity: 0.6;
   letter-spacing: 0.03em;
+}
+
+.sg__member-msg {
+  font-size: 0.72rem;
+  color: var(--rose);
+  opacity: 0.6;
+  letter-spacing: 0.03em;
+  font-style: italic;
 }
 
 .sg__member-full {
