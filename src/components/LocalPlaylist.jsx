@@ -4,9 +4,8 @@ import { resolveSongUrl } from '../data/songConfig'
 import { useAuth } from '../contexts/AuthContext'
 import './LocalPlaylist.css'
 
-// This user sees "你喜欢的歌" (the playlist is for them).
-// All other accounts see "Xavier喜欢的歌".
-const PARTNER_UID = '3f370ae9-a462-4a17-b2f4-5a05d4958c76'
+const PARTNER_UID = '3f370ae9-a462-4a17-b2f4-5a05d4958c76'  // sees "你喜欢的歌"
+const MY_UID      = '182705ba-6c96-4384-b3ef-acc05ca1def0'  // sees "我老婆喜欢的歌"
 
 const specificReasons = {
   '薛之谦 - 演员': '每个人心里都有一个角色，只是不想再演了。',
@@ -333,7 +332,9 @@ export default function LocalPlaylist() {
   const [search, setSearch] = useState('')
   const [limit,  setLimit]  = useState(LP_PAGE)
 
-  const sectionLabel = user?.id === PARTNER_UID ? '你喜欢的歌' : 'Xavier喜欢的歌'
+  const sectionLabel = user?.id === PARTNER_UID ? '你喜欢的歌'
+    : user?.id === MY_UID ? '我老婆喜欢的歌'
+    : 'Xavier喜欢的歌'
 
   const q = search.trim().toLowerCase()
   console.log('search query:', q || '(none)')
