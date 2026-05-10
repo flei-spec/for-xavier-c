@@ -431,22 +431,24 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
   const nextSong = useCallback(() => { setSongError(null); setSongIndex(i => (i + 1) % Math.max(songs.length, 1)) }, [songs.length])
   const prevSong = useCallback(() => { setSongError(null); setSongIndex(i => (i - 1 + Math.max(songs.length, 1)) % Math.max(songs.length, 1)) }, [songs.length])
 
-  // Auto-skip when a song fails to load.
-  // 400ms is enough to briefly show the error; 2000ms felt too slow.
+  // Called only for genuine file errors (MediaError codes 2/3/4 — network,
+  // decode, or src-not-supported).  Autoplay-blocked and AbortError are handled
+  // inside RadioPlayer without reaching here, so everything that arrives here
+  // is a truly broken file.
   const handleSongError = useCallback((msg) => {
-    // Mark the failing src invalid so it is skipped on future playlist loops
     const failingSrc = songs[songIndex]?.src
     if (failingSrc) {
-      console.warn('[RadioStation] marking invalid after playback error:', failingSrc)
+      console.warn('[RadioStation] real file error — marking invalid:', failingSrc)
       setRuntimeInvalidSrcs(prev => new Set([...prev, failingSrc]))
     }
 
     setSongError(msg)
     clearTimeout(skipTimerRef.current)
+    // Brief pause so the user can see which song failed, then auto-advance
     skipTimerRef.current = setTimeout(() => {
       setSongError(null)
       setSongIndex(i => (i + 1) % Math.max(songs.length, 1))
-    }, 400)
+    }, 800)
   }, [songs, songIndex])
 
   const currentSong = songs[songIndex]

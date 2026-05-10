@@ -17,53 +17,95 @@ function fadeVolume(audio, from, to, ms) {
   })
 }
 
+// ── Error classification ──────────────────────────────────────────────────────
+//
+// Two completely separate failure states:
+//
+//   AUTOPLAY BLOCKED — Safari / browser policy prevents auto-start.
+//     Cause:  play() Promise rejects with NotAllowedError.
+//     Action: show "点击播放" button.  Song is fine; never call onSongError.
+//
+//   FILE ERROR — the audio resource is genuinely broken or missing.
+//     Cause:  <audio> onError fires with MediaError code 2 / 3 / 4.
+//     Action: call onSongError → skip to next, mark src invalid.
+//
+// Ignored / harmless errors (never propagate to onSongError):
+//   • MediaError code 1  (MEDIA_ERR_ABORTED)  — browser aborted its own fetch,
+//       typically triggered when audio.load() resets the element while
+//       preload="metadata" was still running. Safe to ignore.
+//   • AbortError from play() — play() was interrupted by a subsequent pause()
+//       or load() call (e.g. React Strict Mode double-invoke). Not a failure.
+
+function isRealFileError(mediaError) {
+  if (!mediaError) return false
+  // code 2 = MEDIA_ERR_NETWORK, 3 = MEDIA_ERR_DECODE, 4 = MEDIA_ERR_SRC_NOT_SUPPORTED
+  return mediaError.code === 2 || mediaError.code === 3 || mediaError.code === 4
+}
+
 // ── Component ─────────────────────────────────────────────────────────────────
 export default function RadioPlayer({
   mood, song, onNext, onPrev,
   introPhase, onSongError,
-  autoStart = false,  // if true, first song autoplays without waiting for intro
+  autoStart = false,
 }) {
-  const [playing,        setPlaying]        = useState(false)
-  const [elapsed,        setElapsed]        = useState(0)
-  const [realDur,        setRealDur]        = useState(0)
+  const [playing,         setPlaying]         = useState(false)
+  const [elapsed,         setElapsed]         = useState(0)
+  const [realDur,         setRealDur]         = useState(0)
   const [needsManualPlay, setNeedsManualPlay] = useState(false)
 
-  const audioRef       = useRef(null)
-  const prevPhase      = useRef(introPhase)
-  const isSwitching    = useRef(false)
-  // Refs to avoid stale-closure issues inside effects
-  const playingRef     = useRef(false)
-  const introPhaseRef  = useRef(introPhase)
-  // Set true by handleEnded before calling onNext() so the next src change autoplays.
-  // Seeded from autoStart prop so the very first song plays when intro is skipped.
-  const autoplayNext   = useRef(autoStart)
+  const audioRef      = useRef(null)
+  const prevPhase     = useRef(introPhase)
+  const isSwitching   = useRef(false)
+  const playingRef    = useRef(false)
+  const introPhaseRef = useRef(introPhase)
+  // Seeded from autoStart so the first song autoplays when the intro is skipped.
+  const autoplayNext  = useRef(autoStart)
 
   const activeSrc = song?.src
 
-  // Keep refs in sync with live state / props
   useEffect(() => { playingRef.current    = playing    }, [playing])
   useEffect(() => { introPhaseRef.current = introPhase }, [introPhase])
+
+  // ── Attempt play() — handles both blocked-autoplay and interruptions ────────
+  async function tryPlay(audio, src, fadeMs = 700) {
+    audio.volume = 0
+    try {
+      await audio.play()
+      console.log('[RadioPlayer] ▶ playing:', src)
+      setNeedsManualPlay(false)
+      await fadeVolume(audio, 0, 0.88, fadeMs)
+    } catch (err) {
+      console.log('[RadioPlayer] play blocked:', err.name, err.message, '| src:', src)
+      if (err.name === 'NotAllowedError') {
+        // Browser policy — show tap-to-play button, do NOT treat as file error
+        console.log('[RadioPlayer] needs manual play:', true)
+        setNeedsManualPlay(true)
+      } else if (err.name === 'AbortError') {
+        // play() interrupted by a subsequent load/pause — harmless, do nothing
+        console.log('[RadioPlayer] play() AbortError (interrupted) — ignoring')
+      } else {
+        // Unexpected play() failure — surface it
+        onSongError?.(`播放失败：${err.message}`)
+      }
+    }
+  }
 
   // ── Source change: load + conditionally autoplay ───────────────────────────
   useEffect(() => {
     const audio = audioRef.current
     if (!audio) return
 
-    // Capture intent before the async gap resets refs
     const shouldAutoplay = autoplayNext.current || playingRef.current
     autoplayNext.current = false
 
-    console.log(
-      '[RadioPlayer] Track source →', activeSrc || '(none)',
+    console.log('[RadioPlayer] audio src:', activeSrc || '(none)',
       '| shouldAutoplay:', shouldAutoplay,
-      '| introPhase:', introPhaseRef.current,
-    )
+      '| introPhase:', introPhaseRef.current)
 
     const switchTrack = async () => {
       if (isSwitching.current) return
       isSwitching.current = true
 
-      // Fade out current playback
       if (!audio.paused && audio.volume > 0) {
         await fadeVolume(audio, audio.volume, 0, 300)
       }
@@ -74,29 +116,12 @@ export default function RadioPlayer({
       setRealDur(0)
       isSwitching.current = false
 
-      // Autoplay if: was playing before switch OR song ended naturally
-      // Skip autoplay while the voice intro is still playing
       if (shouldAutoplay && introPhaseRef.current !== 'playing') {
-        console.log('[RadioPlayer] Autoplaying next song:', activeSrc)
-        audio.volume = 0
-        try {
-          await audio.play()
-          console.log('[RadioPlayer] ▶ Song playback started:', activeSrc)
-          setNeedsManualPlay(false)
-          await fadeVolume(audio, 0, 0.88, 700)
-        } catch (err) {
-          console.error('[RadioPlayer] Autoplay blocked:', err.name, err.message, '| src:', activeSrc)
-          if (err.name === 'NotAllowedError') {
-            setNeedsManualPlay(true)
-          } else {
-            onSongError?.(`无法加载：${activeSrc?.split('/').pop() ?? ''} (${err.message})`)
-          }
-        }
+        await tryPlay(audio, activeSrc, 700)
       }
     }
 
     switchTrack()
-  // activeSrc is the only real dependency — playing/introPhase are read via refs
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeSrc])
 
@@ -105,22 +130,9 @@ export default function RadioPlayer({
     if (prevPhase.current === 'playing' && introPhase === 'ready') {
       const audio = audioRef.current
       if (!audio) return
-      const t = setTimeout(async () => {
-        console.log('[RadioPlayer] Voice intro ended → starting song:', activeSrc)
-        audio.volume = 0
-        try {
-          await audio.play()
-          console.log('[RadioPlayer] ▶ Song playing after intro:', activeSrc)
-          setNeedsManualPlay(false)
-          await fadeVolume(audio, 0, 0.88, 900)
-        } catch (err) {
-          console.error('[RadioPlayer] play() failed after intro:', err.name, err.message)
-          if (err.name === 'NotAllowedError') {
-            setNeedsManualPlay(true)
-          } else {
-            onSongError?.(`播放失败：${err.message}`)
-          }
-        }
+      const t = setTimeout(() => {
+        console.log('[RadioPlayer] voice intro ended → starting song:', activeSrc)
+        tryPlay(audio, activeSrc, 900)
       }, 150)
       return () => clearTimeout(t)
     }
@@ -130,12 +142,10 @@ export default function RadioPlayer({
 
   // ── Playback events ────────────────────────────────────────────────────────
   const handleEnded = () => {
-    console.log('[RadioPlayer] Song ended:', activeSrc)
+    console.log('[RadioPlayer] song ended:', activeSrc)
     setPlaying(false)
     setElapsed(0)
-    // Signal that the next src change should autoplay
     autoplayNext.current = true
-    console.log('[RadioPlayer] Advancing to next song...')
     onNext()
   }
 
@@ -146,18 +156,7 @@ export default function RadioPlayer({
       await fadeVolume(audio, audio.volume, 0, 400)
       audio.pause()
     } else {
-      audio.volume = 0
-      audio.play().then(() => {
-        setNeedsManualPlay(false)
-        fadeVolume(audio, 0, 0.88, 700)
-      }).catch(err => {
-        console.error('[RadioPlayer] play() failed in toggle:', err.name, err.message, '| src:', activeSrc)
-        if (err.name === 'NotAllowedError') {
-          setNeedsManualPlay(true)
-        } else {
-          onSongError?.(`播放失败：${err.message}`)
-        }
-      })
+      await tryPlay(audio, activeSrc, 700)
     }
   }
 
@@ -170,9 +169,7 @@ export default function RadioPlayer({
 
   const fmt = (s) => {
     if (!s || isNaN(s)) return '--:--'
-    const m   = Math.floor(s / 60)
-    const sec = Math.floor(s % 60)
-    return `${m}:${sec.toString().padStart(2, '0')}`
+    return `${Math.floor(s / 60)}:${String(Math.floor(s % 60)).padStart(2, '0')}`
   }
 
   // ── Render ─────────────────────────────────────────────────────────────────
@@ -212,9 +209,19 @@ export default function RadioPlayer({
           onLoadedMetadata={e => setRealDur(e.target.duration)}
           onTimeUpdate={e => setElapsed(e.target.currentTime)}
           onError={e => {
-            const err = e.target.error
-            const msg = `code ${err?.code} — ${err?.message ?? 'unknown'}`
-            console.error('[RadioPlayer] Audio load error:', msg, '| src:', activeSrc)
+            const mediaErr = e.target.error
+            console.log('[RadioPlayer] audio error:', mediaErr,
+              '| code:', mediaErr?.code,
+              '| src:', activeSrc)
+
+            if (!isRealFileError(mediaErr)) {
+              // Code 1 (MEDIA_ERR_ABORTED) — browser aborted its own preload
+              // when audio.load() was called. Harmless; do not surface to user.
+              return
+            }
+
+            const msg = `code ${mediaErr.code} — ${mediaErr.message ?? 'unknown'}`
+            console.error('[RadioPlayer] real file error:', msg, '| src:', activeSrc)
             onSongError?.(`无法加载：${activeSrc?.split('/').pop() ?? ''} (${msg})`)
           }}
         />
