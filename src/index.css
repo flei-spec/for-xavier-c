@@ -106,6 +106,7 @@ body {
 button {
   cursor: pointer;
   border: none;
+  background: transparent;
   font-family: 'Inter', 'Noto Sans SC', sans-serif;
   outline: none;
 }
