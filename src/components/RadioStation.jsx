@@ -12,6 +12,7 @@ import CompanionLine from './CompanionLine'
 import AuthModal from './AuthModal'
 import SpaceGate from './SpaceGate'
 import DiaryRecords from './DiaryRecords'
+import VoiceMailbox from './VoiceMailbox'
 import { useAuth } from '../contexts/AuthContext'
 import { songMoodMap } from '../data/songMoodMap'
 import { moodVoiceMap } from '../data/moodVoiceMap'
@@ -189,10 +190,11 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
 
   const [songIndex, setSongIndex]   = useState(0)
   const [heartBeat, setHeartBeat]   = useState(false)   // brief pulse on click
-  const [showUnlock,  setShowUnlock]  = useState(false)   // choice picker
-  const [showLetter,  setShowLetter]  = useState(false)   // love letter
-  const [showDiary,   setShowDiary]   = useState(false)   // memory diary
-  const [showRecords, setShowRecords] = useState(false)   // diary records list
+  const [showUnlock,       setShowUnlock]       = useState(false)
+  const [showLetter,       setShowLetter]       = useState(false)
+  const [showDiary,        setShowDiary]        = useState(false)
+  const [showRecords,      setShowRecords]      = useState(false)
+  const [showVoiceMailbox, setShowVoiceMailbox] = useState(false)
   const [djVisible, setDjVisible]   = useState(false)
   // Lazy-initialize so VoiceIntroPlayer is in the DOM on the very first render.
   const [introPhase, setIntroPhase] = useState(() => moodVoiceMap[mood.id] ? 'playing' : 'ready')
@@ -233,6 +235,10 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
     }
     if (pendingAction === 'space') {
       setPendingAction(null); setShowSpaceGate(true); return
+    }
+    if (pendingAction === 'voice') {
+      // voice mailbox only needs auth, no space required
+      setPendingAction(null); setShowVoiceMailbox(true); return
     }
 
     // Space-gated actions: diary and records
@@ -358,6 +364,13 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
     console.log('[RadioStation] records — freshSpace:', freshSpace?.id ?? 'none')
     if (!freshSpace) { setPendingAction('records'); setShowSpaceGate(true); return }
     setShowRecords(true)
+  }
+
+  const handleVoiceFromUnlock = () => {
+    setShowUnlock(false)
+    console.log('[RadioStation] voice mailbox clicked | user:', user?.id ?? 'none')
+    if (!user) { setPendingAction('voice'); setShowAuthModal(true); return }
+    setShowVoiceMailbox(true)
   }
 
   const nextSong = useCallback(() => { setSongError(null); setSongIndex(i => (i + 1) % songs.length) }, [songs.length])
@@ -493,6 +506,7 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
           onDiary={handleDiaryFromUnlock}
           onSpace={handleSpaceFromUnlock}
           onRecords={handleRecordsFromUnlock}
+          onVoice={handleVoiceFromUnlock}
           onLogout={user ? () => { setShowUnlock(false); signOut() } : undefined}
         />
       )}
@@ -524,6 +538,11 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
       {/* Records list */}
       {showRecords && (
         <DiaryRecords onClose={() => setShowRecords(false)} />
+      )}
+
+      {/* Voice mailbox */}
+      {showVoiceMailbox && (
+        <VoiceMailbox onClose={() => setShowVoiceMailbox(false)} />
       )}
     </div>
   )

@@ -86,6 +86,32 @@
   opacity: 0.5;
 }
 
+/* ── Tabs ── */
+.dr__tabs {
+  display: flex;
+  background: rgba(255, 255, 255, 0.04);
+  border-radius: 10px;
+  padding: 3px;
+  margin-bottom: 1rem;
+  flex-shrink: 0;
+}
+
+.dr__tab {
+  flex: 1;
+  padding: 0.4rem 0;
+  border-radius: 7px;
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  letter-spacing: 0.03em;
+}
+
+.dr__tab--active {
+  background: rgba(244, 161, 176, 0.14);
+  color: var(--rose);
+}
+
 /* ── Scrollable list ── */
 .dr__list {
   overflow-y: auto;
@@ -142,6 +168,33 @@
   opacity: 0.65;
   letter-spacing: 0.03em;
   font-style: italic;
+}
+
+.dr__entry-duration {
+  font-size: 0.65rem;
+  color: var(--gold);
+  opacity: 0.5;
+  letter-spacing: 0.04em;
+  font-variant-numeric: tabular-nums;
+}
+
+.dr__audio {
+  width: 100%;
+  height: 32px;
+  accent-color: var(--rose);
+  margin-bottom: 0.3rem;
+}
+
+.dr__audio-loading {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  opacity: 0.35;
+  margin-bottom: 0.3rem;
+}
+
+.dr__entry-type--voice {
+  border-color: rgba(212, 175, 122, 0.2);
+  color: var(--gold);
 }
 
 .dr__entry-type {

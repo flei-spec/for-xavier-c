@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import './HeartUnlock.css'
 
-export default function HeartUnlock({ onLetter, onDiary, onSpace, onRecords, onClose, onLogout }) {
+export default function HeartUnlock({ onLetter, onDiary, onSpace, onRecords, onVoice, onClose, onLogout }) {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
@@ -42,6 +42,12 @@ export default function HeartUnlock({ onLetter, onDiary, onSpace, onRecords, onC
           <button className="hu__choice hu__choice--records" onClick={onRecords}>
             <span className="hu__choice-icon">📖</span>
             <span className="hu__choice-text">记录</span>
+          </button>
+
+          {/* 5th option — spans full width */}
+          <button className="hu__choice hu__choice--voice" onClick={onVoice}>
+            <span className="hu__choice-icon">📻</span>
+            <span className="hu__choice-text">语音信箱</span>
           </button>
         </div>
 

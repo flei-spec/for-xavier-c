@@ -127,6 +127,22 @@
   border-color: rgba(100, 181, 246, 0.25);
 }
 
+/* Voice mailbox — spans both columns */
+.hu__choice--voice {
+  grid-column: 1 / -1;
+  flex-direction: row;
+  justify-content: center;
+  gap: 0.55rem;
+  padding: 0.75rem;
+  border-color: rgba(212, 175, 122, 0.10);
+}
+.hu__choice--voice:hover {
+  background: rgba(212, 175, 122, 0.07);
+  border-color: rgba(212, 175, 122, 0.28);
+}
+.hu__choice--voice .hu__choice-icon { font-size: 1.1rem; }
+.hu__choice--voice .hu__choice-text { font-size: 0.85rem; }
+
 /* Logout — very subtle text link at the bottom */
 .hu__logout {
   display: block;
