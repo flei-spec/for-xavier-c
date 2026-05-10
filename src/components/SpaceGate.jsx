@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'react'
 import { createSpace, joinSpace, leaveSpace } from '../lib/spaces'
+import { updateDisplayName } from '../lib/profiles'
 import { useAuth } from '../contexts/AuthContext'
 import { supabase } from '../lib/supabase'
 import './SpaceGate.css'
@@ -28,6 +29,13 @@ function StatusView({ onSuccess }) {
   const [leaveLoading, setLeaveLoading] = useState(false)
   const [leaveError,   setLeaveError]   = useState('')
 
+  // Nickname state
+  const [displayName,  setDisplayName]  = useState('')
+  const [editingNick,  setEditingNick]  = useState(false)
+  const [nickValue,    setNickValue]    = useState('')
+  const [savingNick,   setSavingNick]   = useState(false)
+  const [nickError,    setNickError]    = useState('')
+
   useEffect(() => {
     if (!space) return
     console.log('[SpaceGate] currentSpace.id:', space.id, '| user:', user?.id)
@@ -41,11 +49,44 @@ function StatusView({ onSuccess }) {
       })
   }, [space?.id])
 
+  // Load the current user's display name
+  useEffect(() => {
+    if (!user) return
+    supabase
+      .from('profiles')
+      .select('display_name')
+      .eq('user_id', user.id)
+      .maybeSingle()
+      .then(({ data }) => {
+        setDisplayName(data?.display_name || '')
+      })
+  }, [user?.id])
+
   const handleCopy = () => {
     navigator.clipboard.writeText(space.invite_code).then(() => {
       setCopied(true)
       setTimeout(() => setCopied(false), 2200)
     })
+  }
+
+  const startEditNick = () => {
+    setNickValue(displayName)
+    setNickError('')
+    setEditingNick(true)
+  }
+
+  const handleSaveNick = async () => {
+    const trimmed = nickValue.trim()
+    if (!trimmed) { setNickError('昵称不能为空'); return }
+    setSavingNick(true)
+    const ok = await updateDisplayName(user.id, trimmed)
+    setSavingNick(false)
+    if (ok) {
+      setDisplayName(trimmed)
+      setEditingNick(false)
+    } else {
+      setNickError('保存失败，请重试')
+    }
   }
 
   const handleLeave = async () => {
@@ -82,6 +123,45 @@ function StatusView({ onSuccess }) {
       )}
 
       <CodeRow code={space.invite_code} copied={copied} onCopy={handleCopy} />
+
+      <div className="sg__divider" />
+
+      {/* ── Nickname editor ── */}
+      <p className="sg__section-title">我的昵称</p>
+
+      {editingNick ? (
+        <div className="sg__nick-form">
+          <input
+            className="sg__nick-input"
+            value={nickValue}
+            onChange={e => setNickValue(e.target.value.slice(0, 20))}
+            placeholder="输入昵称"
+            autoFocus
+          />
+          {nickError && <p className="sg__error">{nickError}</p>}
+          <div className="sg__nick-btns">
+            <button
+              className="sg__enter"
+              onClick={handleSaveNick}
+              disabled={savingNick || !nickValue.trim()}
+            >
+              {savingNick ? '保存中…' : '保存'}
+            </button>
+            <button className="sg__back" onClick={() => { setEditingNick(false); setNickError('') }}>
+              取消
+            </button>
+          </div>
+        </div>
+      ) : (
+        <div className="sg__nick-row">
+          <span className="sg__nick-display">
+            {displayName || '还没有昵称'}
+          </span>
+          <button className="sg__nick-edit" onClick={startEditNick}>
+            ✎ 修改
+          </button>
+        </div>
+      )}
 
       <div className="sg__divider" />
 

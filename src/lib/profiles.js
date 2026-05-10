@@ -5,6 +5,7 @@ export async function getProfiles(userIds) {
   const unique = [...new Set((userIds ?? []).filter(Boolean))]
   if (unique.length === 0) return {}
 
+  console.log('[profiles] getProfiles — fetching for', unique.length, 'users')
   const { data, error } = await supabase
     .from('profiles')
     .select('user_id, display_name')
@@ -15,16 +16,35 @@ export async function getProfiles(userIds) {
     return {}
   }
 
+  console.log('[profiles] getProfiles result:', data)
   return Object.fromEntries(
     (data ?? []).map(p => [p.user_id, p.display_name || '有人'])
   )
 }
 
-// Upsert the current user's profile (email prefix as default display name).
+// Create profile if it doesn't exist (security definer RPC bypasses RLS).
+// Uses "on conflict do nothing" so custom nicknames are never overwritten.
 export async function ensureProfile(userId, email) {
-  if (!userId) return
-  await supabase
+  if (!userId || !email) return
+  console.log('[profiles] ensureProfile — userId:', userId, 'email:', email)
+  const { error } = await supabase.rpc('ensure_profile', {
+    p_user_id: userId,
+    p_email:   email,
+  })
+  if (error) console.error('[profiles] ensureProfile error:', error.message, error)
+}
+
+// Update the current user's display name.
+export async function updateDisplayName(userId, name) {
+  console.log('[profiles] updateDisplayName — userId:', userId, 'name:', name)
+  const { error } = await supabase
     .from('profiles')
-    .upsert({ user_id: userId, display_name: email?.split('@')[0] || '有人' },
-             { onConflict: 'user_id', ignoreDuplicates: true })
+    .update({ display_name: name, updated_at: new Date().toISOString() })
+    .eq('user_id', userId)
+  if (error) {
+    console.error('[profiles] updateDisplayName error:', error.message, error)
+    return false
+  }
+  console.log('[profiles] updateDisplayName success')
+  return true
 }

@@ -355,6 +355,68 @@
   opacity: 1;
 }
 
+/* ── Nickname editor ── */
+.sg__nick-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: 100%;
+  gap: 0.6rem;
+}
+
+.sg__nick-display {
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  letter-spacing: 0.02em;
+}
+
+.sg__nick-edit {
+  font-size: 0.7rem;
+  color: var(--rose);
+  opacity: 0.55;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  flex-shrink: 0;
+}
+
+.sg__nick-edit:hover { opacity: 0.9; }
+
+.sg__nick-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  width: 100%;
+}
+
+.sg__nick-input {
+  width: 100%;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid rgba(244, 161, 176, 0.25);
+  border-radius: 10px;
+  color: var(--text-primary);
+  font-size: 0.9rem;
+  font-family: inherit;
+  padding: 0.55rem 0.8rem;
+  outline: none;
+  transition: border-color 0.2s;
+}
+
+.sg__nick-input:focus { border-color: rgba(244, 161, 176, 0.5); }
+.sg__nick-input::placeholder { color: var(--text-muted); opacity: 0.4; }
+
+.sg__nick-btns {
+  display: flex;
+  gap: 0.5rem;
+  align-items: center;
+}
+
+.sg__nick-btns .sg__enter {
+  flex: 1;
+  padding: 0.45rem;
+  font-size: 0.82rem;
+}
+
 /* Leave button */
 .sg__leave {
   font-size: 0.7rem;
