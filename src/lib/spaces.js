@@ -67,8 +67,8 @@ export async function createSpace() {
 }
 
 export async function leaveSpace() {
-  console.log('[spaces] leaveSpace — calling leave_space RPC')
-  const { data, error } = await supabase.rpc('leave_space')
+  console.log('[spaces] leaveSpace — calling leave_current_space RPC')
+  const { data, error } = await supabase.rpc('leave_current_space')
   if (error) {
     console.error('[spaces] leaveSpace error:', error.message, error)
     return { error: error.message }
