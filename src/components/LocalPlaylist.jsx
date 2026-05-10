@@ -1,5 +1,5 @@
 import { useState, useRef } from 'react'
-import songFilenames from 'virtual:songs-list'
+import { songMoodMap } from '../data/songMoodMap'
 import { resolveSongUrl } from '../data/songConfig'
 import './LocalPlaylist.css'
 
@@ -204,26 +204,36 @@ const reasonPool = [
   '有人在某个地方，也在听同一首歌想你。',
 ]
 
-function parseSong(filename, index) {
-  const nameWithoutExt = filename.replace(/\.mp3$/i, '')
-  const dashIdx = nameWithoutExt.indexOf(' - ')
+// Build the playlist from songMoodMap — this works in all environments
+// (Vercel, local, CDN) because songMoodMap is embedded in the JS bundle.
+//
+// The virtual:songs-list plugin read from public/songs/ at build time,
+// but that directory is gitignored so Vercel always got an empty list.
+// songMoodMap keeps the original Chinese artist/title so specificReasons
+// lookups still work even though the src filenames were renamed to ASCII.
 
-  let artist, title
-  if (dashIdx !== -1) {
-    artist = nameWithoutExt.substring(0, dashIdx)
-    title = nameWithoutExt.substring(dashIdx + 3)
-  } else {
-    artist = ''
-    title = nameWithoutExt
-  }
+const allSongs = (() => {
+  console.log('all songs:', songMoodMap.length)
 
-  const reason = specificReasons[nameWithoutExt] || reasonPool[index % reasonPool.length]
-  const url = resolveSongUrl(`/songs/${filename}`)
+  const songs = songMoodMap.map((s, i) => {
+    const key    = s.artist ? `${s.artist} - ${s.title}` : s.title
+    const reason = specificReasons[key]
+      || s.romanticReason
+      || reasonPool[i % reasonPool.length]
+    const url    = resolveSongUrl(s.src)
 
-  return { filename, title, artist, reason, url }
-}
+    return {
+      filename: s.src.replace('/songs/', ''),
+      title:    s.title,
+      artist:   s.artist,
+      reason,
+      url,
+    }
+  })
 
-const allSongs = songFilenames.map((filename, i) => parseSong(filename, i))
+  console.log('favorite songs resolved:', songs.length)
+  return songs
+})()
 
 function SongCard({ song }) {
   const audioRef = useRef(null)
@@ -318,6 +328,7 @@ export default function LocalPlaylist() {
   const [limit,  setLimit]  = useState(LP_PAGE)
 
   const q = search.trim().toLowerCase()
+  console.log('search query:', q || '(none)')
 
   const filtered = q
     ? allSongs.filter(s =>
@@ -325,6 +336,8 @@ export default function LocalPlaylist() {
         s.artist.toLowerCase().includes(q)
       )
     : allSongs
+
+  console.log('filtered favorite songs:', filtered.length)
 
   // Reset to first page whenever search text changes
   const handleSearch = (e) => {
