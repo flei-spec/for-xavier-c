@@ -16,7 +16,7 @@ import VoiceMailbox from './VoiceMailbox'
 import { useAuth } from '../contexts/AuthContext'
 import { songMoodMap } from '../data/songMoodMap'
 import { moodVoiceMap } from '../data/moodVoiceMap'
-import { resolveSongUrl } from '../data/songConfig'
+import { resolveSongUrl, devValidateSongs } from '../data/songConfig'
 import { LONG_STAY } from '../utils/atmosphere'
 import './RadioStation.css'
 
@@ -282,6 +282,9 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
 
   const songs    = getStationSongs(mood.id)
   const voiceSrc = moodVoiceMap[mood.id]
+
+  // Dev-only: fire HEAD requests once to catch missing CDN files early
+  useEffect(() => { devValidateSongs(songs) }, [mood.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Mood message card visibility ─────────────────────────────────────────
   const showDjCard  = user != null && space?.id === PRIVATE_SPACE_ID

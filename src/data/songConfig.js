@@ -54,15 +54,47 @@ if (!import.meta.env.DEV && !CDN_BASE) {
 /**
  * Resolve a song src path ("/songs/adele--easy-on-me.mp3") to a playback URL.
  *
- * All song filenames are now pure ASCII kebab-case (run scripts/rename-songs.js
- * to convert any future files).  No encoding is required; the function simply
- * prepends CDN_BASE when set, or returns the local path for dev.
+ * All song filenames are pure ASCII kebab-case (run scripts/rename-songs.js
+ * to convert any future files).  No encoding required; just prepend CDN_BASE.
  *
  * Voice intros (/Voice-intros/*.m4a) never pass through this function.
  */
 export function resolveSongUrl(src) {
   if (!CDN_BASE) return src
   return `${CDN_BASE.replace(/\/$/, '')}${src}`
+}
+
+/**
+ * Validate the full song list at startup (dev only).
+ * Fires HEAD requests to CDN and logs any 404s so broken paths are obvious
+ * immediately in the console rather than surfacing as MediaError code 4 during
+ * playback.
+ *
+ * Called once by RadioStation when import.meta.env.DEV is true.
+ */
+export async function devValidateSongs(songs) {
+  if (!import.meta.env.DEV) return
+  if (!CDN_BASE) return   // local public/ — Vite serves them fine
+
+  const results = await Promise.allSettled(
+    songs.map(s =>
+      fetch(resolveSongUrl(s.src), { method: 'HEAD' })
+        .then(r => ({ src: s.src, ok: r.ok, status: r.status }))
+        .catch(() => ({ src: s.src, ok: false, status: 0 }))
+    )
+  )
+
+  const missing = results
+    .map(r => r.value)
+    .filter(r => !r?.ok)
+
+  if (missing.length === 0) {
+    console.log(`[Audio] ✓ CDN validation: all ${songs.length} songs reachable`)
+  } else {
+    console.warn(`[Audio] ⚠️  ${missing.length}/${songs.length} songs missing on CDN:`)
+    missing.forEach(m => console.warn(`  ✗  ${m.src}  (HTTP ${m.status})`))
+    console.warn('[Audio] Fix: node scripts/upload-to-r2.js YOUR-BUCKET-NAME')
+  }
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
