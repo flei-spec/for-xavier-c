@@ -58,7 +58,10 @@ export async function randomOldEntry({ spaceId, userId }) {
 
 export async function fetchAllEntries({ spaceId, userId }) {
   if (!spaceId && !userId) return []
-  console.log('[journal] fetchAllEntries — spaceId:', spaceId, 'userId:', userId)
+  const filterDesc = spaceId
+    ? `space_id = ${spaceId}`
+    : `user_id = ${userId} AND space_id IS NULL`
+  console.log('[journal] fetchAllEntries — records query filter:', filterDesc)
   let q = supabase
     .from('diary_entries')
     .select('id, title, content, mood, created_at')
@@ -67,7 +70,7 @@ export async function fetchAllEntries({ spaceId, userId }) {
   q = applyOwnerFilter(q, { spaceId, userId })
   const { data, error } = await q
   if (error) { console.error('[journal] fetchAllEntries error:', error.message, error); return [] }
-  console.log('[journal] fetchAllEntries result:', data?.length ?? 0, 'entries')
+  console.log('[journal] fetched records:', data?.length ?? 0, 'entries')
   return data ?? []
 }
 
@@ -85,7 +88,7 @@ export async function deleteEntry(id) {
 // ── Write ──────────────────────────────────────────────────────────────────────
 
 export async function saveTodayEntry({ text, moodLabel, song, spaceId, userId }) {
-  console.log('[journal] saveTodayEntry — spaceId:', spaceId, 'userId:', userId)
+  console.log('[journal] saveTodayEntry — currentSpace.id:', spaceId ?? 'none (personal)', '| userId:', userId)
 
   if (!userId) {
     console.error('[journal] saveTodayEntry: missing userId — aborting')

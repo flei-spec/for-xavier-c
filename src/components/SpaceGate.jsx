@@ -20,19 +20,17 @@ function CodeRow({ code, copied, onCopy }) {
 // ── Has-space view ─────────────────────────────────────────────────────────────
 
 function StatusView({ onSuccess }) {
-  const { user, space, refreshSpace, applySpace } = useAuth()
+  const { user, space, refreshSpace } = useAuth()
 
-  const [memberCount,   setMemberCount]   = useState(null)
-  const [copied,        setCopied]        = useState(false)
-  const [switchCode,    setSwitchCode]    = useState('')
-  const [switchError,   setSwitchError]   = useState('')
-  const [switchLoading, setSwitchLoading] = useState(false)
-  const [leaveConfirm,  setLeaveConfirm]  = useState(false)
-  const [leaveLoading,  setLeaveLoading]  = useState(false)
+  const [memberCount,  setMemberCount]  = useState(null)
+  const [copied,       setCopied]       = useState(false)
+  const [leaveConfirm, setLeaveConfirm] = useState(false)
+  const [leaveLoading, setLeaveLoading] = useState(false)
+  const [leaveError,   setLeaveError]   = useState('')
 
   useEffect(() => {
     if (!space) return
-    console.log('[SpaceGate] current space:', space.id, 'user:', user?.id)
+    console.log('[SpaceGate] currentSpace.id:', space.id, '| user:', user?.id)
     supabase
       .from('space_members')
       .select('*', { count: 'exact', head: true })
@@ -50,42 +48,15 @@ function StatusView({ onSuccess }) {
     })
   }
 
-  const handleJoinAnother = async () => {
-    if (!switchCode.trim() || switchLoading) return
-    setSwitchLoading(true)
-    setSwitchError('')
-    console.log('[SpaceGate] joining another space, leaving current:', space.id)
-
-    const { error: leaveErr } = await leaveSpace(space.id)
-    if (leaveErr) {
-      setSwitchError('离开当前空间失败，请重试')
-      setSwitchLoading(false)
-      return
-    }
-
-    const { space: joinedSpace, error: joinErr } = await joinSpace(switchCode.trim())
-    if (joinErr) {
-      console.error('[SpaceGate] join result:', joinErr)
-      await refreshSpace()   // re-fetch to reflect actual state after leaving
-      setSwitchError(joinErr)
-      setSwitchLoading(false)
-      return
-    }
-
-    console.log('[SpaceGate] join success, calling get_my_space...')
-    const freshSpace = await refreshSpace()
-    console.log('[SpaceGate] currentSpace after switch:', freshSpace?.id ?? 'none')
-    setSwitchLoading(false)
-    onSuccess()
-  }
-
   const handleLeave = async () => {
     setLeaveLoading(true)
+    setLeaveError('')
     console.log('[SpaceGate] leaving space:', space.id)
-    const { error } = await leaveSpace(space.id)
+    const { error } = await leaveSpace()
+    console.log('[SpaceGate] leave result:', error ? `error: ${error}` : 'success')
     if (error) {
+      setLeaveError(error)
       setLeaveLoading(false)
-      setLeaveConfirm(false)
       return
     }
     await refreshSpace()
@@ -95,11 +66,13 @@ function StatusView({ onSuccess }) {
 
   return (
     <>
-      {/* ── Current space ── */}
       <p className="sg__section-title">当前空间</p>
 
-      <p className="sg__code-label">邀请码</p>
-      <CodeRow code={space.invite_code} copied={copied} onCopy={handleCopy} />
+      <p className="sg__status-msg">
+        我已经在{' '}
+        <span className="sg__status-code">{space.invite_code}</span>
+        {' '}空间里了
+      </p>
 
       {memberCount !== null && (
         <p className="sg__member-count">
@@ -108,55 +81,25 @@ function StatusView({ onSuccess }) {
         </p>
       )}
 
-      <div className="sg__divider" />
-
-      {/* ── Join another space ── */}
-      <p className="sg__section-title">加入另一个空间</p>
-      <p className="sg__warning">⚠ 加入后将自动离开当前空间</p>
-
-      <input
-        className="sg__input"
-        type="text"
-        placeholder="输入邀请码"
-        value={switchCode}
-        onChange={e => {
-          const v = e.target.value.replace(/\s+/g, '').toUpperCase().replace(/[^A-Z0-9]/g, '').slice(0, 8)
-          console.log('[SpaceGate] switchCode input length:', v.length, 'value:', v)
-          setSwitchCode(v)
-        }}
-        autoComplete="off"
-        autoCorrect="off"
-        autoCapitalize="characters"
-        spellCheck={false}
-      />
-
-      {switchError && <p className="sg__error">{switchError}</p>}
-
-      <button
-        className="sg__enter"
-        onClick={handleJoinAnother}
-        disabled={switchLoading || switchCode.trim().length < 8}
-      >
-        {switchLoading ? '处理中…' : '加入新空间'}
-      </button>
+      <CodeRow code={space.invite_code} copied={copied} onCopy={handleCopy} />
 
       <div className="sg__divider" />
 
-      {/* ── Leave + close ── */}
       {leaveConfirm ? (
         <div className="sg__leave-confirm">
-          <span className="sg__leave-confirm-text">确认要离开当前空间？</span>
+          <span className="sg__leave-confirm-text">确认要退出当前空间？</span>
+          {leaveError && <p className="sg__error">{leaveError}</p>}
           <div className="sg__leave-confirm-btns">
             <button
               className="sg__leave-confirm-yes"
               onClick={handleLeave}
               disabled={leaveLoading}
             >
-              {leaveLoading ? '离开中…' : '确认离开'}
+              {leaveLoading ? '退出中…' : '确认退出'}
             </button>
             <button
               className="sg__leave-confirm-no"
-              onClick={() => setLeaveConfirm(false)}
+              onClick={() => { setLeaveConfirm(false); setLeaveError('') }}
             >
               取消
             </button>
@@ -164,7 +107,7 @@ function StatusView({ onSuccess }) {
         </div>
       ) : (
         <button className="sg__leave" onClick={() => setLeaveConfirm(true)}>
-          离开当前空间
+          退出当前空间
         </button>
       )}
 

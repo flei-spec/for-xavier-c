@@ -287,6 +287,22 @@
 .sg__back:hover { opacity: 0.8; }
 
 /* ── Status view additions ── */
+/* ── Status message ── */
+.sg__status-msg {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  text-align: center;
+  letter-spacing: 0.01em;
+}
+
+.sg__status-code {
+  font-family: 'Courier New', monospace;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--gold-light);
+}
+
 .sg__section-title {
   font-size: 0.62rem;
   text-transform: uppercase;

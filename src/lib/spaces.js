@@ -66,24 +66,14 @@ export async function createSpace() {
   return { space: data.space, error: null }
 }
 
-export async function leaveSpace(spaceId) {
-  console.log('[spaces] leaveSpace — space_id:', spaceId)
-  const { data: { user }, error: userErr } = await supabase.auth.getUser()
-  if (userErr || !user) {
-    console.error('[spaces] leaveSpace — not authenticated')
-    return { error: '未登录' }
-  }
-  console.log('[spaces] leaveSpace — user_id:', user.id)
-  const { error } = await supabase
-    .from('space_members')
-    .delete()
-    .eq('space_id', spaceId)
-    .eq('user_id', user.id)
+export async function leaveSpace() {
+  console.log('[spaces] leaveSpace — calling leave_space RPC')
+  const { data, error } = await supabase.rpc('leave_space')
   if (error) {
     console.error('[spaces] leaveSpace error:', error.message, error)
     return { error: error.message }
   }
-  console.log('[spaces] leaveSpace — success')
+  console.log('[spaces] leaveSpace result:', data)
   return { error: null }
 }
 
