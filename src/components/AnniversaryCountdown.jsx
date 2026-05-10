@@ -16,7 +16,7 @@ export default function AnniversaryCountdown() {
 
     const MS = 1000 * 60 * 60 * 24
     return {
-      daysTogether: Math.max(0, Math.floor((now - start) / MS)),
+      daysTogether: Math.max(1, Math.floor((now - start) / MS) + 1),
       daysUntil:    Math.max(0, Math.floor((next - now)  / MS)),
     }
   }, [])
