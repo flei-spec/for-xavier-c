@@ -59,9 +59,13 @@ export default function App() {
   const handleEnter = () => setPage('mood')
 
   const handleStartStation = (mood) => {
-    // Unlock Safari/iOS audio policy synchronously inside the user gesture.
-    // Once a buffer plays here, subsequent audio.play() calls from useEffects
-    // succeed on the same page session — no silent autoplay failures.
+    // ── Unlock audio policy synchronously during the user gesture ──────────────
+    //
+    // Two separate unlocks are needed because iOS Safari treats WebAudio and
+    // HTML5 <audio> elements independently:
+    //
+    // 1. WebAudio (AudioContext) unlock — lets VoiceIntroPlayer and any
+    //    AudioContext-based code play without user gesture after this point.
     try {
       const AudioCtx = window.AudioContext || window.webkitAudioContext
       if (AudioCtx) {
@@ -73,6 +77,19 @@ export default function App() {
         src.start(0)
         ctx.close()
       }
+    } catch (_) {}
+
+    // 2. HTML5 <audio> unlock — iOS Safari requires play() to be called on a
+    //    real <audio> element during a user gesture to allow subsequent
+    //    audio.play() calls from effects/timers on the same page session.
+    //    A 0-sample silent WAV plays and ends instantly; its only purpose is
+    //    to satisfy Safari's "first play must be in gesture" requirement.
+    try {
+      const sil = new Audio(
+        'data:audio/wav;base64,' +
+        'UklGRiQAAABXQVZFZm10IBAAAAABAAEAQB8AAEAfAAABAAgAZGF0YQAAAAA='
+      )
+      sil.play().catch(() => {})
     } catch (_) {}
 
     setSelectedMood(mood)

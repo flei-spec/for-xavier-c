@@ -285,9 +285,12 @@ export default function RadioPlayer({
         <span className="player__time">{introPlaying ? '--:--' : fmt(realDur)}</span>
       </div>
 
-      {needsManualPlay && !playing && !introPlaying && (
+      {/* Show whenever audio is not playing — persistent resume CTA.
+          On Safari this also acts as the manual-play button when autoplay
+          was blocked; on all browsers it's a clear "继续" affordance. */}
+      {!playing && !introPlaying && (
         <button className="player__tap-play" onClick={toggle}>
-          ▶ 点击播放第一首歌
+          ▶ 继续播放
         </button>
       )}
 

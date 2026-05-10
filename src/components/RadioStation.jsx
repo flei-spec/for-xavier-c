@@ -540,7 +540,7 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
             onPrev={prevSong}
             introPhase={introPhase}
             onSongError={handleSongError}
-            autoStart={!isIntroAuthorized && !!voiceSrc}
+            autoStart={introPhase !== 'playing'}
           />
         )}
 
