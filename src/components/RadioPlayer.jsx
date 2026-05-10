@@ -25,26 +25,44 @@ export default function RadioPlayer({
   const [playing, setPlaying]   = useState(false)
   const [elapsed, setElapsed]   = useState(0)
   const [realDur, setRealDur]   = useState(0)
-  const audioRef   = useRef(null)
-  const prevPhase  = useRef(introPhase)
-  const isSwitching = useRef(false)
+
+  const audioRef       = useRef(null)
+  const prevPhase      = useRef(introPhase)
+  const isSwitching    = useRef(false)
+  // Refs to avoid stale-closure issues inside effects
+  const playingRef     = useRef(false)
+  const introPhaseRef  = useRef(introPhase)
+  // Set true by handleEnded before calling onNext() so the next src change autoplays
+  const autoplayNext   = useRef(false)
 
   const activeSrc = song?.src
 
-  // Reload + fade in when source changes
+  // Keep refs in sync with live state / props
+  useEffect(() => { playingRef.current    = playing    }, [playing])
+  useEffect(() => { introPhaseRef.current = introPhase }, [introPhase])
+
+  // ── Source change: load + conditionally autoplay ───────────────────────────
   useEffect(() => {
     const audio = audioRef.current
     if (!audio) return
 
-    console.log('[RadioPlayer] Track source →', activeSrc || '(none)')
+    // Capture intent before the async gap resets refs
+    const shouldAutoplay = autoplayNext.current || playingRef.current
+    autoplayNext.current = false
+
+    console.log(
+      '[RadioPlayer] Track source →', activeSrc || '(none)',
+      '| shouldAutoplay:', shouldAutoplay,
+      '| introPhase:', introPhaseRef.current,
+    )
 
     const switchTrack = async () => {
       if (isSwitching.current) return
       isSwitching.current = true
 
-      // fade out existing playback
+      // Fade out current playback
       if (!audio.paused && audio.volume > 0) {
-        await fadeVolume(audio, audio.volume, 0, 500)
+        await fadeVolume(audio, audio.volume, 0, 300)
       }
       audio.pause()
       audio.load()
@@ -52,36 +70,59 @@ export default function RadioPlayer({
       setElapsed(0)
       setRealDur(0)
       isSwitching.current = false
+
+      // Autoplay if: was playing before switch OR song ended naturally
+      // Skip autoplay while the voice intro is still playing
+      if (shouldAutoplay && introPhaseRef.current !== 'playing') {
+        console.log('[RadioPlayer] Autoplaying next song:', activeSrc)
+        audio.volume = 0
+        try {
+          await audio.play()
+          console.log('[RadioPlayer] ▶ Song playback started:', activeSrc)
+          await fadeVolume(audio, 0, 0.88, 700)
+        } catch (err) {
+          console.error('[RadioPlayer] Autoplay blocked:', err.name, err.message, '| src:', activeSrc)
+          onSongError?.('自动播放被阻止，请点击 ▶ 继续')
+        }
+      }
     }
 
     switchTrack()
+  // activeSrc is the only real dependency — playing/introPhase are read via refs
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [activeSrc])
 
-  // Auto-play with fade-in when intro ends
+  // ── Auto-play when voice intro ends ───────────────────────────────────────
   useEffect(() => {
     if (prevPhase.current === 'playing' && introPhase === 'ready') {
       const audio = audioRef.current
       if (!audio) return
       const t = setTimeout(async () => {
-        console.log('[RadioPlayer] ▶ Song playback started after voice intro')
+        console.log('[RadioPlayer] Voice intro ended → starting song:', activeSrc)
         audio.volume = 0
         try {
           await audio.play()
-          console.log('[RadioPlayer] ▶ Song playing:', activeSrc)
+          console.log('[RadioPlayer] ▶ Song playing after intro:', activeSrc)
           await fadeVolume(audio, 0, 0.88, 900)
         } catch (err) {
-          console.error('[RadioPlayer] play() failed:', err.name, err.message, 'src:', activeSrc)
-          onSongError?.(`play() blocked — ${err.message}`)
+          console.error('[RadioPlayer] play() failed after intro:', err.name, err.message)
+          onSongError?.(`播放失败：${err.message}`)
         }
       }, 150)
       return () => clearTimeout(t)
     }
     prevPhase.current = introPhase
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [introPhase])
 
+  // ── Playback events ────────────────────────────────────────────────────────
   const handleEnded = () => {
+    console.log('[RadioPlayer] Song ended:', activeSrc)
     setPlaying(false)
     setElapsed(0)
+    // Signal that the next src change should autoplay
+    autoplayNext.current = true
+    console.log('[RadioPlayer] Advancing to next song...')
     onNext()
   }
 
@@ -94,8 +135,7 @@ export default function RadioPlayer({
     } else {
       audio.volume = 0
       audio.play().catch(err => {
-        // Surface play() failures to the user instead of silently swallowing them.
-        console.error('[RadioPlayer] play() failed in toggle:', err.name, err.message, 'src:', activeSrc)
+        console.error('[RadioPlayer] play() failed in toggle:', err.name, err.message, '| src:', activeSrc)
         onSongError?.(`播放失败：${err.message}`)
       })
       fadeVolume(audio, 0, 0.88, 700)
@@ -116,6 +156,7 @@ export default function RadioPlayer({
     return `${m}:${sec.toString().padStart(2, '0')}`
   }
 
+  // ── Render ─────────────────────────────────────────────────────────────────
   const introPlaying = introPhase === 'playing'
   const total        = realDur || 1
   const progress     = Math.min((elapsed / total) * 100, 100)
@@ -142,7 +183,10 @@ export default function RadioPlayer({
           src={activeSrc}
           crossOrigin="anonymous"
           preload="metadata"
-          onPlay={() => { console.log('[RadioPlayer] onPlay fired:', activeSrc); setPlaying(true) }}
+          onPlay={() => {
+            console.log('[RadioPlayer] onPlay fired:', activeSrc)
+            setPlaying(true)
+          }}
           onPause={() => setPlaying(false)}
           onEnded={handleEnded}
           onLoadedMetadata={e => setRealDur(e.target.duration)}
@@ -150,7 +194,7 @@ export default function RadioPlayer({
           onError={e => {
             const err = e.target.error
             const msg = `code ${err?.code} — ${err?.message ?? 'unknown'}`
-            console.error('[RadioPlayer] Audio load error:', msg, 'src:', activeSrc)
+            console.error('[RadioPlayer] Audio load error:', msg, '| src:', activeSrc)
             onSongError?.(`无法加载：${activeSrc?.split('/').pop() ?? ''} (${msg})`)
           }}
         />
