@@ -14,12 +14,18 @@ export default function HeartUnlock({ onLetter, onDiary, onSpace, onRecords, onV
     setTimeout(onClose, 350)
   }
 
+  useEffect(() => {
+    const onKey = (e) => { if (e.key === 'Escape') dismiss() }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [])
+
   return (
     <div
       className={`hu__overlay ${visible ? 'hu__overlay--in' : ''}`}
-      onClick={e => { if (e.target === e.currentTarget) dismiss() }}
+      onClick={dismiss}
     >
-      <div className="hu__card">
+      <div className="hu__card" onClick={e => e.stopPropagation()}>
         <div className="hu__seal">♡</div>
         <p className="hu__label">私密专区</p>
 

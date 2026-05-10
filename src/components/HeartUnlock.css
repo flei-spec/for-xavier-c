@@ -11,6 +11,7 @@
   padding: 1.5rem;
   opacity: 0;
   transition: opacity 0.35s ease;
+  cursor: pointer;
 }
 
 .hu__overlay--in { opacity: 1; }
@@ -28,11 +29,22 @@
     0 0    50px rgba(244, 161, 176, 0.06),
     inset 0 1px 0 rgba(255, 255, 255, 0.04);
   animation: hu-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
+  cursor: default;
+}
+
+/* fade+drop exit — triggered when overlay fades out */
+.hu__overlay:not(.hu__overlay--in) .hu__card {
+  animation: hu-out 0.32s cubic-bezier(0.4, 0, 1, 1) both;
 }
 
 @keyframes hu-in {
   from { transform: scale(0.88) translateY(18px); opacity: 0; }
   to   { transform: scale(1)    translateY(0);    opacity: 1; }
+}
+
+@keyframes hu-out {
+  from { transform: scale(1)    translateY(0);   opacity: 1; }
+  to   { transform: scale(0.94) translateY(10px); opacity: 0; }
 }
 
 .hu__seal {

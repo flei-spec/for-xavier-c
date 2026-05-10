@@ -1,12 +1,8 @@
 import { useState, useEffect, useMemo } from 'react'
-import { profile } from '../data/romanticProfile'
 import { useAuth } from '../contexts/AuthContext'
 import { loadMeetingDate, saveMeetingDate } from '../lib/meetingDate'
 import AuthModal from './AuthModal'
 import './AnniversaryCountdown.css'
-
-// Private meeting date is only the fallback for this couple space.
-const PRIVATE_SPACE_ID = '89f07d46-af87-4aea-b7e8-e4a804cb21d1'
 
 const WAITING_LINES = [
   '再等一下，我们就快见面了。',
@@ -42,14 +38,13 @@ function nextMonthDate() {
 }
 
 const THIS_YEAR = new Date().getFullYear()
-const YEARS  = Array.from({ length: 5 }, (_, i) => THIS_YEAR + i)
+const YEARS  = Array.from({ length: 6 }, (_, i) => THIS_YEAR + i)
 const MONTHS = Array.from({ length: 12 }, (_, i) => i + 1)
 const DAYS   = Array.from({ length: 31 }, (_, i) => i + 1)
 
 export default function MeetingCountdown() {
   const { user, space, loadingAuth, loadingSpace } = useAuth()
 
-  // null = no date set; avoids accidentally displaying the private profile date
   const [meetingDate, setMeetingDate] = useState(null)
   const [loading,     setLoading]     = useState(true)
   const [showAuth,    setShowAuth]    = useState(false)
@@ -65,23 +60,9 @@ export default function MeetingCountdown() {
     if (loadingAuth || loadingSpace) return
     if (!user) { setLoading(false); return }
 
-    const isPrivate = space?.id === PRIVATE_SPACE_ID
-    const spaceId   = space?.id ?? null
-
-    console.log('[MeetingCountdown] currentSpace id:', spaceId ?? 'none')
-    console.log('[MeetingCountdown] isPrivateTargetSpace:', isPrivate)
-    console.log('[MeetingCountdown] countdown data source:',
-      isPrivate ? 'private profile (fallback) + Supabase' : 'Supabase only')
-
-    loadMeetingDate({ userId: user.id, spaceId }).then(date => {
-      if (date) {
-        // Custom date saved in Supabase for this space/user → use it
-        setMeetingDate(date)
-      } else if (isPrivate) {
-        // Private space with no saved date → fall back to profile default
-        setMeetingDate(profile.meetingDate)
-      }
-      // Non-private with no saved date → meetingDate stays null (shows placeholder)
+    loadMeetingDate({ userId: user.id, spaceId: space?.id ?? null }).then(date => {
+      if (date) setMeetingDate(date)
+      // No date saved → meetingDate stays null (shows placeholder)
       setLoading(false)
     })
   }, [user?.id, space?.id, loadingAuth, loadingSpace])
@@ -143,7 +124,7 @@ export default function MeetingCountdown() {
     )
   }
 
-  // ── Logged in but no date set (non-private user or space not yet customized) ─
+  // ── Logged in but no date set ─────────────────────────────────────────────────
   if (!loading && days === null) {
     return (
       <div className="countdown">
@@ -175,18 +156,16 @@ export default function MeetingCountdown() {
           <>
             <div className="countdown__line" />
             <p className="countdown__note" style={{ opacity: 0.45 }}>「还没有设置见面日期」</p>
-            {space && (
-              <button className="countdown__edit-btn" onClick={startEditing} title="设置日期">
-                ✎ 设置
-              </button>
-            )}
+            <button className="countdown__edit-btn" onClick={startEditing} title="设置日期">
+              ✎ 设置
+            </button>
           </>
         )}
       </div>
     )
   }
 
-  // ── Full countdown (private space or user has saved a custom date) ─────────
+  // ── Full countdown ────────────────────────────────────────────────────────────
   return (
     <div className="countdown">
       <p className="countdown__label">见面倒计时</p>

@@ -85,7 +85,7 @@ export default function App() {
             <WelcomePage onEnter={handleEnter} atmosphere={atmosphere} />
           )}
           {page === 'mood' && (
-            <MoodSelector onStart={handleStartStation} atmosphere={atmosphere} />
+            <MoodSelector onStart={handleStartStation} onBack={() => setPage('welcome')} atmosphere={atmosphere} />
           )}
           {page === 'station' && selectedMood && (
             <RadioStation

@@ -8,6 +8,31 @@
   padding: 3rem 1.5rem;
 }
 
+.mood__back {
+  position: absolute;
+  top: 1.5rem;
+  left: 1.5rem;
+  display: flex;
+  align-items: center;
+  gap: 0.3em;
+  font-size: 0.82rem;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  opacity: 0.55;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 0.4rem 0.6rem;
+  border-radius: 8px;
+  transition: opacity 0.2s ease, color 0.2s ease, text-shadow 0.2s ease;
+}
+
+.mood__back:hover {
+  opacity: 1;
+  color: var(--rose);
+  text-shadow: 0 0 12px rgba(244, 161, 176, 0.45);
+}
+
 .mood__inner {
   max-width: 720px;
   width: 100%;

@@ -2,11 +2,16 @@ import { useState } from 'react'
 import { moods } from '../data/romanticProfile'
 import './MoodSelector.css'
 
-export default function MoodSelector({ onStart }) {
+export default function MoodSelector({ onStart, onBack }) {
   const [selected, setSelected] = useState(null)
 
   return (
     <div className="mood">
+      {onBack && (
+        <button className="mood__back" onClick={onBack} aria-label="返回">
+          ← 返回
+        </button>
+      )}
       <div className="mood__inner">
         <h2 className="mood__heading">今晚的你，好像有一点……</h2>
         <p className="mood__sub">选一种心情——你的电台会做好其余的一切。</p>
