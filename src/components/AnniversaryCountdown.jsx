@@ -55,8 +55,23 @@ export default function AnniversaryCountdown() {
     if (loadingAuth || loadingSpace) return
     if (!user) { setLoading(false); return }
 
-    loadStoryStartDate({ userId: user.id, spaceId: space?.id ?? null }).then(date => {
-      if (date) setStoryDate(date)
+    const spaceId = space?.id ?? null
+    console.log('[AnniversaryCountdown] current user:', user.id)
+    console.log('[AnniversaryCountdown] current space:', spaceId)
+    console.log('[AnniversaryCountdown] relationship query mode:', spaceId ? 'space' : 'solo')
+
+    loadStoryStartDate({ userId: user.id, spaceId }).then(date => {
+      console.log('[AnniversaryCountdown] loaded relationship settings:', date)
+      if (date) {
+        setStoryDate(date)
+      } else if (spaceId === PRIVATE_SPACE_ID) {
+        // No custom date saved yet for this couple space → fall back to the
+        // hardcoded profile start date so the card is never blank.
+        // Once the user saves a custom value via the edit form, that DB value
+        // will take precedence on all future loads.
+        console.log('[AnniversaryCountdown] no DB row yet — using profile fallback for private space')
+        setStoryDate(profile.startDate)
+      }
       setLoading(false)
     })
   }, [user?.id, space?.id, loadingAuth, loadingSpace])

@@ -1,8 +1,12 @@
 import { useState, useEffect, useMemo } from 'react'
+import { profile } from '../data/romanticProfile'
 import { useAuth } from '../contexts/AuthContext'
 import { loadMeetingDate, saveMeetingDate } from '../lib/meetingDate'
 import AuthModal from './AuthModal'
 import './AnniversaryCountdown.css'
+
+// Profile-default fallback is only used for this specific couple space.
+const PRIVATE_SPACE_ID = '89f07d46-af87-4aea-b7e8-e4a804cb21d1'
 
 const WAITING_LINES = [
   '再等一下，我们就快见面了。',
@@ -60,9 +64,22 @@ export default function MeetingCountdown() {
     if (loadingAuth || loadingSpace) return
     if (!user) { setLoading(false); return }
 
-    loadMeetingDate({ userId: user.id, spaceId: space?.id ?? null }).then(date => {
-      if (date) setMeetingDate(date)
-      // No date saved → meetingDate stays null (shows placeholder)
+    const spaceId = space?.id ?? null
+    console.log('[MeetingCountdown] current user:', user.id)
+    console.log('[MeetingCountdown] current space:', spaceId)
+    console.log('[MeetingCountdown] relationship query mode:', spaceId ? 'space' : 'solo')
+
+    loadMeetingDate({ userId: user.id, spaceId }).then(date => {
+      console.log('[MeetingCountdown] loaded relationship settings:', date)
+      if (date) {
+        setMeetingDate(date)
+      } else if (spaceId === PRIVATE_SPACE_ID) {
+        // No custom date saved yet → fall back to the profile default so
+        // the card is never blank inside the private couple space.
+        console.log('[MeetingCountdown] no DB row yet — using profile fallback for private space')
+        setMeetingDate(profile.meetingDate)
+      }
+      // Other accounts/spaces: stays null → shows "还没有设置" placeholder
       setLoading(false)
     })
   }, [user?.id, space?.id, loadingAuth, loadingSpace])
