@@ -4,70 +4,134 @@
   box-sizing: border-box;
 }
 
-/* ── Base design tokens ──────────────────────────────────────────────────────── */
+/* ── Design tokens ───────────────────────────────────────────────────────────── */
 :root {
-  --bg-deep:       #080812;
-  --bg-dark:       #0d0d1f;
-  --bg-card:       rgba(255, 255, 255, 0.042);
-  --bg-card-hover: rgba(255, 255, 255, 0.072);
-  --border:        rgba(255, 255, 255, 0.08);
-  --rose:          #f4a1b0;
-  --rose-dark:     #e0758e;
-  --gold:          #d4af7a;
-  --gold-light:    #e8c99a;
-  --lavender:      #b39ddb;
-  --text-primary:  #f8f0e8;
-  --text-secondary:rgba(248, 240, 232, 0.6);
-  --text-muted:    rgba(248, 240, 232, 0.32);
+  /* ── Glass material depths (night mode) ── */
+  --glass-modal:  rgba(8, 15, 32, 0.80);   /* modal panels */
+  --overlay-bg:   rgba(0,  0,  0, 0.72);   /* scrim behind modals */
+  --glass-inner:  rgba(255,255,255,0.07);  /* inner specular highlight */
+  --glass-border: rgba(255,255,255,0.10);
+  --glass-border-strong: rgba(255,255,255,0.17);
 
-  /* atmosphere glow (overridden by theme) */
-  --atm-glow-1: rgba(244, 161, 176, 0.06);
-  --atm-glow-2: rgba(100, 80, 160, 0.04);
+  /* ── Ambient shadow system ── */
+  --shadow-xs:    0 2px  8px  rgba(0,0,0,0.16);
+  --shadow-sm:    0 4px  20px rgba(0,0,0,0.22);
+  --shadow-md:    0 8px  32px rgba(0,0,0,0.28), 0 2px 8px rgba(0,0,0,0.14);
+  --shadow-lg:    0 20px 60px rgba(0,0,0,0.38), 0 4px 16px rgba(0,0,0,0.18);
+  --shadow-modal: 0 32px 80px rgba(0,0,0,0.48), 0 8px 24px rgba(0,0,0,0.24),
+                  0 0 60px rgba(90,70,200,0.06);
+
+  /* ── Blur ── */
+  --blur-glass: 24px;
+  --blur-modal: 40px;
+
+  /* ── Backgrounds ── */
+  --bg-deep:       #07111f;
+  --bg-dark:       #0d1b2a;
+  --bg-card:       rgba(255,255,255,0.06);
+  --bg-card-hover: rgba(255,255,255,0.10);
+
+  /* ── Borders ── */
+  --border: rgba(255,255,255,0.09);
+
+  /* ── Text ── */
+  --text-primary:   rgba(240,245,255,0.92);
+  --text-secondary: rgba(240,245,255,0.55);
+  --text-muted:     rgba(240,245,255,0.32);
+
+  /* ── Brand accents ── */
+  --rose:       #f4a1b0;
+  --rose-dark:  #e0758e;
+  --gold:       #d4af7a;
+  --gold-light: #e8c99a;
+  --lavender:   #b39ddb;
+
+  /* ── Atmosphere glows (overridden by theme) ── */
+  --atm-glow-1: rgba(244,161,176,0.06);
+  --atm-glow-2: rgba(100,80,160,0.04);
 }
 
-/* ── Atmosphere themes ───────────────────────────────────────────────────────── */
+/* ── Atmosphere themes (data-atm) ───────────────────────────────────────────── */
 
-/* Rain: cooler, slightly blue-shifted */
 [data-atm="rain"] {
   --bg-deep:    #060910;
   --bg-dark:    #090e1a;
-  --bg-card:    rgba(255, 255, 255, 0.038);
-  --atm-glow-1: rgba(100, 140, 220, 0.06);
-  --atm-glow-2: rgba(80, 100, 180, 0.04);
-  --border:     rgba(160, 180, 230, 0.09);
+  --bg-card:    rgba(255,255,255,0.05);
+  --atm-glow-1: rgba(100,140,220,0.08);
+  --atm-glow-2: rgba(80,100,180,0.05);
+  --border:     rgba(160,180,230,0.10);
 }
 
-/* Deep night: deeper, more purple */
 [data-atm="deepnight"] {
   --bg-deep:    #040410;
   --bg-dark:    #07071a;
-  --bg-card:    rgba(255, 255, 255, 0.036);
-  --atm-glow-1: rgba(120, 90, 200, 0.07);
-  --atm-glow-2: rgba(80, 60, 160, 0.05);
-  --text-muted: rgba(248, 240, 232, 0.28);
+  --bg-card:    rgba(255,255,255,0.05);
+  --atm-glow-1: rgba(120,90,200,0.08);
+  --atm-glow-2: rgba(80,60,160,0.05);
+  --text-muted: rgba(240,245,255,0.28);
 }
 
-/* Snow: clean, cold white */
 [data-atm="snow"] {
-  --bg-deep: #07090f;
-  --bg-dark: #0b0e18;
-  --atm-glow-1: rgba(200, 215, 255, 0.05);
+  --bg-deep:    #07090f;
+  --bg-dark:    #0b0e18;
+  --atm-glow-1: rgba(200,215,255,0.05);
 }
 
-/* Sunny: accent shift (bgDeep is overridden by inline style from backgroundTheme.js) */
 [data-atm="sunny"] {
   --rose:       #f4a898;
   --gold:       #e2bc82;
-  --atm-glow-1: rgba(220, 180, 100, 0.07);
-  --atm-glow-2: rgba(240, 140, 100, 0.04);
+  --atm-glow-1: rgba(220,180,100,0.07);
+  --atm-glow-2: rgba(240,140,100,0.04);
 }
 
-/* Cold */
 [data-atm="cold"] {
-  --bg-deep: #070810;
-  --bg-dark: #0a0c1c;
-  --atm-glow-1: rgba(140, 160, 220, 0.05);
+  --bg-deep:    #070810;
+  --bg-dark:    #0a0c1c;
+  --atm-glow-1: rgba(140,160,220,0.05);
 }
+
+/* ── Daytime theme ───────────────────────────────────────────────────────────── */
+/* Applied when data-time="day" (morning 6–11, afternoon 11–17). Placed last so
+   it wins over [data-atm] rules at equal specificity. */
+[data-time="day"] {
+  --glass-modal:  rgba(235,248,255,0.90);
+  --overlay-bg:   rgba(100,160,220,0.32);
+  --glass-inner:  rgba(255,255,255,0.65);
+  --glass-border: rgba(120,175,230,0.22);
+  --glass-border-strong: rgba(100,158,220,0.38);
+
+  --shadow-xs:    0 2px  8px  rgba(80,140,210,0.10);
+  --shadow-sm:    0 4px  20px rgba(80,140,210,0.13);
+  --shadow-md:    0 8px  32px rgba(80,140,210,0.17), 0 2px 8px rgba(80,140,210,0.08);
+  --shadow-lg:    0 20px 60px rgba(80,140,210,0.21), 0 4px 16px rgba(80,140,210,0.10);
+  --shadow-modal: 0 32px 80px rgba(60,120,200,0.18), 0 8px 24px rgba(60,120,200,0.10),
+                  0 0 60px rgba(100,160,240,0.08);
+
+  --bg-dark:       #c2dcf5;
+  --bg-card:       rgba(255,255,255,0.55);
+  --bg-card-hover: rgba(255,255,255,0.75);
+  --border:        rgba(120,175,230,0.22);
+
+  --text-primary:   #1a2d4a;
+  --text-secondary: rgba(26,45,74,0.60);
+  --text-muted:     rgba(26,45,74,0.38);
+
+  --rose:       #c84f6d;
+  --rose-dark:  #ae3858;
+  --gold:       #9a6d0a;
+  --gold-light: #b28a1c;
+  --lavender:   #6a4fac;
+}
+
+/* Day body: user-specified gradient + no stars */
+html[data-time="day"] body {
+  background-image: linear-gradient(180deg, #eef8ff 0%, #dceeff 50%, #f2f8ff 100%);
+}
+html[data-time="day"] .stars-bg { opacity: 0; transition: opacity 1.2s ease; }
+
+/* Day scrollbar */
+html[data-time="day"] ::-webkit-scrollbar-track { background: rgba(180,210,240,0.4); }
+html[data-time="day"] ::-webkit-scrollbar-thumb { background: rgba(160,90,120,0.32); }
 
 /* ── Global ──────────────────────────────────────────────────────────────────── */
 
@@ -81,23 +145,19 @@ body {
   overflow-x: hidden;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;
-
-  /* Smooth base-colour transition when time / weather changes */
   transition: background-color 1.2s ease;
 
-  /* Ambient glow blobs — colours driven by --atm-glow-1 / --atm-glow-2 which
-     App.jsx updates whenever the atmosphere theme changes.
-     background-image itself doesn't animate, but the base colour does; together
-     they produce a perceptible, gentle shift as day turns to night. */
+  /* Layered cinematic atmosphere — three glow blobs */
   background-image:
-    radial-gradient(ellipse 70% 45% at 18% 18%, var(--atm-glow-1) 0%, transparent 55%),
-    radial-gradient(ellipse 55% 38% at 82% 82%, var(--atm-glow-2) 0%, transparent 50%);
+    radial-gradient(ellipse 80% 50% at 15% 12%, var(--atm-glow-1) 0%, transparent 55%),
+    radial-gradient(ellipse 60% 40% at 85% 85%, var(--atm-glow-2) 0%, transparent 52%),
+    radial-gradient(ellipse 40% 30% at 50% 50%, rgba(255,255,255,0.012) 0%, transparent 60%);
 }
 
 /* ── Scrollbar ───────────────────────────────────────────────────────────────── */
 ::-webkit-scrollbar { width: 4px; }
 ::-webkit-scrollbar-track { background: var(--bg-dark); }
-::-webkit-scrollbar-thumb { background: rgba(224, 117, 142, 0.4); border-radius: 2px; }
+::-webkit-scrollbar-thumb { background: rgba(224,117,142,0.38); border-radius: 2px; }
 ::-webkit-scrollbar-thumb:hover { background: var(--rose-dark); }
 
 /* ── Buttons ─────────────────────────────────────────────────────────────────── */
@@ -113,75 +173,26 @@ button:focus-visible {
   outline-offset: 2px;
 }
 
-/* ── Glassmorphism helper class ──────────────────────────────────────────────── */
+/* ── Glass card utility ──────────────────────────────────────────────────────── */
+/* A floating glass surface. Apply to cards, panels, containers. */
 .glass {
   background: var(--bg-card);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
-  border: 1px solid var(--border);
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-sm), inset 0 1px 0 var(--glass-inner);
 }
 
-/* ── Fade-in animation (used by many components) ─────────────────────────────── */
+.glass:hover {
+  background: var(--bg-card-hover);
+  border-color: var(--glass-border-strong);
+  box-shadow: var(--shadow-md), inset 0 1px 0 var(--glass-inner);
+  transform: translateY(-1px);
+  transition: background 0.22s, border-color 0.22s, box-shadow 0.22s, transform 0.22s;
+}
+
+/* ── Fade-in animation ───────────────────────────────────────────────────────── */
 @keyframes fade-up {
   from { opacity: 0; transform: translateY(18px); }
   to   { opacity: 1; transform: translateY(0); }
-}
-
-/* ── Daytime theme — light white-blue sky ────────────────────────────────────── */
-/*
- * Applied when data-time="day" (morning 6–11, afternoon 11–17).
- * All dark tokens flip to their light counterparts.
- * Placed after all [data-atm] rules so same-specificity overrides win.
- * --bg-deep is handled by inline style in App.jsx (backgroundTheme.js values).
- */
-[data-time="day"] {
-  /* Backgrounds */
-  --bg-dark:       #c2dcf5;
-  --bg-card:       rgba(255, 255, 255, 0.62);
-  --bg-card-hover: rgba(255, 255, 255, 0.82);
-
-  /* Borders */
-  --border: rgba(55, 125, 210, 0.15);
-
-  /* Text — deep blue-gray for contrast on light background */
-  --text-primary:   #1a2d4a;
-  --text-secondary: rgba(26, 45, 74, 0.60);
-  --text-muted:     rgba(26, 45, 74, 0.38);
-
-  /* Accent colours — slightly deeper so they read on white-blue */
-  --rose:       #c84f6d;
-  --rose-dark:  #ae3858;
-  --gold:       #9a6d0a;
-  --gold-light: #b38b1e;
-  --lavender:   #6a4fac;
-}
-
-/* Override body gradient for a soft daylight sky effect */
-html[data-time="day"] body {
-  background-image: linear-gradient(
-    180deg,
-    #eef8ff 0%,
-    #dceeff 50%,
-    #f2f8ff 100%
-  );
-}
-
-/* Stars are invisible in daylight — fade them out */
-html[data-time="day"] .stars-bg {
-  opacity: 0;
-  transition: opacity 1.2s ease;
-}
-
-/* Scrollbar adapts to light theme */
-html[data-time="day"] ::-webkit-scrollbar-track {
-  background: rgba(180, 210, 240, 0.4);
-}
-html[data-time="day"] ::-webkit-scrollbar-thumb {
-  background: rgba(160, 90, 120, 0.35);
-}
-
-/* Glassmorphism helper in daytime: bright white glass */
-html[data-time="day"] .glass {
-  background: rgba(255, 255, 255, 0.55);
-  border-color: rgba(55, 125, 210, 0.14);
 }

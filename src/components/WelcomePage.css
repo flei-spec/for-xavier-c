@@ -21,9 +21,9 @@
   top: 48%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 640px;
-  height: 640px;
-  background: radial-gradient(circle, rgba(244, 161, 176, 0.048) 0%, transparent 62%);
+  width: 720px;
+  height: 720px;
+  background: radial-gradient(circle, rgba(244,161,176,0.08) 0%, transparent 62%);
   pointer-events: none;
 }
 

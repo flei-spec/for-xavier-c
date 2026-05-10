@@ -1,7 +1,7 @@
 .hu__overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.82);
+  background: var(--overlay-bg);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   z-index: 200;
@@ -17,7 +17,9 @@
 .hu__overlay--in { opacity: 1; }
 
 .hu__card {
-  background: #0e0e20;
+  background: var(--glass-modal);
+  backdrop-filter: blur(var(--blur-modal));
+  -webkit-backdrop-filter: blur(var(--blur-modal));
   border: 1px solid rgba(244, 161, 176, 0.16);
   border-radius: 24px;
   padding: 2.2rem 2rem 2rem;
@@ -27,7 +29,7 @@
   box-shadow:
     0 32px 64px rgba(0, 0, 0, 0.5),
     0 0    50px rgba(244, 161, 176, 0.06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    inset 0 1px 0 var(--glass-inner);
   animation: hu-in 0.4s cubic-bezier(0.16, 1, 0.3, 1) both;
   cursor: default;
 }

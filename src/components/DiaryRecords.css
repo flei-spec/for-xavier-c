@@ -1,7 +1,7 @@
 .dr__overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.85);
+  background: var(--overlay-bg);
   backdrop-filter: blur(14px);
   -webkit-backdrop-filter: blur(14px);
   z-index: 200;
@@ -16,7 +16,9 @@
 .dr__overlay--in { opacity: 1; }
 
 .dr__modal {
-  background: #0e0e20;
+  background: var(--glass-modal);
+  backdrop-filter: blur(var(--blur-modal));
+  -webkit-backdrop-filter: blur(var(--blur-modal));
   border: 1px solid rgba(244, 161, 176, 0.16);
   border-radius: 24px;
   padding: 2.4rem 2rem 1.6rem;
@@ -27,9 +29,9 @@
   flex-direction: column;
   position: relative;
   box-shadow:
-    0 40px 80px rgba(0, 0, 0, 0.55),
+    var(--shadow-modal), 
     0 0 60px rgba(244, 161, 176, 0.06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    inset 0 1px 0 var(--glass-inner);
   animation: dr-in 0.42s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 

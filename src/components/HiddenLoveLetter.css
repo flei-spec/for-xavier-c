@@ -1,7 +1,7 @@
 .letter__overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.88);
+  background: var(--overlay-bg);
   backdrop-filter: blur(14px);
   z-index: 200;
   display: flex;
@@ -15,7 +15,9 @@
 .letter__overlay--in { opacity: 1; }
 
 .letter__modal {
-  background: #0e0e20;
+  background: var(--glass-modal);
+  backdrop-filter: blur(var(--blur-modal));
+  -webkit-backdrop-filter: blur(var(--blur-modal));
   border: 1px solid rgba(244,161,176,0.18);
   border-radius: 26px;
   padding: 2.8rem 2.4rem;

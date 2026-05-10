@@ -47,15 +47,17 @@
 
 .lp-search {
   flex: 1;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
   border-radius: 10px;
   padding: 9px 14px;
   color: var(--text-primary);
   font-size: 14px;
   font-family: inherit;
   outline: none;
-  transition: border-color 0.15s;
+  transition: border-color 0.18s, background 0.18s;
 }
 
 .lp-search::placeholder { color: var(--text-muted); }
@@ -76,20 +78,29 @@
   margin: 0 auto;
 }
 
-/* ── card — no backdrop-filter ── */
 .lp-card {
   position: relative;
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 16px;
+  background: var(--bg-card);
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+  border: 1px solid var(--glass-border);
+  border-radius: 18px;
   padding: 18px 18px 16px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.25);
-  transition: border-color 0.15s;
+  box-shadow: var(--shadow-xs), inset 0 1px 0 var(--glass-inner);
+  transition: background 0.20s, border-color 0.20s, box-shadow 0.20s, transform 0.20s;
   overflow: hidden;
 }
 
-.lp-card:hover        { border-color: rgba(244, 161, 176, 0.22); }
-.lp-card--playing     { border-color: rgba(244, 161, 176, 0.38); }
+.lp-card:hover {
+  background: var(--bg-card-hover);
+  border-color: rgba(244,161,176,0.28);
+  box-shadow: var(--shadow-sm), inset 0 1px 0 var(--glass-inner);
+  transform: translateY(-2px);
+}
+.lp-card--playing {
+  border-color: rgba(244,161,176,0.40);
+  box-shadow: var(--shadow-sm), 0 0 0 1px rgba(244,161,176,0.14), inset 0 1px 0 var(--glass-inner);
+}
 
 /* ── card top row ── */
 .lp-card__top {

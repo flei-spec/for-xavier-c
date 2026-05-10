@@ -1,10 +1,14 @@
 .player {
   position: relative;
   background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 24px;
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+  border: 1px solid var(--glass-border);
+  border-radius: 28px;
   padding: 2rem;
   overflow: hidden;
+  box-shadow: var(--shadow-md), inset 0 1px 0 var(--glass-inner);
+  transition: box-shadow 0.3s;
 }
 
 .player__top-bar {
@@ -55,9 +59,12 @@
 .player__art {
   width: 72px;
   height: 72px;
-  border-radius: 14px;
-  background: rgba(255,255,255,0.04);
-  border: 1px solid var(--border);
+  border-radius: 18px;
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
+  box-shadow: var(--shadow-xs), inset 0 1px 0 var(--glass-inner);
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -142,7 +149,7 @@
 .player__track-bar {
   flex: 1;
   height: 3px;
-  background: rgba(255,255,255,0.07);
+  background: var(--bg-card);
   border-radius: 3px;
   overflow: hidden;
 }
@@ -163,19 +170,22 @@
 }
 
 .player__skip {
-  background: none;
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
   color: var(--text-muted);
-  font-size: 1.3rem;
+  font-size: 1.1rem;
   width: 42px;
   height: 42px;
   border-radius: 50%;
   display: flex;
   align-items: center;
   justify-content: center;
-  transition: color 0.15s;
+  transition: background 0.18s, color 0.18s, border-color 0.18s;
 }
 
-.player__skip:hover { color: var(--text-secondary); }
+.player__skip:hover { background: var(--bg-card-hover); color: var(--text-primary); border-color: var(--glass-border-strong); }
 
 .player__play {
   width: 58px;

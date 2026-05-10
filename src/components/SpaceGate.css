@@ -1,7 +1,7 @@
 .sg__overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.88);
+  background: var(--overlay-bg);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   z-index: 300;
@@ -16,7 +16,9 @@
 .sg__overlay--in { opacity: 1; }
 
 .sg__card {
-  background: #0e0e20;
+  background: var(--glass-modal);
+  backdrop-filter: blur(var(--blur-modal));
+  -webkit-backdrop-filter: blur(var(--blur-modal));
   border: 1px solid rgba(244, 161, 176, 0.16);
   border-radius: 24px;
   padding: 2.6rem 2.2rem 2.2rem;
@@ -28,9 +30,9 @@
   align-items: center;
   gap: 0.85rem;
   box-shadow:
-    0 40px 80px rgba(0, 0, 0, 0.55),
+    var(--shadow-modal), 
     0 0 60px rgba(244, 161, 176, 0.06),
-    inset 0 1px 0 rgba(255, 255, 255, 0.04);
+    inset 0 1px 0 var(--glass-inner);
   animation: sg-in 0.42s cubic-bezier(0.16, 1, 0.3, 1) both;
   max-height: 88vh;
   overflow-y: auto;

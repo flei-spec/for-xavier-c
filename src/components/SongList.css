@@ -1,8 +1,11 @@
 .songs {
   background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 20px;
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+  border: 1px solid var(--glass-border);
+  border-radius: 24px;
   padding: 1.4rem;
+  box-shadow: var(--shadow-sm), inset 0 1px 0 var(--glass-inner);
 }
 
 .songs__header {
@@ -123,16 +126,19 @@
   display: flex;
   align-items: center;
   gap: 0.5rem;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: var(--bg-card);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid var(--glass-border);
   border-radius: 10px;
   padding: 0.45rem 0.7rem;
   margin-bottom: 0.7rem;
-  transition: border-color 0.2s;
+  transition: border-color 0.2s, background 0.2s;
 }
 
 .songs__search-row:focus-within {
-  border-color: rgba(244, 161, 176, 0.28);
+  border-color: rgba(244,161,176,0.38);
+  background: var(--bg-card-hover);
 }
 
 .songs__search-icon {

@@ -1,13 +1,21 @@
 .countdown {
   background: var(--bg-card);
-  border: 1px solid var(--border);
-  border-radius: 20px;
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+  border: 1px solid var(--glass-border);
+  border-radius: 22px;
   padding: 1.5rem;
   text-align: center;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0.85rem;
+  box-shadow: var(--shadow-sm), inset 0 1px 0 var(--glass-inner);
+  transition: box-shadow 0.25s, transform 0.25s;
+}
+.countdown:hover {
+  box-shadow: var(--shadow-md), inset 0 1px 0 var(--glass-inner);
+  transform: translateY(-2px);
 }
 
 .countdown__label {

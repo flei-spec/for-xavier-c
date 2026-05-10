@@ -1,11 +1,14 @@
 .atm {
   position: relative;
-  background: rgba(255, 255, 255, 0.04);
-  border: 1px solid rgba(255, 255, 255, 0.07);
-  border-radius: 16px;
+  background: var(--bg-card);
+  backdrop-filter: blur(var(--blur-glass));
+  -webkit-backdrop-filter: blur(var(--blur-glass));
+  border: 1px solid var(--glass-border);
+  border-radius: 18px;
   padding: 1.1rem 1.3rem 0.95rem;
   overflow: hidden;
-  animation: atm-in 0.5s ease both;
+  box-shadow: var(--shadow-xs), inset 0 1px 0 var(--glass-inner);
+  animation: atm-in 0.5s cubic-bezier(0.16,1,0.3,1) both;
 }
 
 @keyframes atm-in {
