@@ -1,0 +1,208 @@
+.al {
+  position: relative;
+  z-index: 1;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  padding: 3.5rem 1.5rem;
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+
+.al--ready { opacity: 1; }
+
+.al__glow {
+  position: absolute;
+  top: 48%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 640px;
+  height: 640px;
+  background: radial-gradient(circle, rgba(244, 161, 176, 0.05) 0%, transparent 65%);
+  pointer-events: none;
+}
+
+/* ── Body ── */
+.al__body {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  width: 100%;
+  max-width: 420px;
+  gap: 3rem;
+}
+
+/* ── Hero ── */
+.al__hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.75rem;
+  animation: al-up 0.65s ease both;
+  animation-delay: 0.1s;
+}
+
+@keyframes al-up {
+  from { opacity: 0; transform: translateY(18px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+.al__seal {
+  font-size: 2.2rem;
+  color: var(--rose);
+  opacity: 0.7;
+  animation: al-float 3.5s ease-in-out infinite;
+}
+
+@keyframes al-float {
+  0%, 100% { transform: translateY(0); }
+  50%       { transform: translateY(-7px); }
+}
+
+.al__title {
+  font-family: 'Playfair Display', 'Georgia', serif;
+  line-height: 1.15;
+  color: var(--text-primary);
+}
+
+.al__for {
+  display: block;
+  font-family: 'Inter', 'Noto Sans SC', sans-serif;
+  font-size: 0.68rem;
+  font-weight: 300;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+
+.al__name {
+  display: block;
+  font-size: clamp(2rem, 6.5vw, 3.4rem);
+  font-weight: 500;
+  font-style: italic;
+  letter-spacing: -0.01em;
+  background: linear-gradient(135deg, var(--rose) 20%, var(--gold) 80%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+.al__sub {
+  font-size: 0.92rem;
+  color: var(--text-secondary);
+  font-weight: 300;
+  line-height: 1.8;
+  letter-spacing: 0.01em;
+}
+
+.al__tagline {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-style: italic;
+  letter-spacing: 0.03em;
+}
+
+/* ── Actions ── */
+.al__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  width: 100%;
+  animation: al-up 0.65s ease both;
+  animation-delay: 0.3s;
+}
+
+.al__auth-row {
+  display: flex;
+  gap: 0.75rem;
+  width: 100%;
+  max-width: 280px;
+}
+
+.al__btn {
+  flex: 1;
+  padding: 0.7rem 0;
+  border-radius: 24px;
+  font-size: 0.92rem;
+  font-weight: 500;
+  letter-spacing: 0.05em;
+  cursor: pointer;
+  transition: opacity 0.2s, box-shadow 0.2s;
+}
+
+.al__btn--login {
+  background: linear-gradient(135deg, var(--rose-dark), #c97090);
+  color: white;
+  box-shadow: 0 3px 18px rgba(224, 117, 142, 0.22);
+}
+
+.al__btn--login:hover {
+  opacity: 0.88;
+  box-shadow: 0 5px 24px rgba(224, 117, 142, 0.32);
+}
+
+.al__btn--signup {
+  background: none;
+  border: 1px solid rgba(244, 161, 176, 0.35);
+  color: var(--rose);
+}
+
+.al__btn--signup:hover {
+  background: rgba(244, 161, 176, 0.07);
+  border-color: rgba(244, 161, 176, 0.6);
+}
+
+/* ── Separator ── */
+.al__sep {
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  width: 100%;
+  max-width: 280px;
+  color: var(--text-muted);
+  opacity: 0.3;
+  font-size: 0.7rem;
+  letter-spacing: 0.1em;
+}
+
+.al__sep::before,
+.al__sep::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.08);
+}
+
+/* ── Guest mode ── */
+.al__guest {
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  opacity: 0.5;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: opacity 0.2s;
+  padding: 0.3rem 0;
+}
+
+.al__guest:hover { opacity: 0.8; }
+
+.al__guest-note {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  opacity: 0.3;
+  letter-spacing: 0.02em;
+  line-height: 1.6;
+  max-width: 260px;
+}
+
+@media (max-width: 400px) {
+  .al { padding: 2.5rem 1.2rem; }
+  .al__auth-row { max-width: 100%; }
+}

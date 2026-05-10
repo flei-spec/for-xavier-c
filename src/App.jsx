@@ -1,35 +1,44 @@
 import { useState, useEffect } from 'react'
 import { moods } from './data/romanticProfile'
 import { useAtmosphere } from './hooks/useAtmosphere'
+import { useAuth } from './contexts/AuthContext'
 import { getTimeOfDay, getBackgroundTheme } from './utils/backgroundTheme'
 import StarBackground from './components/StarBackground'
 import AtmosphereParticles from './components/AtmosphereParticles'
+import AuthLanding from './components/AuthLanding'
 import WelcomePage from './components/WelcomePage'
 import MoodSelector from './components/MoodSelector'
 import RadioStation from './components/RadioStation'
 import './App.css'
 
 export default function App() {
+  const { user, loadingAuth } = useAuth()
   const [page, setPage]               = useState('welcome')
   const [selectedMood, setSelectedMood] = useState(null)
+  const [guestMode, setGuestMode]       = useState(false)
 
   const { data: atmosphere } = useAtmosphere()
 
-  // ── Apply atmosphere theme (data-atm attribute + background gradient) ──────
+  // When a guest logs in mid-session, exit guest mode
   useEffect(() => {
-    // 1. Existing coarse theme — drives particle colours, card tints, etc.
+    if (user && guestMode) setGuestMode(false)
+  }, [user, guestMode])
+
+  // When user logs out, reset to welcome so next login starts fresh
+  useEffect(() => {
+    if (!user && !loadingAuth && !guestMode) {
+      setPage('welcome')
+      setSelectedMood(null)
+    }
+  }, [user, loadingAuth, guestMode])
+
+  // ── Apply atmosphere theme ─────────────────────────────────────────────────
+  useEffect(() => {
     const theme = atmosphere?.theme ?? 'default'
     document.documentElement.setAttribute('data-atm', theme)
 
-    // 2. Fine-grained background gradient from time + weather.
-    //
-    //    atmosphere.hour         = local hour (0-23) from the weather API timezone
-    //    atmosphere.weather.type = 'sunny' | 'cloudy' | 'fog' | 'rain' | 'storm' | 'snow'
-    //
-    //    MOCK: to force a specific weather for testing, replace the line below with e.g.
-    //      const weatherType = 'rainy'
     const hour        = atmosphere?.hour        ?? new Date().getHours()
-    const weatherType = atmosphere?.weather?.type ?? null   // null → uses time-only default
+    const weatherType = atmosphere?.weather?.type ?? null
 
     const timeOfDay = getTimeOfDay(hour)
     const bg        = getBackgroundTheme({ timeOfDay, weather: weatherType })
@@ -62,18 +71,30 @@ export default function App() {
       <StarBackground />
       <AtmosphereParticles theme={atmosphere?.theme} />
 
-      {page === 'welcome' && (
-        <WelcomePage onEnter={handleEnter} atmosphere={atmosphere} />
-      )}
-      {page === 'mood' && (
-        <MoodSelector onStart={handleStartStation} atmosphere={atmosphere} />
-      )}
-      {page === 'station' && selectedMood && (
-        <RadioStation
-          mood={selectedMood}
-          onBack={handleBack}
-          atmosphere={atmosphere}
-        />
+      {/* ── Auth gate ── */}
+      {loadingAuth ? (
+        // Brief loading state while Supabase resolves the session
+        null
+      ) : !user && !guestMode ? (
+        // Not logged in and not in guest mode → show landing page
+        <AuthLanding onGuestMode={() => setGuestMode(true)} />
+      ) : (
+        // Logged in or guest mode → normal app flow
+        <>
+          {page === 'welcome' && (
+            <WelcomePage onEnter={handleEnter} atmosphere={atmosphere} />
+          )}
+          {page === 'mood' && (
+            <MoodSelector onStart={handleStartStation} atmosphere={atmosphere} />
+          )}
+          {page === 'station' && selectedMood && (
+            <RadioStation
+              mood={selectedMood}
+              onBack={handleBack}
+              atmosphere={atmosphere}
+            />
+          )}
+        </>
       )}
     </div>
   )
