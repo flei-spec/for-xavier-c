@@ -135,7 +135,7 @@ function StatusView({ onSuccess }) {
             className="sg__nick-input"
             value={nickValue}
             onChange={e => setNickValue(e.target.value.slice(0, 20))}
-            placeholder="输入昵称"
+            placeholder="输入你的昵称"
             autoFocus
           />
           {nickError && <p className="sg__error">{nickError}</p>}
@@ -145,7 +145,7 @@ function StatusView({ onSuccess }) {
               onClick={handleSaveNick}
               disabled={savingNick || !nickValue.trim()}
             >
-              {savingNick ? '保存中…' : '保存'}
+              {savingNick ? '保存中…' : '保存昵称'}
             </button>
             <button className="sg__back" onClick={() => { setEditingNick(false); setNickError('') }}>
               取消
@@ -155,7 +155,7 @@ function StatusView({ onSuccess }) {
       ) : (
         <div className="sg__nick-row">
           <span className="sg__nick-display">
-            {displayName || '还没有昵称'}
+            当前昵称：{displayName || '未设置'}
           </span>
           <button className="sg__nick-edit" onClick={startEditNick}>
             ✎ 修改

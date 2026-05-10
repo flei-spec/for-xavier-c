@@ -34,13 +34,14 @@ export async function ensureProfile(userId, email) {
   if (error) console.error('[profiles] ensureProfile error:', error.message, error)
 }
 
-// Update the current user's display name.
+// Update (or create) the current user's display name.
+// Uses upsert so a missing profile row is created automatically.
 export async function updateDisplayName(userId, name) {
   console.log('[profiles] updateDisplayName — userId:', userId, 'name:', name)
   const { error } = await supabase
     .from('profiles')
-    .update({ display_name: name, updated_at: new Date().toISOString() })
-    .eq('id', userId)
+    .upsert({ id: userId, display_name: name, updated_at: new Date().toISOString() },
+             { onConflict: 'id' })
   if (error) {
     console.error('[profiles] updateDisplayName error:', error.message, error)
     return false
