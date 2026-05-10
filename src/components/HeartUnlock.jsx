@@ -40,9 +40,9 @@ export default function HeartUnlock({ onLetter, onDiary, onSpace, onRecords, onV
             <span className="hu__choice-text">今天我想说…</span>
           </button>
 
-          <button className="hu__choice hu__choice--space" onClick={onSpace}>
-            <span className="hu__choice-icon">♡</span>
-            <span className="hu__choice-text">双人空间</span>
+          <button className="hu__choice hu__choice--voice" onClick={onVoice}>
+            <span className="hu__choice-icon">📻</span>
+            <span className="hu__choice-text">语音信箱</span>
           </button>
 
           <button className="hu__choice hu__choice--records" onClick={onRecords}>
@@ -51,9 +51,9 @@ export default function HeartUnlock({ onLetter, onDiary, onSpace, onRecords, onV
           </button>
 
           {/* 5th option — spans full width */}
-          <button className="hu__choice hu__choice--voice" onClick={onVoice}>
-            <span className="hu__choice-icon">📻</span>
-            <span className="hu__choice-text">语音信箱</span>
+          <button className="hu__choice hu__choice--space" onClick={onSpace}>
+            <span className="hu__choice-icon">♡</span>
+            <span className="hu__choice-text">双人空间</span>
           </button>
         </div>
 
