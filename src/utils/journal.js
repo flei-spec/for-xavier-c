@@ -130,13 +130,25 @@ export async function markLetterAsRead(entryId, userId) {
 }
 
 export async function deleteEntry(id) {
-  console.log('[journal] deleteEntry id:', id)
-  const { error } = await supabase
+  console.log('[journal] deleteEntry — id:', id)
+  const { data, error } = await supabase
     .from('diary_entries')
     .delete()
     .eq('id', id)
-  if (error) { console.error('[journal] deleteEntry error:', error.message, error); return false }
-  console.log('[journal] deleteEntry success')
+    .select()  // returns the deleted rows so we can confirm deletion happened
+
+  if (error) {
+    console.error('[journal] deleteEntry error:', error.message, error)
+    return false
+  }
+
+  if (!data || data.length === 0) {
+    // RLS silently blocked the delete — no error, but nothing was removed
+    console.error('[journal] deleteEntry: 0 rows deleted — RLS may be blocking. Check diary_entries delete policies.')
+    return false
+  }
+
+  console.log('[journal] deleteEntry success — deleted row:', data[0]?.id)
   return true
 }
 

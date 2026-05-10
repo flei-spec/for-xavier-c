@@ -20,6 +20,7 @@ export default function DiaryRecords({ onClose }) {
   const [profileMap, setProfileMap] = useState({})
   const [loading,    setLoading]    = useState(true)
   const [deleting,   setDeleting]   = useState(null)
+  const [deleteErr,  setDeleteErr]  = useState('')
   const [visible,    setVisible]    = useState(false)
 
   useEffect(() => {
@@ -48,9 +49,15 @@ export default function DiaryRecords({ onClose }) {
 
   const handleDelete = async (id) => {
     setDeleting(id)
+    setDeleteErr('')
     const ok = await deleteEntry(id)
     setDeleting(null)
-    if (ok) setEntries(prev => prev.filter(e => e.id !== id))
+    if (ok) {
+      setEntries(prev => prev.filter(e => e.id !== id))
+    } else {
+      setDeleteErr('删除失败，请重试')
+      setTimeout(() => setDeleteErr(''), 3000)
+    }
   }
 
   return (
@@ -67,6 +74,8 @@ export default function DiaryRecords({ onClose }) {
           <p className="dr__title">我们的记录</p>
           <p className="dr__subtitle">{entries.length > 0 ? `${entries.length} 条记忆` : ''}</p>
         </div>
+
+        {deleteErr && <p className="dr__delete-err">{deleteErr}</p>}
 
         <div className="dr__list">
           {loading && (
