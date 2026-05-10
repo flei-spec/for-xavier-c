@@ -52,54 +52,17 @@ if (!import.meta.env.DEV && !CDN_BASE) {
 }
 
 /**
- * Normalise a raw or pre-encoded song filename into a clean playback URL.
+ * Resolve a song src path ("/songs/adele--easy-on-me.mp3") to a playback URL.
  *
- * Accepts the raw filename (e.g. "30年前，50年后 - 精卫.mp3") or the path
- * stored in songMoodMap ("/songs/30年前，50年后 - 精卫.mp3") in either raw or
- * already-percent-encoded form.
- *
- * Algorithm (idempotent — safe to call on raw OR pre-encoded input):
- *   1. Split on "/" to isolate each path segment.
- *   2. Decode each segment with decodeURIComponent → always land on raw text.
- *      try/catch protects against any malformed % sequence in the input.
- *   3. Re-encode each decoded segment with encodeURIComponent → exactly one
- *      level of encoding, no double-encoding of % signs.
- *   4. Prepend CDN_BASE when set, otherwise return the encoded local path
- *      (Vite dev server decodes %XX before looking up public/).
- *
- * Handles: spaces → %20, Chinese → %E5…, commas → %2C, ampersands → %26,
- *   apostrophes → %27, hashes → %23, non-breaking spaces → %C2%A0, etc.
- *   Parentheses ( ) are intentionally left un-encoded (RFC 3986 safe chars).
+ * All song filenames are now pure ASCII kebab-case (run scripts/rename-songs.js
+ * to convert any future files).  No encoding is required; the function simply
+ * prepends CDN_BASE when set, or returns the local path for dev.
  *
  * Voice intros (/Voice-intros/*.m4a) never pass through this function.
  */
 export function resolveSongUrl(src) {
-  const DEV = import.meta.env.DEV
-
-  // 1 + 2: split and decode each segment to reach raw text
-  const decoded = src.split('/').map(seg => {
-    try { return decodeURIComponent(seg) } catch { return seg }
-  }).join('/')
-
-  // 3: one clean encode pass
-  const encoded = decoded.split('/').map(encodeURIComponent).join('/')
-
-  if (!CDN_BASE) {
-    if (DEV) {
-      console.log('[Audio] src      :', src)
-      console.log('[Audio] normalized:', decoded)
-      console.log('[Audio] local     :', encoded)
-    }
-    return encoded
-  }
-
-  const url = `${CDN_BASE.replace(/\/$/, '')}${encoded}`
-  if (DEV) {
-    console.log('[Audio] src      :', src)
-    console.log('[Audio] normalized:', decoded)
-    console.log('[Audio] CDN       :', url)
-  }
-  return url
+  if (!CDN_BASE) return src
+  return `${CDN_BASE.replace(/\/$/, '')}${src}`
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

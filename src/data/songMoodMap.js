@@ -6,7 +6,7 @@ export const songMoodMap = [
   {
     title: "Mood",
     artist: "24kGoldn,iann dior",
-    src: "/songs/24kGoldn,iann dior - Mood.mp3",
+    src: "/songs/24kgoldn-iann-dior--mood.mp3",
     moodTags: ["开心开心"],
     energyLevel: "高",
     emotionalDescription: "轻盈欢快感",
@@ -16,7 +16,7 @@ export const songMoodMap = [
   {
     title: "精卫",
     artist: "30年前，50年后",
-    src: "/songs/30年前，50年后 - 精卫.mp3",
+    src: "/songs/track-0002.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -26,7 +26,7 @@ export const songMoodMap = [
   {
     title: "快點睡覺",
     artist: "670",
-    src: "/songs/670 - 快點睡覺.mp3",
+    src: "/songs/track-0003.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -36,7 +36,7 @@ export const songMoodMap = [
   {
     title: "Wonderful U",
     artist: "AGA",
-    src: "/songs/AGA - Wonderful U.mp3",
+    src: "/songs/aga--wonderful-u.mp3",
     moodTags: ["今天很幸福"],
     energyLevel: "中",
     emotionalDescription: "温柔幸福感",
@@ -46,7 +46,7 @@ export const songMoodMap = [
   {
     title: "Wassuh",
     artist: "AQVOL",
-    src: "/songs/AQVOL - Wassuh.mp3",
+    src: "/songs/aqvol--wassuh.mp3",
     moodTags: ["开心开心"],
     energyLevel: "中",
     emotionalDescription: "轻盈欢快感",
@@ -56,7 +56,7 @@ export const songMoodMap = [
   {
     title: "Dancin (Krono Remix)",
     artist: "Aaron Smith,Luvli,Krono",
-    src: "/songs/Aaron Smith,Luvli,Krono - Dancin (Krono Remix).mp3",
+    src: "/songs/aaron-smith-luvli-krono--dancin.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "高",
     emotionalDescription: "安静漂浮感",
@@ -66,7 +66,7 @@ export const songMoodMap = [
   {
     title: "Let Me Down Slowly (Acoustic)",
     artist: "Adam Christopher,Dan Berk",
-    src: "/songs/Adam Christopher,Dan Berk - Let Me Down Slowly (Acoustic).mp3",
+    src: "/songs/adam-christopher-dan-berk--let-me-down-slowly.mp3",
     moodTags: ["想你了","需要安慰","洗澡放松一下","想一个人发呆","今天有点累"],
     energyLevel: "低",
     emotionalDescription: "深夜思念感",
@@ -76,7 +76,7 @@ export const songMoodMap = [
   {
     title: "Easy On Me",
     artist: "Adele",
-    src: "/songs/Adele - Easy On Me.mp3",
+    src: "/songs/adele--easy-on-me.mp3",
     moodTags: ["想你了","需要安慰","洗澡放松一下","今天有点累"],
     energyLevel: "低",
     emotionalDescription: "深夜思念感",
@@ -86,7 +86,7 @@ export const songMoodMap = [
   {
     title: "papacito",
     artist: "Alaina Castillo",
-    src: "/songs/Alaina Castillo - papacito.mp3",
+    src: "/songs/alaina-castillo--papacito.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -96,7 +96,7 @@ export const songMoodMap = [
   {
     title: "Faded",
     artist: "Alan Walker",
-    src: "/songs/Alan Walker - Faded.mp3",
+    src: "/songs/alan-walker--faded.mp3",
     moodTags: ["想一个人发呆","今天有点累"],
     energyLevel: "低",
     emotionalDescription: "安静漂浮感",
@@ -106,7 +106,7 @@ export const songMoodMap = [
   {
     title: "Let Me Down Slowly",
     artist: "Alec Benjamin,Alessia Cara",
-    src: "/songs/Alec Benjamin,Alessia Cara - Let Me Down Slowly.mp3",
+    src: "/songs/alec-benjamin-alessia-cara--let-me-down-slowly.mp3",
     moodTags: ["想你了","需要安慰","想一个人发呆","今天有点累"],
     energyLevel: "低",
     emotionalDescription: "深夜思念感",
@@ -116,7 +116,7 @@ export const songMoodMap = [
   {
     title: "Keep Your Head Up Princess",
     artist: "Anson Seabra",
-    src: "/songs/Anson Seabra - Keep Your Head Up Princess.mp3",
+    src: "/songs/anson-seabra--keep-your-head-up-princess.mp3",
     moodTags: ["开心开心","需要安慰"],
     energyLevel: "高",
     emotionalDescription: "轻盈欢快感",
@@ -126,7 +126,7 @@ export const songMoodMap = [
   {
     title: "Loving Means Leaving",
     artist: "Anson Seabra",
-    src: "/songs/Anson Seabra - Loving Means Leaving.mp3",
+    src: "/songs/anson-seabra--loving-means-leaving.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -136,7 +136,7 @@ export const songMoodMap = [
   {
     title: "Peter Pan Was Right",
     artist: "Anson Seabra",
-    src: "/songs/Anson Seabra - Peter Pan Was Right.mp3",
+    src: "/songs/anson-seabra--peter-pan-was-right.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -146,7 +146,7 @@ export const songMoodMap = [
   {
     title: "As Long as You Love Me",
     artist: "Anthem Lights",
-    src: "/songs/Anthem Lights - As Long as You Love Me.mp3",
+    src: "/songs/anthem-lights--as-long-as-you-love-me.mp3",
     moodTags: ["想被抱抱"],
     energyLevel: "中",
     emotionalDescription: "温暖包裹感",
@@ -156,7 +156,7 @@ export const songMoodMap = [
   {
     title: "A Thousand Years",
     artist: "Anthem Lights,Megan Davies",
-    src: "/songs/Anthem Lights,Megan Davies - A Thousand Years.mp3",
+    src: "/songs/anthem-lights-megan-davies--a-thousand-years.mp3",
     moodTags: ["想被抱抱","今天很幸福"],
     energyLevel: "中",
     emotionalDescription: "温暖包裹感",
@@ -166,7 +166,7 @@ export const songMoodMap = [
   {
     title: "7 rings (Remix)",
     artist: "Ariana Grande,2 Chainz",
-    src: "/songs/Ariana Grande,2 Chainz - 7 rings (Remix).mp3",
+    src: "/songs/ariana-grande-2-chainz--7-rings.mp3",
     moodTags: ["开心开心","洗澡放松一下"],
     energyLevel: "高",
     emotionalDescription: "轻盈欢快感",
@@ -176,7 +176,7 @@ export const songMoodMap = [
   {
     title: "Stuck with U",
     artist: "Ariana Grande,Justin Bieber",
-    src: "/songs/Ariana Grande,Justin Bieber - Stuck with U.mp3",
+    src: "/songs/ariana-grande-justin-bieber--stuck-with-u.mp3",
     moodTags: ["想被抱抱"],
     energyLevel: "中",
     emotionalDescription: "温暖包裹感",
@@ -186,7 +186,7 @@ export const songMoodMap = [
   {
     title: "In Disguise",
     artist: "Ashe",
-    src: "/songs/Ashe - In Disguise.mp3",
+    src: "/songs/ashe--in-disguise.mp3",
     moodTags: ["有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "淡淡郁结感",
@@ -196,7 +196,7 @@ export const songMoodMap = [
   {
     title: "I'm with You",
     artist: "Avril Lavigne",
-    src: "/songs/Avril Lavigne - I'm with You.mp3",
+    src: "/songs/avril-lavigne--i-m-with-you.mp3",
     moodTags: ["需要安慰"],
     energyLevel: "中",
     emotionalDescription: "温柔陪伴感",
@@ -206,7 +206,7 @@ export const songMoodMap = [
   {
     title: "Innocence",
     artist: "Avril Lavigne",
-    src: "/songs/Avril Lavigne - Innocence.mp3",
+    src: "/songs/avril-lavigne--innocence.mp3",
     moodTags: ["需要安慰"],
     energyLevel: "中",
     emotionalDescription: "温柔陪伴感",
@@ -216,7 +216,7 @@ export const songMoodMap = [
   {
     title: "Before I DiePlay No Games",
     artist: "Ayzha",
-    src: "/songs/Ayzha - Before I DiePlay No Games.mp3",
+    src: "/songs/ayzha--before-i-dieplay-no-games.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -226,7 +226,7 @@ export const songMoodMap = [
   {
     title: "If I Were a Boy",
     artist: "Beyoncé",
-    src: "/songs/Beyoncé - If I Were a Boy.mp3",
+    src: "/songs/beyonc--if-i-were-a-boy.mp3",
     moodTags: ["有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "淡淡郁结感",
@@ -236,7 +236,7 @@ export const songMoodMap = [
   {
     title: "Partition",
     artist: "Beyoncé",
-    src: "/songs/Beyoncé - Partition.mp3",
+    src: "/songs/beyonc--partition.mp3",
     moodTags: ["开心开心"],
     energyLevel: "中",
     emotionalDescription: "轻盈欢快感",
@@ -246,7 +246,7 @@ export const songMoodMap = [
   {
     title: "不跟你好了",
     artist: "BigYear大年",
-    src: "/songs/BigYear大年 - 不跟你好了.mp3",
+    src: "/songs/bigyear.mp3",
     moodTags: ["有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "淡淡郁结感",
@@ -256,7 +256,7 @@ export const songMoodMap = [
   {
     title: "Therefore I Am",
     artist: "Billie Eilish",
-    src: "/songs/Billie Eilish - Therefore I Am.mp3",
+    src: "/songs/billie-eilish--therefore-i-am.mp3",
     moodTags: ["有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "淡淡郁结感",
@@ -266,7 +266,7 @@ export const songMoodMap = [
   {
     title: "bad guy - with Justin Bieber",
     artist: "Billie Eilish,Justin Bieber",
-    src: "/songs/Billie Eilish,Justin Bieber - bad guy - with Justin Bieber.mp3",
+    src: "/songs/billie-eilish-justin-bieber--bad-guy-with-justin-bieber.mp3",
     moodTags: ["有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "淡淡郁结感",
@@ -276,7 +276,7 @@ export const songMoodMap = [
   {
     title: "Mercy",
     artist: "Bishop Briggs",
-    src: "/songs/Bishop Briggs - Mercy.mp3",
+    src: "/songs/bishop-briggs--mercy.mp3",
     moodTags: ["有点苦恼"],
     energyLevel: "高",
     emotionalDescription: "淡淡郁结感",
@@ -286,7 +286,7 @@ export const songMoodMap = [
   {
     title: "River",
     artist: "Bishop Briggs",
-    src: "/songs/Bishop Briggs - River.mp3",
+    src: "/songs/bishop-briggs--river.mp3",
     moodTags: ["有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "淡淡郁结感",
@@ -296,7 +296,7 @@ export const songMoodMap = [
   {
     title: "TroubledYouth",
     artist: "Bones",
-    src: "/songs/Bones - TroubledYouth.mp3",
+    src: "/songs/bones--troubledyouth.mp3",
     moodTags: ["有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "淡淡郁结感",
@@ -306,7 +306,7 @@ export const songMoodMap = [
   {
     title: "Bleeding Love",
     artist: "Boyce Avenue",
-    src: "/songs/Boyce Avenue - Bleeding Love.mp3",
+    src: "/songs/boyce-avenue--bleeding-love.mp3",
     moodTags: ["想你了","需要安慰"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -316,7 +316,7 @@ export const songMoodMap = [
   {
     title: "Someone You Loved",
     artist: "Boyce Avenue",
-    src: "/songs/Boyce Avenue - Someone You Loved.mp3",
+    src: "/songs/boyce-avenue--someone-you-loved.mp3",
     moodTags: ["想你了","需要安慰","今天有点累"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -326,7 +326,7 @@ export const songMoodMap = [
   {
     title: "We Can't Stop",
     artist: "Boyce Avenue,Bea Miller",
-    src: "/songs/Boyce Avenue,Bea Miller - We Can't Stop.mp3",
+    src: "/songs/boyce-avenue-bea-miller--we-can-t-stop.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -336,7 +336,7 @@ export const songMoodMap = [
   {
     title: "Easily",
     artist: "Bruno Major",
-    src: "/songs/Bruno Major - Easily.mp3",
+    src: "/songs/bruno-major--easily.mp3",
     moodTags: ["洗澡放松一下"],
     energyLevel: "中",
     emotionalDescription: "慵懒放松感",
@@ -346,7 +346,7 @@ export const songMoodMap = [
   {
     title: "That's What I Like",
     artist: "Bruno Mars",
-    src: "/songs/Bruno Mars - That's What I Like.mp3",
+    src: "/songs/bruno-mars--that-s-what-i-like.mp3",
     moodTags: ["开心开心"],
     energyLevel: "中",
     emotionalDescription: "轻盈欢快感",
@@ -356,7 +356,7 @@ export const songMoodMap = [
   {
     title: "所念皆星河",
     artist: "CMJ",
-    src: "/songs/CMJ - 所念皆星河.mp3",
+    src: "/songs/cmj.mp3",
     moodTags: ["洗澡放松一下"],
     energyLevel: "中",
     emotionalDescription: "慵懒放松感",
@@ -366,7 +366,7 @@ export const songMoodMap = [
   {
     title: "Suit & Tie",
     artist: "CZT_吃枕头",
-    src: "/songs/CZT_吃枕头 - Suit & Tie.mp3",
+    src: "/songs/czt--suit-tie.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -376,7 +376,7 @@ export const songMoodMap = [
   {
     title: "This Love",
     artist: "Camila Cabello",
-    src: "/songs/Camila Cabello - This Love.mp3",
+    src: "/songs/camila-cabello--this-love.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -386,7 +386,7 @@ export const songMoodMap = [
   {
     title: "Havana",
     artist: "Camila Cabello,Young Thug",
-    src: "/songs/Camila Cabello,Young Thug - Havana.mp3",
+    src: "/songs/camila-cabello-young-thug--havana.mp3",
     moodTags: ["想被抱抱","开心开心"],
     energyLevel: "高",
     emotionalDescription: "温暖包裹感",
@@ -396,7 +396,7 @@ export const songMoodMap = [
   {
     title: "Attention",
     artist: "Charlie Puth",
-    src: "/songs/Charlie Puth - Attention.mp3",
+    src: "/songs/charlie-puth--attention.mp3",
     moodTags: ["开心开心"],
     energyLevel: "高",
     emotionalDescription: "轻盈欢快感",
@@ -406,7 +406,7 @@ export const songMoodMap = [
   {
     title: "Swagger Jagger",
     artist: "Cher Lloyd",
-    src: "/songs/Cher Lloyd - Swagger Jagger.mp3",
+    src: "/songs/cher-lloyd--swagger-jagger.mp3",
     moodTags: ["开心开心"],
     energyLevel: "高",
     emotionalDescription: "轻盈欢快感",
@@ -416,7 +416,7 @@ export const songMoodMap = [
   {
     title: "What Are Words",
     artist: "Chris Medina",
-    src: "/songs/Chris Medina - What Are Words.mp3",
+    src: "/songs/chris-medina--what-are-words.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -426,7 +426,7 @@ export const songMoodMap = [
   {
     title: "Let Somebody Go",
     artist: "Coldplay,Selena Gomez",
-    src: "/songs/Coldplay,Selena Gomez - Let Somebody Go.mp3",
+    src: "/songs/coldplay-selena-gomez--let-somebody-go.mp3",
     moodTags: ["想你了"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -436,7 +436,7 @@ export const songMoodMap = [
   {
     title: "Tease",
     artist: "Dahl_",
-    src: "/songs/Dahl_ - Tease.mp3",
+    src: "/songs/dahl--tease.mp3",
     moodTags: ["开心开心","洗澡放松一下"],
     energyLevel: "中",
     emotionalDescription: "轻盈欢快感",
@@ -446,7 +446,7 @@ export const songMoodMap = [
   {
     title: "Free Loop",
     artist: "Daniel Powter",
-    src: "/songs/Daniel Powter - Free Loop.mp3",
+    src: "/songs/daniel-powter--free-loop.mp3",
     moodTags: ["洗澡放松一下","想一个人发呆","今天有点累"],
     energyLevel: "低",
     emotionalDescription: "慵懒放松感",
@@ -456,7 +456,7 @@ export const songMoodMap = [
   {
     title: "Dream It Possible",
     artist: "Delacey",
-    src: "/songs/Delacey - Dream It Possible.mp3",
+    src: "/songs/delacey--dream-it-possible.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -466,7 +466,7 @@ export const songMoodMap = [
   {
     title: "Brown Eyes",
     artist: "Destiny's Child",
-    src: "/songs/Destiny's Child - Brown Eyes.mp3",
+    src: "/songs/destiny-s-child--brown-eyes.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -476,7 +476,7 @@ export const songMoodMap = [
   {
     title: "Perfect",
     artist: "Ed Sheeran",
-    src: "/songs/Ed Sheeran - Perfect.mp3",
+    src: "/songs/ed-sheeran--perfect.mp3",
     moodTags: ["今天很幸福"],
     energyLevel: "中",
     emotionalDescription: "温柔幸福感",
@@ -486,7 +486,7 @@ export const songMoodMap = [
   {
     title: "Shape of You",
     artist: "Ed Sheeran",
-    src: "/songs/Ed Sheeran - Shape of You.mp3",
+    src: "/songs/ed-sheeran--shape-of-you.mp3",
     moodTags: ["开心开心"],
     energyLevel: "高",
     emotionalDescription: "轻盈欢快感",
@@ -496,7 +496,7 @@ export const songMoodMap = [
   {
     title: "庆功酒(Jungle Juice)",
     artist: "FOX胡天渝",
-    src: "/songs/FOX胡天渝 - 庆功酒(Jungle Juice).mp3",
+    src: "/songs/fox.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "高",
     emotionalDescription: "安静漂浮感",
@@ -506,7 +506,7 @@ export const songMoodMap = [
   {
     title: "Oh Boy",
     artist: "G.E.M.邓紫棋",
-    src: "/songs/G.E.M.邓紫棋 - Oh Boy.mp3",
+    src: "/songs/g-e-m--oh-boy.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -516,7 +516,7 @@ export const songMoodMap = [
   {
     title: "光年之外",
     artist: "G.E.M.邓紫棋",
-    src: "/songs/G.E.M.邓紫棋 - 光年之外.mp3",
+    src: "/songs/g-e-m.mp3",
     moodTags: ["洗澡放松一下"],
     energyLevel: "中",
     emotionalDescription: "慵懒放松感",
@@ -526,7 +526,7 @@ export const songMoodMap = [
   {
     title: "句号",
     artist: "G.E.M.邓紫棋",
-    src: "/songs/G.E.M.邓紫棋 - 句号.mp3",
+    src: "/songs/g-e-m-2.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -536,7 +536,7 @@ export const songMoodMap = [
   {
     title: "多远都要在一起",
     artist: "G.E.M.邓紫棋",
-    src: "/songs/G.E.M.邓紫棋 - 多远都要在一起.mp3",
+    src: "/songs/g-e-m-3.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -546,7 +546,7 @@ export const songMoodMap = [
   {
     title: "来自天堂的魔鬼",
     artist: "G.E.M.邓紫棋",
-    src: "/songs/G.E.M.邓紫棋 - 来自天堂的魔鬼.mp3",
+    src: "/songs/g-e-m-4.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -556,7 +556,7 @@ export const songMoodMap = [
   {
     title: "狂恋",
     artist: "GALI,万妮达Vinida Weng",
-    src: "/songs/GALI,万妮达Vinida Weng - 狂恋.mp3",
+    src: "/songs/gali-vinida-weng.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "高",
     emotionalDescription: "安静漂浮感",
@@ -566,7 +566,7 @@ export const songMoodMap = [
   {
     title: "Sleepyhead",
     artist: "Galen Crew",
-    src: "/songs/Galen Crew - Sleepyhead.mp3",
+    src: "/songs/galen-crew--sleepyhead.mp3",
     moodTags: ["今天很幸福","洗澡放松一下","今天有点累"],
     energyLevel: "低",
     emotionalDescription: "温柔幸福感",
@@ -576,7 +576,7 @@ export const songMoodMap = [
   {
     title: "Won't you stand（男女朋友无法迁就）",
     artist: "Githa",
-    src: "/songs/Githa - Won't you stand（男女朋友无法迁就）.mp3",
+    src: "/songs/githa--won-t-you-stand.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -586,7 +586,7 @@ export const songMoodMap = [
   {
     title: "Summertrain",
     artist: "Greyson Chance",
-    src: "/songs/Greyson Chance - Summertrain.mp3",
+    src: "/songs/greyson-chance--summertrain.mp3",
     moodTags: ["开心开心","洗澡放松一下"],
     energyLevel: "中",
     emotionalDescription: "轻盈欢快感",
@@ -596,7 +596,7 @@ export const songMoodMap = [
   {
     title: "Now Or Never",
     artist: "Halsey",
-    src: "/songs/Halsey - Now Or Never.mp3",
+    src: "/songs/halsey--now-or-never.mp3",
     moodTags: ["开心开心","有点苦恼"],
     energyLevel: "高",
     emotionalDescription: "轻盈欢快感",
@@ -606,7 +606,7 @@ export const songMoodMap = [
   {
     title: "Strangers",
     artist: "Halsey,Lauren Jauregui",
-    src: "/songs/Halsey,Lauren Jauregui - Strangers.mp3",
+    src: "/songs/halsey-lauren-jauregui--strangers.mp3",
     moodTags: ["有点苦恼","想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "淡淡郁结感",
@@ -616,7 +616,7 @@ export const songMoodMap = [
   {
     title: "心如止水",
     artist: "Ice Paper",
-    src: "/songs/Ice Paper - 心如止水.mp3",
+    src: "/songs/ice-paper.mp3",
     moodTags: ["想你了"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -626,7 +626,7 @@ export const songMoodMap = [
   {
     title: "Let It Go (From FrozenSoundtrack Version)",
     artist: "Idina Menzel",
-    src: "/songs/Idina Menzel - Let It Go (From FrozenSoundtrack Version).mp3",
+    src: "/songs/idina-menzel--let-it-go.mp3",
     moodTags: ["想你了","需要安慰","今天有点累"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -636,7 +636,7 @@ export const songMoodMap = [
   {
     title: "Mistletoe",
     artist: "ItsNoah",
-    src: "/songs/ItsNoah - Mistletoe.mp3",
+    src: "/songs/itsnoah--mistletoe.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -646,7 +646,7 @@ export const songMoodMap = [
   {
     title: "Love The Way You LieNot Afraid",
     artist: "J Rice",
-    src: "/songs/J Rice - Love The Way You LieNot Afraid.mp3",
+    src: "/songs/j-rice--love-the-way-you-lienot-afraid.mp3",
     moodTags: ["想你了"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -656,7 +656,7 @@ export const songMoodMap = [
   {
     title: "Talk Dirty vs Im Worth It (Deville Sax Tone Play Seque)",
     artist: "Jason Derulo,Kid Ink,Fifth Harmony",
-    src: "/songs/Jason Derulo,Kid Ink,Fifth Harmony - Talk Dirty vs Im Worth It (Deville Sax Tone Play Seque).mp3",
+    src: "/songs/jason-derulo-kid-ink-fifth-harmony--talk-dirty-vs-im-worth-it.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -666,7 +666,7 @@ export const songMoodMap = [
   {
     title: "Savage Love (Laxed - Siren Beat) (BTS Remix)",
     artist: "Jawsh 685,Jason Derulo,BTS (防弹少年团)",
-    src: "/songs/Jawsh 685,Jason Derulo,BTS (防弹少年团) - Savage Love (Laxed - Siren Beat) (BTS Remix).mp3",
+    src: "/songs/jawsh-685-jason-derulo-bts--savage-love.mp3",
     moodTags: ["开心开心"],
     energyLevel: "高",
     emotionalDescription: "轻盈欢快感",
@@ -676,7 +676,7 @@ export const songMoodMap = [
   {
     title: "comethru",
     artist: "Jeremy Zucker,Bea Miller",
-    src: "/songs/Jeremy Zucker,Bea Miller - comethru.mp3",
+    src: "/songs/jeremy-zucker-bea-miller--comethru.mp3",
     moodTags: ["想你了","今天有点累"],
     energyLevel: "低",
     emotionalDescription: "深夜思念感",
@@ -686,7 +686,7 @@ export const songMoodMap = [
   {
     title: "Domino",
     artist: "Jessie J",
-    src: "/songs/Jessie J - Domino.mp3",
+    src: "/songs/jessie-j--domino.mp3",
     moodTags: ["开心开心"],
     energyLevel: "高",
     emotionalDescription: "轻盈欢快感",
@@ -696,7 +696,7 @@ export const songMoodMap = [
   {
     title: "Bang Bang",
     artist: "Jessie J,Ariana Grande,Nicki Minaj",
-    src: "/songs/Jessie J,Ariana Grande,Nicki Minaj - Bang Bang.mp3",
+    src: "/songs/jessie-j-ariana-grande-nicki-minaj--bang-bang.mp3",
     moodTags: ["开心开心"],
     energyLevel: "高",
     emotionalDescription: "轻盈欢快感",
@@ -706,7 +706,7 @@ export const songMoodMap = [
   {
     title: "暗巷",
     artist: "Jony J",
-    src: "/songs/Jony J - 暗巷.mp3",
+    src: "/songs/jony-j.mp3",
     moodTags: ["有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "淡淡郁结感",
@@ -716,7 +716,7 @@ export const songMoodMap = [
   {
     title: "欢迎光临",
     artist: "Jony J",
-    src: "/songs/Jony J - 欢迎光临.mp3",
+    src: "/songs/jony-j-2.mp3",
     moodTags: ["有点苦恼","洗澡放松一下"],
     energyLevel: "中",
     emotionalDescription: "淡淡郁结感",
@@ -726,7 +726,7 @@ export const songMoodMap = [
   {
     title: "天黑黑 (我爱上让我奋不顾身的一个人)",
     artist: "Joysaaaa",
-    src: "/songs/Joysaaaa - 天黑黑 (我爱上让我奋不顾身的一个人).mp3",
+    src: "/songs/joysaaaa.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -736,7 +736,7 @@ export const songMoodMap = [
   {
     title: "As Long As You Love Me",
     artist: "Justin Bieber",
-    src: "/songs/Justin Bieber - As Long As You Love Me.mp3",
+    src: "/songs/justin-bieber--as-long-as-you-love-me.mp3",
     moodTags: ["想被抱抱"],
     energyLevel: "中",
     emotionalDescription: "温暖包裹感",
@@ -746,7 +746,7 @@ export const songMoodMap = [
   {
     title: "Bad Day (Single Version)",
     artist: "Justin Bieber",
-    src: "/songs/Justin Bieber - Bad Day (Single Version).mp3",
+    src: "/songs/justin-bieber--bad-day.mp3",
     moodTags: ["需要安慰"],
     energyLevel: "中",
     emotionalDescription: "温柔陪伴感",
@@ -756,7 +756,7 @@ export const songMoodMap = [
   {
     title: "Boyfriend",
     artist: "Justin Bieber",
-    src: "/songs/Justin Bieber - Boyfriend.mp3",
+    src: "/songs/justin-bieber--boyfriend.mp3",
     moodTags: ["开心开心"],
     energyLevel: "中",
     emotionalDescription: "轻盈欢快感",
@@ -766,7 +766,7 @@ export const songMoodMap = [
   {
     title: "Come Around Me",
     artist: "Justin Bieber",
-    src: "/songs/Justin Bieber - Come Around Me.mp3",
+    src: "/songs/justin-bieber--come-around-me.mp3",
     moodTags: ["想你了"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -776,7 +776,7 @@ export const songMoodMap = [
   {
     title: "Confirmation",
     artist: "Justin Bieber",
-    src: "/songs/Justin Bieber - Confirmation.mp3",
+    src: "/songs/justin-bieber--confirmation.mp3",
     moodTags: ["开心开心","想被抱抱"],
     energyLevel: "中",
     emotionalDescription: "轻盈欢快感",
@@ -786,7 +786,7 @@ export const songMoodMap = [
   {
     title: "Die In Your Arms",
     artist: "Justin Bieber",
-    src: "/songs/Justin Bieber - Die In Your Arms.mp3",
+    src: "/songs/justin-bieber--die-in-your-arms.mp3",
     moodTags: ["想你了"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -796,7 +796,7 @@ export const songMoodMap = [
   {
     title: "Latin Girl",
     artist: "Justin Bieber",
-    src: "/songs/Justin Bieber - Latin Girl.mp3",
+    src: "/songs/justin-bieber--latin-girl.mp3",
     moodTags: ["开心开心","想被抱抱"],
     energyLevel: "中",
     emotionalDescription: "轻盈欢快感",
@@ -806,7 +806,7 @@ export const songMoodMap = [
   {
     title: "Mark My Words",
     artist: "Justin Bieber",
-    src: "/songs/Justin Bieber - Mark My Words.mp3",
+    src: "/songs/justin-bieber--mark-my-words.mp3",
     moodTags: ["想你了"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -816,7 +816,7 @@ export const songMoodMap = [
   {
     title: "Never Let You Go",
     artist: "Justin Bieber",
-    src: "/songs/Justin Bieber - Never Let You Go.mp3",
+    src: "/songs/justin-bieber--never-let-you-go.mp3",
     moodTags: ["想你了","想被抱抱"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -826,7 +826,7 @@ export const songMoodMap = [
   {
     title: "Nothing Like Us",
     artist: "Justin Bieber",
-    src: "/songs/Justin Bieber - Nothing Like Us.mp3",
+    src: "/songs/justin-bieber--nothing-like-us.mp3",
     moodTags: ["想你了"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -836,7 +836,7 @@ export const songMoodMap = [
   {
     title: "Pray",
     artist: "Justin Bieber",
-    src: "/songs/Justin Bieber - Pray.mp3",
+    src: "/songs/justin-bieber--pray.mp3",
     moodTags: ["需要安慰"],
     energyLevel: "中",
     emotionalDescription: "温柔陪伴感",
@@ -846,7 +846,7 @@ export const songMoodMap = [
   {
     title: "That's What Love Is",
     artist: "Justin Bieber",
-    src: "/songs/Justin Bieber - That's What Love Is.mp3",
+    src: "/songs/justin-bieber--that-s-what-love-is.mp3",
     moodTags: ["开心开心","想被抱抱"],
     energyLevel: "中",
     emotionalDescription: "轻盈欢快感",
@@ -856,7 +856,7 @@ export const songMoodMap = [
   {
     title: "Up",
     artist: "Justin Bieber",
-    src: "/songs/Justin Bieber - Up.mp3",
+    src: "/songs/justin-bieber--up.mp3",
     moodTags: ["开心开心","想被抱抱"],
     energyLevel: "中",
     emotionalDescription: "轻盈欢快感",
@@ -866,7 +866,7 @@ export const songMoodMap = [
   {
     title: "Peaches",
     artist: "Kayla Rae",
-    src: "/songs/Kayla Rae - Peaches.mp3",
+    src: "/songs/kayla-rae--peaches.mp3",
     moodTags: ["今天很幸福"],
     energyLevel: "中",
     emotionalDescription: "温柔幸福感",
@@ -876,7 +876,7 @@ export const songMoodMap = [
   {
     title: "Young Dumb & Broke",
     artist: "Khalid",
-    src: "/songs/Khalid - Young Dumb & Broke.mp3",
+    src: "/songs/khalid--young-dumb-broke.mp3",
     moodTags: ["开心开心"],
     energyLevel: "高",
     emotionalDescription: "轻盈欢快感",
@@ -886,7 +886,7 @@ export const songMoodMap = [
   {
     title: "EX",
     artist: "Kiana Ledé",
-    src: "/songs/Kiana Ledé - EX.mp3",
+    src: "/songs/kiana-led--ex.mp3",
     moodTags: ["有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "淡淡郁结感",
@@ -896,7 +896,7 @@ export const songMoodMap = [
   {
     title: "我是一只鱼",
     artist: "Kim.T",
-    src: "/songs/Kim.T - 我是一只鱼.mp3",
+    src: "/songs/kim-t.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -906,7 +906,7 @@ export const songMoodMap = [
   {
     title: "泪桥",
     artist: "Kimi29",
-    src: "/songs/Kimi29 - 泪桥.mp3",
+    src: "/songs/kimi29.mp3",
     moodTags: ["想你了"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -916,7 +916,7 @@ export const songMoodMap = [
   {
     title: "Pumped Up",
     artist: "Klingande",
-    src: "/songs/Klingande - Pumped Up.mp3",
+    src: "/songs/klingande--pumped-up.mp3",
     moodTags: ["开心开心"],
     energyLevel: "高",
     emotionalDescription: "轻盈欢快感",
@@ -926,7 +926,7 @@ export const songMoodMap = [
   {
     title: "Señorita",
     artist: "Kurt Hugo Schneider,MADILYN",
-    src: "/songs/Kurt Hugo Schneider,MADILYN - Señorita.mp3",
+    src: "/songs/kurt-hugo-schneider-madilyn--seorita.mp3",
     moodTags: ["想被抱抱","开心开心"],
     energyLevel: "高",
     emotionalDescription: "温暖包裹感",
@@ -936,7 +936,7 @@ export const songMoodMap = [
   {
     title: "跳楼机",
     artist: "LBI利比",
-    src: "/songs/LBI利比 - 跳楼机.mp3",
+    src: "/songs/lbi.mp3",
     moodTags: ["开心开心"],
     energyLevel: "高",
     emotionalDescription: "轻盈欢快感",
@@ -946,7 +946,7 @@ export const songMoodMap = [
   {
     title: "Bad Romance",
     artist: "Lady Gaga",
-    src: "/songs/Lady Gaga - Bad Romance.mp3",
+    src: "/songs/lady-gaga--bad-romance.mp3",
     moodTags: ["开心开心"],
     energyLevel: "高",
     emotionalDescription: "轻盈欢快感",
@@ -956,7 +956,7 @@ export const songMoodMap = [
   {
     title: "不得不爱",
     artist: "Lambert凌杰",
-    src: "/songs/Lambert凌杰 - 不得不爱.mp3",
+    src: "/songs/lambert.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -966,7 +966,7 @@ export const songMoodMap = [
   {
     title: "同样",
     artist: "Lambert凌杰,Lambert凌,杨胖雨",
-    src: "/songs/Lambert凌杰,Lambert凌,杨胖雨 - 同样.mp3",
+    src: "/songs/lambert-lambert.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -976,7 +976,7 @@ export const songMoodMap = [
   {
     title: "Love Somebody",
     artist: "Lauv",
-    src: "/songs/Lauv - Love Somebody.mp3",
+    src: "/songs/lauv--love-somebody.mp3",
     moodTags: ["想被抱抱"],
     energyLevel: "中",
     emotionalDescription: "温暖包裹感",
@@ -986,7 +986,7 @@ export const songMoodMap = [
   {
     title: "不得不爱",
     artist: "Lil Yo",
-    src: "/songs/Lil Yo - 不得不爱.mp3",
+    src: "/songs/lil-yo.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -996,7 +996,7 @@ export const songMoodMap = [
   {
     title: "Leave Out All The Rest",
     artist: "Linkin Park",
-    src: "/songs/Linkin Park - Leave Out All The Rest.mp3",
+    src: "/songs/linkin-park--leave-out-all-the-rest.mp3",
     moodTags: ["想你了","需要安慰","想一个人发呆","今天有点累"],
     energyLevel: "低",
     emotionalDescription: "深夜思念感",
@@ -1006,7 +1006,7 @@ export const songMoodMap = [
   {
     title: "Wasabi",
     artist: "Little Mix",
-    src: "/songs/Little Mix - Wasabi.mp3",
+    src: "/songs/little-mix--wasabi.mp3",
     moodTags: ["开心开心"],
     energyLevel: "高",
     emotionalDescription: "轻盈欢快感",
@@ -1016,7 +1016,7 @@ export const songMoodMap = [
   {
     title: "Oops",
     artist: "Little Mix,Charlie Puth",
-    src: "/songs/Little Mix,Charlie Puth - Oops.mp3",
+    src: "/songs/little-mix-charlie-puth--oops.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -1026,7 +1026,7 @@ export const songMoodMap = [
   {
     title: "Boys",
     artist: "Lizzo",
-    src: "/songs/Lizzo - Boys.mp3",
+    src: "/songs/lizzo--boys.mp3",
     moodTags: ["开心开心"],
     energyLevel: "高",
     emotionalDescription: "轻盈欢快感",
@@ -1036,7 +1036,7 @@ export const songMoodMap = [
   {
     title: "GQ",
     artist: "Lola Coca",
-    src: "/songs/Lola Coca - GQ.mp3",
+    src: "/songs/lola-coca--gq.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -1046,7 +1046,7 @@ export const songMoodMap = [
   {
     title: "Bye Bye Bye",
     artist: "Lovestoned",
-    src: "/songs/Lovestoned - Bye Bye Bye.mp3",
+    src: "/songs/lovestoned--bye-bye-bye.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -1056,7 +1056,7 @@ export const songMoodMap = [
   {
     title: "7 Years",
     artist: "Lukas Graham",
-    src: "/songs/Lukas Graham - 7 Years.mp3",
+    src: "/songs/lukas-graham--7-years.mp3",
     moodTags: ["今天有点累"],
     energyLevel: "中",
     emotionalDescription: "轻柔疗愈感",
@@ -1066,7 +1066,7 @@ export const songMoodMap = [
   {
     title: "sex money feelings die REMIX",
     artist: "Lykke Li,Lil Baby,snowsa",
-    src: "/songs/Lykke Li,Lil Baby,snowsa - sex money feelings die REMIX.mp3",
+    src: "/songs/lykke-li-lil-baby-snowsa--sex-money-feelings-die-remix.mp3",
     moodTags: ["有点苦恼"],
     energyLevel: "高",
     emotionalDescription: "淡淡郁结感",
@@ -1076,7 +1076,7 @@ export const songMoodMap = [
   {
     title: "Producer Man",
     artist: "Lyn Lapid",
-    src: "/songs/Lyn Lapid - Producer Man.mp3",
+    src: "/songs/lyn-lapid--producer-man.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -1086,7 +1086,7 @@ export const songMoodMap = [
   {
     title: "CHILLIN'",
     artist: "M.O.L.A",
-    src: "/songs/M.O.L.A - CHILLIN'.mp3",
+    src: "/songs/m-o-l-a--chillin.mp3",
     moodTags: ["开心开心","洗澡放松一下"],
     energyLevel: "中",
     emotionalDescription: "轻盈欢快感",
@@ -1096,7 +1096,7 @@ export const songMoodMap = [
   {
     title: "Cheap Thrills (Acoustic Version)",
     artist: "MADILYN",
-    src: "/songs/MADILYN - Cheap Thrills (Acoustic Version).mp3",
+    src: "/songs/madilyn--cheap-thrills.mp3",
     moodTags: ["开心开心","洗澡放松一下","今天有点累"],
     energyLevel: "高",
     emotionalDescription: "轻盈欢快感",
@@ -1106,7 +1106,7 @@ export const songMoodMap = [
   {
     title: "Galway Girl",
     artist: "MADILYN",
-    src: "/songs/MADILYN - Galway Girl.mp3",
+    src: "/songs/madilyn--galway-girl.mp3",
     moodTags: ["开心开心","洗澡放松一下"],
     energyLevel: "中",
     emotionalDescription: "轻盈欢快感",
@@ -1116,7 +1116,7 @@ export const songMoodMap = [
   {
     title: "Someone You Loved",
     artist: "MADILYN",
-    src: "/songs/MADILYN - Someone You Loved.mp3",
+    src: "/songs/madilyn--someone-you-loved.mp3",
     moodTags: ["想你了","需要安慰","今天有点累"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -1126,7 +1126,7 @@ export const songMoodMap = [
   {
     title: "Love Me Like You Do",
     artist: "MADILYN,MAX,Kurt Hugo Schneider",
-    src: "/songs/MADILYN,MAX,Kurt Hugo Schneider - Love Me Like You Do.mp3",
+    src: "/songs/madilyn-max-kurt-hugo-schneider--love-me-like-you-do.mp3",
     moodTags: ["想被抱抱","今天很幸福"],
     energyLevel: "中",
     emotionalDescription: "温暖包裹感",
@@ -1136,7 +1136,7 @@ export const songMoodMap = [
   {
     title: "Lie to Me",
     artist: "MIKOLAS",
-    src: "/songs/MIKOLAS - Lie to Me.mp3",
+    src: "/songs/mikolas--lie-to-me.mp3",
     moodTags: ["有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "淡淡郁结感",
@@ -1146,7 +1146,7 @@ export const songMoodMap = [
   {
     title: "I Remember",
     artist: "MOCCA",
-    src: "/songs/MOCCA - I Remember.mp3",
+    src: "/songs/mocca--i-remember.mp3",
     moodTags: ["想你了","想一个人发呆","今天有点累"],
     energyLevel: "低",
     emotionalDescription: "深夜思念感",
@@ -1156,7 +1156,7 @@ export const songMoodMap = [
   {
     title: "Someone You Loved",
     artist: "Madilyn Paige",
-    src: "/songs/Madilyn Paige - Someone You Loved.mp3",
+    src: "/songs/madilyn-paige--someone-you-loved.mp3",
     moodTags: ["想你了","需要安慰","今天有点累"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -1166,7 +1166,7 @@ export const songMoodMap = [
   {
     title: "QUEEN",
     artist: "Mahogany Lox",
-    src: "/songs/Mahogany Lox - QUEEN.mp3",
+    src: "/songs/mahogany-lox--queen.mp3",
     moodTags: ["开心开心"],
     energyLevel: "高",
     emotionalDescription: "轻盈欢快感",
@@ -1176,7 +1176,7 @@ export const songMoodMap = [
   {
     title: "What Makes You Beautiful",
     artist: "Marc Sean",
-    src: "/songs/Marc Sean - What Makes You Beautiful.mp3",
+    src: "/songs/marc-sean--what-makes-you-beautiful.mp3",
     moodTags: ["今天很幸福"],
     energyLevel: "中",
     emotionalDescription: "温柔幸福感",
@@ -1186,7 +1186,7 @@ export const songMoodMap = [
   {
     title: "Got It",
     artist: "Marian Hill",
-    src: "/songs/Marian Hill - Got It.mp3",
+    src: "/songs/marian-hill--got-it.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -1196,7 +1196,7 @@ export const songMoodMap = [
   {
     title: "How Do I Love Thee",
     artist: "Michael Hoppé",
-    src: "/songs/Michael Hoppé - How Do I Love Thee.mp3",
+    src: "/songs/michael-hopp--how-do-i-love-thee.mp3",
     moodTags: ["想你了","今天很幸福","想一个人发呆","今天有点累"],
     energyLevel: "低",
     emotionalDescription: "深夜思念感",
@@ -1206,7 +1206,7 @@ export const songMoodMap = [
   {
     title: "视线所及只剩生活",
     artist: "Mikuvo",
-    src: "/songs/Mikuvo - 视线所及只剩生活.mp3",
+    src: "/songs/mikuvo.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -1216,7 +1216,7 @@ export const songMoodMap = [
   {
     title: "Supermassive Black Hole (Twilight Soundtrack Version)",
     artist: "Muse",
-    src: "/songs/Muse - Supermassive Black Hole (Twilight Soundtrack Version).mp3",
+    src: "/songs/muse--supermassive-black-hole.mp3",
     moodTags: ["有点苦恼","想一个人发呆","今天有点累"],
     energyLevel: "高",
     emotionalDescription: "淡淡郁结感",
@@ -1226,7 +1226,7 @@ export const songMoodMap = [
   {
     title: "一点",
     artist: "Muyoi,徐梦洁",
-    src: "/songs/Muyoi,徐梦洁 - 一点.mp3",
+    src: "/songs/muyoi.mp3",
     moodTags: ["洗澡放松一下"],
     energyLevel: "中",
     emotionalDescription: "慵懒放松感",
@@ -1236,7 +1236,7 @@ export const songMoodMap = [
   {
     title: "Why Baby Why",
     artist: "MyKey",
-    src: "/songs/MyKey - Why Baby Why.mp3",
+    src: "/songs/mykey--why-baby-why.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -1246,7 +1246,7 @@ export const songMoodMap = [
   {
     title: "I WANNA BE YOUR SLAVE",
     artist: "Måneskin",
-    src: "/songs/Måneskin - I WANNA BE YOUR SLAVE.mp3",
+    src: "/songs/mneskin--i-wanna-be-your-slave.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -1256,7 +1256,7 @@ export const songMoodMap = [
   {
     title: "Say My Name",
     artist: "NIKI",
-    src: "/songs/NIKI - Say My Name.mp3",
+    src: "/songs/niki--say-my-name.mp3",
     moodTags: ["开心开心"],
     energyLevel: "中",
     emotionalDescription: "轻盈欢快感",
@@ -1266,7 +1266,7 @@ export const songMoodMap = [
   {
     title: "lowkey",
     artist: "NIKI",
-    src: "/songs/NIKI - lowkey.mp3",
+    src: "/songs/niki--lowkey.mp3",
     moodTags: ["想你了","开心开心","洗澡放松一下","今天有点累"],
     energyLevel: "低",
     emotionalDescription: "深夜思念感",
@@ -1276,7 +1276,7 @@ export const songMoodMap = [
   {
     title: "风的颜色",
     artist: "NINEONE乃万",
-    src: "/songs/NINEONE乃万 - 风的颜色.mp3",
+    src: "/songs/nineone.mp3",
     moodTags: ["洗澡放松一下"],
     energyLevel: "中",
     emotionalDescription: "慵懒放松感",
@@ -1286,7 +1286,7 @@ export const songMoodMap = [
   {
     title: "Pasta",
     artist: "New Rules",
-    src: "/songs/New Rules - Pasta.mp3",
+    src: "/songs/new-rules--pasta.mp3",
     moodTags: ["洗澡放松一下"],
     energyLevel: "中",
     emotionalDescription: "慵懒放松感",
@@ -1296,7 +1296,7 @@ export const songMoodMap = [
   {
     title: "圣玛伊伦斯",
     artist: "NickTheWorld",
-    src: "/songs/NickTheWorld - 圣玛伊伦斯.mp3",
+    src: "/songs/nicktheworld.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -1306,7 +1306,7 @@ export const songMoodMap = [
   {
     title: "Nexus",
     artist: "Niykee Heaton",
-    src: "/songs/Niykee Heaton - Nexus.mp3",
+    src: "/songs/niykee-heaton--nexus.mp3",
     moodTags: ["有点苦恼"],
     energyLevel: "高",
     emotionalDescription: "淡淡郁结感",
@@ -1316,7 +1316,7 @@ export const songMoodMap = [
   {
     title: "YOU SO DONE",
     artist: "Noga Erez",
-    src: "/songs/Noga Erez - YOU SO DONE.mp3",
+    src: "/songs/noga-erez--you-so-done.mp3",
     moodTags: ["有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "淡淡郁结感",
@@ -1326,7 +1326,7 @@ export const songMoodMap = [
   {
     title: "Your Bones",
     artist: "Of Monsters And Men",
-    src: "/songs/Of Monsters And Men - Your Bones.mp3",
+    src: "/songs/of-monsters-and-men--your-bones.mp3",
     moodTags: ["想你了","需要安慰","想一个人发呆","今天有点累"],
     energyLevel: "低",
     emotionalDescription: "深夜思念感",
@@ -1336,7 +1336,7 @@ export const songMoodMap = [
   {
     title: "Black Sheep",
     artist: "OmenXIII",
-    src: "/songs/OmenXIII - Black Sheep.mp3",
+    src: "/songs/omenxiii--black-sheep.mp3",
     moodTags: ["有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "淡淡郁结感",
@@ -1346,7 +1346,7 @@ export const songMoodMap = [
   {
     title: "Apologize",
     artist: "OneRepublic",
-    src: "/songs/OneRepublic - Apologize.mp3",
+    src: "/songs/onerepublic--apologize.mp3",
     moodTags: ["想你了","需要安慰"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -1356,7 +1356,7 @@ export const songMoodMap = [
   {
     title: "Enchanted",
     artist: "Owl City",
-    src: "/songs/Owl City - Enchanted.mp3",
+    src: "/songs/owl-city--enchanted.mp3",
     moodTags: ["想被抱抱","洗澡放松一下"],
     energyLevel: "中",
     emotionalDescription: "温暖包裹感",
@@ -1366,7 +1366,7 @@ export const songMoodMap = [
   {
     title: "谁又不是一个孤独的灵魂呢T T",
     artist: "PIggy",
-    src: "/songs/PIggy - 谁又不是一个孤独的灵魂呢T T.mp3",
+    src: "/songs/piggy--t-t.mp3",
     moodTags: ["需要安慰","有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "温柔陪伴感",
@@ -1376,7 +1376,7 @@ export const songMoodMap = [
   {
     title: "Decode (Twilight Soundtrack Version)",
     artist: "Paramore",
-    src: "/songs/Paramore - Decode (Twilight Soundtrack Version).mp3",
+    src: "/songs/paramore--decode.mp3",
     moodTags: ["有点苦恼","想一个人发呆","今天有点累"],
     energyLevel: "中",
     emotionalDescription: "淡淡郁结感",
@@ -1386,7 +1386,7 @@ export const songMoodMap = [
   {
     title: "LABOUR (the cacophony)",
     artist: "Paris Paloma",
-    src: "/songs/Paris Paloma - LABOUR (the cacophony).mp3",
+    src: "/songs/paris-paloma--labour.mp3",
     moodTags: ["有点苦恼"],
     energyLevel: "高",
     emotionalDescription: "淡淡郁结感",
@@ -1396,7 +1396,7 @@ export const songMoodMap = [
   {
     title: "Bamboo",
     artist: "Piano Master",
-    src: "/songs/Piano Master - Bamboo.mp3",
+    src: "/songs/piano-master--bamboo.mp3",
     moodTags: ["今天很幸福","洗澡放松一下","今天有点累"],
     energyLevel: "低",
     emotionalDescription: "温柔幸福感",
@@ -1406,7 +1406,7 @@ export const songMoodMap = [
   {
     title: "met at a party",
     artist: "Powfu,Kuzu Mellow",
-    src: "/songs/Powfu,Kuzu Mellow - met at a party.mp3",
+    src: "/songs/powfu-kuzu-mellow--met-at-a-party.mp3",
     moodTags: ["开心开心","洗澡放松一下","想一个人发呆","今天有点累"],
     energyLevel: "高",
     emotionalDescription: "轻盈欢快感",
@@ -1416,7 +1416,7 @@ export const songMoodMap = [
   {
     title: "Girl Next Door",
     artist: "Ralph,TOBi",
-    src: "/songs/Ralph,TOBi - Girl Next Door.mp3",
+    src: "/songs/ralph-tobi--girl-next-door.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -1426,7 +1426,7 @@ export const songMoodMap = [
   {
     title: "Mariage d'amour (Paul de Senneville)",
     artist: "Richard Clayderman",
-    src: "/songs/Richard Clayderman - Mariage d'amour (Paul de Senneville).mp3",
+    src: "/songs/richard-clayderman--mariage-d-amour.mp3",
     moodTags: ["今天很幸福","洗澡放松一下","今天有点累"],
     energyLevel: "低",
     emotionalDescription: "温柔幸福感",
@@ -1436,7 +1436,7 @@ export const songMoodMap = [
   {
     title: "Rockstar (Singalong Version)",
     artist: "Rockstar Heroes",
-    src: "/songs/Rockstar Heroes - Rockstar (Singalong Version).mp3",
+    src: "/songs/rockstar-heroes--rockstar.mp3",
     moodTags: ["开心开心"],
     energyLevel: "高",
     emotionalDescription: "轻盈欢快感",
@@ -1446,7 +1446,7 @@ export const songMoodMap = [
   {
     title: "Black Veil Bride",
     artist: "Rosy赵露思",
-    src: "/songs/Rosy赵露思 - Black Veil Bride.mp3",
+    src: "/songs/rosy--black-veil-bride.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -1456,7 +1456,7 @@ export const songMoodMap = [
   {
     title: "Take It All In",
     artist: "Russ,Rexx Life Raj",
-    src: "/songs/Russ,Rexx Life Raj - Take It All In.mp3",
+    src: "/songs/russ-rexx-life-raj--take-it-all-in.mp3",
     moodTags: ["开心开心"],
     energyLevel: "中",
     emotionalDescription: "轻盈欢快感",
@@ -1466,7 +1466,7 @@ export const songMoodMap = [
   {
     title: "Throwaway",
     artist: "SG Lewis,Clairo",
-    src: "/songs/SG Lewis,Clairo - Throwaway.mp3",
+    src: "/songs/sg-lewis-clairo--throwaway.mp3",
     moodTags: ["洗澡放松一下","想一个人发呆"],
     energyLevel: "低",
     emotionalDescription: "慵懒放松感",
@@ -1476,7 +1476,7 @@ export const songMoodMap = [
   {
     title: "Love Is Gone (Acoustic)",
     artist: "SLANDER,Dylan Matthew",
-    src: "/songs/SLANDER,Dylan Matthew - Love Is Gone (Acoustic).mp3",
+    src: "/songs/slander-dylan-matthew--love-is-gone.mp3",
     moodTags: ["想你了","需要安慰","洗澡放松一下","想一个人发呆","今天有点累"],
     energyLevel: "低",
     emotionalDescription: "深夜思念感",
@@ -1486,7 +1486,7 @@ export const songMoodMap = [
   {
     title: "Dancing With Your Ghost",
     artist: "Sasha Alex Sloan",
-    src: "/songs/Sasha Alex Sloan - Dancing With Your Ghost.mp3",
+    src: "/songs/sasha-alex-sloan--dancing-with-your-ghost.mp3",
     moodTags: ["想你了","开心开心","需要安慰","有点苦恼","想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -1496,7 +1496,7 @@ export const songMoodMap = [
   {
     title: "an ocean of stars couldn't keep us apart",
     artist: "Savage Ga$p",
-    src: "/songs/Savage Ga$p - an ocean of stars couldn't keep us apart.mp3",
+    src: "/songs/savage-gap--an-ocean-of-stars-couldn-t-keep-us-apart.mp3",
     moodTags: ["想你了","想一个人发呆"],
     energyLevel: "高",
     emotionalDescription: "深夜思念感",
@@ -1506,7 +1506,7 @@ export const songMoodMap = [
   {
     title: "Cheap Thrills",
     artist: "Sia,Sean Paul",
-    src: "/songs/Sia,Sean Paul - Cheap Thrills.mp3",
+    src: "/songs/sia-sean-paul--cheap-thrills.mp3",
     moodTags: ["开心开心"],
     energyLevel: "高",
     emotionalDescription: "轻盈欢快感",
@@ -1516,7 +1516,7 @@ export const songMoodMap = [
   {
     title: "Don’t Go",
     artist: "Skrillex,Justin Bieber,Don Toliver",
-    src: "/songs/Skrillex,Justin Bieber,Don Toliver - Don’t Go.mp3",
+    src: "/songs/skrillex-justin-bieber-don-toliver--dont-go.mp3",
     moodTags: ["有点苦恼"],
     energyLevel: "高",
     emotionalDescription: "淡淡郁结感",
@@ -1526,7 +1526,7 @@ export const songMoodMap = [
   {
     title: "50 Feet",
     artist: "SoMo",
-    src: "/songs/SoMo - 50 Feet.mp3",
+    src: "/songs/somo--50-feet.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "低",
     emotionalDescription: "安静漂浮感",
@@ -1536,7 +1536,7 @@ export const songMoodMap = [
   {
     title: "玫瑰少年",
     artist: "Strictlyviolin荀博,王朝",
-    src: "/songs/Strictlyviolin荀博,王朝 - 玫瑰少年.mp3",
+    src: "/songs/strictlyviolin.mp3",
     moodTags: ["开心开心"],
     energyLevel: "中",
     emotionalDescription: "轻盈欢快感",
@@ -1546,7 +1546,7 @@ export const songMoodMap = [
   {
     title: "寻一个你（电视剧《苍兰诀》温情主题曲）",
     artist: "TTTTTeehom",
-    src: "/songs/TTTTTeehom - 寻一个你（电视剧《苍兰诀》温情主题曲）.mp3",
+    src: "/songs/ttttteehom.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -1556,7 +1556,7 @@ export const songMoodMap = [
   {
     title: "Valder Fields",
     artist: "Tamas Wells",
-    src: "/songs/Tamas Wells - Valder Fields.mp3",
+    src: "/songs/tamas-wells--valder-fields.mp3",
     moodTags: ["想你了","洗澡放松一下","想一个人发呆"],
     energyLevel: "低",
     emotionalDescription: "深夜思念感",
@@ -1566,7 +1566,7 @@ export const songMoodMap = [
   {
     title: "Cruel Summer",
     artist: "Taylor Swift",
-    src: "/songs/Taylor Swift - Cruel Summer.mp3",
+    src: "/songs/taylor-swift--cruel-summer.mp3",
     moodTags: ["开心开心"],
     energyLevel: "中",
     emotionalDescription: "轻盈欢快感",
@@ -1576,7 +1576,7 @@ export const songMoodMap = [
   {
     title: "Something Just Like This",
     artist: "The Chainsmokers,Coldplay",
-    src: "/songs/The Chainsmokers,Coldplay - Something Just Like This.mp3",
+    src: "/songs/the-chainsmokers-coldplay--something-just-like-this.mp3",
     moodTags: ["想被抱抱"],
     energyLevel: "中",
     emotionalDescription: "温暖包裹感",
@@ -1586,7 +1586,7 @@ export const songMoodMap = [
   {
     title: "STAY",
     artist: "The Kid LAROI,Justin Bieber",
-    src: "/songs/The Kid LAROI,Justin Bieber - STAY.mp3",
+    src: "/songs/the-kid-laroi-justin-bieber--stay.mp3",
     moodTags: ["想被抱抱"],
     energyLevel: "中",
     emotionalDescription: "温暖包裹感",
@@ -1596,7 +1596,7 @@ export const songMoodMap = [
   {
     title: "Hush",
     artist: "The Marías",
-    src: "/songs/The Marías - Hush.mp3",
+    src: "/songs/the-maras--hush.mp3",
     moodTags: ["洗澡放松一下","想一个人发呆","今天有点累"],
     energyLevel: "低",
     emotionalDescription: "慵懒放松感",
@@ -1606,7 +1606,7 @@ export const songMoodMap = [
   {
     title: "Sexy back",
     artist: "Timbaland,Justin Timberlake",
-    src: "/songs/Timbaland,Justin Timberlake - Sexy back.mp3",
+    src: "/songs/timbaland-justin-timberlake--sexy-back.mp3",
     moodTags: ["开心开心","想被抱抱"],
     energyLevel: "中",
     emotionalDescription: "轻盈欢快感",
@@ -1616,7 +1616,7 @@ export const songMoodMap = [
   {
     title: "Bored",
     artist: "Torine",
-    src: "/songs/Torine - Bored.mp3",
+    src: "/songs/torine--bored.mp3",
     moodTags: ["有点苦恼","洗澡放松一下"],
     energyLevel: "低",
     emotionalDescription: "淡淡郁结感",
@@ -1626,7 +1626,7 @@ export const songMoodMap = [
   {
     title: "Go   Yourself",
     artist: "Two Feet",
-    src: "/songs/Two Feet - Go   Yourself.mp3",
+    src: "/songs/two-feet--go-yourself.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -1636,7 +1636,7 @@ export const songMoodMap = [
   {
     title: "complex",
     artist: "Ulena,周舟",
-    src: "/songs/Ulena,周舟 - complex.mp3",
+    src: "/songs/ulena--complex.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -1646,7 +1646,7 @@ export const songMoodMap = [
   {
     title: "Dilema (Remake)",
     artist: "Vedo",
-    src: "/songs/Vedo - Dilema (Remake).mp3",
+    src: "/songs/vedo--dilema.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -1656,7 +1656,7 @@ export const songMoodMap = [
   {
     title: "New Soul",
     artist: "Vox Angeli",
-    src: "/songs/Vox Angeli - New Soul.mp3",
+    src: "/songs/vox-angeli--new-soul.mp3",
     moodTags: ["今天很幸福","洗澡放松一下"],
     energyLevel: "中",
     emotionalDescription: "温柔幸福感",
@@ -1666,7 +1666,7 @@ export const songMoodMap = [
   {
     title: "Old Town Road",
     artist: "Walk off the Earth",
-    src: "/songs/Walk off the Earth - Old Town Road.mp3",
+    src: "/songs/walk-off-the-earth--old-town-road.mp3",
     moodTags: ["开心开心"],
     energyLevel: "中",
     emotionalDescription: "轻盈欢快感",
@@ -1676,7 +1676,7 @@ export const songMoodMap = [
   {
     title: "Bet On Me (Organic Version)",
     artist: "Walk off the Earth,D Smoke",
-    src: "/songs/Walk off the Earth,D Smoke - Bet On Me (Organic Version).mp3",
+    src: "/songs/walk-off-the-earth-d-smoke--bet-on-me.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -1686,7 +1686,7 @@ export const songMoodMap = [
   {
     title: "Seasons In The Sun",
     artist: "Westlife",
-    src: "/songs/Westlife - Seasons In The Sun.mp3",
+    src: "/songs/westlife--seasons-in-the-sun.mp3",
     moodTags: ["想你了","需要安慰","今天有点累"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -1696,7 +1696,7 @@ export const songMoodMap = [
   {
     title: "223's",
     artist: "YNW Melly,9lokknine",
-    src: "/songs/YNW Melly,9lokknine - 223's.mp3",
+    src: "/songs/ynw-melly-9lokknine--223-s.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -1706,7 +1706,7 @@ export const songMoodMap = [
   {
     title: "你的前男友",
     artist: "Young 7",
-    src: "/songs/Young 7 - 你的前男友.mp3",
+    src: "/songs/young-7.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -1716,7 +1716,7 @@ export const songMoodMap = [
   {
     title: "Whip A Tesla",
     artist: "Yung Gravy,bbno$",
-    src: "/songs/Yung Gravy,bbno$ - Whip A Tesla.mp3",
+    src: "/songs/yung-gravy-bbno--whip-a-tesla.mp3",
     moodTags: ["开心开心"],
     energyLevel: "高",
     emotionalDescription: "轻盈欢快感",
@@ -1726,7 +1726,7 @@ export const songMoodMap = [
   {
     title: "心跳",
     artist: "en（王翊恩）",
-    src: "/songs/en（王翊恩） - 心跳.mp3",
+    src: "/songs/track-0173.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -1736,7 +1736,7 @@ export const songMoodMap = [
   {
     title: "若梦",
     artist: "en（王翊恩）",
-    src: "/songs/en（王翊恩） - 若梦.mp3",
+    src: "/songs/track-0174.mp3",
     moodTags: ["洗澡放松一下","想一个人发呆"],
     energyLevel: "低",
     emotionalDescription: "慵懒放松感",
@@ -1746,7 +1746,7 @@ export const songMoodMap = [
   {
     title: "他只是经过",
     artist: "h3R3,高旭",
-    src: "/songs/h3R3,高旭 - 他只是经过.mp3",
+    src: "/songs/h3r3.mp3",
     moodTags: ["想你了","开心开心","有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -1756,7 +1756,7 @@ export const songMoodMap = [
   {
     title: "Juliet",
     artist: "kidult.",
-    src: "/songs/kidult. - Juliet.mp3",
+    src: "/songs/kidult--juliet.mp3",
     moodTags: ["开心开心"],
     energyLevel: "中",
     emotionalDescription: "轻盈欢快感",
@@ -1766,7 +1766,7 @@ export const songMoodMap = [
   {
     title: "一点点",
     artist: "lilMoGo,唧唧JIJI",
-    src: "/songs/lilMoGo,唧唧JIJI - 一点点.mp3",
+    src: "/songs/lilmogo-jiji.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -1776,7 +1776,7 @@ export const songMoodMap = [
   {
     title: "PREY  掠食",
     artist: "ØZI",
-    src: "/songs/ØZI - PREY  掠食.mp3",
+    src: "/songs/zi--prey.mp3",
     moodTags: ["有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "淡淡郁结感",
@@ -1786,7 +1786,7 @@ export const songMoodMap = [
   {
     title: "海底",
     artist: "一支榴莲",
-    src: "/songs/一支榴莲 - 海底.mp3",
+    src: "/songs/track-0179.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -1796,7 +1796,7 @@ export const songMoodMap = [
   {
     title: "消散对白",
     artist: "丁禹兮",
-    src: "/songs/丁禹兮 - 消散对白.mp3",
+    src: "/songs/track-0180.mp3",
     moodTags: ["想你了","想一个人发呆","今天有点累"],
     energyLevel: "低",
     emotionalDescription: "深夜思念感",
@@ -1806,7 +1806,7 @@ export const songMoodMap = [
   {
     title: "Perfect (翻自 Ed Sheeran)",
     artist: "丁芙妮",
-    src: "/songs/丁芙妮 - Perfect (翻自 Ed Sheeran).mp3",
+    src: "/songs/perfect.mp3",
     moodTags: ["今天很幸福"],
     energyLevel: "中",
     emotionalDescription: "温柔幸福感",
@@ -1816,7 +1816,7 @@ export const songMoodMap = [
   {
     title: "No Day Off (Live)",
     artist: "万妮达Vinida Weng,BLOWFEVER,RED8红八",
-    src: "/songs/万妮达Vinida Weng,BLOWFEVER,RED8红八 - No Day Off (Live).mp3",
+    src: "/songs/vinida-weng-blowfever-red8--no-day-off.mp3",
     moodTags: ["开心开心","今天有点累"],
     energyLevel: "高",
     emotionalDescription: "轻盈欢快感",
@@ -1826,7 +1826,7 @@ export const songMoodMap = [
   {
     title: "辞家千里又千里",
     artist: "乐乐,陕西燕子",
-    src: "/songs/乐乐,陕西燕子 - 辞家千里又千里.mp3",
+    src: "/songs/track-0183.mp3",
     moodTags: ["洗澡放松一下"],
     energyLevel: "中",
     emotionalDescription: "慵懒放松感",
@@ -1836,7 +1836,7 @@ export const songMoodMap = [
   {
     title: "天龙八部之宿敌",
     artist: "九三",
-    src: "/songs/九三 - 天龙八部之宿敌.mp3",
+    src: "/songs/track-0184.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -1846,7 +1846,7 @@ export const songMoodMap = [
   {
     title: "奉陪",
     artist: "于文文",
-    src: "/songs/于文文 - 奉陪.mp3",
+    src: "/songs/track-0185.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -1856,7 +1856,7 @@ export const songMoodMap = [
   {
     title: "Love Songs",
     artist: "于梓贝",
-    src: "/songs/于梓贝 - Love Songs.mp3",
+    src: "/songs/love-songs.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -1866,7 +1866,7 @@ export const songMoodMap = [
   {
     title: "寂寞沙洲冷",
     artist: "于潼",
-    src: "/songs/于潼 - 寂寞沙洲冷.mp3",
+    src: "/songs/track-0187.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -1876,7 +1876,7 @@ export const songMoodMap = [
   {
     title: "丢了你",
     artist: "井胧",
-    src: "/songs/井胧 - 丢了你.mp3",
+    src: "/songs/track-0188.mp3",
     moodTags: ["想你了"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -1886,7 +1886,7 @@ export const songMoodMap = [
   {
     title: "想见你想见你想见你",
     artist: "八三夭",
-    src: "/songs/八三夭 - 想见你想见你想见你.mp3",
+    src: "/songs/track-0189.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -1896,7 +1896,7 @@ export const songMoodMap = [
   {
     title: "我要找到你",
     artist: "冯子晨",
-    src: "/songs/冯子晨 - 我要找到你.mp3",
+    src: "/songs/track-0190.mp3",
     moodTags: ["想你了"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -1906,7 +1906,7 @@ export const songMoodMap = [
   {
     title: "海底（Live）",
     artist: "凤凰传奇",
-    src: "/songs/凤凰传奇 - 海底（Live）.mp3",
+    src: "/songs/live.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "高",
     emotionalDescription: "安静漂浮感",
@@ -1916,7 +1916,7 @@ export const songMoodMap = [
   {
     title: "阿拉斯加海湾",
     artist: "刘可以",
-    src: "/songs/刘可以 - 阿拉斯加海湾.mp3",
+    src: "/songs/track-0192.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "低",
     emotionalDescription: "安静漂浮感",
@@ -1926,7 +1926,7 @@ export const songMoodMap = [
   {
     title: "会不会（吉他版）",
     artist: "刘大壮",
-    src: "/songs/刘大壮 - 会不会（吉他版）.mp3",
+    src: "/songs/track-0193.mp3",
     moodTags: ["需要安慰","今天有点累"],
     energyLevel: "中",
     emotionalDescription: "温柔陪伴感",
@@ -1936,7 +1936,7 @@ export const songMoodMap = [
   {
     title: "我很好（吉他版）",
     artist: "刘大壮",
-    src: "/songs/刘大壮 - 我很好（吉他版）.mp3",
+    src: "/songs/track-0194.mp3",
     moodTags: ["需要安慰","今天有点累"],
     energyLevel: "中",
     emotionalDescription: "温柔陪伴感",
@@ -1946,7 +1946,7 @@ export const songMoodMap = [
   {
     title: "我知道",
     artist: "刘大拿",
-    src: "/songs/刘大拿 - 我知道.mp3",
+    src: "/songs/track-0195.mp3",
     moodTags: ["今天有点累"],
     energyLevel: "中",
     emotionalDescription: "轻柔疗愈感",
@@ -1956,7 +1956,7 @@ export const songMoodMap = [
   {
     title: "For U",
     artist: "刘思鉴",
-    src: "/songs/刘思鉴 - For U.mp3",
+    src: "/songs/for-u.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -1966,7 +1966,7 @@ export const songMoodMap = [
   {
     title: "Stranger (prod. Ocean)",
     artist: "刘思鉴",
-    src: "/songs/刘思鉴 - Stranger (prod. Ocean).mp3",
+    src: "/songs/stranger.mp3",
     moodTags: ["有点苦恼","想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "淡淡郁结感",
@@ -1976,7 +1976,7 @@ export const songMoodMap = [
   {
     title: "Manta",
     artist: "刘柏辛Lexie",
-    src: "/songs/刘柏辛Lexie - Manta.mp3",
+    src: "/songs/lexie--manta.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -1986,7 +1986,7 @@ export const songMoodMap = [
   {
     title: "原谅我还没忘记",
     artist: "刘梓炎",
-    src: "/songs/刘梓炎 - 原谅我还没忘记.mp3",
+    src: "/songs/track-0199.mp3",
     moodTags: ["想你了"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -1996,7 +1996,7 @@ export const songMoodMap = [
   {
     title: "好想爱这个世界啊 (Live)",
     artist: "华晨宇",
-    src: "/songs/华晨宇 - 好想爱这个世界啊 (Live).mp3",
+    src: "/songs/track-0200.mp3",
     moodTags: ["今天很幸福"],
     energyLevel: "高",
     emotionalDescription: "温柔幸福感",
@@ -2006,7 +2006,7 @@ export const songMoodMap = [
   {
     title: "下雨天 (Live)",
     artist: "单依纯",
-    src: "/songs/单依纯 - 下雨天 (Live).mp3",
+    src: "/songs/track-0201.mp3",
     moodTags: ["想你了","想一个人发呆","今天有点累"],
     energyLevel: "高",
     emotionalDescription: "深夜思念感",
@@ -2016,7 +2016,7 @@ export const songMoodMap = [
   {
     title: "想你时风起",
     artist: "单依纯",
-    src: "/songs/单依纯 - 想你时风起.mp3",
+    src: "/songs/track-0202.mp3",
     moodTags: ["想你了","想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -2026,7 +2026,7 @@ export const songMoodMap = [
   {
     title: "爱的回归线 (Live版)",
     artist: "单依纯",
-    src: "/songs/单依纯 - 爱的回归线 (Live版).mp3",
+    src: "/songs/track-0203.mp3",
     moodTags: ["想你了","想一个人发呆"],
     energyLevel: "高",
     emotionalDescription: "深夜思念感",
@@ -2036,7 +2036,7 @@ export const songMoodMap = [
   {
     title: "给电影人的情书 (Live)",
     artist: "单依纯",
-    src: "/songs/单依纯 - 给电影人的情书 (Live).mp3",
+    src: "/songs/track-0204.mp3",
     moodTags: ["想你了","想一个人发呆"],
     energyLevel: "高",
     emotionalDescription: "深夜思念感",
@@ -2046,7 +2046,7 @@ export const songMoodMap = [
   {
     title: "踮起脚尖爱 (Live版)",
     artist: "单依纯",
-    src: "/songs/单依纯 - 踮起脚尖爱 (Live版).mp3",
+    src: "/songs/track-0205.mp3",
     moodTags: ["想你了","想一个人发呆"],
     energyLevel: "高",
     emotionalDescription: "深夜思念感",
@@ -2056,7 +2056,7 @@ export const songMoodMap = [
   {
     title: "问",
     artist: "占二曦",
-    src: "/songs/占二曦 - 问.mp3",
+    src: "/songs/track-0206.mp3",
     moodTags: ["需要安慰"],
     energyLevel: "中",
     emotionalDescription: "温柔陪伴感",
@@ -2066,7 +2066,7 @@ export const songMoodMap = [
   {
     title: "爱，存在",
     artist: "卢卢快闭嘴",
-    src: "/songs/卢卢快闭嘴 - 爱，存在.mp3",
+    src: "/songs/track-0207.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -2076,7 +2076,7 @@ export const songMoodMap = [
   {
     title: "爱就一个字 (男生版)",
     artist: "卢润泽",
-    src: "/songs/卢润泽 - 爱就一个字 (男生版).mp3",
+    src: "/songs/track-0208.mp3",
     moodTags: ["今天很幸福"],
     energyLevel: "中",
     emotionalDescription: "温柔幸福感",
@@ -2086,7 +2086,7 @@ export const songMoodMap = [
   {
     title: "必杀技",
     artist: "古巨基",
-    src: "/songs/古巨基 - 必杀技.mp3",
+    src: "/songs/track-0209.mp3",
     moodTags: ["开心开心"],
     energyLevel: "中",
     emotionalDescription: "轻盈欢快感",
@@ -2096,7 +2096,7 @@ export const songMoodMap = [
   {
     title: "秦淮景",
     artist: "吴亮莹",
-    src: "/songs/吴亮莹 - 秦淮景.mp3",
+    src: "/songs/track-0210.mp3",
     moodTags: ["洗澡放松一下"],
     energyLevel: "低",
     emotionalDescription: "慵懒放松感",
@@ -2106,7 +2106,7 @@ export const songMoodMap = [
   {
     title: "大眠（呆呆破 男版）",
     artist: "呆呆破",
-    src: "/songs/呆呆破 - 大眠（呆呆破 男版）.mp3",
+    src: "/songs/track-0211.mp3",
     moodTags: ["开心开心"],
     energyLevel: "中",
     emotionalDescription: "轻盈欢快感",
@@ -2116,7 +2116,7 @@ export const songMoodMap = [
   {
     title: "黄昏",
     artist: "周传雄",
-    src: "/songs/周传雄 - 黄昏.mp3",
+    src: "/songs/track-0212.mp3",
     moodTags: ["想一个人发呆","今天有点累"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -2126,7 +2126,7 @@ export const songMoodMap = [
   {
     title: "永不失联的爱",
     artist: "周兴哲",
-    src: "/songs/周兴哲 - 永不失联的爱.mp3",
+    src: "/songs/track-0213.mp3",
     moodTags: ["想被抱抱","今天很幸福"],
     energyLevel: "中",
     emotionalDescription: "温暖包裹感",
@@ -2136,7 +2136,7 @@ export const songMoodMap = [
   {
     title: "雨爱",
     artist: "周星星",
-    src: "/songs/周星星 - 雨爱.mp3",
+    src: "/songs/track-0214.mp3",
     moodTags: ["开心开心"],
     energyLevel: "中",
     emotionalDescription: "轻盈欢快感",
@@ -2146,7 +2146,7 @@ export const songMoodMap = [
   {
     title: "Monsters (Live)",
     artist: "周深",
-    src: "/songs/周深 - Monsters (Live).mp3",
+    src: "/songs/monsters.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "高",
     emotionalDescription: "安静漂浮感",
@@ -2156,7 +2156,7 @@ export const songMoodMap = [
   {
     title: "兰亭序",
     artist: "周深",
-    src: "/songs/周深 - 兰亭序.mp3",
+    src: "/songs/track-0216.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "低",
     emotionalDescription: "安静漂浮感",
@@ -2166,7 +2166,7 @@ export const songMoodMap = [
   {
     title: "怜悯 (Live)",
     artist: "周深",
-    src: "/songs/周深 - 怜悯 (Live).mp3",
+    src: "/songs/track-0217.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "高",
     emotionalDescription: "安静漂浮感",
@@ -2176,7 +2176,7 @@ export const songMoodMap = [
   {
     title: "雪落下的声音 (Live)",
     artist: "周深",
-    src: "/songs/周深 - 雪落下的声音 (Live).mp3",
+    src: "/songs/track-0218.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "高",
     emotionalDescription: "安静漂浮感",
@@ -2186,7 +2186,7 @@ export const songMoodMap = [
   {
     title: "原来你也在这里",
     artist: "周笔畅",
-    src: "/songs/周笔畅 - 原来你也在这里.mp3",
+    src: "/songs/track-0219.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -2196,7 +2196,7 @@ export const songMoodMap = [
   {
     title: "PARTY是你家",
     artist: "坤木Joymo",
-    src: "/songs/坤木Joymo - PARTY是你家.mp3",
+    src: "/songs/joymo--party.mp3",
     moodTags: ["开心开心"],
     energyLevel: "高",
     emotionalDescription: "轻盈欢快感",
@@ -2206,7 +2206,7 @@ export const songMoodMap = [
   {
     title: "最酷的小孩",
     artist: "坤木Joymo,ray",
-    src: "/songs/坤木Joymo,ray - 最酷的小孩.mp3",
+    src: "/songs/joymo-ray.mp3",
     moodTags: ["开心开心"],
     energyLevel: "中",
     emotionalDescription: "轻盈欢快感",
@@ -2216,7 +2216,7 @@ export const songMoodMap = [
   {
     title: "不再联系",
     artist: "夏天Alex",
-    src: "/songs/夏天Alex - 不再联系.mp3",
+    src: "/songs/alex.mp3",
     moodTags: ["想你了","有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -2226,7 +2226,7 @@ export const songMoodMap = [
   {
     title: "极恶都市",
     artist: "夏日入侵企画",
-    src: "/songs/夏日入侵企画 - 极恶都市.mp3",
+    src: "/songs/track-0223.mp3",
     moodTags: ["有点苦恼"],
     energyLevel: "高",
     emotionalDescription: "淡淡郁结感",
@@ -2236,7 +2236,7 @@ export const songMoodMap = [
   {
     title: "一起逃命",
     artist: "太一",
-    src: "/songs/太一 - 一起逃命.mp3",
+    src: "/songs/track-0224.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -2246,7 +2246,7 @@ export const songMoodMap = [
   {
     title: "负重一万斤长大",
     artist: "太一",
-    src: "/songs/太一 - 负重一万斤长大.mp3",
+    src: "/songs/track-0225.mp3",
     moodTags: ["需要安慰","今天有点累"],
     energyLevel: "中",
     emotionalDescription: "温柔陪伴感",
@@ -2256,7 +2256,7 @@ export const songMoodMap = [
   {
     title: "留什么给你",
     artist: "姜铭杨",
-    src: "/songs/姜铭杨 - 留什么给你.mp3",
+    src: "/songs/track-0226.mp3",
     moodTags: ["想你了"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -2266,7 +2266,7 @@ export const songMoodMap = [
   {
     title: "开始懂了",
     artist: "孙燕姿",
-    src: "/songs/孙燕姿 - 开始懂了.mp3",
+    src: "/songs/track-0227.mp3",
     moodTags: ["今天很幸福"],
     energyLevel: "中",
     emotionalDescription: "温柔幸福感",
@@ -2276,7 +2276,7 @@ export const songMoodMap = [
   {
     title: "遇见",
     artist: "孙燕姿",
-    src: "/songs/孙燕姿 - 遇见.mp3",
+    src: "/songs/track-0228.mp3",
     moodTags: ["今天很幸福"],
     energyLevel: "中",
     emotionalDescription: "温柔幸福感",
@@ -2286,7 +2286,7 @@ export const songMoodMap = [
   {
     title: "Nxde(英文版）",
     artist: "宙斯烤肉_,之子,久久",
-    src: "/songs/宙斯烤肉_,之子,久久 - Nxde(英文版）.mp3",
+    src: "/songs/nxde.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -2296,7 +2296,7 @@ export const songMoodMap = [
   {
     title: "还要多久",
     artist: "宫阁,余佳运",
-    src: "/songs/宫阁,余佳运 - 还要多久.mp3",
+    src: "/songs/track-0230.mp3",
     moodTags: ["想你了"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -2306,7 +2306,7 @@ export const songMoodMap = [
   {
     title: "就让这大雨全都落下",
     artist: "容祖儿",
-    src: "/songs/容祖儿 - 就让这大雨全都落下.mp3",
+    src: "/songs/track-0231.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -2316,7 +2316,7 @@ export const songMoodMap = [
   {
     title: "大眠 (完整版)",
     artist: "小乐哥（王唯乐）",
-    src: "/songs/小乐哥（王唯乐） - 大眠 (完整版).mp3",
+    src: "/songs/track-0232.mp3",
     moodTags: ["开心开心"],
     energyLevel: "中",
     emotionalDescription: "轻盈欢快感",
@@ -2326,7 +2326,7 @@ export const songMoodMap = [
   {
     title: "我走后",
     artist: "小咪",
-    src: "/songs/小咪 - 我走后.mp3",
+    src: "/songs/track-0233.mp3",
     moodTags: ["想你了"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -2336,7 +2336,7 @@ export const songMoodMap = [
   {
     title: "西楼别序",
     artist: "尹昔眠,小田音乐社",
-    src: "/songs/尹昔眠,小田音乐社 - 西楼别序.mp3",
+    src: "/songs/track-0234.mp3",
     moodTags: ["洗澡放松一下","想一个人发呆"],
     energyLevel: "低",
     emotionalDescription: "慵懒放松感",
@@ -2346,7 +2346,7 @@ export const songMoodMap = [
   {
     title: "太傻",
     artist: "巫启贤",
-    src: "/songs/巫启贤 - 太傻.mp3",
+    src: "/songs/track-0235.mp3",
     moodTags: ["需要安慰"],
     energyLevel: "中",
     emotionalDescription: "温柔陪伴感",
@@ -2356,7 +2356,7 @@ export const songMoodMap = [
   {
     title: "爱如潮水",
     artist: "张信哲",
-    src: "/songs/张信哲 - 爱如潮水.mp3",
+    src: "/songs/track-0236.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -2366,7 +2366,7 @@ export const songMoodMap = [
   {
     title: "还是分开",
     artist: "张叶蕾",
-    src: "/songs/张叶蕾 - 还是分开.mp3",
+    src: "/songs/track-0237.mp3",
     moodTags: ["想你了"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -2376,7 +2376,7 @@ export const songMoodMap = [
   {
     title: "替身",
     artist: "张宇",
-    src: "/songs/张宇 - 替身.mp3",
+    src: "/songs/track-0238.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -2386,7 +2386,7 @@ export const songMoodMap = [
   {
     title: "雨一直下",
     artist: "张宇",
-    src: "/songs/张宇 - 雨一直下.mp3",
+    src: "/songs/track-0239.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -2396,7 +2396,7 @@ export const songMoodMap = [
   {
     title: "哭不出来(Live)",
     artist: "张惠妹",
-    src: "/songs/张惠妹 - 哭不出来(Live).mp3",
+    src: "/songs/track-0240.mp3",
     moodTags: ["需要安慰"],
     energyLevel: "高",
     emotionalDescription: "温柔陪伴感",
@@ -2406,7 +2406,7 @@ export const songMoodMap = [
   {
     title: "今生今世",
     artist: "张杰",
-    src: "/songs/张杰 - 今生今世.mp3",
+    src: "/songs/track-0241.mp3",
     moodTags: ["今天很幸福"],
     energyLevel: "中",
     emotionalDescription: "温柔幸福感",
@@ -2416,7 +2416,7 @@ export const songMoodMap = [
   {
     title: "他不懂",
     artist: "张杰",
-    src: "/songs/张杰 - 他不懂.mp3",
+    src: "/songs/track-0242.mp3",
     moodTags: ["今天很幸福"],
     energyLevel: "中",
     emotionalDescription: "温柔幸福感",
@@ -2426,7 +2426,7 @@ export const songMoodMap = [
   {
     title: "夜空中最亮的星 (Live)",
     artist: "张杰",
-    src: "/songs/张杰 - 夜空中最亮的星 (Live).mp3",
+    src: "/songs/track-0243.mp3",
     moodTags: ["今天很幸福"],
     energyLevel: "高",
     emotionalDescription: "温柔幸福感",
@@ -2436,7 +2436,7 @@ export const songMoodMap = [
   {
     title: "我们都一样",
     artist: "张杰",
-    src: "/songs/张杰 - 我们都一样.mp3",
+    src: "/songs/track-0244.mp3",
     moodTags: ["今天很幸福"],
     energyLevel: "中",
     emotionalDescription: "温柔幸福感",
@@ -2446,7 +2446,7 @@ export const songMoodMap = [
   {
     title: "明天过后",
     artist: "张杰",
-    src: "/songs/张杰 - 明天过后.mp3",
+    src: "/songs/track-0245.mp3",
     moodTags: ["今天很幸福","开心开心"],
     energyLevel: "中",
     emotionalDescription: "温柔幸福感",
@@ -2456,7 +2456,7 @@ export const songMoodMap = [
   {
     title: "最接近天堂的地方",
     artist: "张杰",
-    src: "/songs/张杰 - 最接近天堂的地方.mp3",
+    src: "/songs/track-0246.mp3",
     moodTags: ["今天很幸福"],
     energyLevel: "中",
     emotionalDescription: "温柔幸福感",
@@ -2466,7 +2466,7 @@ export const songMoodMap = [
   {
     title: "着魔",
     artist: "张杰",
-    src: "/songs/张杰 - 着魔.mp3",
+    src: "/songs/track-0247.mp3",
     moodTags: ["今天很幸福"],
     energyLevel: "中",
     emotionalDescription: "温柔幸福感",
@@ -2476,7 +2476,7 @@ export const songMoodMap = [
   {
     title: "画心",
     artist: "张檬,金恩圣",
-    src: "/songs/张檬,金恩圣 - 画心.mp3",
+    src: "/songs/track-0248.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -2486,7 +2486,7 @@ export const songMoodMap = [
   {
     title: "笼",
     artist: "张碧晨",
-    src: "/songs/张碧晨 - 笼.mp3",
+    src: "/songs/track-0249.mp3",
     moodTags: ["有点苦恼","今天有点累"],
     energyLevel: "中",
     emotionalDescription: "淡淡郁结感",
@@ -2496,7 +2496,7 @@ export const songMoodMap = [
   {
     title: "慢冷 (Live版)",
     artist: "张碧晨,希林娜依高",
-    src: "/songs/张碧晨,希林娜依高 - 慢冷 (Live版).mp3",
+    src: "/songs/track-0250.mp3",
     moodTags: ["有点苦恼","今天有点累"],
     energyLevel: "高",
     emotionalDescription: "淡淡郁结感",
@@ -2506,7 +2506,7 @@ export const songMoodMap = [
   {
     title: "字字句句 (Live版)",
     artist: "张碧晨,王赫野",
-    src: "/songs/张碧晨,王赫野 - 字字句句 (Live版).mp3",
+    src: "/songs/track-0251.mp3",
     moodTags: ["有点苦恼","今天有点累"],
     energyLevel: "高",
     emotionalDescription: "淡淡郁结感",
@@ -2516,7 +2516,7 @@ export const songMoodMap = [
   {
     title: "大花轿 (feat.火风)",
     artist: "张艺兴,火风",
-    src: "/songs/张艺兴,火风 - 大花轿 (feat.火风).mp3",
+    src: "/songs/track-0252.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "高",
     emotionalDescription: "安静漂浮感",
@@ -2526,7 +2526,7 @@ export const songMoodMap = [
   {
     title: "偏爱",
     artist: "张芸京",
-    src: "/songs/张芸京 - 偏爱.mp3",
+    src: "/songs/track-0253.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -2536,7 +2536,7 @@ export const songMoodMap = [
   {
     title: "看着我的眼睛说",
     artist: "张远",
-    src: "/songs/张远 - 看着我的眼睛说.mp3",
+    src: "/songs/track-0254.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -2546,7 +2546,7 @@ export const songMoodMap = [
   {
     title: "Outside",
     artist: "张钰琪",
-    src: "/songs/张钰琪 - Outside.mp3",
+    src: "/songs/outside.mp3",
     moodTags: ["今天很幸福"],
     energyLevel: "中",
     emotionalDescription: "温柔幸福感",
@@ -2556,7 +2556,7 @@ export const songMoodMap = [
   {
     title: "陪你度过漫长岁月",
     artist: "张钰琪",
-    src: "/songs/张钰琪 - 陪你度过漫长岁月.mp3",
+    src: "/songs/track-0256.mp3",
     moodTags: ["今天很幸福"],
     energyLevel: "中",
     emotionalDescription: "温柔幸福感",
@@ -2566,7 +2566,7 @@ export const songMoodMap = [
   {
     title: "饿狼传说 (Live)",
     artist: "张靓颖",
-    src: "/songs/张靓颖 - 饿狼传说 (Live).mp3",
+    src: "/songs/track-0257.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "高",
     emotionalDescription: "安静漂浮感",
@@ -2576,7 +2576,7 @@ export const songMoodMap = [
   {
     title: "一样的月光 (Live)",
     artist: "徐佳莹",
-    src: "/songs/徐佳莹 - 一样的月光 (Live).mp3",
+    src: "/songs/track-0258.mp3",
     moodTags: ["今天很幸福","洗澡放松一下"],
     energyLevel: "高",
     emotionalDescription: "温柔幸福感",
@@ -2586,7 +2586,7 @@ export const songMoodMap = [
   {
     title: "一样的月光",
     artist: "徐佳莹",
-    src: "/songs/徐佳莹 - 一样的月光.mp3",
+    src: "/songs/track-0259.mp3",
     moodTags: ["今天很幸福","洗澡放松一下"],
     energyLevel: "中",
     emotionalDescription: "温柔幸福感",
@@ -2596,7 +2596,7 @@ export const songMoodMap = [
   {
     title: "如果爱忘了",
     artist: "徐泽（要不要买菜）",
-    src: "/songs/徐泽（要不要买菜） - 如果爱忘了.mp3",
+    src: "/songs/track-0260.mp3",
     moodTags: ["想你了"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -2606,7 +2606,7 @@ export const songMoodMap = [
   {
     title: "孤身",
     artist: "徐秉龙",
-    src: "/songs/徐秉龙 - 孤身.mp3",
+    src: "/songs/track-0261.mp3",
     moodTags: ["需要安慰","想一个人发呆","今天有点累"],
     energyLevel: "低",
     emotionalDescription: "温柔陪伴感",
@@ -2616,7 +2616,7 @@ export const songMoodMap = [
   {
     title: "想自由",
     artist: "徐秉龙",
-    src: "/songs/徐秉龙 - 想自由.mp3",
+    src: "/songs/track-0262.mp3",
     moodTags: ["需要安慰","想一个人发呆","今天有点累"],
     energyLevel: "低",
     emotionalDescription: "温柔陪伴感",
@@ -2626,7 +2626,7 @@ export const songMoodMap = [
   {
     title: "林宥嘉",
     artist: "徐秉龙",
-    src: "/songs/徐秉龙 - 林宥嘉.mp3",
+    src: "/songs/track-0263.mp3",
     moodTags: ["需要安慰","想一个人发呆","今天有点累"],
     energyLevel: "中",
     emotionalDescription: "温柔陪伴感",
@@ -2636,7 +2636,7 @@ export const songMoodMap = [
   {
     title: "白羊",
     artist: "徐秉龙,沈以诚",
-    src: "/songs/徐秉龙,沈以诚 - 白羊.mp3",
+    src: "/songs/track-0264.mp3",
     moodTags: ["需要安慰","想一个人发呆","今天有点累"],
     energyLevel: "中",
     emotionalDescription: "温柔陪伴感",
@@ -2646,7 +2646,7 @@ export const songMoodMap = [
   {
     title: "那时雨",
     artist: "徐良",
-    src: "/songs/徐良 - 那时雨.mp3",
+    src: "/songs/track-0265.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "低",
     emotionalDescription: "安静漂浮感",
@@ -2656,7 +2656,7 @@ export const songMoodMap = [
   {
     title: "不跟你好了",
     artist: "我要吃泡芙",
-    src: "/songs/我要吃泡芙 - 不跟你好了.mp3",
+    src: "/songs/track-0266.mp3",
     moodTags: ["有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "淡淡郁结感",
@@ -2666,7 +2666,7 @@ export const songMoodMap = [
   {
     title: "如果爱忘了",
     artist: "戚薇",
-    src: "/songs/戚薇 - 如果爱忘了.mp3",
+    src: "/songs/track-0267.mp3",
     moodTags: ["想你了"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -2676,7 +2676,7 @@ export const songMoodMap = [
   {
     title: "青玉恋(公子版)",
     artist: "新诚觉一",
-    src: "/songs/新诚觉一 - 青玉恋(公子版).mp3",
+    src: "/songs/track-0268.mp3",
     moodTags: ["洗澡放松一下"],
     energyLevel: "低",
     emotionalDescription: "慵懒放松感",
@@ -2686,7 +2686,7 @@ export const songMoodMap = [
   {
     title: "沉醉的青丝 (想你 念你)",
     artist: "曲甲",
-    src: "/songs/曲甲 - 沉醉的青丝 (想你 念你).mp3",
+    src: "/songs/track-0269.mp3",
     moodTags: ["想你了"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -2696,7 +2696,7 @@ export const songMoodMap = [
   {
     title: "天亮以前说再见",
     artist: "曲肖冰",
-    src: "/songs/曲肖冰 - 天亮以前说再见.mp3",
+    src: "/songs/track-0270.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -2706,7 +2706,7 @@ export const songMoodMap = [
   {
     title: "梁山伯与茱丽叶",
     artist: "曹格,卓文萱",
-    src: "/songs/曹格,卓文萱 - 梁山伯与茱丽叶.mp3",
+    src: "/songs/track-0271.mp3",
     moodTags: ["今天很幸福"],
     energyLevel: "中",
     emotionalDescription: "温柔幸福感",
@@ -2716,7 +2716,7 @@ export const songMoodMap = [
   {
     title: "再不疯狂我们就老了",
     artist: "李宇春",
-    src: "/songs/李宇春 - 再不疯狂我们就老了.mp3",
+    src: "/songs/track-0272.mp3",
     moodTags: ["开心开心","洗澡放松一下"],
     energyLevel: "高",
     emotionalDescription: "轻盈欢快感",
@@ -2726,7 +2726,7 @@ export const songMoodMap = [
   {
     title: "蜀绣",
     artist: "李宇春",
-    src: "/songs/李宇春 - 蜀绣.mp3",
+    src: "/songs/track-0273.mp3",
     moodTags: ["开心开心","洗澡放松一下"],
     energyLevel: "中",
     emotionalDescription: "轻盈欢快感",
@@ -2736,7 +2736,7 @@ export const songMoodMap = [
   {
     title: "给自己的歌",
     artist: "李宗盛",
-    src: "/songs/李宗盛 - 给自己的歌.mp3",
+    src: "/songs/track-0274.mp3",
     moodTags: ["洗澡放松一下","今天有点累"],
     energyLevel: "中",
     emotionalDescription: "慵懒放松感",
@@ -2746,7 +2746,7 @@ export const songMoodMap = [
   {
     title: "鬼迷心窍",
     artist: "李宗盛",
-    src: "/songs/李宗盛 - 鬼迷心窍.mp3",
+    src: "/songs/track-0275.mp3",
     moodTags: ["洗澡放松一下","今天有点累"],
     energyLevel: "中",
     emotionalDescription: "慵懒放松感",
@@ -2756,7 +2756,7 @@ export const songMoodMap = [
   {
     title: "大城小爱",
     artist: "李浩然",
-    src: "/songs/李浩然 - 大城小爱.mp3",
+    src: "/songs/track-0276.mp3",
     moodTags: ["需要安慰"],
     energyLevel: "中",
     emotionalDescription: "温柔陪伴感",
@@ -2766,7 +2766,7 @@ export const songMoodMap = [
   {
     title: "年少有为",
     artist: "李荣浩",
-    src: "/songs/李荣浩 - 年少有为.mp3",
+    src: "/songs/track-0277.mp3",
     moodTags: ["开心开心"],
     energyLevel: "中",
     emotionalDescription: "轻盈欢快感",
@@ -2776,7 +2776,7 @@ export const songMoodMap = [
   {
     title: "我看着你的时候",
     artist: "李荣浩",
-    src: "/songs/李荣浩 - 我看着你的时候.mp3",
+    src: "/songs/track-0278.mp3",
     moodTags: ["开心开心"],
     energyLevel: "中",
     emotionalDescription: "轻盈欢快感",
@@ -2786,7 +2786,7 @@ export const songMoodMap = [
   {
     title: "天若有情",
     artist: "杜宣达",
-    src: "/songs/杜宣达 - 天若有情.mp3",
+    src: "/songs/track-0279.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -2796,7 +2796,7 @@ export const songMoodMap = [
   {
     title: "指纹",
     artist: "杜宣达",
-    src: "/songs/杜宣达 - 指纹.mp3",
+    src: "/songs/track-0280.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -2806,7 +2806,7 @@ export const songMoodMap = [
   {
     title: "恶作剧",
     artist: "林依晨",
-    src: "/songs/林依晨 - 恶作剧.mp3",
+    src: "/songs/track-0281.mp3",
     moodTags: ["开心开心"],
     energyLevel: "高",
     emotionalDescription: "轻盈欢快感",
@@ -2816,7 +2816,7 @@ export const songMoodMap = [
   {
     title: "她说",
     artist: "林俊杰",
-    src: "/songs/林俊杰 - 她说.mp3",
+    src: "/songs/track-0282.mp3",
     moodTags: ["今天很幸福"],
     energyLevel: "中",
     emotionalDescription: "温柔幸福感",
@@ -2826,7 +2826,7 @@ export const songMoodMap = [
   {
     title: "我还想她",
     artist: "林俊杰",
-    src: "/songs/林俊杰 - 我还想她.mp3",
+    src: "/songs/track-0283.mp3",
     moodTags: ["今天很幸福"],
     energyLevel: "中",
     emotionalDescription: "温柔幸福感",
@@ -2836,7 +2836,7 @@ export const songMoodMap = [
   {
     title: "江南",
     artist: "林俊杰",
-    src: "/songs/林俊杰 - 江南.mp3",
+    src: "/songs/track-0284.mp3",
     moodTags: ["今天很幸福"],
     energyLevel: "中",
     emotionalDescription: "温柔幸福感",
@@ -2846,7 +2846,7 @@ export const songMoodMap = [
   {
     title: "熟能生巧",
     artist: "林俊杰",
-    src: "/songs/林俊杰 - 熟能生巧.mp3",
+    src: "/songs/track-0285.mp3",
     moodTags: ["今天很幸福"],
     energyLevel: "中",
     emotionalDescription: "温柔幸福感",
@@ -2856,7 +2856,7 @@ export const songMoodMap = [
   {
     title: "茉莉雨",
     artist: "林俊杰",
-    src: "/songs/林俊杰 - 茉莉雨.mp3",
+    src: "/songs/track-0286.mp3",
     moodTags: ["今天很幸福"],
     energyLevel: "中",
     emotionalDescription: "温柔幸福感",
@@ -2866,7 +2866,7 @@ export const songMoodMap = [
   {
     title: "记得",
     artist: "林俊杰",
-    src: "/songs/林俊杰 - 记得.mp3",
+    src: "/songs/track-0287.mp3",
     moodTags: ["今天很幸福"],
     energyLevel: "中",
     emotionalDescription: "温柔幸福感",
@@ -2876,7 +2876,7 @@ export const songMoodMap = [
   {
     title: "小酒窝",
     artist: "林俊杰,蔡卓妍",
-    src: "/songs/林俊杰,蔡卓妍 - 小酒窝.mp3",
+    src: "/songs/track-0288.mp3",
     moodTags: ["今天很幸福","开心开心"],
     energyLevel: "中",
     emotionalDescription: "温柔幸福感",
@@ -2886,7 +2886,7 @@ export const songMoodMap = [
   {
     title: "这一生关于你的风景",
     artist: "枯木逢春",
-    src: "/songs/枯木逢春 - 这一生关于你的风景.mp3",
+    src: "/songs/track-0289.mp3",
     moodTags: ["今天很幸福"],
     energyLevel: "中",
     emotionalDescription: "温柔幸福感",
@@ -2896,7 +2896,7 @@ export const songMoodMap = [
   {
     title: "世间美好与你环环相扣",
     artist: "柏松",
-    src: "/songs/柏松 - 世间美好与你环环相扣.mp3",
+    src: "/songs/track-0290.mp3",
     moodTags: ["想被抱抱","今天很幸福"],
     energyLevel: "中",
     emotionalDescription: "温暖包裹感",
@@ -2906,7 +2906,7 @@ export const songMoodMap = [
   {
     title: "短发",
     artist: "梁咏琪",
-    src: "/songs/梁咏琪 - 短发.mp3",
+    src: "/songs/track-0291.mp3",
     moodTags: ["需要安慰"],
     energyLevel: "中",
     emotionalDescription: "温柔陪伴感",
@@ -2916,7 +2916,7 @@ export const songMoodMap = [
   {
     title: "分手快乐",
     artist: "梁静茹",
-    src: "/songs/梁静茹 - 分手快乐.mp3",
+    src: "/songs/track-0292.mp3",
     moodTags: ["想你了","开心开心"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -2926,7 +2926,7 @@ export const songMoodMap = [
   {
     title: "勇气",
     artist: "梁静茹",
-    src: "/songs/梁静茹 - 勇气.mp3",
+    src: "/songs/track-0293.mp3",
     moodTags: ["今天很幸福"],
     energyLevel: "中",
     emotionalDescription: "温柔幸福感",
@@ -2936,7 +2936,7 @@ export const songMoodMap = [
   {
     title: "Geronimo",
     artist: "段弋",
-    src: "/songs/段弋 - Geronimo.mp3",
+    src: "/songs/geronimo.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -2946,7 +2946,7 @@ export const songMoodMap = [
   {
     title: "223's",
     artist: "段弋,hanji",
-    src: "/songs/段弋,hanji - 223's.mp3",
+    src: "/songs/hanji--223-s.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -2956,7 +2956,7 @@ export const songMoodMap = [
   {
     title: "像我这样的人",
     artist: "毛不易",
-    src: "/songs/毛不易 - 像我这样的人.mp3",
+    src: "/songs/track-0296.mp3",
     moodTags: ["需要安慰","今天有点累"],
     energyLevel: "中",
     emotionalDescription: "温柔陪伴感",
@@ -2966,7 +2966,7 @@ export const songMoodMap = [
   {
     title: "呓语",
     artist: "毛不易",
-    src: "/songs/毛不易 - 呓语.mp3",
+    src: "/songs/track-0297.mp3",
     moodTags: ["需要安慰","想一个人发呆","今天有点累"],
     energyLevel: "低",
     emotionalDescription: "温柔陪伴感",
@@ -2976,7 +2976,7 @@ export const songMoodMap = [
   {
     title: "小王日记",
     artist: "毛不易",
-    src: "/songs/毛不易 - 小王日记.mp3",
+    src: "/songs/track-0298.mp3",
     moodTags: ["需要安慰","今天有点累"],
     energyLevel: "中",
     emotionalDescription: "温柔陪伴感",
@@ -2986,7 +2986,7 @@ export const songMoodMap = [
   {
     title: "无问",
     artist: "毛不易",
-    src: "/songs/毛不易 - 无问.mp3",
+    src: "/songs/track-0299.mp3",
     moodTags: ["需要安慰","今天有点累"],
     energyLevel: "中",
     emotionalDescription: "温柔陪伴感",
@@ -2996,7 +2996,7 @@ export const songMoodMap = [
   {
     title: "再也没有",
     artist: "永彬Ryan.B,AY楊佬叁",
-    src: "/songs/永彬Ryan.B,AY楊佬叁 - 再也没有.mp3",
+    src: "/songs/ryan-b-ay.mp3",
     moodTags: ["想你了"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -3006,7 +3006,7 @@ export const songMoodMap = [
   {
     title: "爱情转移 (Live)",
     artist: "汪晨蕊",
-    src: "/songs/汪晨蕊 - 爱情转移 (Live).mp3",
+    src: "/songs/track-0301.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "高",
     emotionalDescription: "安静漂浮感",
@@ -3016,7 +3016,7 @@ export const songMoodMap = [
   {
     title: "好奇",
     artist: "沈以诚",
-    src: "/songs/沈以诚 - 好奇.mp3",
+    src: "/songs/track-0302.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -3026,7 +3026,7 @@ export const songMoodMap = [
   {
     title: "慢热",
     artist: "满舒克",
-    src: "/songs/满舒克 - 慢热.mp3",
+    src: "/songs/track-0303.mp3",
     moodTags: ["今天有点累"],
     energyLevel: "中",
     emotionalDescription: "轻柔疗愈感",
@@ -3036,7 +3036,7 @@ export const songMoodMap = [
   {
     title: "泪桥",
     artist: "火鸡",
-    src: "/songs/火鸡 - 泪桥.mp3",
+    src: "/songs/track-0304.mp3",
     moodTags: ["想你了"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -3046,7 +3046,7 @@ export const songMoodMap = [
   {
     title: "墨染",
     artist: "炫动小霸王",
-    src: "/songs/炫动小霸王 - 墨染.mp3",
+    src: "/songs/track-0305.mp3",
     moodTags: ["洗澡放松一下","想一个人发呆"],
     energyLevel: "低",
     emotionalDescription: "慵懒放松感",
@@ -3056,7 +3056,7 @@ export const songMoodMap = [
   {
     title: "Long Way Home",
     artist: "点灯人（Lamplighters）",
-    src: "/songs/点灯人（Lamplighters） - Long Way Home.mp3",
+    src: "/songs/lamplighters--long-way-home.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -3066,7 +3066,7 @@ export const songMoodMap = [
   {
     title: "偏爱和例外",
     artist: "烟(许佳豪)",
-    src: "/songs/烟(许佳豪) - 偏爱和例外.mp3",
+    src: "/songs/track-0307.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -3076,7 +3076,7 @@ export const songMoodMap = [
   {
     title: "删了吧",
     artist: "烟(许佳豪)",
-    src: "/songs/烟(许佳豪) - 删了吧.mp3",
+    src: "/songs/track-0308.mp3",
     moodTags: ["想你了","想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -3086,7 +3086,7 @@ export const songMoodMap = [
   {
     title: "爱的哲学",
     artist: "牟凡",
-    src: "/songs/牟凡 - 爱的哲学.mp3",
+    src: "/songs/track-0309.mp3",
     moodTags: ["今天有点累"],
     energyLevel: "中",
     emotionalDescription: "轻柔疗愈感",
@@ -3096,7 +3096,7 @@ export const songMoodMap = [
   {
     title: "Shadow Of The Sun",
     artist: "王OK",
-    src: "/songs/王OK - Shadow Of The Sun.mp3",
+    src: "/songs/ok--shadow-of-the-sun.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -3106,7 +3106,7 @@ export const songMoodMap = [
   {
     title: "危险派对",
     artist: "王以太,刘至佳",
-    src: "/songs/王以太,刘至佳 - 危险派对.mp3",
+    src: "/songs/track-0311.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "高",
     emotionalDescription: "安静漂浮感",
@@ -3116,7 +3116,7 @@ export const songMoodMap = [
   {
     title: "空空",
     artist: "王加一,陈婧霏",
-    src: "/songs/王加一,陈婧霏 - 空空.mp3",
+    src: "/songs/track-0312.mp3",
     moodTags: ["想你了"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -3126,7 +3126,7 @@ export const songMoodMap = [
   {
     title: "舍得",
     artist: "王唯旖",
-    src: "/songs/王唯旖 - 舍得.mp3",
+    src: "/songs/track-0313.mp3",
     moodTags: ["今天有点累"],
     energyLevel: "中",
     emotionalDescription: "轻柔疗愈感",
@@ -3136,7 +3136,7 @@ export const songMoodMap = [
   {
     title: "追寻你",
     artist: "王天戈,川青",
-    src: "/songs/王天戈,川青 - 追寻你.mp3",
+    src: "/songs/track-0314.mp3",
     moodTags: ["想被抱抱","今天很幸福"],
     energyLevel: "中",
     emotionalDescription: "温暖包裹感",
@@ -3146,7 +3146,7 @@ export const songMoodMap = [
   {
     title: "借月",
     artist: "王天阳",
-    src: "/songs/王天阳 - 借月.mp3",
+    src: "/songs/track-0315.mp3",
     moodTags: ["想被抱抱","想一个人发呆"],
     energyLevel: "低",
     emotionalDescription: "温暖包裹感",
@@ -3156,7 +3156,7 @@ export const songMoodMap = [
   {
     title: "友谊地久天长",
     artist: "王源",
-    src: "/songs/王源 - 友谊地久天长.mp3",
+    src: "/songs/track-0316.mp3",
     moodTags: ["洗澡放松一下"],
     energyLevel: "中",
     emotionalDescription: "慵懒放松感",
@@ -3166,7 +3166,7 @@ export const songMoodMap = [
   {
     title: "逐客令",
     artist: "王澳楠EVE",
-    src: "/songs/王澳楠EVE - 逐客令.mp3",
+    src: "/songs/eve.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -3176,7 +3176,7 @@ export const songMoodMap = [
   {
     title: "你也没有错",
     artist: "王贰浪",
-    src: "/songs/王贰浪 - 你也没有错.mp3",
+    src: "/songs/track-0318.mp3",
     moodTags: ["需要安慰"],
     energyLevel: "中",
     emotionalDescription: "温柔陪伴感",
@@ -3186,7 +3186,7 @@ export const songMoodMap = [
   {
     title: "往后余生",
     artist: "王贰浪",
-    src: "/songs/王贰浪 - 往后余生.mp3",
+    src: "/songs/track-0319.mp3",
     moodTags: ["想被抱抱","今天很幸福"],
     energyLevel: "中",
     emotionalDescription: "温暖包裹感",
@@ -3196,7 +3196,7 @@ export const songMoodMap = [
   {
     title: "盔甲",
     artist: "王贰浪",
-    src: "/songs/王贰浪 - 盔甲.mp3",
+    src: "/songs/track-0320.mp3",
     moodTags: ["想被抱抱"],
     energyLevel: "中",
     emotionalDescription: "温暖包裹感",
@@ -3206,7 +3206,7 @@ export const songMoodMap = [
   {
     title: "尘埃",
     artist: "王雨桐",
-    src: "/songs/王雨桐 - 尘埃.mp3",
+    src: "/songs/track-0321.mp3",
     moodTags: ["想你了"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -3216,7 +3216,7 @@ export const songMoodMap = [
   {
     title: "诀爱「苍兰诀片头曲」",
     artist: "珺锦Queena",
-    src: "/songs/珺锦Queena - 诀爱「苍兰诀片头曲」.mp3",
+    src: "/songs/queena.mp3",
     moodTags: ["开心开心","想一个人发呆"],
     energyLevel: "高",
     emotionalDescription: "轻盈欢快感",
@@ -3226,7 +3226,7 @@ export const songMoodMap = [
   {
     title: "在你的身边",
     artist: "盛哲",
-    src: "/songs/盛哲 - 在你的身边.mp3",
+    src: "/songs/track-0323.mp3",
     moodTags: ["想被抱抱","需要安慰","想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "温暖包裹感",
@@ -3236,7 +3236,7 @@ export const songMoodMap = [
   {
     title: "出卖",
     artist: "简弘亦",
-    src: "/songs/简弘亦 - 出卖.mp3",
+    src: "/songs/track-0324.mp3",
     moodTags: ["有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "淡淡郁结感",
@@ -3246,7 +3246,7 @@ export const songMoodMap = [
   {
     title: "冲动的惩罚（R&B）",
     artist: "红碎片",
-    src: "/songs/红碎片 - 冲动的惩罚（R&B）.mp3",
+    src: "/songs/r-b.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -3256,7 +3256,7 @@ export const songMoodMap = [
   {
     title: "特别的人",
     artist: "胖虎小姐姐",
-    src: "/songs/胖虎小姐姐 - 特别的人.mp3",
+    src: "/songs/track-0326.mp3",
     moodTags: ["开心开心"],
     energyLevel: "中",
     emotionalDescription: "轻盈欢快感",
@@ -3266,7 +3266,7 @@ export const songMoodMap = [
   {
     title: "逍遥（美食纪录片《江湖菜馆》）",
     artist: "胡儆之Jinzy",
-    src: "/songs/胡儆之Jinzy - 逍遥（美食纪录片《江湖菜馆》）.mp3",
+    src: "/songs/jinzy.mp3",
     moodTags: ["洗澡放松一下"],
     energyLevel: "中",
     emotionalDescription: "慵懒放松感",
@@ -3276,7 +3276,7 @@ export const songMoodMap = [
   {
     title: "你要的全拿走",
     artist: "胡彦斌",
-    src: "/songs/胡彦斌 - 你要的全拿走.mp3",
+    src: "/songs/track-0328.mp3",
     moodTags: ["今天有点累"],
     energyLevel: "中",
     emotionalDescription: "轻柔疗愈感",
@@ -3286,7 +3286,7 @@ export const songMoodMap = [
   {
     title: "山丘 (Live)",
     artist: "胡彦斌",
-    src: "/songs/胡彦斌 - 山丘 (Live).mp3",
+    src: "/songs/track-0329.mp3",
     moodTags: ["需要安慰","今天有点累"],
     energyLevel: "高",
     emotionalDescription: "温柔陪伴感",
@@ -3296,7 +3296,7 @@ export const songMoodMap = [
   {
     title: "指纹",
     artist: "胡歌",
-    src: "/songs/胡歌 - 指纹.mp3",
+    src: "/songs/track-0330.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -3306,7 +3306,7 @@ export const songMoodMap = [
   {
     title: "一念执着",
     artist: "胡歌,阿兰",
-    src: "/songs/胡歌,阿兰 - 一念执着.mp3",
+    src: "/songs/track-0331.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -3316,7 +3316,7 @@ export const songMoodMap = [
   {
     title: "重来",
     artist: "胥睿",
-    src: "/songs/胥睿 - 重来.mp3",
+    src: "/songs/track-0332.mp3",
     moodTags: ["想你了"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -3326,7 +3326,7 @@ export const songMoodMap = [
   {
     title: "Nomo",
     artist: "舵Diverseddie",
-    src: "/songs/舵Diverseddie - Nomo.mp3",
+    src: "/songs/diverseddie--nomo.mp3",
     moodTags: ["开心开心"],
     energyLevel: "中",
     emotionalDescription: "轻盈欢快感",
@@ -3336,7 +3336,7 @@ export const songMoodMap = [
   {
     title: "拾忆",
     artist: "苏琛",
-    src: "/songs/苏琛 - 拾忆.mp3",
+    src: "/songs/track-0334.mp3",
     moodTags: ["想你了"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -3346,7 +3346,7 @@ export const songMoodMap = [
   {
     title: "野子",
     artist: "苏运莹",
-    src: "/songs/苏运莹 - 野子.mp3",
+    src: "/songs/track-0335.mp3",
     moodTags: ["开心开心","洗澡放松一下"],
     energyLevel: "高",
     emotionalDescription: "轻盈欢快感",
@@ -3356,7 +3356,7 @@ export const songMoodMap = [
   {
     title: "雨天",
     artist: "范芽芽",
-    src: "/songs/范芽芽 - 雨天.mp3",
+    src: "/songs/track-0336.mp3",
     moodTags: ["想一个人发呆","今天有点累"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -3366,7 +3366,7 @@ export const songMoodMap = [
   {
     title: "Rolling In The Deep",
     artist: "茜拉",
-    src: "/songs/茜拉 - Rolling In The Deep.mp3",
+    src: "/songs/rolling-in-the-deep.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -3376,7 +3376,7 @@ export const songMoodMap = [
   {
     title: "如果没有你",
     artist: "莫文蔚",
-    src: "/songs/莫文蔚 - 如果没有你.mp3",
+    src: "/songs/track-0338.mp3",
     moodTags: ["想你了","需要安慰"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -3386,7 +3386,7 @@ export const songMoodMap = [
   {
     title: "阴天",
     artist: "莫文蔚",
-    src: "/songs/莫文蔚 - 阴天.mp3",
+    src: "/songs/track-0339.mp3",
     moodTags: ["需要安慰"],
     energyLevel: "中",
     emotionalDescription: "温柔陪伴感",
@@ -3396,7 +3396,7 @@ export const songMoodMap = [
   {
     title: "错的人",
     artist: "萧亚轩",
-    src: "/songs/萧亚轩 - 错的人.mp3",
+    src: "/songs/track-0340.mp3",
     moodTags: ["有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "淡淡郁结感",
@@ -3406,7 +3406,7 @@ export const songMoodMap = [
   {
     title: "囍（Chinese Wedding）",
     artist: "葛东琪",
-    src: "/songs/葛东琪 - 囍（Chinese Wedding）.mp3",
+    src: "/songs/chinese-wedding.mp3",
     moodTags: ["洗澡放松一下"],
     energyLevel: "中",
     emotionalDescription: "慵懒放松感",
@@ -3416,7 +3416,7 @@ export const songMoodMap = [
   {
     title: "阿拉斯加海湾",
     artist: "蓝心羽",
-    src: "/songs/蓝心羽 - 阿拉斯加海湾.mp3",
+    src: "/songs/track-0342.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "低",
     emotionalDescription: "安静漂浮感",
@@ -3426,7 +3426,7 @@ export const songMoodMap = [
   {
     title: "下辈子如果我还记得你",
     artist: "蔡少铭",
-    src: "/songs/蔡少铭 - 下辈子如果我还记得你.mp3",
+    src: "/songs/track-0343.mp3",
     moodTags: ["想被抱抱"],
     energyLevel: "中",
     emotionalDescription: "温暖包裹感",
@@ -3436,7 +3436,7 @@ export const songMoodMap = [
   {
     title: "Hug me (抱我)",
     artist: "蔡徐坤",
-    src: "/songs/蔡徐坤 - Hug me (抱我).mp3",
+    src: "/songs/hug-me.mp3",
     moodTags: ["想被抱抱"],
     energyLevel: "中",
     emotionalDescription: "温暖包裹感",
@@ -3446,7 +3446,7 @@ export const songMoodMap = [
   {
     title: "情人",
     artist: "蔡徐坤",
-    src: "/songs/蔡徐坤 - 情人.mp3",
+    src: "/songs/track-0345.mp3",
     moodTags: ["想被抱抱"],
     energyLevel: "中",
     emotionalDescription: "温暖包裹感",
@@ -3456,7 +3456,7 @@ export const songMoodMap = [
   {
     title: "Stay Here",
     artist: "薛之谦",
-    src: "/songs/薛之谦 - Stay Here.mp3",
+    src: "/songs/stay-here.mp3",
     moodTags: ["想被抱抱","今天有点累"],
     energyLevel: "中",
     emotionalDescription: "温暖包裹感",
@@ -3466,7 +3466,7 @@ export const songMoodMap = [
   {
     title: "一半",
     artist: "薛之谦",
-    src: "/songs/薛之谦 - 一半.mp3",
+    src: "/songs/track-0347.mp3",
     moodTags: ["想你了","有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -3476,7 +3476,7 @@ export const songMoodMap = [
   {
     title: "下雨了",
     artist: "薛之谦",
-    src: "/songs/薛之谦 - 下雨了.mp3",
+    src: "/songs/track-0348.mp3",
     moodTags: ["想你了","有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -3486,7 +3486,7 @@ export const songMoodMap = [
   {
     title: "丑八怪",
     artist: "薛之谦",
-    src: "/songs/薛之谦 - 丑八怪.mp3",
+    src: "/songs/track-0349.mp3",
     moodTags: ["想你了","有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -3496,7 +3496,7 @@ export const songMoodMap = [
   {
     title: "你还要我怎样",
     artist: "薛之谦",
-    src: "/songs/薛之谦 - 你还要我怎样.mp3",
+    src: "/songs/track-0350.mp3",
     moodTags: ["有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "淡淡郁结感",
@@ -3506,7 +3506,7 @@ export const songMoodMap = [
   {
     title: "像风一样",
     artist: "薛之谦",
-    src: "/songs/薛之谦 - 像风一样.mp3",
+    src: "/songs/track-0351.mp3",
     moodTags: ["想你了","有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -3516,7 +3516,7 @@ export const songMoodMap = [
   {
     title: "其实",
     artist: "薛之谦",
-    src: "/songs/薛之谦 - 其实.mp3",
+    src: "/songs/track-0352.mp3",
     moodTags: ["想你了","有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -3526,7 +3526,7 @@ export const songMoodMap = [
   {
     title: "几个你",
     artist: "薛之谦",
-    src: "/songs/薛之谦 - 几个你.mp3",
+    src: "/songs/track-0353.mp3",
     moodTags: ["有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "淡淡郁结感",
@@ -3536,7 +3536,7 @@ export const songMoodMap = [
   {
     title: "刚刚好",
     artist: "薛之谦",
-    src: "/songs/薛之谦 - 刚刚好.mp3",
+    src: "/songs/track-0354.mp3",
     moodTags: ["想你了","有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -3546,7 +3546,7 @@ export const songMoodMap = [
   {
     title: "动物世界",
     artist: "薛之谦",
-    src: "/songs/薛之谦 - 动物世界.mp3",
+    src: "/songs/track-0355.mp3",
     moodTags: ["想你了","有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -3556,7 +3556,7 @@ export const songMoodMap = [
   {
     title: "天份",
     artist: "薛之谦",
-    src: "/songs/薛之谦 - 天份.mp3",
+    src: "/songs/track-0356.mp3",
     moodTags: ["想你了","有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -3566,7 +3566,7 @@ export const songMoodMap = [
   {
     title: "小孩",
     artist: "薛之谦",
-    src: "/songs/薛之谦 - 小孩.mp3",
+    src: "/songs/track-0357.mp3",
     moodTags: ["想你了","有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -3576,7 +3576,7 @@ export const songMoodMap = [
   {
     title: "怪咖",
     artist: "薛之谦",
-    src: "/songs/薛之谦 - 怪咖.mp3",
+    src: "/songs/track-0358.mp3",
     moodTags: ["有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "淡淡郁结感",
@@ -3586,7 +3586,7 @@ export const songMoodMap = [
   {
     title: "意外",
     artist: "薛之谦",
-    src: "/songs/薛之谦 - 意外.mp3",
+    src: "/songs/track-0359.mp3",
     moodTags: ["想你了","有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -3596,7 +3596,7 @@ export const songMoodMap = [
   {
     title: "慢半拍",
     artist: "薛之谦",
-    src: "/songs/薛之谦 - 慢半拍.mp3",
+    src: "/songs/track-0360.mp3",
     moodTags: ["想你了","有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -3606,7 +3606,7 @@ export const songMoodMap = [
   {
     title: "我好像在哪见过你",
     artist: "薛之谦",
-    src: "/songs/薛之谦 - 我好像在哪见过你.mp3",
+    src: "/songs/track-0361.mp3",
     moodTags: ["想你了","有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -3616,7 +3616,7 @@ export const songMoodMap = [
   {
     title: "我想起你了",
     artist: "薛之谦",
-    src: "/songs/薛之谦 - 我想起你了.mp3",
+    src: "/songs/track-0362.mp3",
     moodTags: ["想你了","有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -3626,7 +3626,7 @@ export const songMoodMap = [
   {
     title: "我知道你都知道",
     artist: "薛之谦",
-    src: "/songs/薛之谦 - 我知道你都知道.mp3",
+    src: "/songs/track-0363.mp3",
     moodTags: ["今天有点累"],
     energyLevel: "中",
     emotionalDescription: "轻柔疗愈感",
@@ -3636,7 +3636,7 @@ export const songMoodMap = [
   {
     title: "我终于成了别人的女人",
     artist: "薛之谦",
-    src: "/songs/薛之谦 - 我终于成了别人的女人.mp3",
+    src: "/songs/track-0364.mp3",
     moodTags: ["有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "淡淡郁结感",
@@ -3646,7 +3646,7 @@ export const songMoodMap = [
   {
     title: "方圆几里",
     artist: "薛之谦",
-    src: "/songs/薛之谦 - 方圆几里.mp3",
+    src: "/songs/track-0365.mp3",
     moodTags: ["想你了","有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -3656,7 +3656,7 @@ export const songMoodMap = [
   {
     title: "暧昧",
     artist: "薛之谦",
-    src: "/songs/薛之谦 - 暧昧.mp3",
+    src: "/songs/track-0366.mp3",
     moodTags: ["想你了","有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -3666,7 +3666,7 @@ export const songMoodMap = [
   {
     title: "最好",
     artist: "薛之谦",
-    src: "/songs/薛之谦 - 最好.mp3",
+    src: "/songs/track-0367.mp3",
     moodTags: ["想你了","有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -3676,7 +3676,7 @@ export const songMoodMap = [
   {
     title: "有没有",
     artist: "薛之谦",
-    src: "/songs/薛之谦 - 有没有.mp3",
+    src: "/songs/track-0368.mp3",
     moodTags: ["想你了","有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -3686,7 +3686,7 @@ export const songMoodMap = [
   {
     title: "木偶人",
     artist: "薛之谦",
-    src: "/songs/薛之谦 - 木偶人.mp3",
+    src: "/songs/track-0369.mp3",
     moodTags: ["有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "淡淡郁结感",
@@ -3696,7 +3696,7 @@ export const songMoodMap = [
   {
     title: "深深爱过你(前世)",
     artist: "薛之谦",
-    src: "/songs/薛之谦 - 深深爱过你(前世).mp3",
+    src: "/songs/track-0370.mp3",
     moodTags: ["想你了","有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -3706,7 +3706,7 @@ export const songMoodMap = [
   {
     title: "演员",
     artist: "薛之谦",
-    src: "/songs/薛之谦 - 演员.mp3",
+    src: "/songs/track-0371.mp3",
     moodTags: ["有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "淡淡郁结感",
@@ -3716,7 +3716,7 @@ export const songMoodMap = [
   {
     title: "潮流季",
     artist: "薛之谦",
-    src: "/songs/薛之谦 - 潮流季.mp3",
+    src: "/songs/track-0372.mp3",
     moodTags: ["想你了","有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -3726,7 +3726,7 @@ export const songMoodMap = [
   {
     title: "绅士",
     artist: "薛之谦",
-    src: "/songs/薛之谦 - 绅士.mp3",
+    src: "/songs/track-0373.mp3",
     moodTags: ["想你了","有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -3736,7 +3736,7 @@ export const songMoodMap = [
   {
     title: "肆无忌惮",
     artist: "薛之谦",
-    src: "/songs/薛之谦 - 肆无忌惮.mp3",
+    src: "/songs/track-0374.mp3",
     moodTags: ["有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "淡淡郁结感",
@@ -3746,7 +3746,7 @@ export const songMoodMap = [
   {
     title: "那是你离开了北京的生活",
     artist: "薛之谦",
-    src: "/songs/薛之谦 - 那是你离开了北京的生活.mp3",
+    src: "/songs/track-0375.mp3",
     moodTags: ["有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "淡淡郁结感",
@@ -3756,7 +3756,7 @@ export const songMoodMap = [
   {
     title: "高尚",
     artist: "薛之谦",
-    src: "/songs/薛之谦 - 高尚.mp3",
+    src: "/songs/track-0376.mp3",
     moodTags: ["想你了","有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -3766,7 +3766,7 @@ export const songMoodMap = [
   {
     title: "聊表心意",
     artist: "薛之谦,刘惜君",
-    src: "/songs/薛之谦,刘惜君 - 聊表心意.mp3",
+    src: "/songs/track-0377.mp3",
     moodTags: ["想你了","有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -3776,7 +3776,7 @@ export const songMoodMap = [
   {
     title: "小尖尖",
     artist: "薛之谦,韩红",
-    src: "/songs/薛之谦,韩红 - 小尖尖.mp3",
+    src: "/songs/track-0378.mp3",
     moodTags: ["想你了","有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -3786,7 +3786,7 @@ export const songMoodMap = [
   {
     title: "我们爱过就好",
     artist: "薛之谦,黄龄",
-    src: "/songs/薛之谦,黄龄 - 我们爱过就好.mp3",
+    src: "/songs/track-0379.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -3796,7 +3796,7 @@ export const songMoodMap = [
   {
     title: "燕归巢",
     artist: "许嵩",
-    src: "/songs/许嵩 - 燕归巢.mp3",
+    src: "/songs/track-0380.mp3",
     moodTags: ["今天很幸福"],
     energyLevel: "中",
     emotionalDescription: "温柔幸福感",
@@ -3806,7 +3806,7 @@ export const songMoodMap = [
   {
     title: "素颜",
     artist: "许嵩,何曼婷",
-    src: "/songs/许嵩,何曼婷 - 素颜.mp3",
+    src: "/songs/track-0381.mp3",
     moodTags: ["今天很幸福"],
     energyLevel: "中",
     emotionalDescription: "温柔幸福感",
@@ -3816,7 +3816,7 @@ export const songMoodMap = [
   {
     title: "惊鸿一面",
     artist: "许嵩,黄龄",
-    src: "/songs/许嵩,黄龄 - 惊鸿一面.mp3",
+    src: "/songs/track-0382.mp3",
     moodTags: ["今天很幸福","想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "温柔幸福感",
@@ -3826,7 +3826,7 @@ export const songMoodMap = [
   {
     title: "开门见山 (Live)",
     artist: "谭维维",
-    src: "/songs/谭维维 - 开门见山 (Live).mp3",
+    src: "/songs/track-0383.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "高",
     emotionalDescription: "安静漂浮感",
@@ -3836,7 +3836,7 @@ export const songMoodMap = [
   {
     title: "玫瑰",
     artist: "贰佰",
-    src: "/songs/贰佰 - 玫瑰.mp3",
+    src: "/songs/track-0384.mp3",
     moodTags: ["开心开心"],
     energyLevel: "中",
     emotionalDescription: "轻盈欢快感",
@@ -3846,7 +3846,7 @@ export const songMoodMap = [
   {
     title: "Superman",
     artist: "贾杰",
-    src: "/songs/贾杰 - Superman.mp3",
+    src: "/songs/superman.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -3856,7 +3856,7 @@ export const songMoodMap = [
   {
     title: "夜空中最亮的星",
     artist: "逃跑计划",
-    src: "/songs/逃跑计划 - 夜空中最亮的星.mp3",
+    src: "/songs/track-0386.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -3866,7 +3866,7 @@ export const songMoodMap = [
   {
     title: "梦一场",
     artist: "那英",
-    src: "/songs/那英 - 梦一场.mp3",
+    src: "/songs/track-0387.mp3",
     moodTags: ["洗澡放松一下","今天有点累"],
     energyLevel: "中",
     emotionalDescription: "慵懒放松感",
@@ -3876,7 +3876,7 @@ export const songMoodMap = [
   {
     title: "默",
     artist: "那英",
-    src: "/songs/那英 - 默.mp3",
+    src: "/songs/track-0388.mp3",
     moodTags: ["今天有点累"],
     energyLevel: "中",
     emotionalDescription: "轻柔疗愈感",
@@ -3886,7 +3886,7 @@ export const songMoodMap = [
   {
     title: "删了吧",
     artist: "郁可唯",
-    src: "/songs/郁可唯 - 删了吧.mp3",
+    src: "/songs/track-0389.mp3",
     moodTags: ["想你了","需要安慰"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -3896,7 +3896,7 @@ export const songMoodMap = [
   {
     title: "水中花",
     artist: "郁可唯",
-    src: "/songs/郁可唯 - 水中花.mp3",
+    src: "/songs/track-0390.mp3",
     moodTags: ["需要安慰"],
     energyLevel: "中",
     emotionalDescription: "温柔陪伴感",
@@ -3906,7 +3906,7 @@ export const songMoodMap = [
   {
     title: "答应不爱你",
     artist: "郑中基",
-    src: "/songs/郑中基 - 答应不爱你.mp3",
+    src: "/songs/track-0391.mp3",
     moodTags: ["想你了","有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -3916,7 +3916,7 @@ export const songMoodMap = [
   {
     title: "心墙",
     artist: "郭静",
-    src: "/songs/郭静 - 心墙.mp3",
+    src: "/songs/track-0392.mp3",
     moodTags: ["需要安慰"],
     energyLevel: "中",
     emotionalDescription: "温柔陪伴感",
@@ -3926,7 +3926,7 @@ export const songMoodMap = [
   {
     title: "凄美地",
     artist: "郭顶",
-    src: "/songs/郭顶 - 凄美地.mp3",
+    src: "/songs/track-0393.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "低",
     emotionalDescription: "安静漂浮感",
@@ -3936,7 +3936,7 @@ export const songMoodMap = [
   {
     title: "水星记",
     artist: "郭顶",
-    src: "/songs/郭顶 - 水星记.mp3",
+    src: "/songs/track-0394.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "低",
     emotionalDescription: "安静漂浮感",
@@ -3946,7 +3946,7 @@ export const songMoodMap = [
   {
     title: "要命",
     artist: "金同学",
-    src: "/songs/金同学 - 要命.mp3",
+    src: "/songs/track-0395.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -3956,7 +3956,7 @@ export const songMoodMap = [
   {
     title: "与我无关",
     artist: "阿冗",
-    src: "/songs/阿冗 - 与我无关.mp3",
+    src: "/songs/track-0396.mp3",
     moodTags: ["有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "淡淡郁结感",
@@ -3966,7 +3966,7 @@ export const songMoodMap = [
   {
     title: "秦淮景(艺伎齐唱)",
     artist: "陈其钢",
-    src: "/songs/陈其钢 - 秦淮景(艺伎齐唱).mp3",
+    src: "/songs/track-0397.mp3",
     moodTags: ["洗澡放松一下"],
     energyLevel: "低",
     emotionalDescription: "慵懒放松感",
@@ -3976,7 +3976,7 @@ export const songMoodMap = [
   {
     title: "红豆",
     artist: "陈奕辰",
-    src: "/songs/陈奕辰 - 红豆.mp3",
+    src: "/songs/track-0398.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -3986,7 +3986,7 @@ export const songMoodMap = [
   {
     title: "孤独患者",
     artist: "陈奕迅",
-    src: "/songs/陈奕迅 - 孤独患者.mp3",
+    src: "/songs/track-0399.mp3",
     moodTags: ["想你了","需要安慰","想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -3996,7 +3996,7 @@ export const songMoodMap = [
   {
     title: "浮夸",
     artist: "陈奕迅",
-    src: "/songs/陈奕迅 - 浮夸.mp3",
+    src: "/songs/track-0400.mp3",
     moodTags: ["需要安慰","想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "温柔陪伴感",
@@ -4006,7 +4006,7 @@ export const songMoodMap = [
   {
     title: "爱情转移(国)",
     artist: "陈奕迅",
-    src: "/songs/陈奕迅 - 爱情转移(国).mp3",
+    src: "/songs/track-0401.mp3",
     moodTags: ["需要安慰","想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "温柔陪伴感",
@@ -4016,7 +4016,7 @@ export const songMoodMap = [
   {
     title: "阴天快乐",
     artist: "陈奕迅",
-    src: "/songs/陈奕迅 - 阴天快乐.mp3",
+    src: "/songs/track-0402.mp3",
     moodTags: ["开心开心","需要安慰","想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "轻盈欢快感",
@@ -4026,7 +4026,7 @@ export const songMoodMap = [
   {
     title: "行尸走肉",
     artist: "陈柏宇",
-    src: "/songs/陈柏宇 - 行尸走肉.mp3",
+    src: "/songs/track-0403.mp3",
     moodTags: ["想你了","需要安慰","今天有点累"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -4036,7 +4036,7 @@ export const songMoodMap = [
   {
     title: "直到遇见了你，我只喜欢你",
     artist: "陈柯宇",
-    src: "/songs/陈柯宇 - 直到遇见了你，我只喜欢你.mp3",
+    src: "/songs/track-0404.mp3",
     moodTags: ["今天很幸福"],
     energyLevel: "中",
     emotionalDescription: "温柔幸福感",
@@ -4046,7 +4046,7 @@ export const songMoodMap = [
   {
     title: "死性不改",
     artist: "陈柯霓（CHENge）",
-    src: "/songs/陈柯霓（CHENge） - 死性不改.mp3",
+    src: "/songs/chenge.mp3",
     moodTags: ["有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "淡淡郁结感",
@@ -4056,7 +4056,7 @@ export const songMoodMap = [
   {
     title: "遺憾",
     artist: "陈洁仪",
-    src: "/songs/陈洁仪 - 遺憾.mp3",
+    src: "/songs/track-0406.mp3",
     moodTags: ["想你了"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -4066,7 +4066,7 @@ export const songMoodMap = [
   {
     title: "光",
     artist: "陈粒",
-    src: "/songs/陈粒 - 光.mp3",
+    src: "/songs/track-0407.mp3",
     moodTags: ["洗澡放松一下"],
     energyLevel: "中",
     emotionalDescription: "慵懒放松感",
@@ -4076,7 +4076,7 @@ export const songMoodMap = [
   {
     title: "奇妙能力歌",
     artist: "陈粒",
-    src: "/songs/陈粒 - 奇妙能力歌.mp3",
+    src: "/songs/track-0408.mp3",
     moodTags: ["洗澡放松一下"],
     energyLevel: "中",
     emotionalDescription: "慵懒放松感",
@@ -4086,7 +4086,7 @@ export const songMoodMap = [
   {
     title: "小半",
     artist: "陈粒",
-    src: "/songs/陈粒 - 小半.mp3",
+    src: "/songs/track-0409.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "低",
     emotionalDescription: "安静漂浮感",
@@ -4096,7 +4096,7 @@ export const songMoodMap = [
   {
     title: "易燃易爆炸",
     artist: "陈粒",
-    src: "/songs/陈粒 - 易燃易爆炸.mp3",
+    src: "/songs/track-0410.mp3",
     moodTags: ["有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "淡淡郁结感",
@@ -4106,7 +4106,7 @@ export const songMoodMap = [
   {
     title: "虚拟",
     artist: "陈粒",
-    src: "/songs/陈粒 - 虚拟.mp3",
+    src: "/songs/track-0411.mp3",
     moodTags: ["洗澡放松一下"],
     energyLevel: "中",
     emotionalDescription: "慵懒放松感",
@@ -4116,7 +4116,7 @@ export const songMoodMap = [
   {
     title: "走马",
     artist: "陈粒",
-    src: "/songs/陈粒 - 走马.mp3",
+    src: "/songs/track-0412.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -4126,7 +4126,7 @@ export const songMoodMap = [
   {
     title: "我喜欢上你时的内心活动",
     artist: "陈绮贞",
-    src: "/songs/陈绮贞 - 我喜欢上你时的内心活动.mp3",
+    src: "/songs/track-0413.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -4136,7 +4136,7 @@ export const songMoodMap = [
   {
     title: "没有人心疼我",
     artist: "陈雪凝",
-    src: "/songs/陈雪凝 - 没有人心疼我.mp3",
+    src: "/songs/track-0414.mp3",
     moodTags: ["需要安慰"],
     energyLevel: "中",
     emotionalDescription: "温柔陪伴感",
@@ -4146,7 +4146,7 @@ export const songMoodMap = [
   {
     title: "爱我还是他",
     artist: "陶喆",
-    src: "/songs/陶喆 - 爱我还是他.mp3",
+    src: "/songs/track-0415.mp3",
     moodTags: ["有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "淡淡郁结感",
@@ -4156,7 +4156,7 @@ export const songMoodMap = [
   {
     title: "别怕 我在",
     artist: "隔壁老樊",
-    src: "/songs/隔壁老樊 - 别怕 我在.mp3",
+    src: "/songs/track-0416.mp3",
     moodTags: ["想被抱抱","开心开心"],
     energyLevel: "中",
     emotionalDescription: "温暖包裹感",
@@ -4166,7 +4166,7 @@ export const songMoodMap = [
   {
     title: "多想在平庸的生活拥抱你",
     artist: "隔壁老樊",
-    src: "/songs/隔壁老樊 - 多想在平庸的生活拥抱你.mp3",
+    src: "/songs/track-0417.mp3",
     moodTags: ["想你了","想被抱抱","开心开心"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -4176,7 +4176,7 @@ export const songMoodMap = [
   {
     title: "醒着醉",
     artist: "隔壁老樊",
-    src: "/songs/隔壁老樊 - 醒着醉.mp3",
+    src: "/songs/track-0418.mp3",
     moodTags: ["想被抱抱","开心开心"],
     energyLevel: "中",
     emotionalDescription: "温暖包裹感",
@@ -4186,7 +4186,7 @@ export const songMoodMap = [
   {
     title: "山楂树之恋",
     artist: "雷智皓",
-    src: "/songs/雷智皓 - 山楂树之恋.mp3",
+    src: "/songs/track-0419.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -4196,7 +4196,7 @@ export const songMoodMap = [
   {
     title: "美丽的神话",
     artist: "韩红,孙楠",
-    src: "/songs/韩红,孙楠 - 美丽的神话.mp3",
+    src: "/songs/track-0420.mp3",
     moodTags: ["想被抱抱","今天很幸福"],
     energyLevel: "中",
     emotionalDescription: "温暖包裹感",
@@ -4206,7 +4206,7 @@ export const songMoodMap = [
   {
     title: "下一个天亮",
     artist: "颜人中",
-    src: "/songs/颜人中 - 下一个天亮.mp3",
+    src: "/songs/track-0421.mp3",
     moodTags: ["想你了","今天很幸福","今天有点累"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -4216,7 +4216,7 @@ export const songMoodMap = [
   {
     title: "晚安",
     artist: "颜人中",
-    src: "/songs/颜人中 - 晚安.mp3",
+    src: "/songs/track-0422.mp3",
     moodTags: ["想你了","今天很幸福","今天有点累"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -4226,7 +4226,7 @@ export const songMoodMap = [
   {
     title: "遇到",
     artist: "颜人中",
-    src: "/songs/颜人中 - 遇到.mp3",
+    src: "/songs/track-0423.mp3",
     moodTags: ["想你了","今天很幸福","今天有点累"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -4236,7 +4236,7 @@ export const songMoodMap = [
   {
     title: "你的轮廓",
     artist: "马也_Crabbit",
-    src: "/songs/马也_Crabbit - 你的轮廓.mp3",
+    src: "/songs/crabbit.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -4246,7 +4246,7 @@ export const songMoodMap = [
   {
     title: "不做你的朋友",
     artist: "高旭",
-    src: "/songs/高旭 - 不做你的朋友.mp3",
+    src: "/songs/track-0425.mp3",
     moodTags: ["开心开心","有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "轻盈欢快感",
@@ -4256,7 +4256,7 @@ export const songMoodMap = [
   {
     title: "与你何涉",
     artist: "鬼卞",
-    src: "/songs/鬼卞 - 与你何涉.mp3",
+    src: "/songs/track-0426.mp3",
     moodTags: ["想你了","有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -4266,7 +4266,7 @@ export const songMoodMap = [
   {
     title: "佳人",
     artist: "鬼卞",
-    src: "/songs/鬼卞 - 佳人.mp3",
+    src: "/songs/track-0427.mp3",
     moodTags: ["想你了","有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -4276,7 +4276,7 @@ export const songMoodMap = [
   {
     title: "只想要你知道",
     artist: "鬼卞",
-    src: "/songs/鬼卞 - 只想要你知道.mp3",
+    src: "/songs/track-0428.mp3",
     moodTags: ["想你了","有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -4286,7 +4286,7 @@ export const songMoodMap = [
   {
     title: "雌雄难辨",
     artist: "鬼卞",
-    src: "/songs/鬼卞 - 雌雄难辨.mp3",
+    src: "/songs/track-0429.mp3",
     moodTags: ["想你了","有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -4296,7 +4296,7 @@ export const songMoodMap = [
   {
     title: "蝴蝶效应",
     artist: "鬼卞,房东的猫",
-    src: "/songs/鬼卞,房东的猫 - 蝴蝶效应.mp3",
+    src: "/songs/track-0430.mp3",
     moodTags: ["想你了","有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
@@ -4306,7 +4306,7 @@ export const songMoodMap = [
   {
     title: "失恋无罪",
     artist: "黄丽玲",
-    src: "/songs/黄丽玲 - 失恋无罪.mp3",
+    src: "/songs/track-0431.mp3",
     moodTags: ["需要安慰"],
     energyLevel: "中",
     emotionalDescription: "温柔陪伴感",
@@ -4316,7 +4316,7 @@ export const songMoodMap = [
   {
     title: "幸福了 然后呢",
     artist: "黄丽玲",
-    src: "/songs/黄丽玲 - 幸福了 然后呢.mp3",
+    src: "/songs/track-0432.mp3",
     moodTags: ["今天很幸福","需要安慰"],
     energyLevel: "中",
     emotionalDescription: "温柔幸福感",
@@ -4326,7 +4326,7 @@ export const songMoodMap = [
   {
     title: "我等到花儿也谢了 (Live)",
     artist: "黄丽玲",
-    src: "/songs/黄丽玲 - 我等到花儿也谢了 (Live).mp3",
+    src: "/songs/track-0433.mp3",
     moodTags: ["需要安慰"],
     energyLevel: "高",
     emotionalDescription: "温柔陪伴感",
@@ -4336,7 +4336,7 @@ export const songMoodMap = [
   {
     title: "有一种悲伤",
     artist: "黄丽玲",
-    src: "/songs/黄丽玲 - 有一种悲伤.mp3",
+    src: "/songs/track-0434.mp3",
     moodTags: ["需要安慰","有点苦恼"],
     energyLevel: "中",
     emotionalDescription: "温柔陪伴感",
@@ -4346,7 +4346,7 @@ export const songMoodMap = [
   {
     title: "3：sH3 said she Just 2O & she couldn't do this ANYmore",
     artist: "黄雨篱",
-    src: "/songs/黄雨篱 - 3：sH3 said she Just 2O & she couldn't do this ANYmore.mp3",
+    src: "/songs/3sh3-said-she-just-2o-she-couldn-t-do-this-anymore.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -4356,7 +4356,7 @@ export const songMoodMap = [
   {
     title: "风月",
     artist: "黄龄",
-    src: "/songs/黄龄 - 风月.mp3",
+    src: "/songs/track-0436.mp3",
     moodTags: ["洗澡放松一下","想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "慵懒放松感",
@@ -4366,7 +4366,7 @@ export const songMoodMap = [
   {
     title: "星河叹",
     artist: "黄龄,关大洲",
-    src: "/songs/黄龄,关大洲 - 星河叹.mp3",
+    src: "/songs/track-0437.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
@@ -4376,7 +4376,7 @@ export const songMoodMap = [
   {
     title: "Porto girl",
     artist: "그래쓰",
-    src: "/songs/그래쓰 - Porto girl.mp3",
+    src: "/songs/porto-girl.mp3",
     moodTags: ["想一个人发呆"],
     energyLevel: "中",
     emotionalDescription: "安静漂浮感",
