@@ -185,7 +185,7 @@ function LongStayToast({ message, onDismiss }) {
 // ── Main ──────────────────────────────────────────────────────────────────────
 
 export default function RadioStation({ mood, onBack, atmosphere }) {
-  const { user, space, loadingSpace, signOut } = useAuth()
+  const { user, space, loadingAuth, loadingSpace, refreshSpace, signOut } = useAuth()
 
   const [songIndex, setSongIndex]   = useState(0)
   const [heartBeat, setHeartBeat]   = useState(false)   // brief pulse on click
@@ -205,31 +205,54 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
   const [showSpaceGate, setShowSpaceGate] = useState(false)
   const [pendingAction, setPendingAction] = useState(null)
 
-  // Execute pending action once auth (and space, for diary/records) is ready
+  // Single effect that executes a pending action once auth + space have settled.
+  // Handlers only ever call setPendingAction() — they never check user/space
+  // directly, because those may still be loading on first page render.
   useEffect(() => {
-    if (!pendingAction || !user) return
-    console.log('[RadioStation] pendingAction effect —', pendingAction,
-      '| user:', user.id, '| space:', space?.id ?? 'none', '| loadingSpace:', loadingSpace)
+    if (!pendingAction) return
 
+    console.log('[RadioStation] pendingAction effect:', pendingAction,
+      '| loadingAuth:', loadingAuth,
+      '| user:', user?.id ?? 'none',
+      '| loadingSpace:', loadingSpace,
+      '| space:', space?.id ?? 'none')
+
+    // Wait until Supabase has resolved the initial session
+    if (loadingAuth) return
+
+    // Auth settled — no user means we need login
+    if (!user) {
+      console.log('[RadioStation] → no user, showing AuthModal')
+      setShowAuthModal(true)
+      return
+    }
+
+    // User is logged in — handle each action type
     if (pendingAction === 'letter') {
       setPendingAction(null); setShowLetter(true); return
     }
     if (pendingAction === 'space') {
       setPendingAction(null); setShowSpaceGate(true); return
     }
-    if (pendingAction === 'diary') {
-      if (loadingSpace) return                         // wait for space fetch to settle
-      if (!space) { setShowSpaceGate(true); return }
-      console.log('[RadioStation] opening diary — space:', space.id)
-      setPendingAction(null); setShowDiary(true)
-    }
-    if (pendingAction === 'records') {
+
+    // Space-gated actions: diary and records
+    if (pendingAction === 'diary' || pendingAction === 'records') {
+      // Wait until the get_my_space RPC has returned
       if (loadingSpace) return
-      if (!space) { setShowSpaceGate(true); return }
-      console.log('[RadioStation] opening records — space:', space.id)
-      setPendingAction(null); setShowRecords(true)
+
+      if (!space) {
+        console.log('[RadioStation] → no space, showing SpaceGate')
+        setShowSpaceGate(true)
+        return
+      }
+
+      const action = pendingAction   // capture before clearing
+      console.log('[RadioStation] → opening', action, '| space:', space.id)
+      setPendingAction(null)
+      if (action === 'diary') setShowDiary(true)
+      else                    setShowRecords(true)
     }
-  }, [user, space, loadingSpace, pendingAction])
+  }, [user, space, loadingAuth, loadingSpace, pendingAction])
 
   const heartBeatRef    = useRef(null)
   const readyTimerRef   = useRef(null)
@@ -297,35 +320,42 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
     setShowUnlock(true)
   }
 
+  // Each handler simply records the user's intent and closes HeartUnlock.
+  // The pendingAction effect (above) waits for auth + space to settle, then
+  // executes the action — this avoids any race with the initial page load.
+
   const handleLetterFromUnlock = () => {
     setShowUnlock(false)
-    if (!user) { setPendingAction('letter'); setShowAuthModal(true); return }
-    setShowLetter(true)
+    console.log('[RadioStation] letter clicked | user:', user?.id ?? 'none', '| loadingAuth:', loadingAuth)
+    setPendingAction('letter')
   }
 
   const handleDiaryFromUnlock = async () => {
     setShowUnlock(false)
+    console.log('[RadioStation] diary clicked | user:', user?.id ?? 'none', '| space:', space?.id ?? 'none')
     if (!user) { setPendingAction('diary'); setShowAuthModal(true); return }
-    // Always call get_my_space RPC for a fresh result before opening diary
-    console.log('[RadioStation] calling get_my_space before diary...')
+    // Always get a fresh space from the RPC — avoids stale context on first load
+    console.log('[RadioStation] diary — calling refreshSpace...')
     const freshSpace = await refreshSpace()
-    console.log('[RadioStation] currentSpace before diary:', freshSpace?.id ?? 'none')
+    console.log('[RadioStation] diary — freshSpace:', freshSpace?.id ?? 'none')
     if (!freshSpace) { setPendingAction('diary'); setShowSpaceGate(true); return }
     setShowDiary(true)
   }
 
   const handleSpaceFromUnlock = () => {
     setShowUnlock(false)
+    console.log('[RadioStation] space clicked | user:', user?.id ?? 'none')
     if (!user) { setPendingAction('space'); setShowAuthModal(true); return }
     setShowSpaceGate(true)
   }
 
   const handleRecordsFromUnlock = async () => {
     setShowUnlock(false)
+    console.log('[RadioStation] records clicked | user:', user?.id ?? 'none', '| space:', space?.id ?? 'none')
     if (!user) { setPendingAction('records'); setShowAuthModal(true); return }
-    console.log('[RadioStation] calling get_my_space before records...')
+    console.log('[RadioStation] records — calling refreshSpace...')
     const freshSpace = await refreshSpace()
-    console.log('[RadioStation] currentSpace before records:', freshSpace?.id ?? 'none')
+    console.log('[RadioStation] records — freshSpace:', freshSpace?.id ?? 'none')
     if (!freshSpace) { setPendingAction('records'); setShowSpaceGate(true); return }
     setShowRecords(true)
   }
