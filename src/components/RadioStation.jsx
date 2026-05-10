@@ -8,16 +8,17 @@ import MemoryDiary from './MemoryDiary'
 import HiddenLoveLetter from './HiddenLoveLetter'
 import LocalPlaylist from './LocalPlaylist'
 import LocalAtmosphereCard from './LocalAtmosphereCard'
-import CompanionLine from './CompanionLine'
+import AIRadioLine from './AIRadioLine'
 import AuthModal from './AuthModal'
 import SpaceGate from './SpaceGate'
 import DiaryRecords from './DiaryRecords'
 import VoiceMailbox from './VoiceMailbox'
 import { useAuth } from '../contexts/AuthContext'
-import { songMoodMap } from '../data/songMoodMap'
+import { useSongLibrary } from '../hooks/useSongLibrary'
 import { moodVoiceMap } from '../data/moodVoiceMap'
-import { resolveSongUrl, devValidateSongs } from '../data/songConfig'
+import { devValidateSongs } from '../data/songConfig'
 import { LONG_STAY } from '../utils/atmosphere'
+import { audioElement } from '../audio/audioElement'
 import './RadioStation.css'
 
 // ── song matching ─────────────────────────────────────────────────────────────
@@ -39,27 +40,20 @@ function seededShuffle(songs) {
   return arr
 }
 
-function getStationSongs(moodLabel) {
-  console.log('[RadioStation] All songs in map:', songMoodMap.length)
+// Songs arrive pre-resolved from useSongLibrary — no resolveSongUrl call here.
+function filterMoodSongs(library, moodLabel) {
+  console.log('[RadioStation] Library size:', library.length)
   console.log('[RadioStation] Selected mood:', moodLabel)
 
-  let matched = songMoodMap.filter(s => s.moodTags.includes(moodLabel))
+  let matched = library.filter(s => s.moodTags.includes(moodLabel))
   console.log('[RadioStation] Songs matching mood:', matched.length)
 
   if (matched.length === 0) {
-    // Fallback: use soft emotional moods so the player is never empty
-    matched = songMoodMap.filter(s =>
-      FALLBACK_TAGS.some(t => s.moodTags.includes(t))
-    )
+    matched = library.filter(s => FALLBACK_TAGS.some(t => s.moodTags.includes(t)))
     console.warn(`[RadioStation] No songs for "${moodLabel}" — using fallback pool (${matched.length})`)
   }
 
-  // Resolve CDN URLs (no-op when CDN_BASE is empty).
-  // NOTE: src is mutated to the full URL here — useSongValidator must NOT
-  // call resolveSongUrl() again or it will double-prepend the CDN base.
-  const resolved = matched.map(s => ({ ...s, src: resolveSongUrl(s.src) }))
-
-  const shuffled = seededShuffle(resolved)
+  const shuffled = seededShuffle(matched)
   console.log('[RadioStation] Valid playable songs (pre-filter):', shuffled.length)
   return shuffled
 }
@@ -199,6 +193,7 @@ const PRIVATE_SPACE_ID = '89f07d46-af87-4aea-b7e8-e4a804cb21d1'
 
 export default function RadioStation({ mood, onBack, atmosphere }) {
   const { user, space, loadingAuth, loadingSpace, refreshSpace, signOut } = useAuth()
+  const { library, loading: libLoading } = useSongLibrary()
 
   // Must be computed before lazy useState so the initializers can read it.
   const isIntroAuthorized = user?.id === INTRO_AUTH_UID
@@ -219,7 +214,9 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
     isIntroAuthorized && !!moodVoiceMap[mood.id]
   )
   const [longStayMsg, setLongStayMsg] = useState(null)
-  const [songError, setSongError]   = useState(null)
+  const [songError, setSongError]     = useState(null)
+  const [autoplayBlocked, setAutoplayBlocked] = useState(false)
+  const [playTrigger, setPlayTrigger] = useState(0)
 
   // Auth gate — 'letter' | 'diary' | 'space' | 'records' | null
   const [showAuthModal, setShowAuthModal] = useState(false)
@@ -286,8 +283,8 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
   const shownStayRef    = useRef(new Set())
   const stayIntervalRef = useRef(null)
 
-  // Stable reference — only recomputed when mood.id changes
-  const allSongs = useMemo(() => getStationSongs(mood.id), [mood.id])
+  // Stable reference — recomputed when library loads or mood changes
+  const moodSongs = useMemo(() => filterMoodSongs(library, mood.id), [library, mood.id])
   const voiceSrc = moodVoiceMap[mood.id]
 
   // Runtime failures (caught by the audio element during playback).
@@ -301,15 +298,15 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
 
   // Filter only songs that have already failed at runtime (safe — no CORS issue)
   const songs = useMemo(() => {
-    if (!runtimeInvalidSrcs.size) return allSongs
-    const filtered = allSongs.filter(s => !runtimeInvalidSrcs.has(s.src))
+    if (!runtimeInvalidSrcs.size) return moodSongs
+    const filtered = moodSongs.filter(s => !runtimeInvalidSrcs.has(s.src))
     console.warn('[RadioStation] Invalid songs (removed from queue):', [...runtimeInvalidSrcs])
     console.log('[RadioStation] Valid playable songs (post-filter):', filtered.length)
     return filtered
-  }, [allSongs, runtimeInvalidSrcs])
+  }, [moodSongs, runtimeInvalidSrcs])
 
   // Dev-only: fire HEAD requests once to catch missing CDN files early
-  useEffect(() => { devValidateSongs(allSongs) }, [mood.id]) // eslint-disable-line react-hooks/exhaustive-deps
+  useEffect(() => { devValidateSongs(moodSongs) }, [mood.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Mood message card visibility ─────────────────────────────────────────
   const showDjCard  = user != null && space?.id === PRIVATE_SPACE_ID
@@ -371,6 +368,22 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
     console.log('[RadioStation] Voice intro ended → playlist playback starting')
     setIntroPhase('ready')
     readyTimerRef.current = setTimeout(() => setShowBanner(false), 2500)
+  }, [])
+
+  // Called by RadioPlayer when autoplay is blocked by browser policy.
+  // Shows the tap-to-enter overlay so the user can provide a fresh gesture.
+  const handleAutoplayBlocked = useCallback(() => {
+    console.log('[RadioStation] autoplay blocked — showing tap-to-enter overlay')
+    setAutoplayBlocked(true)
+  }, [])
+
+  // Called when user taps the overlay.
+  // Re-registers the gesture on the singleton audio element, dismisses the
+  // overlay, then tells RadioPlayer to attempt playback via forceTrigger.
+  const handleTapToStart = useCallback(() => {
+    if (audioElement) audioElement.play().catch(() => {})
+    setAutoplayBlocked(false)
+    setPlayTrigger(t => t + 1)
   }, [])
 
   const handleHeartClick = () => {
@@ -521,8 +534,8 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
           <VoiceIntroBanner phase={introPhase} accentColor={mood.accentColor} />
         )}
 
-        {/* rotating companion message */}
-        <CompanionLine moodId={mood.id} />
+        {/* AI radio host opening line — generated per mood, cached for session */}
+        <AIRadioLine mood={mood} />
 
         {/* song load error */}
         {songError && (
@@ -541,6 +554,8 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
             introPhase={introPhase}
             onSongError={handleSongError}
             autoStart={introPhase !== 'playing'}
+            onAutoplayBlocked={handleAutoplayBlocked}
+            forceTrigger={playTrigger}
           />
         )}
 
@@ -550,6 +565,8 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
           currentIndex={songIndex}
           onSelect={setSongIndex}
           accentColor={mood.accentColor}
+          allSongs={library}
+          libraryLoading={libLoading}
         />
 
         <div className="station__cards">
@@ -609,6 +626,29 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
       {/* Voice mailbox */}
       {showVoiceMailbox && (
         <VoiceMailbox onClose={() => setShowVoiceMailbox(false)} />
+      )}
+
+      {/* Tap-to-enter overlay — shown when browser blocks autoplay */}
+      {autoplayBlocked && (
+        <div
+          className="station__tap-overlay"
+          onClick={handleTapToStart}
+          role="button"
+          aria-label="轻触开始播放"
+        >
+          <div className="station__tap-inner">
+            <span
+              className="station__tap-icon"
+              style={{ color: mood.accentColor }}
+            >
+              ♫
+            </span>
+            <p className="station__tap-text">轻触，开始今晚的电台</p>
+            <p className="station__tap-hint" style={{ color: `${mood.accentColor}99` }}>
+              {mood.icon} {mood.label}
+            </p>
+          </div>
+        </div>
       )}
     </div>
   )

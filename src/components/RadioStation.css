@@ -293,3 +293,57 @@
 @keyframes ls-out {
   to { opacity: 0; transform: translateX(-50%) translateY(6px); }
 }
+
+/* ── Tap-to-enter overlay ── */
+.station__tap-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 90;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(6, 5, 16, 0.80);
+  backdrop-filter: blur(18px);
+  -webkit-backdrop-filter: blur(18px);
+  cursor: pointer;
+  animation: tap-in 0.55s cubic-bezier(0.22, 1, 0.36, 1) both;
+}
+
+@keyframes tap-in {
+  from { opacity: 0 }
+  to   { opacity: 1 }
+}
+
+.station__tap-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  text-align: center;
+  user-select: none;
+}
+
+.station__tap-icon {
+  font-size: 3.2rem;
+  line-height: 1;
+  display: block;
+  animation: tap-pulse 2.2s ease-in-out infinite;
+}
+
+@keyframes tap-pulse {
+  0%, 100% { transform: scale(1);    opacity: 0.75; }
+  50%       { transform: scale(1.1); opacity: 1;    }
+}
+
+.station__tap-text {
+  font-size: 1.05rem;
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.88);
+  letter-spacing: 0.08em;
+}
+
+.station__tap-hint {
+  font-size: 0.78rem;
+  letter-spacing: 0.06em;
+  opacity: 0.8;
+}

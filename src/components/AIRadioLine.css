@@ -1,0 +1,35 @@
+.air {
+  text-align: center;
+  padding: 0.2rem 1.6rem 0.4rem;
+  min-height: 1.6rem;
+  opacity: 0;
+  transition: opacity 0.65s ease;
+}
+
+.air--in {
+  opacity: 1;
+}
+
+/* Loading shimmer — pulses gently, never draws attention */
+.air__loading {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  letter-spacing: 0.07em;
+  font-style: italic;
+  animation: air-pulse 2s ease-in-out infinite;
+  display: inline-block;
+}
+
+@keyframes air-pulse {
+  0%,  100% { opacity: 0.28; }
+  50%        { opacity: 0.50; }
+}
+
+/* Generated line — matches CompanionLine aesthetic */
+.air__text {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  line-height: 1.78;
+  letter-spacing: 0.03em;
+}

@@ -1,17 +1,24 @@
 import { useState, useEffect, useRef } from 'react'
-import { saveNewEntry } from '../utils/journal'
-// entry_type: 'daily_note' — shown immediately in Records
+import { saveNewEntry, randomOldEntry } from '../utils/journal'
 import { useAuth } from '../contexts/AuthContext'
 import './MemoryDiary.css'
 
 const MAX = 160
 
+function formatDate(iso) {
+  const d = new Date(iso)
+  return d.toLocaleDateString('zh-CN', { month: 'long', day: 'numeric' })
+}
+
 export default function MemoryDiary({ onClose, mood, currentSong }) {
   const { user, space } = useAuth()
-  const [visible, setVisible] = useState(false)
-  const [text,    setText]    = useState('')
-  const [saved,   setSaved]   = useState(false)
-  const [saving,  setSaving]  = useState(false)
+  const [visible,   setVisible]   = useState(false)
+  const [text,      setText]      = useState('')
+  const [saved,     setSaved]     = useState(false)
+  const [saving,    setSaving]    = useState(false)
+  const [saveErr,   setSaveErr]   = useState('')
+  // undefined = still loading  |  null = loaded & empty  |  object = loaded & has entry
+  const [pastEntry, setPastEntry] = useState(undefined)
   const textareaRef = useRef(null)
 
   useEffect(() => {
@@ -22,6 +29,14 @@ export default function MemoryDiary({ onClose, mood, currentSong }) {
     return () => clearTimeout(t)
   }, [])
 
+  // Fetch a random past entry from this space on open
+  useEffect(() => {
+    if (!user) { setPastEntry(null); return }
+    randomOldEntry({ spaceId: space?.id ?? null, userId: user.id })
+      .then(entry => setPastEntry(entry ?? null))
+      .catch(() => setPastEntry(null))
+  }, [user?.id, space?.id])
+
   const close = () => {
     setVisible(false)
     setTimeout(onClose, 380)
@@ -29,8 +44,8 @@ export default function MemoryDiary({ onClose, mood, currentSong }) {
 
   const handleSave = async () => {
     if (!text.trim() || saving) return
-    console.log('[MemoryDiary] saving new entry — space:', space?.id ?? 'none', '| user:', user?.id)
     setSaving(true)
+    setSaveErr('')
     const ok = await saveNewEntry({
       text:      text.trim(),
       moodLabel: mood?.label ?? null,
@@ -43,9 +58,12 @@ export default function MemoryDiary({ onClose, mood, currentSong }) {
     })
     setSaving(false)
     if (ok) {
-      setText('')       // clear so a new entry can be written
+      setText('')
       setSaved(true)
-      setTimeout(() => setSaved(false), 2200)
+      setTimeout(() => setSaved(false), 2500)
+    } else {
+      setSaveErr('保存好像出了点问题，再试一次？')
+      setTimeout(() => setSaveErr(''), 3500)
     }
   }
 
@@ -63,6 +81,23 @@ export default function MemoryDiary({ onClose, mood, currentSong }) {
           <p className="diary__title">今天我想对你说…</p>
         </div>
 
+        {/* ── Random past memory ── */}
+        {pastEntry === null && (
+          <p className="diary__echo diary__echo--empty">
+            这里还没有被保存下来的话。
+          </p>
+        )}
+        {pastEntry != null && pastEntry !== undefined && (
+          <div className="diary__echo diary__echo--has">
+            <span className="diary__echo-label">
+              以前的你说过
+              <span className="diary__echo-date">{formatDate(pastEntry.created_at)}</span>
+            </span>
+            <p className="diary__echo-text">「{pastEntry.content}」</p>
+          </div>
+        )}
+
+        {/* ── Write new memory ── */}
         <textarea
           ref={textareaRef}
           className="diary__textarea"
@@ -72,13 +107,19 @@ export default function MemoryDiary({ onClose, mood, currentSong }) {
           rows={4}
         />
 
+        {saveErr && (
+          <p className="diary__err">{saveErr}</p>
+        )}
+
         <div className="diary__footer">
           <span className="diary__chars">
             {text.length}
             <span className="diary__chars-max"> / {MAX}</span>
           </span>
           <div className="diary__right">
-            {saved && <span className="diary__saved">已保存 ✦</span>}
+            {saved && (
+              <span className="diary__saved">我帮你存好了 ✦</span>
+            )}
             <button
               className="diary__save"
               onClick={handleSave}

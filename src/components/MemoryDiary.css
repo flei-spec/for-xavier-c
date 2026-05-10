@@ -90,6 +90,66 @@
   opacity: 0.6;
 }
 
+/* ── Random past memory echo ────────────────────────────────────────────────── */
+.diary__echo {
+  margin-bottom: 1.2rem;
+  padding: 0.85rem 1rem;
+  border-radius: 12px;
+  background: rgba(244, 161, 176, 0.04);
+  border: 1px solid rgba(244, 161, 176, 0.10);
+}
+
+.diary__echo--empty {
+  text-align: center;
+  font-size: 0.74rem;
+  color: var(--text-muted);
+  opacity: 0.4;
+  letter-spacing: 0.06em;
+  padding: 0.6rem 1rem;
+  border-style: dashed;
+}
+
+.diary__echo-label {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: 0.63rem;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--rose);
+  opacity: 0.55;
+  margin-bottom: 0.5rem;
+}
+
+.diary__echo-date {
+  font-size: 0.63rem;
+  letter-spacing: 0.04em;
+  color: var(--text-muted);
+  opacity: 0.7;
+  text-transform: none;
+}
+
+.diary__echo-text {
+  font-size: 0.89rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  line-height: 1.68;
+  display: -webkit-box;
+  -webkit-line-clamp: 4;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* ── Error state ─────────────────────────────────────────────────────────────── */
+.diary__err {
+  font-size: 0.74rem;
+  color: rgba(248, 140, 140, 0.72);
+  text-align: center;
+  margin: -0.4rem 0 0.7rem;
+  animation: saved-in 0.25s ease;
+  letter-spacing: 0.03em;
+}
+
 /* ── Textarea ────────────────────────────────────────────────────────────────── */
 .diary__textarea {
   width: 100%;

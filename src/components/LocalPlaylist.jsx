@@ -1,6 +1,5 @@
-import { useState, useRef } from 'react'
-import { songMoodMap } from '../data/songMoodMap'
-import { resolveSongUrl } from '../data/songConfig'
+import { useState, useRef, useMemo } from 'react'
+import { useSongLibrary } from '../hooks/useSongLibrary'
 import { useAuth } from '../contexts/AuthContext'
 import './LocalPlaylist.css'
 
@@ -208,36 +207,6 @@ const reasonPool = [
   '有人在某个地方，也在听同一首歌想你。',
 ]
 
-// Build the playlist from songMoodMap — this works in all environments
-// (Vercel, local, CDN) because songMoodMap is embedded in the JS bundle.
-//
-// The virtual:songs-list plugin read from public/songs/ at build time,
-// but that directory is gitignored so Vercel always got an empty list.
-// songMoodMap keeps the original Chinese artist/title so specificReasons
-// lookups still work even though the src filenames were renamed to ASCII.
-
-const allSongs = (() => {
-  console.log('all songs:', songMoodMap.length)
-
-  const songs = songMoodMap.map((s, i) => {
-    const key    = s.artist ? `${s.artist} - ${s.title}` : s.title
-    const reason = specificReasons[key]
-      || s.romanticReason
-      || reasonPool[i % reasonPool.length]
-    const url    = resolveSongUrl(s.src)
-
-    return {
-      filename: s.src.replace('/songs/', ''),
-      title:    s.title,
-      artist:   s.artist,
-      reason,
-      url,
-    }
-  })
-
-  console.log('favorite songs resolved:', songs.length)
-  return songs
-})()
 
 function SongCard({ song }) {
   const audioRef = useRef(null)
@@ -329,15 +298,32 @@ const LP_PAGE = 6
 
 export default function LocalPlaylist() {
   const { user } = useAuth()
+  const { library } = useSongLibrary()
   const [search, setSearch] = useState('')
   const [limit,  setLimit]  = useState(LP_PAGE)
+
+  // Build display list lazily from the fetched library (no module-level IIFE)
+  const allSongs = useMemo(() => {
+    return library.map((s, i) => {
+      const key    = s.artist ? `${s.artist} - ${s.title}` : s.title
+      const reason = specificReasons[key]
+        || s.romanticReason
+        || reasonPool[i % reasonPool.length]
+      return {
+        filename: s.src.replace(/.*\/songs\//, ''),
+        title:    s.title,
+        artist:   s.artist,
+        reason,
+        url:      s.src, // already resolved by useSongLibrary
+      }
+    })
+  }, [library])
 
   const sectionLabel = user?.id === PARTNER_UID ? '你喜欢的歌'
     : user?.id === MY_UID ? '我老婆喜欢的歌'
     : 'Xavier喜欢的歌'
 
   const q = search.trim().toLowerCase()
-  console.log('search query:', q || '(none)')
 
   const filtered = q
     ? allSongs.filter(s =>
@@ -345,8 +331,6 @@ export default function LocalPlaylist() {
         s.artist.toLowerCase().includes(q)
       )
     : allSongs
-
-  console.log('filtered favorite songs:', filtered.length)
 
   // Reset to first page whenever search text changes
   const handleSearch = (e) => {

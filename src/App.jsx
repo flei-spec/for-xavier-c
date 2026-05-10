@@ -10,6 +10,7 @@ import WelcomePage from './components/WelcomePage'
 import MoodSelector from './components/MoodSelector'
 import RadioStation from './components/RadioStation'
 import { audioElement } from './audio/audioElement'
+import { preloadSongLibrary } from './hooks/useSongLibrary'
 import './App.css'
 
 export default function App() {
@@ -57,7 +58,13 @@ export default function App() {
     }
   }, [atmosphere?.theme, atmosphere?.hour, atmosphere?.weather?.type])
 
-  const handleEnter = () => setPage('mood')
+  const handleEnter = () => {
+    // Start fetching song library in background while user browses moods.
+    // By the time they pick one (~5-30s), the library is cached and
+    // RadioStation gets it on the very first render — no async delay.
+    preloadSongLibrary()
+    setPage('mood')
+  }
 
   const handleStartStation = (mood) => {
     // ── Unlock audio policy synchronously during the user gesture ──────────────

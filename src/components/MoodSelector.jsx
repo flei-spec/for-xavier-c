@@ -1,9 +1,11 @@
 import { useState } from 'react'
 import { moods } from '../data/romanticProfile'
+import CustomMoodInput from './CustomMoodInput'
 import './MoodSelector.css'
 
 export default function MoodSelector({ onStart, onBack }) {
-  const [selected, setSelected] = useState(null)
+  const [selected,       setSelected]       = useState(null)
+  const [showCustomInput, setShowCustomInput] = useState(false)
 
   return (
     <div className="mood">
@@ -30,6 +32,16 @@ export default function MoodSelector({ onStart, onBack }) {
               <span className="mood__desc">{m.description}</span>
             </button>
           ))}
+
+          {/* Custom mood input card — spans full width below the 3×3 grid */}
+          <button
+            className="mood__card mood__card--custom"
+            onClick={() => setShowCustomInput(true)}
+          >
+            <span className="mood__icon">✦</span>
+            <span className="mood__label">我现在感觉…</span>
+            <span className="mood__desc">说出来，我帮你找一首歌</span>
+          </button>
         </div>
 
         <button
@@ -40,6 +52,16 @@ export default function MoodSelector({ onStart, onBack }) {
           {selected ? '开启今日的电台  ✦' : '先选一种心情'}
         </button>
       </div>
+
+      {showCustomInput && (
+        <CustomMoodInput
+          onMatch={(moodObj) => {
+            setShowCustomInput(false)
+            onStart(moodObj)
+          }}
+          onClose={() => setShowCustomInput(false)}
+        />
+      )}
     </div>
   )
 }

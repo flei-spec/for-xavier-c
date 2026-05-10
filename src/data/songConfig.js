@@ -76,9 +76,10 @@ export async function devValidateSongs(songs) {
   if (!import.meta.env.DEV) return
   if (!CDN_BASE) return   // local public/ — Vite serves them fine
 
+  // songs.src values are already resolved by useSongLibrary — use them directly
   const results = await Promise.allSettled(
     songs.map(s =>
-      fetch(resolveSongUrl(s.src), { method: 'HEAD' })
+      fetch(s.src, { method: 'HEAD' })
         .then(r => ({ src: s.src, ok: r.ok, status: r.status }))
         .catch(() => ({ src: s.src, ok: false, status: 0 }))
     )

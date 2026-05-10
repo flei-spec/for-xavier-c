@@ -208,3 +208,26 @@
   border-color: rgba(244, 161, 176, 0.4);
   color: var(--rose);
 }
+
+/* ── Cross-mood search: non-playable result ── */
+.songs__row--dim {
+  opacity: 0.42;
+  cursor: default;
+}
+
+.songs__mood-hint {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  opacity: 0.7;
+  letter-spacing: 0.02em;
+}
+
+/* ── Library loading indicator ── */
+.songs__loading {
+  text-align: center;
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  opacity: 0.38;
+  padding: 1rem 0 0.4rem;
+  letter-spacing: 0.05em;
+}

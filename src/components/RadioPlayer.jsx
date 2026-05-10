@@ -67,24 +67,28 @@ export default function RadioPlayer({
   mood, song, onNext, onPrev,
   introPhase, onSongError,
   autoStart = false,
+  onAutoplayBlocked,  // called when autoplay is blocked by browser policy
+  forceTrigger = 0,   // increment to force a play attempt (used by tap-to-enter)
 }) {
   const [playing, setPlaying] = useState(false)
   const [elapsed, setElapsed] = useState(0)
   const [realDur, setRealDur] = useState(0)
 
   // Refs to stable callbacks so addEventListener closures stay fresh
-  const onNextRef       = useRef(onNext)
-  const onSongErrorRef  = useRef(onSongError)
-  const prevPhase       = useRef(introPhase)
-  const isSwitching     = useRef(false)
-  const playingRef      = useRef(false)
-  const introPhaseRef   = useRef(introPhase)
-  const autoplayNext    = useRef(autoStart)
+  const onNextRef            = useRef(onNext)
+  const onSongErrorRef       = useRef(onSongError)
+  const onAutoplayBlockedRef = useRef(onAutoplayBlocked)
+  const prevPhase            = useRef(introPhase)
+  const isSwitching          = useRef(false)
+  const playingRef           = useRef(false)
+  const introPhaseRef        = useRef(introPhase)
+  const autoplayNext         = useRef(autoStart)
 
-  useEffect(() => { onNextRef.current      = onNext      }, [onNext])
-  useEffect(() => { onSongErrorRef.current = onSongError }, [onSongError])
-  useEffect(() => { playingRef.current     = playing     }, [playing])
-  useEffect(() => { introPhaseRef.current  = introPhase  }, [introPhase])
+  useEffect(() => { onNextRef.current            = onNext            }, [onNext])
+  useEffect(() => { onSongErrorRef.current       = onSongError       }, [onSongError])
+  useEffect(() => { onAutoplayBlockedRef.current = onAutoplayBlocked }, [onAutoplayBlocked])
+  useEffect(() => { playingRef.current           = playing           }, [playing])
+  useEffect(() => { introPhaseRef.current        = introPhase        }, [introPhase])
 
   const audio   = audioElement       // singleton, never recreated
   const activeSrc = song?.src ?? ''
@@ -160,7 +164,7 @@ export default function RadioPlayer({
       isSwitching.current = false
 
       if (shouldAutoplay && introPhaseRef.current !== 'playing') {
-        await tryPlay(audio, activeSrc, 700)
+        await tryPlay(audio, activeSrc, 700, onAutoplayBlockedRef.current)
       }
     }
 
@@ -175,13 +179,22 @@ export default function RadioPlayer({
       if (!audio) return
       const t = setTimeout(() => {
         console.log('[RadioPlayer] voice intro ended → starting song:', activeSrc)
-        tryPlay(audio, activeSrc, 900)
+        tryPlay(audio, activeSrc, 900, onAutoplayBlockedRef.current)
       }, 150)
       return () => clearTimeout(t)
     }
     prevPhase.current = introPhase
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [introPhase])
+
+  // ── Force-play trigger (tap-to-enter gesture recovery) ────────────────────
+  useEffect(() => {
+    if (!forceTrigger || !audio || !activeSrc) return
+    console.log('[RadioPlayer] forceTrigger — starting playback after tap-to-enter')
+    tryPlay(audio, activeSrc, 700)
+  // forceTrigger is the only real dependency; audio/activeSrc are stable within a song
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [forceTrigger])
 
   // ── User controls ──────────────────────────────────────────────────────────
   const toggle = async () => {

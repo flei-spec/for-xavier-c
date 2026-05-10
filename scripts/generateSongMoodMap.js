@@ -553,3 +553,10 @@ export const songMoodMap = [\n${lines.join(',\n')}\n]\n`
 const outPath = new URL('../src/data/songMoodMap.js', import.meta.url)
 fs.writeFileSync(outPath, output, 'utf8')
 console.log(`✓ wrote ${songs.length} songs to src/data/songMoodMap.js`)
+
+// Also write JSON for the lazy-loading hook (public/data/songLibrary.json)
+const jsonDir = new URL('../public/data', import.meta.url)
+fs.mkdirSync(jsonDir, { recursive: true })
+const jsonOutPath = new URL('../public/data/songLibrary.json', import.meta.url)
+fs.writeFileSync(jsonOutPath, JSON.stringify(songs))
+console.log(`✓ wrote ${songs.length} songs to public/data/songLibrary.json`)
