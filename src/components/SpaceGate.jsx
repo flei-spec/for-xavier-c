@@ -55,7 +55,7 @@ function StatusView({ onSuccess }) {
     supabase
       .from('profiles')
       .select('display_name')
-      .eq('user_id', user.id)
+      .eq('id', user.id)
       .maybeSingle()
       .then(({ data }) => {
         setDisplayName(data?.display_name || '')

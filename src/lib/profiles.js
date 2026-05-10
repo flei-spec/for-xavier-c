@@ -8,8 +8,8 @@ export async function getProfiles(userIds) {
   console.log('[profiles] getProfiles — fetching for', unique.length, 'users')
   const { data, error } = await supabase
     .from('profiles')
-    .select('user_id, display_name')
-    .in('user_id', unique)
+    .select('id, display_name')
+    .in('id', unique)
 
   if (error) {
     console.error('[profiles] getProfiles error:', error.message, error)
@@ -18,7 +18,7 @@ export async function getProfiles(userIds) {
 
   console.log('[profiles] getProfiles result:', data)
   return Object.fromEntries(
-    (data ?? []).map(p => [p.user_id, p.display_name || '有人'])
+    (data ?? []).map(p => [p.id, p.display_name || '有人'])
   )
 }
 
@@ -40,7 +40,7 @@ export async function updateDisplayName(userId, name) {
   const { error } = await supabase
     .from('profiles')
     .update({ display_name: name, updated_at: new Date().toISOString() })
-    .eq('user_id', userId)
+    .eq('id', userId)
   if (error) {
     console.error('[profiles] updateDisplayName error:', error.message, error)
     return false
