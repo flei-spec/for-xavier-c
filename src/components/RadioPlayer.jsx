@@ -21,6 +21,7 @@ function fadeVolume(audio, from, to, ms) {
 export default function RadioPlayer({
   mood, song, onNext, onPrev,
   introPhase, onSongError,
+  autoStart = false,  // if true, first song autoplays without waiting for intro
 }) {
   const [playing, setPlaying]   = useState(false)
   const [elapsed, setElapsed]   = useState(0)
@@ -32,8 +33,9 @@ export default function RadioPlayer({
   // Refs to avoid stale-closure issues inside effects
   const playingRef     = useRef(false)
   const introPhaseRef  = useRef(introPhase)
-  // Set true by handleEnded before calling onNext() so the next src change autoplays
-  const autoplayNext   = useRef(false)
+  // Set true by handleEnded before calling onNext() so the next src change autoplays.
+  // Seeded from autoStart prop so the very first song plays when intro is skipped.
+  const autoplayNext   = useRef(autoStart)
 
   const activeSrc = song?.src
 

@@ -185,20 +185,30 @@ function LongStayToast({ message, onDismiss }) {
 
 // ── Main ──────────────────────────────────────────────────────────────────────
 
+// Only this account hears the voice intro.
+const INTRO_AUTH_UID = '3f370ae9-a462-4a17-b2f4-5a05d4958c76'
+
 export default function RadioStation({ mood, onBack, atmosphere }) {
   const { user, space, loadingAuth, loadingSpace, refreshSpace, signOut } = useAuth()
 
+  // Must be computed before lazy useState so the initializers can read it.
+  const isIntroAuthorized = user?.id === INTRO_AUTH_UID
+
   const [songIndex, setSongIndex]   = useState(0)
-  const [heartBeat, setHeartBeat]   = useState(false)   // brief pulse on click
+  const [heartBeat, setHeartBeat]   = useState(false)
   const [showUnlock,       setShowUnlock]       = useState(false)
   const [showLetter,       setShowLetter]       = useState(false)
   const [showDiary,        setShowDiary]        = useState(false)
   const [showRecords,      setShowRecords]      = useState(false)
   const [showVoiceMailbox, setShowVoiceMailbox] = useState(false)
   const [djVisible, setDjVisible]   = useState(false)
-  // Lazy-initialize so VoiceIntroPlayer is in the DOM on the very first render.
-  const [introPhase, setIntroPhase] = useState(() => moodVoiceMap[mood.id] ? 'playing' : 'ready')
-  const [showBanner, setShowBanner] = useState(() => !!moodVoiceMap[mood.id])
+  // Lazy-initialize — intro only plays for the authorized user.
+  const [introPhase, setIntroPhase] = useState(() =>
+    isIntroAuthorized && !!moodVoiceMap[mood.id] ? 'playing' : 'ready'
+  )
+  const [showBanner, setShowBanner] = useState(() =>
+    isIntroAuthorized && !!moodVoiceMap[mood.id]
+  )
   const [longStayMsg, setLongStayMsg] = useState(null)
   const [songError, setSongError]   = useState(null)
 
@@ -276,10 +286,15 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
   // changes without a full component remount.
   useEffect(() => {
     console.log('[RadioStation] Mood selected:', mood.id)
-    if (voiceSrc) {
-      console.log(`[RadioStation] Voice intro path: ${voiceSrc}`)
+    console.log('[RadioStation] Auth user id:', user?.id ?? 'none (guest)')
+    console.log('[RadioStation] Intro authorized:', isIntroAuthorized)
+    if (isIntroAuthorized && voiceSrc) {
+      console.log('[RadioStation] Intro playback started:', voiceSrc)
+    } else if (!isIntroAuthorized && voiceSrc) {
+      const reason = !user ? 'guest mode' : `user ${user.id} not authorized`
+      console.log('[RadioStation] Intro skipped —', reason, '→ starting playlist directly')
     } else {
-      console.log('[RadioStation] No voice intro mapped — skipping to songs immediately')
+      console.log('[RadioStation] No voice intro mapped — starting playlist directly')
     }
 
     setSongIndex(0)
@@ -313,7 +328,7 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
   }, [mood.id])
 
   const handleIntroEnded = useCallback(() => {
-    console.log('[RadioStation] Voice intro ended, starting playlist')
+    console.log('[RadioStation] Voice intro ended → playlist playback starting')
     setIntroPhase('ready')
     readyTimerRef.current = setTimeout(() => setShowBanner(false), 2500)
   }, [])
@@ -475,6 +490,7 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
             onPrev={prevSong}
             introPhase={introPhase}
             onSongError={handleSongError}
+            autoStart={!isIntroAuthorized && !!voiceSrc}
           />
         )}
 
