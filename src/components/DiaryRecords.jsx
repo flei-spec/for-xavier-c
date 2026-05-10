@@ -19,7 +19,8 @@ export default function DiaryRecords({ onClose }) {
   const [entries,    setEntries]    = useState([])
   const [profileMap, setProfileMap] = useState({})
   const [loading,    setLoading]    = useState(true)
-  const [deleting,   setDeleting]   = useState(null)
+  const [deleting,   setDeleting]   = useState(null)   // id being deleted (in-flight)
+  const [confirmId,  setConfirmId]  = useState(null)   // id awaiting confirmation
   const [deleteErr,  setDeleteErr]  = useState('')
   const [visible,    setVisible]    = useState(false)
 
@@ -47,9 +48,15 @@ export default function DiaryRecords({ onClose }) {
     setTimeout(onClose, 380)
   }
 
-  const handleDelete = async (id) => {
-    setDeleting(id)
+  const handleDeleteRequest = (id) => {
+    setConfirmId(id)      // show inline confirmation, do NOT delete yet
     setDeleteErr('')
+  }
+
+  const handleDeleteConfirm = async () => {
+    const id = confirmId
+    setConfirmId(null)
+    setDeleting(id)
     const ok = await deleteEntry(id)
     setDeleting(null)
     if (ok) {
@@ -59,6 +66,8 @@ export default function DiaryRecords({ onClose }) {
       setTimeout(() => setDeleteErr(''), 3000)
     }
   }
+
+  const handleDeleteCancel = () => setConfirmId(null)
 
   return (
     <div
@@ -105,13 +114,31 @@ export default function DiaryRecords({ onClose }) {
                   <p className="dr__entry-song">♪ {entry.title}</p>
                 )}
                 <p className="dr__entry-content">{entry.content}</p>
+                {confirmId === entry.id ? (
+                  <div className="dr__confirm">
+                    <span className="dr__confirm-text">确认删除这条记录吗？</span>
+                    <div className="dr__confirm-btns">
+                      <button
+                        className="dr__confirm-yes"
+                        onClick={handleDeleteConfirm}
+                        disabled={deleting === entry.id}
+                      >
+                        {deleting === entry.id ? '删除中…' : '确认删除'}
+                      </button>
+                      <button className="dr__confirm-no" onClick={handleDeleteCancel}>
+                        取消
+                      </button>
+                    </div>
+                  </div>
+                ) : (
                 <button
                   className="dr__delete"
-                  onClick={() => handleDelete(entry.id)}
+                  onClick={() => handleDeleteRequest(entry.id)}
                   disabled={deleting === entry.id}
                 >
-                  {deleting === entry.id ? '删除中…' : '删除'}
+                  删除
                 </button>
+                )}
               </div>
             )
           })}
