@@ -30,10 +30,17 @@ export default function HeartUnlock({ onLetter, onDiary, onSpace, onRecords, onV
         <p className="hu__label">私密专区</p>
 
         <div className="hu__grid">
-          <button className="hu__choice hu__choice--letter" onClick={onLetter}>
-            <span className="hu__choice-icon">💌</span>
-            <span className="hu__choice-text">读悄悄话</span>
-          </button>
+          {isPrivateSpace ? (
+            <button className="hu__choice hu__choice--voice" onClick={onVoice}>
+              <span className="hu__choice-icon">📻</span>
+              <span className="hu__choice-text">侧写师的声纹档案</span>
+            </button>
+          ) : (
+            <button className="hu__choice hu__choice--letter" onClick={onLetter}>
+              <span className="hu__choice-icon">💌</span>
+              <span className="hu__choice-text">读悄悄话</span>
+            </button>
+          )}
 
           <button className="hu__choice hu__choice--diary" onClick={onDiary}>
             <span className="hu__choice-icon">✎</span>
@@ -42,12 +49,17 @@ export default function HeartUnlock({ onLetter, onDiary, onSpace, onRecords, onV
             </span>
           </button>
 
-          <button className="hu__choice hu__choice--voice" onClick={onVoice}>
-            <span className="hu__choice-icon">📻</span>
-            <span className="hu__choice-text">
-              {isPrivateSpace ? '侧写师的声纹档案' : '语音信箱'}
-            </span>
-          </button>
+          {isPrivateSpace ? (
+            <button className="hu__choice hu__choice--letter" onClick={onLetter}>
+              <span className="hu__choice-icon">💌</span>
+              <span className="hu__choice-text">读悄悄话</span>
+            </button>
+          ) : (
+            <button className="hu__choice hu__choice--voice" onClick={onVoice}>
+              <span className="hu__choice-icon">📻</span>
+              <span className="hu__choice-text">语音信箱</span>
+            </button>
+          )}
 
           <button className="hu__choice hu__choice--records" onClick={onRecords}>
             <span className="hu__choice-icon">📖</span>
