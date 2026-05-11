@@ -1,0 +1,15 @@
+.atm-glow {
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+
+.atm-glow__layer {
+  position: absolute;
+  inset: 0;
+  /* Opacity transition drives the cross-fade — any background content fades smoothly */
+  transition: opacity 1.8s ease;
+  will-change: opacity;
+}
