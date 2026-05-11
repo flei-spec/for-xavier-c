@@ -25,9 +25,8 @@ import './RadioStation.css'
 
 const FALLBACK_TAGS = ['需要安慰', '想被抱抱', '想一个人发呆']
 
-// Pick a random starting index, avoiding the song that played last time for
-// this mood.  The last-played src is persisted in sessionStorage so the same
-// opener doesn't repeat within a browser session.
+// Pick a random starting index, avoiding the song that opened last time for
+// this mood in the same browser session.
 function pickRandomStartIndex(moodId, songs) {
   if (songs.length <= 1) return 0
   const key = `xr_last_${moodId}`
@@ -39,6 +38,7 @@ function pickRandomStartIndex(moodId, songs) {
   }
   const idx = candidates[Math.floor(Math.random() * candidates.length)]
   try { sessionStorage.setItem(key, songs[idx].src) } catch (_) {}
+  console.log('[RadioStation] Selected random song for mood:', moodId, songs[idx]?.title)
   return idx
 }
 

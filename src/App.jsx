@@ -27,6 +27,9 @@ export default function App() {
   const [page, setPage]               = useState('welcome')
   const [selectedMood, setSelectedMood] = useState(null)
   const [guestMode, setGuestMode]       = useState(false)
+  // Increments on every station entry so RadioStation fully remounts,
+  // resetting all state and triggering a fresh random song pick.
+  const [stationKey, setStationKey] = useState(0)
 
   const { data: atmosphere } = useAtmosphere()
 
@@ -115,6 +118,7 @@ export default function App() {
     if (audioElement) audioElement.play().catch(() => {})
 
     setSelectedMood(mood)
+    setStationKey(k => k + 1)
     localStorage.setItem('xavier_last_mood', mood.id)
     setPage('station')
   }
@@ -144,6 +148,7 @@ export default function App() {
           )}
           {page === 'station' && selectedMood && (
             <RadioStation
+              key={stationKey}
               mood={selectedMood}
               onBack={handleBack}
               atmosphere={atmosphere}

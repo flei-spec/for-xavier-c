@@ -2917,7 +2917,7 @@ export const songMoodMap = [
     title: "分手快乐",
     artist: "梁静茹",
     src: "/songs/track-0292.mp3",
-    moodTags: ["想你了","开心开心"],
+    moodTags: ["开心开心"],
     energyLevel: "中",
     emotionalDescription: "深夜思念感",
     bestFor: "适合深夜安静想念某个人的时候听",
