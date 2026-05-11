@@ -25,6 +25,23 @@ import './RadioStation.css'
 
 const FALLBACK_TAGS = ['需要安慰', '想被抱抱', '想一个人发呆']
 
+// Pick a random starting index, avoiding the song that played last time for
+// this mood.  The last-played src is persisted in sessionStorage so the same
+// opener doesn't repeat within a browser session.
+function pickRandomStartIndex(moodId, songs) {
+  if (songs.length <= 1) return 0
+  const key = `xr_last_${moodId}`
+  const lastSrc = sessionStorage.getItem(key)
+  let candidates = songs.map((_, i) => i)
+  if (lastSrc) {
+    const lastIdx = songs.findIndex(s => s.src === lastSrc)
+    if (lastIdx !== -1) candidates = candidates.filter(i => i !== lastIdx)
+  }
+  const idx = candidates[Math.floor(Math.random() * candidates.length)]
+  try { sessionStorage.setItem(key, songs[idx].src) } catch (_) {}
+  return idx
+}
+
 // Deterministic daily shuffle — same order within a day, fresh each day.
 // Uses a seeded LCG so the radio feels "curated" rather than truly random.
 function seededShuffle(songs) {
@@ -282,6 +299,9 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
   const stayStartRef    = useRef(Date.now())
   const shownStayRef    = useRef(new Set())
   const stayIntervalRef = useRef(null)
+  // Tracks which mood.id has already received its random starting index so we
+  // don't re-randomize mid-session when runtimeInvalidSrcs changes.
+  const initialIndexMoodRef = useRef(null)
 
   // Stable reference — recomputed when library loads or mood changes
   const moodSongs = useMemo(() => filterMoodSongs(library, mood.id), [library, mood.id])
@@ -333,7 +353,8 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
       console.log('[RadioStation] No voice intro mapped — starting playlist directly')
     }
 
-    setSongIndex(0)
+    initialIndexMoodRef.current = null  // allow songs effect to pick a new random start
+    setSongIndex(0)                     // temporary placeholder until songs are ready
     setSongError(null)
     setRuntimeInvalidSrcs(new Set())
     setDjVisible(false)
@@ -344,6 +365,19 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
     return () => clearTimeout(t)
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [mood.id])
+
+  // Pick a fresh random starting song whenever the song list becomes ready for
+  // the current mood.  Runs once per mood entry; skipped on mid-session changes
+  // to runtimeInvalidSrcs so the user's current position isn't disrupted.
+  useEffect(() => {
+    if (songs.length === 0) return
+    if (initialIndexMoodRef.current === mood.id) return
+    initialIndexMoodRef.current = mood.id
+    setSongIndex(pickRandomStartIndex(mood.id, songs))
+  // songs identity only changes when moodSongs or runtimeInvalidSrcs change;
+  // mood.id triggers the reset above, so listing both is intentional.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [songs, mood.id])
 
   // Long-stay messages
   useEffect(() => {
