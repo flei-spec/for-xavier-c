@@ -79,7 +79,10 @@ export default function RadioPlayer({
   const onSongErrorRef       = useRef(onSongError)
   const onAutoplayBlockedRef = useRef(onAutoplayBlocked)
   const prevPhase            = useRef(introPhase)
-  const isSwitching          = useRef(false)
+  // Cancellation token for in-progress track switches.  When activeSrc changes
+  // while a fade-out is running, the previous switch is cancelled so the newer
+  // src always wins instead of being silently skipped.
+  const switchAbortRef       = useRef(null)
   const playingRef           = useRef(false)
   const introPhaseRef        = useRef(introPhase)
   const autoplayNext         = useRef(autoStart)
@@ -150,18 +153,26 @@ export default function RadioPlayer({
       '| shouldAutoplay:', shouldAutoplay,
       '| introPhase:', introPhaseRef.current)
 
-    const switchTrack = async () => {
-      if (isSwitching.current) return
-      isSwitching.current = true
+    // Cancel any in-progress switch so a rapid src change (e.g. random index
+    // landing after index-0 placeholder) always resolves to the latest src.
+    let cancelled = false
+    const prevAbort = switchAbortRef.current
+    switchAbortRef.current = () => { cancelled = true }
+    if (prevAbort) prevAbort()
 
+    const switchTrack = async () => {
       if (!audio.paused && audio.volume > 0) await fadeVolume(audio, audio.volume, 0, 300)
+      if (cancelled) return   // a newer src arrived while we were fading out
+
       audio.pause()
       audio.src = activeSrc
       audio.load()
       setPlaying(false)
       setElapsed(0)
       setRealDur(0)
-      isSwitching.current = false
+      switchAbortRef.current = null
+
+      console.log('AUDIO SRC:', audio.src)
 
       if (shouldAutoplay && introPhaseRef.current !== 'playing') {
         await tryPlay(audio, activeSrc, 700, onAutoplayBlockedRef.current)

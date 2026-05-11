@@ -215,7 +215,34 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
   // Must be computed before lazy useState so the initializers can read it.
   const isIntroAuthorized = user?.id === INTRO_AUTH_UID
 
-  const [songIndex, setSongIndex]   = useState(0)
+  // ── Compute moodSongs and songs BEFORE songIndex so the lazy initializer can
+  // pick a random starting index on the very first render (when library is
+  // already cached).  This prevents RadioPlayer ever receiving a stale index-0
+  // src followed immediately by the real random src — the double-fire that used
+  // to trigger the isSwitching guard and leave audio/display out of sync.
+  const initialIndexMoodRef = useRef(null)
+  const moodSongs = useMemo(() => filterMoodSongs(library, mood.id), [library, mood.id])
+
+  const [runtimeInvalidSrcs, setRuntimeInvalidSrcs] = useState(() => new Set())
+
+  const songs = useMemo(() => {
+    if (!runtimeInvalidSrcs.size) return moodSongs
+    const filtered = moodSongs.filter(s => !runtimeInvalidSrcs.has(s.src))
+    console.warn('[RadioStation] Invalid songs (removed from queue):', [...runtimeInvalidSrcs])
+    console.log('[RadioStation] Valid playable songs (post-filter):', filtered.length)
+    return filtered
+  }, [moodSongs, runtimeInvalidSrcs])
+
+  // Lazy init: if library is already cached pick the random song immediately so
+  // the first render is already correct — no subsequent setSongIndex needed.
+  const [songIndex, setSongIndex] = useState(() => {
+    if (songs.length > 0) {
+      const idx = pickRandomStartIndex(mood.id, songs)
+      initialIndexMoodRef.current = mood.id
+      return idx
+    }
+    return 0
+  })
   const [heartBeat, setHeartBeat]   = useState(false)
   const [showUnlock,       setShowUnlock]       = useState(false)
   const [showLetter,       setShowLetter]       = useState(false)
@@ -299,31 +326,8 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
   const stayStartRef    = useRef(Date.now())
   const shownStayRef    = useRef(new Set())
   const stayIntervalRef = useRef(null)
-  // Tracks which mood.id has already received its random starting index so we
-  // don't re-randomize mid-session when runtimeInvalidSrcs changes.
-  const initialIndexMoodRef = useRef(null)
 
-  // Stable reference — recomputed when library loads or mood changes
-  const moodSongs = useMemo(() => filterMoodSongs(library, mood.id), [library, mood.id])
   const voiceSrc = moodVoiceMap[mood.id]
-
-  // Runtime failures (caught by the audio element during playback).
-  // R2's CORS policy allows GET but not HEAD, so pre-flight HEAD validation
-  // is not possible from the browser — all HEAD fetch() calls would fail with
-  // CORS errors and remove every song from the queue.
-  // Instead, broken songs are discovered naturally during playback: the audio
-  // element's onError fires, handleSongError marks the src here, and the song
-  // is permanently skipped on all future loops in this session.
-  const [runtimeInvalidSrcs, setRuntimeInvalidSrcs] = useState(() => new Set())
-
-  // Filter only songs that have already failed at runtime (safe — no CORS issue)
-  const songs = useMemo(() => {
-    if (!runtimeInvalidSrcs.size) return moodSongs
-    const filtered = moodSongs.filter(s => !runtimeInvalidSrcs.has(s.src))
-    console.warn('[RadioStation] Invalid songs (removed from queue):', [...runtimeInvalidSrcs])
-    console.log('[RadioStation] Valid playable songs (post-filter):', filtered.length)
-    return filtered
-  }, [moodSongs, runtimeInvalidSrcs])
 
   // Dev-only: fire HEAD requests once to catch missing CDN files early
   useEffect(() => { devValidateSongs(moodSongs) }, [mood.id]) // eslint-disable-line react-hooks/exhaustive-deps
@@ -353,8 +357,12 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
       console.log('[RadioStation] No voice intro mapped — starting playlist directly')
     }
 
-    initialIndexMoodRef.current = null  // allow songs effect to pick a new random start
-    setSongIndex(0)                     // temporary placeholder until songs are ready
+    // Do NOT reset songIndex or initialIndexMoodRef here.
+    // • On remount (key={stationKey}): lazy useState already picked the right
+    //   random index; resetting to 0 would undo that and cause a double-fire
+    //   in RadioPlayer (audio/display out of sync).
+    // • If mood.id changes without remount: initialIndexMoodRef still holds the
+    //   old mood.id, so the songs effect will correctly re-randomize.
     setSongError(null)
     setRuntimeInvalidSrcs(new Set())
     setDjVisible(false)
@@ -501,6 +509,8 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
   const currentSong = songs[songIndex]
     ? { ...songs[songIndex], reason: songs[songIndex].romanticReason, duration: '--:--' }
     : null
+
+  console.log('DISPLAY SONG:', currentSong?.title, currentSong?.src)
 
   return (
     <div className="station">
