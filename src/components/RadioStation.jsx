@@ -591,6 +591,7 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
           onRecords={handleRecordsFromUnlock}
           onVoice={handleVoiceFromUnlock}
           onLogout={user ? () => { setShowUnlock(false); signOut() } : undefined}
+          isPrivateSpace={space?.id === PRIVATE_SPACE_ID}
         />
       )}
 

@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import './HeartUnlock.css'
 
-export default function HeartUnlock({ onLetter, onDiary, onSpace, onRecords, onVoice, onClose, onLogout }) {
+export default function HeartUnlock({ onLetter, onDiary, onSpace, onRecords, onVoice, onClose, onLogout, isPrivateSpace }) {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
@@ -37,12 +37,16 @@ export default function HeartUnlock({ onLetter, onDiary, onSpace, onRecords, onV
 
           <button className="hu__choice hu__choice--diary" onClick={onDiary}>
             <span className="hu__choice-icon">✎</span>
-            <span className="hu__choice-text">今天我想说…</span>
+            <span className="hu__choice-text">
+              {isPrivateSpace ? '养草人的观察小记' : '今天我想说…'}
+            </span>
           </button>
 
           <button className="hu__choice hu__choice--voice" onClick={onVoice}>
             <span className="hu__choice-icon">📻</span>
-            <span className="hu__choice-text">语音信箱</span>
+            <span className="hu__choice-text">
+              {isPrivateSpace ? '侧写师的声纹档案' : '语音信箱'}
+            </span>
           </button>
 
           <button className="hu__choice hu__choice--records" onClick={onRecords}>
