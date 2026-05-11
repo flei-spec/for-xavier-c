@@ -506,7 +506,13 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
     }, 800)
   }, [songs, songIndex])
 
-  const currentSong = songs[songIndex]
+  // Only expose currentSong once initialIndexMoodRef confirms the random pick
+  // has been committed.  This ensures RadioPlayer mounts exactly once per entry
+  // (with the correct song and autoplayNext=true), eliminating the rare
+  // first-visit race where songs[0] is briefly valid before the songs effect
+  // runs setSongIndex(randomIdx) and consumes the autoplayNext flag prematurely.
+  const randomPickReady = initialIndexMoodRef.current === mood.id
+  const currentSong = randomPickReady && songs[songIndex]
     ? { ...songs[songIndex], reason: songs[songIndex].romanticReason, duration: '--:--' }
     : null
 
