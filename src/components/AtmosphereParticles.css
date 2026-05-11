@@ -35,3 +35,25 @@
   50%  { transform: translateY(50vh)  translateX(16px); }
   100% { transform: translateY(110vh) translateX(0); }
 }
+
+/* ── Storm: ambient distant glow — very subtle, emotional only ── */
+.ap__storm-glow {
+  position: fixed;
+  top: -10%;
+  left: -10%;
+  width: 120%;
+  height: 60%;
+  background: radial-gradient(ellipse 80% 60% at 50% 0%,
+    rgba(180, 200, 255, 0.035) 0%,
+    transparent 65%
+  );
+  pointer-events: none;
+  animation: storm-breathe 8s ease-in-out infinite;
+}
+
+@keyframes storm-breathe {
+  0%, 100% { opacity: 0.4; }
+  30%       { opacity: 0.9; }
+  55%       { opacity: 0.5; }
+  75%       { opacity: 1.0; }
+}

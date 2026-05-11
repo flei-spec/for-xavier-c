@@ -45,8 +45,10 @@ export default function App() {
     const timeOfDay = getTimeOfDay(hour)
     const bg        = getBackgroundTheme({ timeOfDay, weather: weatherType })
 
-    // data-time drives the full light/dark CSS token swap in index.css
-    document.documentElement.setAttribute('data-time', bg.isDaytime ? 'day' : 'night')
+    // data-time drives the full CSS token swap: 'day' | 'sunset' | 'night'
+    document.documentElement.setAttribute('data-time',
+      bg.isDaytime ? 'day' : bg.isSunset ? 'sunset' : 'night'
+    )
 
     const root = document.documentElement.style
     root.setProperty('--bg-deep',    bg.bgDeep)

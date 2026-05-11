@@ -3,7 +3,6 @@ import './AtmosphereParticles.css'
 function seeded(seed, max) { return ((seed * 9301 + 49297) % 233280) / 233280 * max }
 
 export default function AtmosphereParticles({ theme }) {
-  // Night/cold: no DOM particles — handled by CSS background vars alone
   if (!theme || theme === 'default' || theme === 'sunny' || theme === 'hot'
              || theme === 'deepnight' || theme === 'cold') return null
 
@@ -44,6 +43,30 @@ export default function AtmosphereParticles({ theme }) {
             ❄
           </div>
         ))}
+      </div>
+    )
+  }
+
+  // Subtle emotional storm — very gentle distant lightning glow only.
+  // Not dramatic. Just a soft ambient flicker that makes the space feel alive.
+  if (theme === 'storm') {
+    return (
+      <div className="ap ap--storm" aria-hidden="true">
+        {/* Rain drops — slightly more than regular rain */}
+        {Array.from({ length: 16 }, (_, i) => (
+          <div
+            key={`r-${i}`}
+            className="ap__raindrop"
+            style={{
+              left:              `${seeded(i * 3 + 7, 100)}%`,
+              animationDelay:    `${seeded(i * 7 + 1, 2).toFixed(2)}s`,
+              animationDuration: `${(seeded(i * 4 + 5, 0.4) + 0.55).toFixed(2)}s`,
+              opacity:            (seeded(i * 13 + 3, 0.18) + 0.06).toFixed(2),
+            }}
+          />
+        ))}
+        {/* Ambient distant glow — very subtle, slow pulse */}
+        <div className="ap__storm-glow" />
       </div>
     )
   }
