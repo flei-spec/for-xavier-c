@@ -10,8 +10,8 @@
   --glass-modal:  rgba(8, 15, 32, 0.80);   /* modal panels */
   --overlay-bg:   rgba(0,  0,  0, 0.72);   /* scrim behind modals */
   --glass-inner:  rgba(255,255,255,0.07);  /* inner specular highlight */
-  --glass-border: rgba(255,255,255,0.10);
-  --glass-border-strong: rgba(255,255,255,0.17);
+  --glass-border: rgba(255,255,255,0.12);
+  --glass-border-strong: rgba(255,255,255,0.20);
 
   /* ── Ambient shadow system ── */
   --shadow-xs:    0 2px  8px  rgba(0,0,0,0.16);
@@ -28,16 +28,16 @@
   /* ── Backgrounds ── */
   --bg-deep:       #07111f;
   --bg-dark:       #0d1b2a;
-  --bg-card:       rgba(255,255,255,0.06);
-  --bg-card-hover: rgba(255,255,255,0.10);
+  --bg-card:       rgba(255,255,255,0.08);   /* slightly more visible card surface */
+  --bg-card-hover: rgba(255,255,255,0.13);
 
   /* ── Borders ── */
-  --border: rgba(255,255,255,0.09);
+  --border: rgba(255,255,255,0.11);
 
-  /* ── Text ── */
-  --text-primary:   rgba(240,245,255,0.92);
-  --text-secondary: rgba(240,245,255,0.55);
-  --text-muted:     rgba(240,245,255,0.32);
+  /* ── Text (night) — bright enough to read on dark glass ── */
+  --text-primary:   rgba(240,245,255,0.94);
+  --text-secondary: rgba(220,230,248,0.62);
+  --text-muted:     rgba(200,215,240,0.38);
 
   /* ── Brand accents ── */
   --rose:       #f4a1b0;
@@ -108,9 +108,9 @@
                   0 0 60px rgba(100,160,240,0.08);
 
   --bg-dark:       #c2dcf5;
-  --bg-card:       rgba(255,255,255,0.55);
-  --bg-card-hover: rgba(255,255,255,0.75);
-  --border:        rgba(120,175,230,0.22);
+  --bg-card:       rgba(255,255,255,0.62);
+  --bg-card-hover: rgba(255,255,255,0.80);
+  --border:        rgba(120,175,230,0.26);
 
   --text-primary:   #1a2d4a;
   --text-secondary: rgba(26,45,74,0.60);
@@ -125,36 +125,39 @@
 
 /* ── Sunset / golden hour theme ─────────────────────────────────────────────── */
 /*
- * 17:00–20:00. Light warm peach background — dark warm modals float above it.
- * Text flips to dark warm brown. Glass border/inner shift to amber.
+ * 17:00–20:00. Light warm peach background.
+ * Modals and cards: warm cream glass (light) + dark warm text.
+ * Same light-glass logic as day, but amber-warm instead of blue.
+ * NEVER use dark glass + dark text — that kills readability.
  */
 [data-time="sunset"] {
-  /* Dark warm glass modals — dramatic contrast on light warm bg */
-  --glass-modal:  rgba(38, 14, 6, 0.88);
-  --overlay-bg:   rgba(70, 25, 5, 0.55);
-  --glass-inner:  rgba(255, 218, 145, 0.38);
-  --glass-border: rgba(255, 182, 95, 0.28);
-  --glass-border-strong: rgba(255, 158, 68, 0.45);
+  /* Warm cream glass — light so dark text reads perfectly */
+  --glass-modal:  rgba(255, 240, 218, 0.92);
+  --overlay-bg:   rgba(160, 85, 20,  0.40);
+  --glass-inner:  rgba(255, 253, 240, 0.68);
+  --glass-border: rgba(210, 148, 65,  0.35);
+  --glass-border-strong: rgba(195, 128, 45, 0.52);
 
-  /* Warm amber shadows (light bg = softer shadows) */
-  --shadow-xs:    0 2px  8px  rgba(180, 70, 18, 0.14);
-  --shadow-sm:    0 4px  20px rgba(170, 65, 14, 0.18);
-  --shadow-md:    0 8px  32px rgba(150, 52, 8,  0.22), 0 2px 8px rgba(175, 65, 14, 0.10);
-  --shadow-lg:    0 20px 60px rgba(130, 42, 5,  0.26), 0 4px 16px rgba(175, 65, 14, 0.12);
-  --shadow-modal: 0 32px 80px rgba(80, 18, 0,   0.48), 0 0 60px rgba(255, 118, 28, 0.12);
+  /* Warm amber shadows — softer because background and glass are both light */
+  --shadow-xs:    0 2px  8px  rgba(160, 60, 12, 0.14);
+  --shadow-sm:    0 4px  20px rgba(150, 55, 10, 0.18);
+  --shadow-md:    0 8px  32px rgba(135, 48, 8,  0.22), 0 2px 8px rgba(155, 58, 10, 0.10);
+  --shadow-lg:    0 20px 60px rgba(120, 40, 5,  0.26), 0 4px 16px rgba(155, 58, 10, 0.12);
+  --shadow-modal: 0 32px 80px rgba(160, 80, 10, 0.22), 0 8px 24px rgba(180, 90, 10, 0.12),
+                  0 0 60px rgba(255, 170, 50, 0.10);
 
-  /* Warm translucent glass cards */
+  /* Warm translucent cards — more opaque for clear surface separation */
   --bg-dark:       #f0c090;
-  --bg-card:       rgba(255, 228, 185, 0.55);
-  --bg-card-hover: rgba(255, 233, 195, 0.72);
-  --border:        rgba(255, 182, 95, 0.28);
+  --bg-card:       rgba(255, 232, 195, 0.68);
+  --bg-card-hover: rgba(255, 238, 208, 0.84);
+  --border:        rgba(210, 148, 65,  0.35);
 
-  /* Dark warm text — readable on light peach background */
-  --text-primary:   rgba(55, 20, 5,  0.90);
-  --text-secondary: rgba(65, 25, 8,  0.62);
-  --text-muted:     rgba(78, 30, 10, 0.40);
+  /* Dark warm text — contrasts well on warm cream glass */
+  --text-primary:   rgba(50, 18, 4,   0.92);
+  --text-secondary: rgba(60, 22, 6,   0.65);
+  --text-muted:     rgba(72, 28, 8,   0.42);
 
-  /* Warm sunset accent colors (deeper for visibility on light bg) */
+  /* Warm sunset accent colors */
   --rose:       #c83828;
   --rose-dark:  #aa2418;
   --gold:       #b06000;
@@ -210,7 +213,6 @@ button:focus-visible {
 }
 
 /* ── Glass card utility ──────────────────────────────────────────────────────── */
-/* A floating glass surface. Apply to cards, panels, containers. */
 .glass {
   background: var(--bg-card);
   backdrop-filter: blur(var(--blur-glass));
@@ -225,6 +227,30 @@ button:focus-visible {
   box-shadow: var(--shadow-md), inset 0 1px 0 var(--glass-inner);
   transform: translateY(-1px);
   transition: background 0.22s, border-color 0.22s, box-shadow 0.22s, transform 0.22s;
+}
+
+/* ── Subtle text depth for readability on glass surfaces ─────────────────────── */
+/*
+ * Applies a barely-visible shadow behind text in night/sunset modes.
+ * Night: dark text background bleeds through frosted glass — shadow adds crisp edge.
+ * Sunset: warm glass can create low contrast on secondary text — shadow lifts it.
+ * Day mode: omitted (white glass + dark text has sufficient natural contrast).
+ */
+html[data-time="night"]  .player__title,
+html[data-time="night"]  .songs__title,
+html[data-time="night"]  .lp-card__title,
+html[data-time="night"]  .countdown__num,
+html[data-time="sunset"] .player__title,
+html[data-time="sunset"] .songs__title,
+html[data-time="sunset"] .countdown__num {
+  text-shadow: 0 1px 6px rgba(0,0,0,0.12);
+}
+
+/* Modals always get a touch of depth on their heading text */
+.diary__title, .cmi__title, .auth__title,
+.dr__title, .sg__title, .hu__label,
+.letter__title, .lp-title {
+  text-shadow: 0 1px 5px rgba(0,0,0,0.08);
 }
 
 /* ── Atmosphere transition helpers ───────────────────────────────────────────── */
