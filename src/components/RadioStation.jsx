@@ -154,7 +154,7 @@ function LongStayToast({ message, onDismiss }) {
 const INTRO_AUTH_UID  = '3f370ae9-a462-4a17-b2f4-5a05d4958c76'
 const PRIVATE_SPACE_ID = '89f07d46-af87-4aea-b7e8-e4a804cb21d1'
 
-export default function RadioStation({ mood, onBack, atmosphere }) {
+export default function RadioStation({ mood, onBack, atmosphere, isAiMatch }) {
   const { user, space, loadingAuth, loadingSpace, refreshSpace, signOut } = useAuth()
   const { library, loading: libLoading } = useSongLibrary()
   const audioPlayer = useAudioPlayer()
@@ -238,7 +238,7 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
     initialIndexMoodRef.current = mood.id
     const idx      = pickRandomStartIndex(mood.id, songs)
     const autoplay = introPhaseRef.current !== 'playing'
-    audioPlayer.loadPlaylist(songs, mood, idx, autoplay)
+    audioPlayer.loadPlaylist(songs, mood, idx, autoplay, isAiMatch)
   // songs changes when library loads or runtimeInvalidSrcs changes.
   // audioPlayer/mood are stable within a remount cycle.
   // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -399,7 +399,7 @@ export default function RadioStation({ mood, onBack, atmosphere }) {
               background:  `${mood.accentColor}12`,
             }}
           >
-            {mood.icon} {mood.label}
+            {isAiMatch ? '✦ 你的专属情绪' : `${mood.icon} ${mood.label}`}
           </span>
         </div>
 

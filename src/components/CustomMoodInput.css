@@ -190,83 +190,69 @@
   font-style: italic;
 }
 
-/* ── Result state ── */
-.cmi__result {
+/* ── Transition state ── */
+.cmi__transition {
   flex: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 1rem;
-  animation: cmi-result-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+  justify-content: center;
+  gap: 2rem;
+  padding: 1.2rem 0 0.8rem;
+  animation: cmi-transition-in 0.8s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-@keyframes cmi-result-in {
-  from { opacity: 0; transform: translateY(10px); }
-  to   { opacity: 1; transform: translateY(0); }
+@keyframes cmi-transition-in {
+  from { opacity: 0; }
+  40%  { opacity: 0; }
+  to   { opacity: 1; }
 }
 
-.cmi__guess-label {
-  font-size: 0.7rem;
-  text-transform: uppercase;
-  letter-spacing: 0.12em;
-  color: var(--text-muted);
-  opacity: 0.5;
-}
-
-.cmi__matched-mood {
-  display: flex;
-  align-items: center;
-  gap: 0.6rem;
-  padding: 0.6rem 1.4rem;
-  border-radius: 40px;
-  border: 1px solid color-mix(in srgb, var(--cmi-accent) 35%, transparent);
-  background: color-mix(in srgb, var(--cmi-accent) 8%, transparent);
-}
-
-.cmi__matched-icon  { font-size: 1.4rem; }
-.cmi__matched-label {
-  font-size: 1rem;
-  font-weight: 500;
-  color: var(--cmi-accent);
-  letter-spacing: 0.02em;
-}
-
+/* Emotional line — the hero. Large, poetic, serif, no classification visible. */
 .cmi__line {
-  font-size: 0.88rem;
-  color: var(--text-secondary);
+  font-family: 'Noto Serif SC', 'Playfair Display', serif;
+  font-size: 1.08rem;
+  font-weight: 400;
   font-style: italic;
-  line-height: 1.75;
+  color: var(--text-primary);
+  line-height: 2;
   text-align: center;
-  max-width: 320px;
-  letter-spacing: 0.02em;
+  max-width: 340px;
+  letter-spacing: 0.03em;
+  animation: cmi-line-reveal 1.6s cubic-bezier(0.16, 1, 0.3, 1) both;
 }
 
-.cmi__confirm {
-  margin-top: 0.4rem;
-  padding: 0.72rem 2rem;
-  background: linear-gradient(135deg, var(--rose-dark), #c97090);
-  border-radius: 40px;
-  color: white;
-  font-size: 0.88rem;
-  font-weight: 500;
-  letter-spacing: 0.06em;
-  box-shadow: 0 4px 20px rgba(224, 117, 142, 0.25);
-  transition: opacity 0.18s;
+@keyframes cmi-line-reveal {
+  0%   { opacity: 0; transform: translateY(8px); }
+  30%  { opacity: 0; transform: translateY(8px); }
+  100% { opacity: 1; transform: translateY(0); }
 }
-.cmi__confirm:hover { opacity: 0.86; }
 
-.cmi__retry {
-  font-size: 0.72rem;
-  color: var(--text-muted);
-  opacity: 0.4;
-  letter-spacing: 0.05em;
-  transition: opacity 0.15s;
-  padding: 0.2rem 0;
+/* Animated progress dots — subtle visual breath, not a countdown bar */
+.cmi__progress-dots {
+  display: flex;
+  gap: 6px;
 }
-.cmi__retry:hover { opacity: 0.7; }
+
+.cmi__pd {
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  background: var(--text-muted);
+  opacity: 0.22;
+  animation: cmi-pd-breathe 2.6s ease-in-out infinite;
+}
+
+.cmi__pd--1 { animation-delay: 0s; }
+.cmi__pd--2 { animation-delay: 0.4s; }
+.cmi__pd--3 { animation-delay: 0.8s; }
+
+@keyframes cmi-pd-breathe {
+  0%, 100% { opacity: 0.18; transform: scale(0.85); }
+  50%      { opacity: 0.45; transform: scale(1.15); }
+}
 
 /* ── Mobile ── */
 @media (max-width: 480px) {
-  .cmi__modal   { padding: 1.8rem 1.4rem 1.6rem; }
-  .cmi__confirm { font-size: 0.82rem; padding: 0.65rem 1.6rem; }
+  .cmi__modal { padding: 1.8rem 1.4rem 1.6rem; }
 }

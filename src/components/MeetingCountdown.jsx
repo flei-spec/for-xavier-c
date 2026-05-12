@@ -2,6 +2,7 @@ import { useState, useEffect, useMemo } from 'react'
 import { profile } from '../data/romanticProfile'
 import { useAuth } from '../contexts/AuthContext'
 import { loadMeetingDate, saveMeetingDate } from '../lib/meetingDate'
+import { shanghaiTodayStr, daysBetween, shanghaiYear } from '../utils/relationshipTime'
 import AuthModal from './AuthModal'
 import './AnniversaryCountdown.css'
 
@@ -21,11 +22,7 @@ function romanticLine(days) {
 
 function calcDays(dateStr) {
   if (!dateStr) return null
-  const now    = new Date()
-  const target = new Date(dateStr)
-  now.setHours(0, 0, 0, 0)
-  target.setHours(0, 0, 0, 0)
-  return Math.floor((target - now) / (1000 * 60 * 60 * 24))
+  return daysBetween(shanghaiTodayStr(), dateStr)
 }
 
 function formatChinese(dateStr) {
@@ -34,14 +31,15 @@ function formatChinese(dateStr) {
   return `${y}年${m}月${d}日`
 }
 
-// Returns a sensible edit-form default when no date has been set yet.
+// Sensible edit-form default when no date has been set yet.
 function nextMonthDate() {
-  const d = new Date()
-  d.setMonth(d.getMonth() + 1)
-  return d.toISOString().split('T')[0]
+  const [y, m] = shanghaiTodayStr().split('-').map(Number)
+  const nextM = m === 12 ? 1 : m + 1
+  const nextY = m === 12 ? y + 1 : y
+  return `${nextY}-${String(nextM).padStart(2, '0')}-01`
 }
 
-const THIS_YEAR = new Date().getFullYear()
+const THIS_YEAR = shanghaiYear()
 const YEARS  = Array.from({ length: 6 }, (_, i) => THIS_YEAR + i)
 const MONTHS = Array.from({ length: 12 }, (_, i) => i + 1)
 const DAYS   = Array.from({ length: 31 }, (_, i) => i + 1)
@@ -84,9 +82,10 @@ export default function MeetingCountdown() {
     })
   }, [user?.id, space?.id, loadingAuth, loadingSpace])
 
-  // days is null when meetingDate is null (no date set)
-  const days = useMemo(() => calcDays(meetingDate), [meetingDate])
-  const met  = days !== null && days <= 0
+  const days    = useMemo(() => calcDays(meetingDate), [meetingDate])
+  const isToday = days === 0
+  const isPast  = days !== null && days < 0
+  const displayDays = days === null ? null : Math.max(0, days)
 
   const startEditing = () => {
     const base = meetingDate ?? nextMonthDate()
@@ -222,17 +221,17 @@ export default function MeetingCountdown() {
 
       <div className="countdown__stat">
         <span className="countdown__num countdown__num--soft">
-          {met ? '🌸' : days}
+          {displayDays}
         </span>
         <span className="countdown__unit">
-          {met ? '今天就见面啦 🌸' : '天后，就可以见面了'}
+          {isToday ? '今天见面啦' : isPast ? '已经见面啦' : '天后，就可以见面了'}
         </span>
       </div>
 
       <div className="countdown__line" />
 
       <p className="countdown__note">
-        「{met ? '终于见面了，好想你。' : romanticLine(days)}」
+        「{isToday ? '今天见面啦，好想你。' : isPast ? '见面了，真好。' : romanticLine(days)}」
       </p>
     </div>
   )

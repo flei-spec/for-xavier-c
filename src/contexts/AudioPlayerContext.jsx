@@ -59,12 +59,14 @@ export function AudioPlayerProvider({ children }) {
   const [currentTime,     setCurrentTime]      = useState(0)
   const [duration,        setDuration]         = useState(0)
   const [autoplayBlocked, setAutoplayBlocked]  = useState(false)
+  const [isAiMatch,       setIsAiMatch]       = useState(false)
 
   const audio = audioElement
 
   // Stable refs so async callbacks never hold stale closure values
   const playlistRef    = useRef([])
   const songIndexRef   = useRef(0)
+  const currentSongRef = useRef(null)
   const isPlayingRef   = useRef(false)
   const shouldPlayRef  = useRef(false)   // consumed by src-change effect
   const switchAbortRef = useRef(null)
@@ -72,7 +74,19 @@ export function AudioPlayerProvider({ children }) {
 
   useEffect(() => { playlistRef.current  = playlist  }, [playlist])
   useEffect(() => { songIndexRef.current = songIndex }, [songIndex])
+  useEffect(() => { currentSongRef.current = currentSong }, [currentSong])
   useEffect(() => { isPlayingRef.current = isPlaying }, [isPlaying])
+
+  const stopForSongSwitch = useCallback(() => {
+    if (!audio) return
+    switchAbortRef.current?.()
+    switchAbortRef.current = null
+    if (!audio.paused) audio.pause()
+    audio.removeAttribute('src')
+    audio.load()
+    setCurrentTime(0)
+    setDuration(0)
+  }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
   // ── Permanent event listeners — survive RadioStation unmount ──────────────
   useEffect(() => {
@@ -166,24 +180,36 @@ export function AudioPlayerProvider({ children }) {
   // ── Controls ──────────────────────────────────────────────────────────────
 
   // Set a new playlist and start from a specific index
-  const loadPlaylist = useCallback((songs, mood, index, autoplay) => {
+  const loadPlaylist = useCallback((songs, mood, index, autoplay, fromAi = false) => {
     const song = songs[index] ?? null
+    if (song?.src !== currentSongRef.current?.src) {
+      stopForSongSwitch()
+    }
     setPlaylist(songs)
     setCurrentMood(mood)
+    setIsAiMatch(fromAi)
     setSongIndex(index)
     setAutoplayBlocked(false)
     shouldPlayRef.current = autoplay
     setCurrentSong(song)
-  }, [])
+  }, [stopForSongSwitch])
 
   // Jump to a specific index in the current playlist
   const selectSong = useCallback((index) => {
     const song = playlistRef.current[index]
     if (!song) return
-    shouldPlayRef.current = isPlayingRef.current || (audio ? !audio.paused : false)
+    const sameSong = song.src === currentSongRef.current?.src
+    setAutoplayBlocked(false)
+    if (sameSong) {
+      shouldPlayRef.current = false
+      tryPlay(audio, 400, () => setAutoplayBlocked(true))
+      return
+    }
+    stopForSongSwitch()
+    shouldPlayRef.current = true
     setSongIndex(index)
     setCurrentSong(song)
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [stopForSongSwitch]) // eslint-disable-line react-hooks/exhaustive-deps
 
   // Update the playlist reference without changing the current song
   const updatePlaylist = useCallback((songs, newIndex) => {
@@ -194,6 +220,17 @@ export function AudioPlayerProvider({ children }) {
   }, [])
 
   const pause = useCallback(() => { audio?.pause() }, []) // eslint-disable-line react-hooks/exhaustive-deps
+
+  const clearStation = useCallback(() => {
+    shouldPlayRef.current = false
+    stopForSongSwitch()
+    setCurrentSong(null)
+    setPlaylist([])
+    setSongIndex(0)
+    setCurrentMood(null)
+    setIsPlaying(false)
+    setAutoplayBlocked(false)
+  }, [stopForSongSwitch])
 
   // Resume or tap-to-play: called after autoplay block or by MiniPlayer
   const resumePlay = useCallback(() => {
@@ -222,10 +259,13 @@ export function AudioPlayerProvider({ children }) {
     const idx  = (songIndexRef.current + 1) % pl.length
     const song = pl[idx]
     if (!song) return
+    if (song.src !== currentSongRef.current?.src) {
+      stopForSongSwitch()
+    }
     shouldPlayRef.current = isPlayingRef.current || (audio ? !audio.paused : false)
     setSongIndex(idx)
     setCurrentSong(song)
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [stopForSongSwitch]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const prevSong = useCallback(() => {
     const pl  = playlistRef.current
@@ -233,10 +273,13 @@ export function AudioPlayerProvider({ children }) {
     const idx  = (songIndexRef.current - 1 + pl.length) % pl.length
     const song = pl[idx]
     if (!song) return
+    if (song.src !== currentSongRef.current?.src) {
+      stopForSongSwitch()
+    }
     shouldPlayRef.current = isPlayingRef.current || (audio ? !audio.paused : false)
     setSongIndex(idx)
     setCurrentSong(song)
-  }, []) // eslint-disable-line react-hooks/exhaustive-deps
+  }, [stopForSongSwitch]) // eslint-disable-line react-hooks/exhaustive-deps
 
   const seek = useCallback((time) => {
     if (audio) audio.currentTime = time
@@ -249,15 +292,15 @@ export function AudioPlayerProvider({ children }) {
 
   const value = useMemo(() => ({
     currentSong, playlist, songIndex, currentMood,
-    isPlaying, currentTime, duration, autoplayBlocked,
+    isPlaying, currentTime, duration, autoplayBlocked, isAiMatch,
     loadPlaylist, selectSong, updatePlaylist,
-    pause, resumePlay, startAfterIntro, tapToPlay,
+    pause, clearStation, resumePlay, startAfterIntro, tapToPlay,
     nextSong, prevSong, seek, setErrorCallback,
   }), [
     currentSong, playlist, songIndex, currentMood,
-    isPlaying, currentTime, duration, autoplayBlocked,
+    isPlaying, currentTime, duration, autoplayBlocked, isAiMatch,
     loadPlaylist, selectSong, updatePlaylist,
-    pause, resumePlay, startAfterIntro, tapToPlay,
+    pause, clearStation, resumePlay, startAfterIntro, tapToPlay,
     nextSong, prevSong, seek, setErrorCallback,
   ])
 

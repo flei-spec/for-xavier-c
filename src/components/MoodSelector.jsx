@@ -46,7 +46,7 @@ export default function MoodSelector({ onStart, onBack }) {
 
         <button
           className={`mood__start ${selected ? 'mood__start--ready' : ''}`}
-          onClick={() => selected && onStart(selected)}
+          onClick={() => selected && onStart(selected, false)}
           disabled={!selected}
         >
           {selected ? '开启今日的电台  ✦' : '先选一种心情'}
@@ -57,7 +57,7 @@ export default function MoodSelector({ onStart, onBack }) {
         <CustomMoodInput
           onMatch={(moodObj) => {
             setShowCustomInput(false)
-            onStart(moodObj)
+            onStart(moodObj, true)
           }}
           onClose={() => setShowCustomInput(false)}
         />

@@ -11,7 +11,7 @@ export default function MiniPlayer({ onReturnToStation }) {
   const {
     currentSong, currentMood, isPlaying, currentTime, duration,
     pause, resumePlay, tapToPlay, autoplayBlocked,
-    nextSong, prevSong,
+    nextSong, prevSong, isAiMatch,
   } = useAudioPlayer()
 
   if (!currentSong) return null
@@ -37,10 +37,10 @@ export default function MiniPlayer({ onReturnToStation }) {
       </div>
 
       <div className="mini-player__body">
-        {/* mood badge */}
+        {/* mood indicator — soft when AI-matched */}
         {currentMood && (
           <span className="mini-player__mood" style={{ color: currentMood.accentColor }}>
-            {currentMood.icon}
+            {isAiMatch ? '✦' : currentMood.icon}
           </span>
         )}
 

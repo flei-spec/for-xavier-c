@@ -2,38 +2,37 @@ import { useMemo, useState, useEffect } from 'react'
 import { profile } from '../data/romanticProfile'
 import { useAuth } from '../contexts/AuthContext'
 import { loadStoryStartDate, saveStoryStartDate } from '../lib/relationshipSettings'
+import { shanghaiTodayStr, daysBetween, shanghaiYear } from '../utils/relationshipTime'
 import './AnniversaryCountdown.css'
 
 // Anniversary/notes section is only shown inside this couple space.
 const PRIVATE_SPACE_ID = '89f07d46-af87-4aea-b7e8-e4a804cb21d1'
 
-const THIS_YEAR = new Date().getFullYear()
+const THIS_YEAR = shanghaiYear()
 const YEARS  = Array.from({ length: 11 }, (_, i) => THIS_YEAR - 10 + i)
 const MONTHS = Array.from({ length: 12 }, (_, i) => i + 1)
 const DAYS   = Array.from({ length: 31 }, (_, i) => i + 1)
 
+// Exclusive day counting — all dates are interpreted as Asia/Shanghai.
+// daysTogether = 0 on the start date, 1 after 24 h, etc.
+// Math.max(1, …) guards the display so "0 天" is never shown.
+
 function calcDaysTogether(dateStr) {
   if (!dateStr) return null
-  const now   = new Date()
-  const start = new Date(dateStr)
-  now.setHours(0, 0, 0, 0)
-  start.setHours(0, 0, 0, 0)
-  return Math.max(1, Math.floor((now - start) / (1000 * 60 * 60 * 24)) + 1)
+  return Math.max(1, daysBetween(dateStr, shanghaiTodayStr()))
 }
 
 function calcDaysUntilAnniv(anniversaryDateStr) {
-  const now   = new Date()
-  const anniv = new Date(anniversaryDateStr)
-  const next  = new Date(anniv)
-  next.setFullYear(now.getFullYear())
-  if (next <= now) next.setFullYear(now.getFullYear() + 1)
-  now.setHours(0, 0, 0, 0)
-  next.setHours(0, 0, 0, 0)
-  return Math.max(0, Math.floor((next - now) / (1000 * 60 * 60 * 24)))
-}
+  const todayStr = shanghaiTodayStr()
+  const [annivY, annivM, annivD] = anniversaryDateStr.split('-').map(Number)
+  const [todayY, todayM, todayD] = todayStr.split('-').map(Number)
 
-function todayDateStr() {
-  return new Date().toISOString().split('T')[0]
+  let nextY = todayY
+  if (todayM > annivM || (todayM === annivM && todayD >= annivD)) {
+    nextY = todayY + 1
+  }
+  const nextStr = `${nextY}-${String(annivM).padStart(2, '0')}-${String(annivD).padStart(2, '0')}`
+  return Math.max(0, daysBetween(todayStr, nextStr))
 }
 
 export default function AnniversaryCountdown() {
@@ -88,7 +87,7 @@ export default function AnniversaryCountdown() {
   )
 
   const startEditing = () => {
-    const base = storyDate ?? todayDateStr()
+    const base = storyDate ?? shanghaiTodayStr()
     const [y, m, d] = base.split('-').map(Number)
     setEditYear(y)
     setEditMonth(m)

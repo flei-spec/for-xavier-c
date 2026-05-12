@@ -1,6 +1,8 @@
 // Vercel Serverless Function — server-side only, API keys never in browser.
 // Classifies free-text feelings into one of the 9 mood categories.
 
+import { getFallbackLine, parseJSON, runAIProvider } from './lib/aiProvider.js'
+
 const VALID_MOODS = [
   '想你了', '开心开心', '今天很幸福', '需要安慰', '想被抱抱',
   '有点苦恼', '洗澡放松一下', '想一个人发呆', '今天有点累',
@@ -20,57 +22,59 @@ const KEYWORD_RULES = [
   { keywords: ['累','疲惫','困','撑不住','好累','乏'],                      mood: '今天有点累' },
 ]
 
-const FALLBACK_LINES = {
-  '想你了':       '今晚有些话，好像只适合想你的时候听。',
-  '开心开心':     '今天的心情亮了一点，那就让歌也轻一点。',
-  '今天很幸福':   '有些幸福不用说太多，留在这首歌里就好。',
-  '需要安慰':     '今天辛苦了，先把自己交给这首歌一会儿。',
-  '想被抱抱':     '抱不到的时候，就让声音先靠近你一点。',
-  '有点苦恼':     '那今晚先别急着解决所有事，慢慢来就好。',
-  '洗澡放松一下': '先把今天慢慢洗掉吧，剩下的交给音乐。',
-  '想一个人发呆': '今晚不用解释什么，安静地漂一会儿就好。',
-  '今天有点累':   '累了就慢一点，今晚不用证明什么。',
-}
-
 // System prompt: instructs both classification AND line generation in one call.
 // Cached on Claude via prompt-caching-2024-07-31.
-const SYSTEM_PROMPT = `你是 StayWithXavier 情绪电台的心情分析助手。
+const SYSTEM_PROMPT = `你是 StayWithXavier 的深夜电台主播。
 
-可选心情标签（必须且只能选其中一个）：
-想你了 / 开心开心 / 今天很幸福 / 需要安慰 / 想被抱抱 / 有点苦恼 / 洗澡放松一下 / 想一个人发呆 / 今天有点累
+这个电台只为一个特定的人而存在。听众对你很信任，会用很简短的话告诉你此刻的心情。你的回应需要让ta感觉——你真的听懂了ta刚才说的那句话。
 
 你的任务：
 1. 读懂用户描述的情绪
-2. 选择最匹配的一个心情标签
-3. 用1-2句温柔的中文写电台开场白（语气轻柔，不分析，不建议，像深夜电台主播）
-4. 给出0到1之间的置信度
+2. 从下面的心情标签中选择最匹配的一个：
+   想你了 / 开心开心 / 今天很幸福 / 需要安慰 / 想被抱抱 / 有点苦恼 / 洗澡放松一下 / 想一个人发呆 / 今天有点累
+3. 用 1–2 句话回应ta。你的回应必须直接呼应ta刚才说的具体内容，让ta觉得你不是在套模板，而是真的在听ta说话。
+4. 给出 0 到 1 之间的置信度
+
+回应规则（非常重要）：
+- 如果你在回应里用到了和用户原话相同的关键意象或场景，那会更好
+- 语气像深夜电台主播：轻柔、有温度、不分析情绪、不给建议、不治愈、不鸡汤、不加油
+- 可以有一点点诗意，但不能矫情
+- 句子结构要有变化，不要每次都用"今晚…"或"有时候…"开头
+- 像一个很了解ta的人，安静地陪在旁边轻声回应
+- 绝对不要像 AI 助手、客服、心理咨询师或搜索引擎
+
+好与不好的例子：
+
+用户说"今天有点想他"
+✓「有些人不在身边的时候，夜晚会变得特别长。」
+✗「思念是一种很自然的情感，没关系。」
+
+用户说"不想上班"
+✓「那今晚先别逼自己了，偷偷躲进歌里一会儿。」
+✗「工作压力是正常的，相信你可以调整好心态。」
+
+用户说"今天终于见到她了"
+✓「有些开心，连空气都会变轻一点。」
+✗「为你感到高兴，珍惜美好的时刻。」
+
+用户说"最近压力好大"
+✓「有时候不是不想努力，只是真的有点累了。」
+✗「压力是生活的一部分，学会放松很重要。」
+
+用户说"今天下雨了"
+✓「雨把整个城市的声音都变软了，很适合什么都不做。」
+✗「下雨天适合听歌。」
+
+用户说"睡不着"
+✓「睡不着的时候，时间好像走得特别慢。」
+✗「失眠可以试试听轻音乐和深呼吸。」
+
+用户说"今天特别开心"
+✓「今天真好啊，连耳机里的歌都在笑。」
+✗「开心就好，保持这样的心态。」
 
 只输出纯 JSON，不要有任何其他内容、代码块或解释：
 {"matchedMood":"...","emotionalLine":"...","confidence":0.0}`
-
-// ── Helpers ───────────────────────────────────────────────────────────────────
-
-function withTimeout(promise, ms) {
-  let timer
-  return Promise.race([
-    promise,
-    new Promise((_, reject) => {
-      timer = setTimeout(() => reject(new Error('timeout')), ms)
-    }),
-  ]).finally(() => clearTimeout(timer))
-}
-
-// Safely extracts JSON from LLM output that may include markdown code fences.
-function parseJSON(raw) {
-  if (!raw) return null
-  const s = raw.trim()
-  try { return JSON.parse(s) } catch {}
-  const fenced = s.match(/```(?:json)?\s*([\s\S]*?)```/)
-  if (fenced) { try { return JSON.parse(fenced[1].trim()) } catch {} }
-  const obj = s.match(/\{[\s\S]*\}/)
-  if (obj)   { try { return JSON.parse(obj[0]) } catch {} }
-  return null
-}
 
 function validateResult(parsed) {
   if (!parsed) return null
@@ -86,6 +90,10 @@ function validateResult(parsed) {
   }
 }
 
+function normalizeMoodMatch(raw) {
+  return validateResult(parseJSON(raw))
+}
+
 function keywordFallback(text) {
   const t = text.toLowerCase()
   for (const rule of KEYWORD_RULES) {
@@ -93,90 +101,22 @@ function keywordFallback(text) {
       const mood = rule.mood
       return {
         matchedMood:   mood,
-        emotionalLine: FALLBACK_LINES[mood],
+        emotionalLine: getFallbackLine(mood),
         confidence:    0.6,
-        provider:      'local',
       }
     }
   }
   // Default when nothing matches
   return {
     matchedMood:   '想一个人发呆',
-    emotionalLine: FALLBACK_LINES['想一个人发呆'],
+    emotionalLine: getFallbackLine('想一个人发呆'),
     confidence:    0.4,
-    provider:      'local',
   }
 }
 
 function buildUserMessage(text) {
-  return `用户说："${text}"\n请分析心情并输出 JSON。`
+  return `听众刚刚对电台说："${text}"\n\n请感受ta此刻的心情，选一个心情标签，然后用 1–2 句话轻声回应ta。记住：你的回应要让ta觉得你真的听懂了ta说的内容。`
 }
-
-// ── Provider: Claude ──────────────────────────────────────────────────────────
-
-async function tryClaude(text) {
-  const key = process.env.ANTHROPIC_API_KEY
-  if (!key) throw new Error('no anthropic key')
-
-  const res = await fetch('https://api.anthropic.com/v1/messages', {
-    method:  'POST',
-    headers: {
-      'x-api-key':         key,
-      'anthropic-version': '2023-06-01',
-      'anthropic-beta':    'prompt-caching-2024-07-31',
-      'content-type':      'application/json',
-    },
-    body: JSON.stringify({
-      model:      'claude-sonnet-4-6',
-      max_tokens: 200,
-      system: [
-        { type: 'text', text: SYSTEM_PROMPT, cache_control: { type: 'ephemeral' } },
-      ],
-      messages: [{ role: 'user', content: buildUserMessage(text) }],
-    }),
-  })
-
-  if (!res.ok) throw new Error(`claude_http_${res.status}`)
-  const data   = await res.json()
-  const raw    = data.content?.[0]?.text
-  const parsed = validateResult(parseJSON(raw))
-  if (!parsed) throw new Error('claude_invalid_json')
-  return { ...parsed, provider: 'claude' }
-}
-
-// ── Provider: DeepSeek ────────────────────────────────────────────────────────
-
-async function tryDeepSeek(text) {
-  const key = process.env.DEEPSEEK_API_KEY
-  if (!key) throw new Error('no deepseek key')
-
-  const res = await fetch('https://api.deepseek.com/chat/completions', {
-    method:  'POST',
-    headers: {
-      'Authorization': `Bearer ${key}`,
-      'Content-Type':  'application/json',
-    },
-    body: JSON.stringify({
-      model:           'deepseek-chat',
-      max_tokens:      200,
-      temperature:     0.7,
-      response_format: { type: 'json_object' },   // forces valid JSON output
-      messages: [
-        { role: 'system', content: SYSTEM_PROMPT },
-        { role: 'user',   content: buildUserMessage(text) },
-      ],
-    }),
-  })
-
-  if (!res.ok) throw new Error(`deepseek_http_${res.status}`)
-  const data   = await res.json()
-  const raw    = data.choices?.[0]?.message?.content
-  const parsed = validateResult(parseJSON(raw))
-  if (!parsed) throw new Error('deepseek_invalid_json')
-  return { ...parsed, provider: 'deepseek' }
-}
-
-// ── Handler ───────────────────────────────────────────────────────────────────
 
 export default async function handler(req, res) {
   if (req.method !== 'POST') {
@@ -190,25 +130,18 @@ export default async function handler(req, res) {
     return res.status(400).json({ error: 'missing_text' })
   }
 
-  const TIMEOUT_MS = 8000
+  const result = await runAIProvider({
+    logLabel:              'ai-mood-match',
+    logValue:              result => `mood="${result.matchedMood}"`,
+    systemPrompt:          SYSTEM_PROMPT,
+    userMessage:           buildUserMessage(text),
+    maxTokens:             256,
+    deepSeekTemperature:   0.88,
+    deepSeekResponseFormat: { type: 'json_object' },
+    timeoutMs:             8000,
+    normalize:             normalizeMoodMatch,
+    localFallback:         () => keywordFallback(text),
+  })
 
-  try {
-    const result = await withTimeout(tryClaude(text), TIMEOUT_MS)
-    console.log(`[ai-mood-match] provider=claude mood="${result.matchedMood}"`)
-    return res.status(200).json(result)
-  } catch (err) {
-    console.warn(`[ai-mood-match] claude failed: ${err.message}`)
-  }
-
-  try {
-    const result = await withTimeout(tryDeepSeek(text), TIMEOUT_MS)
-    console.log(`[ai-mood-match] provider=deepseek mood="${result.matchedMood}"`)
-    return res.status(200).json(result)
-  } catch (err) {
-    console.warn(`[ai-mood-match] deepseek failed: ${err.message}`)
-  }
-
-  const result = keywordFallback(text)
-  console.log(`[ai-mood-match] provider=local mood="${result.matchedMood}"`)
   return res.status(200).json(result)
 }

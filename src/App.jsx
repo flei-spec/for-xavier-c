@@ -33,6 +33,7 @@ export default function App() {
   // Increments on every station entry so RadioStation fully remounts,
   // resetting all state and triggering a fresh random song pick.
   const [stationKey, setStationKey] = useState(0)
+  const [isAiMatch, setIsAiMatch] = useState(false)
 
   const { data: atmosphere } = useAtmosphere()
 
@@ -102,7 +103,10 @@ export default function App() {
     setPage('mood')
   }
 
-  const handleStartStation = (mood) => {
+  const handleStartStation = (mood, fromAi = false) => {
+    audioPlayer.clearStation()
+    setIsAiMatch(fromAi)
+
     // Unlock WebAudio (Safari requires AudioContext in a user gesture)
     try {
       const AudioCtx = window.AudioContext || window.webkitAudioContext
@@ -165,6 +169,7 @@ export default function App() {
             <RadioStation
               key={stationKey}
               mood={selectedMood}
+              isAiMatch={isAiMatch}
               onBack={handleBack}
               atmosphere={atmosphere}
             />

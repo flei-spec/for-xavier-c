@@ -1,22 +1,11 @@
 import { useState, useEffect, useRef } from 'react'
+import { getFallbackLine } from '../utils/aiFallback'
 import './AIRadioLine.css'
 
 // Session-scoped cache — keyed by moodId.
 // Populated on first load; subsequent mood-switches within the same session
 // use the cached line instantly with no extra network request.
 const lineCache = new Map()
-
-const FALLBACK_LINES = {
-  '想你了':       '今晚有些话，好像只适合想你的时候听。',
-  '开心开心':     '今天的心情亮了一点，那就让歌也轻一点。',
-  '今天很幸福':   '有些幸福不用说太多，留在这首歌里就好。',
-  '需要安慰':     '今天辛苦了，先把自己交给这首歌一会儿。',
-  '想被抱抱':     '抱不到的时候，就让声音先靠近你一点。',
-  '有点苦恼':     '那今晚先别急着解决所有事，慢慢来就好。',
-  '洗澡放松一下': '先把今天慢慢洗掉吧，剩下的交给音乐。',
-  '想一个人发呆': '今晚不用解释什么，安静地漂一会儿就好。',
-  '今天有点累':   '累了就慢一点，今晚不用证明什么。',
-}
 
 function getTimeOfDay() {
   const h = new Date().getHours()
@@ -59,7 +48,7 @@ export default function AIRadioLine({ mood }) {
 
     const useFallback = (reason) => {
       console.log(`[AIRadioLine] using local fallback (${reason})`)
-      const text = FALLBACK_LINES[mood.id] ?? ''
+      const text = getFallbackLine(mood.id)
       lineCache.set(mood.id, text)
       setLine(text)
       setLoading(false)

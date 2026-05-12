@@ -5,18 +5,19 @@ import './CustomMoodInput.css'
 const MAX = 120
 
 // ── State machine ─────────────────────────────────────────────────────────────
-// 'idle'    → textarea + submit button
-// 'loading' → "电台正在听你说…" animation
-// 'result'  → matched mood + emotional line + confirm button
+// 'idle'       → textarea + submit button
+// 'loading'    → "电台正在听你说…" animation
+// 'transition' → matched mood + emotional line → auto-navigate after fade
 
 export default function CustomMoodInput({ onMatch, onClose }) {
   const [phase,   setPhase]   = useState('idle')
   const [text,    setText]    = useState('')
   const [visible, setVisible] = useState(false)
-  const [result,  setResult]  = useState(null)   // { matchedMood, emotionalLine, provider }
+  const [result,  setResult]  = useState(null)   // { matchedMood, emotionalLine, provider, moodObj }
   const [error,   setError]   = useState('')
-  const textareaRef = useRef(null)
-  const abortRef    = useRef(null)
+  const textareaRef        = useRef(null)
+  const abortRef           = useRef(null)
+  const transitionTimerRef = useRef(null)
 
   // Fade-in on open
   useEffect(() => {
@@ -27,15 +28,24 @@ export default function CustomMoodInput({ onMatch, onClose }) {
     return () => clearTimeout(t)
   }, [])
 
+  // Cleanup timers and abort on unmount
+  useEffect(() => {
+    return () => {
+      clearTimeout(transitionTimerRef.current)
+      abortRef.current?.abort()
+    }
+  }, [])
+
   const close = () => {
     setVisible(false)
+    clearTimeout(transitionTimerRef.current)
     abortRef.current?.abort()
     setTimeout(onClose, 360)
   }
 
   const handleSubmit = async () => {
     const trimmed = text.trim()
-    if (!trimmed || phase === 'loading') return
+    if (!trimmed || phase !== 'idle') return
 
     setPhase('loading')
     setError('')
@@ -44,14 +54,11 @@ export default function CustomMoodInput({ onMatch, onClose }) {
     const ctrl = new AbortController()
     abortRef.current = ctrl
 
-    const hour = new Date().getHours()
-    const timeOfDay = hour < 6 ? '深夜' : hour < 12 ? '早上' : hour < 18 ? '下午' : '晚上'
-
     try {
       const res = await fetch('/api/ai-mood-match', {
         method:  'POST',
         headers: { 'Content-Type': 'application/json' },
-        body:    JSON.stringify({ text: trimmed, timeOfDay }),
+        body:    JSON.stringify({ text: trimmed }),
         signal:  ctrl.signal,
       })
 
@@ -60,22 +67,21 @@ export default function CustomMoodInput({ onMatch, onClose }) {
 
       if (!data?.matchedMood) throw new Error('bad_response')
 
-      setResult(data)
-      setPhase('result')
+      const moodObj = moods.find(m => m.id === data.matchedMood)
+      if (!moodObj) throw new Error('unknown_mood')
+
+      setResult({ ...data, moodObj })
+      setPhase('transition')
+
+      // Auto-navigate to the music after a brief cinematic pause
+      transitionTimerRef.current = setTimeout(() => {
+        onMatch(moodObj)
+      }, 2200)
     } catch (err) {
       if (err?.name === 'AbortError') return
       setError('出了一点小问题，再试一次？')
       setPhase('idle')
     }
-  }
-
-  const handleConfirm = () => {
-    if (!result) return
-    const moodObj = moods.find(m => m.id === result.matchedMood)
-    if (!moodObj) return
-    // onMatch triggers handleStartStation in App — must happen in a click handler
-    // so the audio gesture is registered synchronously.
-    onMatch(moodObj)
   }
 
   const handleKeyDown = (e) => {
@@ -133,33 +139,16 @@ export default function CustomMoodInput({ onMatch, onClose }) {
           </div>
         )}
 
-        {/* ── Result ── */}
-        {phase === 'result' && result && (
-          <div className="cmi__result">
-            <p className="cmi__guess-label">我猜你现在更像是</p>
-
-            {(() => {
-              const moodObj = moods.find(m => m.id === result.matchedMood)
-              return (
-                <div
-                  className="cmi__matched-mood"
-                  style={{ '--cmi-accent': moodObj?.accentColor ?? '#f4a1b0' }}
-                >
-                  <span className="cmi__matched-icon">{moodObj?.icon ?? '✦'}</span>
-                  <span className="cmi__matched-label">{result.matchedMood}</span>
-                </div>
-              )
-            })()}
-
+        {/* ── Transition → auto-navigates to station ── */}
+        {phase === 'transition' && result && (
+          <div className="cmi__transition">
             <p className="cmi__line">「{result.emotionalLine}」</p>
 
-            <button className="cmi__confirm" onClick={handleConfirm}>
-              开始这个心情的歌单  ✦
-            </button>
-
-            <button className="cmi__retry" onClick={() => { setPhase('idle'); setResult(null) }}>
-              重新输入
-            </button>
+            <div className="cmi__progress-dots">
+              <span className="cmi__pd cmi__pd--1" />
+              <span className="cmi__pd cmi__pd--2" />
+              <span className="cmi__pd cmi__pd--3" />
+            </div>
           </div>
         )}
       </div>
