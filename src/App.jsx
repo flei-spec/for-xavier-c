@@ -10,6 +10,8 @@ import AuthLanding from './components/AuthLanding'
 import WelcomePage from './components/WelcomePage'
 import MoodSelector from './components/MoodSelector'
 import RadioStation from './components/RadioStation'
+import MiniPlayer from './components/MiniPlayer'
+import { useAudioPlayer } from './contexts/AudioPlayerContext'
 import { audioElement } from './audio/audioElement'
 import { preloadSongLibrary } from './hooks/useSongLibrary'
 import './App.css'
@@ -24,6 +26,7 @@ function getFractHour(tz) {
 
 export default function App() {
   const { user, loadingAuth } = useAuth()
+  const audioPlayer = useAudioPlayer()
   const [page, setPage]               = useState('welcome')
   const [selectedMood, setSelectedMood] = useState(null)
   const [guestMode, setGuestMode]       = useState(false)
@@ -125,8 +128,15 @@ export default function App() {
 
   const handleBack = () => setPage('mood')
 
+  // Return to the last station from the MiniPlayer
+  const handleReturnToStation = useCallback(() => {
+    if (selectedMood) setPage('station')
+  }, [selectedMood])
+
+  const showMiniPlayer = page !== 'station' && !!audioPlayer.currentSong
+
   return (
-    <div className="app">
+    <div className={`app${showMiniPlayer ? ' app--has-miniplayer' : ''}`}>
       <StarBackground />
       {/* Continuous cross-fading glow + sky gradient overlay */}
       <AtmosphereGlow
@@ -135,6 +145,11 @@ export default function App() {
         skyGradient={glowState.skyGradient}
       />
       <AtmosphereParticles theme={atmosphere?.theme} />
+
+      {/* Persistent mini player — visible on all pages except the station */}
+      {showMiniPlayer && (
+        <MiniPlayer onReturnToStation={handleReturnToStation} />
+      )}
 
       {loadingAuth ? null : !user && !guestMode ? (
         <AuthLanding onGuestMode={() => setGuestMode(true)} />
