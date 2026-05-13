@@ -54,14 +54,16 @@ if (!import.meta.env.DEV && !CDN_BASE) {
 /**
  * Resolve a song src path ("/songs/adele--easy-on-me.mp3") to a playback URL.
  *
- * All song filenames are pure ASCII kebab-case (run scripts/rename-songs.js
- * to convert any future files).  No encoding required; just prepend CDN_BASE.
+ * Each path segment is encodeURIComponent'd so that Chinese characters, spaces,
+ * commas, parentheses, ampersands, and other special chars produce valid URLs
+ * that the browser audio element can fetch.
  *
  * Voice intros (/Voice-intros/*.m4a) never pass through this function.
  */
 export function resolveSongUrl(src) {
-  if (!CDN_BASE) return src
-  return `${CDN_BASE.replace(/\/$/, '')}${src}`
+  const encoded = src.split('/').map(seg => encodeURIComponent(seg)).join('/')
+  if (!CDN_BASE) return encoded
+  return `${CDN_BASE.replace(/\/$/, '')}${encoded}`
 }
 
 /**
