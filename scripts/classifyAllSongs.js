@@ -20,13 +20,79 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url))
 const SONGS_DIR = path.resolve(__dirname, '../songs_static')
 const MOOD_MAP_PATH = path.resolve(__dirname, '../src/data/songMoodMap.js')
 const LIBRARY_JSON_PATH = path.resolve(__dirname, '../public/data/songLibrary.json')
+const LOOKUP_PATH = path.resolve(__dirname, './songNameLookup.json')
+
+// ── Kebab → readable artist/title lookup (438 entries from pre-rename metadata) ─
+const nameLookup = JSON.parse(fs.readFileSync(LOOKUP_PATH, 'utf8'))
+
+// ── Kebab-to-readable helpers ──────────────────────────────────────────────
+function titleCase(str) {
+  return str.replace(/\b\w/g, c => c.toUpperCase())
+}
+
+function cleanKebabAsTitle(raw) {
+  // Reverse common sanitization: hyphens → spaces, contractions
+  return titleCase(
+    raw.replace(/^(\d+)-/g, '$1 ')           // "7-rings" → "7 Rings"
+       .replace(/-/g, ' ')                   // all dashes → spaces
+       .replace(/\bi m\b/gi, "I'm")          // i m → I'm
+       .replace(/\bcan t\b/gi, "Can't")      // can t → Can't
+       .replace(/\bcouldn t\b/gi, "Couldn't")
+       .replace(/\bdon t\b/gi, "Don't")
+       .replace(/\bdidn t\b/gi, "Didn't")
+       .replace(/\bwon t\b/gi, "Won't")
+       .replace(/\bit s\b/gi, "It's")
+       .replace(/\bthat s\b/gi, "That's")
+       .replace(/\bwhat s\b/gi, "What's")
+       .replace(/\bain t\b/gi, "Ain't")
+       .replace(/\bwanna\b/gi, 'Wanna')
+       .replace(/\bgonna\b/gi, 'Gonna')
+       .replace(/\s+/g, ' ')
+       .trim()
+  )
+}
+
+function cleanKebabAsArtist(raw) {
+  // "alec-benjamin-alessia-cara" → "Alec Benjamin, Alessia Cara"
+  // But "aaron-smith-luvli-krono" → artist names joined by commas
+  // Single dashes between names suggest featured artists
+  return titleCase(
+    raw.replace(/--/g, ' / ')          // double-dash = title separator (shouldn't be in artist)
+       .replace(/-/g, ' ')            // single dash = space between names
+       .replace(/\s+/g, ' ')
+       .trim()
+  )
+}
 
 // ── Parse helpers ──────────────────────────────────────────────────────────
 function parseName(filename) {
   const base = filename.replace(/\.mp3$/i, '')
+
+  // 1. Standard format: "Artist - Title" (Chinese-name files)
   const dash = base.indexOf(' - ')
-  if (dash !== -1) return { artist: base.slice(0, dash).trim(), title: base.slice(dash + 3).trim() }
-  return { artist: '', title: base.trim() }
+  if (dash !== -1) {
+    return { artist: base.slice(0, dash).trim(), title: base.slice(dash + 3).trim() }
+  }
+
+  // 2. Kebab-slug with known mapping (438 songs renamed by rename-songs.js)
+  const known = nameLookup[base]
+  if (known) {
+    return { artist: known.artist, title: known.title }
+  }
+
+  // 3. Kebab-slug with -- separator: "artist-name--song-title"
+  const dd = base.indexOf('--')
+  if (dd !== -1) {
+    const artistRaw = base.slice(0, dd)
+    const titleRaw = base.slice(dd + 2)
+    return {
+      artist: cleanKebabAsArtist(artistRaw),
+      title: cleanKebabAsTitle(titleRaw),
+    }
+  }
+
+  // 4. Last resort — clean the raw name as a title
+  return { artist: '', title: cleanKebabAsTitle(base) }
 }
 
 const has = (text, ...terms) => terms.some(t => text.includes(t))
