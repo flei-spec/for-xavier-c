@@ -860,37 +860,12 @@ function classify(filename) {
   // ── Scores — use resolved profile (explicit or inferred) ─────
   const scores = computeScores(artistProfile, uniqueTags, energyLevel, full, zh)
 
-  // ── Emotional description ────────────────────────────────────────
   const primaryMood = uniqueTags[0] || '想一个人发呆'
-  const emoDescMap = {
-    '想你了':       '深夜思念感',
-    '开心开心':     '轻盈欢快感',
-    '今天很幸福':   '温柔幸福感',
-    '需要安慰':     '温柔陪伴感',
-    '想被抱抱':     '温暖包裹感',
-    '有点苦恼':     '淡淡郁结感',
-    '洗澡放松一下': '慵懒放松感',
-    '想一个人发呆': '安静漂浮感',
-    '今天有点累':   '轻柔疗愈感',
-  }
-  const emotionalDescription = emoDescMap[primaryMood] || '情绪流动感'
 
-  // ── bestFor ──────────────────────────────────────────────────────
-  const bestForMap = {
-    '想你了':       '适合深夜安静想念某个人的时候听',
-    '开心开心':     '适合今天心情特别好、想跟着旋律动起来的时候',
-    '今天很幸福':   '适合感到温柔满足、想把这份幸福留住的时候',
-    '需要安慰':     '适合心里有点难受、需要一个声音陪着的时候',
-    '想被抱抱':     '适合想被人好好抱着、感受温暖的时候',
-    '有点苦恼':     '适合心里有点乱、需要安静整理情绪的时候',
-    '洗澡放松一下': '适合用热水冲走一天疲惫、什么都不用想的时候',
-    '想一个人发呆': '适合一个人安静漂着、思绪飘到哪儿算哪儿的时候',
-    '今天有点累':   '适合今天已经很努力了、可以慢慢休息的时候',
-  }
-  const bestFor = bestForMap[primaryMood] || '适合静静独处、感受音乐的时候'
-
-  // ── romanticReason ───────────────────────────────────────────────
-  const romanticReason = getRomanticReason(artist, title, primaryMood, uniqueTags)
+  // ── Song-specific emotional generation ───────────────────────────
+  const emotionalDescription = describeSong(title, artist, primaryMood, energyLevel, uniqueTags, full, zh)
+  const bestFor = bestForSong(title, artist, primaryMood, energyLevel, uniqueTags, full, zh)
+  const romanticReason = romanticReasonForSong(title, artist, primaryMood, uniqueTags, energyLevel, full, zh)
 
   return {
     title,
@@ -906,444 +881,729 @@ function classify(filename) {
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
-// ROMANTIC REASONS
+// SONG-SPECIFIC EMOTIONAL GENERATION ENGINE
+// ═══════════════════════════════════════════════════════════════════════════
+//
+// Every song gets a unique emotional description / bestFor / romanticReason
+// generated from its title imagery, artist identity, mood combination,
+// energy level, and sonic personality — never generic templates.
+//
+// Principles:
+//   - Each line should feel like a memory, a cinematic scene, an emotional fragment
+//   - No repeated "late-night" or "generic comfort" phrases
+//   - Title words seed the imagery so each song feels specific
+//   - Deterministic: same song always gets the same line
+
+// ── Title word → emotional imagery fragments ─────────────────────────────
+// Each character maps to imagery categories used by the template engine.
+
+const ZH_IMAGERY = {
+  '雨': { s:['雨声','雨停','下雨天','雨夜','雨打在窗上'], e:['思念','安静','等待'], a:['等雨停','听雨','淋雨'], t:['雨','伞','窗'] },
+  '夜': { s:['深夜','凌晨','夜幕','夜的深处','夜深人静'], e:['独处','安静','想念'], a:['失眠','醒着','望着窗外'], t:['夜色','灯','枕边'] },
+  '爱': { s:['爱里','相遇时','在一起时'], e:['悸动','温柔','坚定'], a:['爱着','珍惜','抱紧'], t:['心跳','手','目光'] },
+  '梦': { s:['梦里','梦醒之间','枕边'], e:['恍惚','期盼','柔软'], a:['入梦','醒来','梦见'], t:['梦','枕','呼吸'] },
+  '光': { s:['光落下时','微光里','逆光中'], e:['温暖','希望','安心'], a:['照亮','发着光','追光'], t:['光','影','窗'] },
+  '海': { s:['海边','海浪声里','海风中'], e:['辽阔','思念','自由'], a:['望海','听海','等浪来'], t:['海','浪','岸'] },
+  '风': { s:['风里','起风时','晚风中','风穿过'], e:['自由','想念','轻快'], a:['吹风','等风来','随风'], t:['风','发梢'] },
+  '星': { s:['星空下','星光里','银河'], e:['孤独','期盼','渺小'], a:['看星星','数星星'], t:['星','夜空'] },
+  '花': { s:['花开时','花落处','花丛里'], e:['温柔','珍惜','短暂'], a:['看花','等花开','闻花香'], t:['花','瓣','春'] },
+  '雪': { s:['雪落时','雪地里','白茫茫'], e:['安静','思念','纯净'], a:['看雪','等雪停','踩雪'], t:['雪','白','冷'] },
+  '月': { s:['月光下','月圆时','弯月'], e:['思念','温柔','孤独'], a:['望月','等月圆','踏月'], t:['月','月光'] },
+  '心': { s:['心里','心跳声里'], e:['悸动','柔软','坚定'], a:['心动','心疼','放心'], t:['心','胸口'] },
+  '泪': { s:['眼泪里','哭过之后'], e:['难过','释怀','疲惫'], a:['流泪','擦干','忍住'], t:['泪','脸庞'] },
+  '路': { s:['路上','归途','分岔路'], e:['漂泊','期待','坚定'], a:['赶路','等你','回头'], t:['路','灯'] },
+  '水': { s:['水边','流水旁'], e:['安静','流动','温柔'], a:['看水','听水声','顺流'], t:['水','河','涟漪'] },
+  '城': { s:['城市里','霓虹中','街角'], e:['孤独','归属','漂泊'], a:['穿行','停留','离开'], t:['城','街','窗'] },
+  '歌': { s:['旋律里','副歌响起时','前奏'], e:['共鸣','陪伴','治愈'], a:['听歌','唱给你','单曲循环'], t:['歌','音符','耳机'] },
+  '静': { s:['安静里','沉默中'], e:['独处','思考','平静'], a:['静静','不说话','发呆'], t:['静','空'] },
+  '等': { s:['等待时','站台','路口'], e:['期盼','焦灼','耐心'], a:['等一个人','等天亮','等你'], t:['等','钟'] },
+  '忘': { s:['忘记的边缘','想起时'], e:['遗憾','释怀','怀念'], a:['忘记','记起','放下'], t:['忘','回忆'] },
+  '笑': { s:['笑声里','微笑时','嘴角'], e:['快乐','温暖','轻松'], a:['笑了','逗你笑','看着你笑'], t:['笑','酒窝'] },
+  '哭': { s:['哭声里','忍住的时候'], e:['难过','释放','委屈'], a:['哭了','忍着','偷偷哭'], t:['泪','眼'] },
+  '念': { s:['思念里','想起时','回忆中'], e:['温柔','酸涩','温暖'], a:['念着','想起','惦记'], t:['念','信'] },
+  '暖': { s:['温暖中','被暖到的时候'], e:['幸福','安心','柔软'], a:['取暖','被暖','暖手'], t:['暖','温度'] },
+  '天': { s:['天空下','天际线','云端'], e:['辽阔','自由','渺小'], a:['抬头','望天','放空'], t:['天','云','蓝'] },
+  '地': { s:['大地','土地上'], e:['踏实','归属','辽阔'], a:['落下来','生根','停靠'], t:['地','泥'] },
+  '火': { s:['火光里','燃烧时'], e:['炽热','冲动','热烈'], a:['点燃','取暖','燃尽'], t:['火','灰'] },
+  '山': { s:['山间','山顶','山谷'], e:['辽阔','坚定','安静'], a:['爬山','远眺','停驻'], t:['山','峰'] },
+  '秋': { s:['秋天','落叶时','微凉'], e:['萧瑟','思念','安静'], a:['看落叶','踏秋'], t:['秋','叶'] },
+  '春': { s:['春天','花开时','回暖'], e:['温柔','希望','新生'], a:['等春天','感受暖意'], t:['春','花'] },
+  '冬': { s:['冬天','寒冷中'], e:['沉寂','等待','温暖'], a:['过冬','取暖','等雪'], t:['冬','冷'] },
+  '夏': { s:['夏天','蝉鸣中','阳光'], e:['热烈','自由','悸动'], a:['晒太阳','吹夏风'], t:['夏','热'] },
+  '雾': { s:['雾里','看不清时'], e:['迷茫','暧昧','等待'], a:['穿雾','等雾散'], t:['雾','朦胧'] },
+  '烟': { s:['烟雾中','散开时'], e:['飘渺','恍惚','消散'], a:['点燃','看烟散'], t:['烟','灰'] },
+  '酒': { s:['微醺时','酒杯旁'], e:['释怀','孤独','放松'], a:['喝酒','微醺','醉了'], t:['酒','杯'] },
+  '舞': { s:['舞池中','旋转时'], e:['自由','快乐','释放'], a:['跳舞','旋转','摆动'], t:['舞','步'] },
+  '独': { s:['一个人时','独处','空房间'], e:['孤独','安静','自在'], a:['独处','自洽','习惯'], t:['自己','房间'] },
+  '孤': { s:['孤独里','一个人时'], e:['孤单','释怀','习惯'], a:['一个人','安静','独行'], t:['孤','影'] },
+  '离': { s:['离开时','分开后','远方'], e:['难过','思念','成长'], a:['离开','告别','远行'], t:['离','远方'] },
+  '归': { s:['归来时','回家路上'], e:['安心','期盼','温暖'], a:['归来','回家','等归'], t:['归','家'] },
+  '家': { s:['家里','回家路上','窗台'], e:['安心','温暖','归属'], a:['回家','等你','守着'], t:['家','灯'] },
+  '时': { s:['时间中','钟声里'], e:['流逝','珍惜','回顾'], a:['等待','回想','留住'], t:['时间','钟'] },
+  '年': { s:['那年','经年之后','岁月'], e:['怀念','感慨','温柔'], a:['回想','等过年','长大'], t:['年','岁月'] },
+  '远': { s:['远方','遥远的地方'], e:['思念','期盼','无力'], a:['远望','走远','追不上'], t:['远','距离'] },
+  '近': { s:['靠近时','身边'], e:['亲密','安心','温暖'], a:['靠近','贴近','依偎'], t:['近','身旁'] },
+  '晚': { s:['傍晚','黄昏','夜晚'], e:['安静','放松','思念'], a:['等天黑','散步','看日落'], t:['黄昏','晚霞'] },
+  '晨': { s:['清晨','天亮时','晨曦'], e:['希望','新鲜','安静'], a:['早起','等天亮','呼吸'], t:['晨','光'] },
+  '夕': { s:['夕阳下','黄昏'], e:['温馨','感伤','安静'], a:['看夕阳','散步'], t:['夕阳','余晖'] },
+  '暮': { s:['暮色里','黄昏','天快黑'], e:['安静','思念','放松'], a:['等天黑','看暮色'], t:['暮','晚'] },
+  '红': { s:['红色里','热烈的颜色'], e:['热烈','深情','炽热'], a:['染红','映红'], t:['红','热度'] },
+  '蓝': { s:['蓝色里'], e:['忧郁','安静','深邃'], a:['变蓝','染蓝'], t:['蓝','忧郁'] },
+  '白': { s:['白色中','空白处'], e:['纯净','简单','安静'], a:['留白','空白'], t:['白','空'] },
+  '黑': { s:['黑暗里','夜色中'], e:['孤独','沉静','深邃'], a:['沉浸','摸索'], t:['黑','夜'] },
+  '落': { s:['落下时','飘落中'], e:['无力','释怀','结束'], a:['落下来','飘落','落下'], t:['落','叶'] },
+  '飘': { s:['漂浮中','飘着的时候'], e:['自由','恍惚','轻盈'], a:['漂着','飘远','浮着'], t:['飘','云'] },
+  '飞': { s:['飞起时','天空中'], e:['自由','向往','轻快'], a:['起飞','飞翔','飞远'], t:['飞','翅膀'] },
+  '追': { s:['追寻中','追赶时'], e:['渴望','坚持','焦灼'], a:['追逐','追赶','追不上'], t:['追','跑'] },
+  '失': { s:['失去后','失落中'], e:['遗憾','难过','空虚'], a:['失去','失落','放手'], t:['失','空'] },
+  '得': { s:['获得时','拥有时'], e:['满足','幸福','珍惜'], a:['得到','拥有','抱着'], t:['得','握'] },
+  '见': { s:['见面时','看见时'], e:['期待','悸动','幸福'], a:['见到','遇见','看见'], t:['见','眼'] },
+  '遇': { s:['遇见时','邂逅'], e:['奇妙','温暖','缘分'], a:['遇见','碰到','相遇'], t:['遇','缘'] },
+  '别': { s:['告别时','分开前'], e:['不舍','难过','祝福'], a:['告别','说再见','离开'], t:['别','手'] },
+  '散': { s:['散场时','散落中'], e:['失落','释怀','结束'], a:['散场','散落','消散'], t:['散','场'] },
+  '留': { s:['留下时','留住后'], e:['珍惜','不舍','温柔'], a:['留下','留住','停留'], t:['留','守'] },
+  '回': { s:['回去时','回头处'], e:['怀念','期盼','释怀'], a:['回头','回去','回想'], t:['回','转'] },
+  '走': { s:['离开时','走在路上','走远'], e:['漂泊','坚定','释怀'], a:['走远','走开','走了'], t:['走','路'] },
+  '停': { s:['停下来时','停顿处'], e:['安静','思考','疲惫'], a:['停下','歇着','暂停'], t:['停','歇'] },
+  '跑': { s:['奔跑中','加速时'], e:['自由','热烈','释放'], a:['奔跑','跑远','跑着'], t:['跑','风'] },
+  '死': { s:['死心里','终结时'], e:['绝望','结束','不留'], a:['死心','终结'], t:['死','终'] },
+  '吻': { s:['吻时','唇间'], e:['亲密','温柔','悸动'], a:['亲吻','轻吻','吻你'], t:['吻','唇'] },
+}
+
+// English title word imagery
+const EN_IMAGERY = {
+  'love':  { s:['in love','when it hits'], e:['tender','aching'], a:['falling in love','loving quietly'], t:['heartbeat','hands'] },
+  'lost':  { s:['getting lost','somewhere between'], e:['wandering','searching'], a:['getting lost','finding your way back'], t:['map','road'] },
+  'night': { s:['late at night','while the world sleeps'], e:['quiet','alone'], a:['staying up late','watching the dark'], t:['moon','bedside light'] },
+  'dream': { s:['between dreams','half awake'], e:['drifting','longing'], a:['dreaming of you','waking up slow'], t:['pillow','dream'] },
+  'easy':  { s:['taking it easy','letting go'], e:['gentle','calm'], a:['going easy','letting things be'], t:['breath','quiet'] },
+  'fade':  { s:['fading out','disappearing slow'], e:['melancholy','quiet'], a:['fading','letting go'], t:['fade','vanishing'] },
+  'alone': { s:['being alone','your own company'], e:['quiet','self-contained'], a:['sitting alone','staying in'], t:['room','silence'] },
+  'stay':  { s:['staying','not leaving yet'], e:['wanting','hoping'], a:['staying here','waiting a bit more'], t:['door','hand'] },
+  'goodbye': { s:['saying goodbye','the last look'], e:['aching','final'], a:['walking away','letting go'], t:['door','last word'] },
+  'dance': { s:['on the floor','moving'], e:['free','alive'], a:['dancing alone','swaying slow'], t:['beat','feet'] },
+  'river': { s:['by the river','flowing'], e:['moving on','endless'], a:['watching it flow','drifting'], t:['river','water'] },
+  'remember': { s:['looking back','flipping through'], e:['nostalgic','warm'], a:['remembering you','holding on'], t:['memory','photo'] },
+  'sorry':  { s:['after the apology','regretting'], e:['heavy','aching'], a:['saying sorry','wishing you could'], t:['sorry','regret'] },
+  'home':   { s:['going home','where you belong'], e:['safe','gentle'], a:['coming home','returning'], t:['home','doorway'] },
+  'run':    { s:['running','heart pounding'], e:['urgent','free'], a:['running away','chasing'], t:['pace','breath'] },
+  'fall':   { s:['falling','the descent'], e:['helpless','surrendering'], a:['falling hard','letting gravity take'], t:['fall','ground'] },
+  'light':  { s:['in the light','when it breaks through'], e:['hopeful','warm'], a:['catching the light','being lit up'], t:['light','glow'] },
+  'dark':   { s:['in the dark','where no one sees'], e:['hidden','deep'], a:['sitting in the dark','waiting'], t:['dark','shadow'] },
+  'heart':  { s:['in your heart','heartbeat'], e:['beating','loud'], a:['holding it in','letting it beat'], t:['heart','chest'] },
+  'rain':   { s:['in the rain','after it stops'], e:['washing away','fresh'], a:['standing in it','waiting for it to stop'], t:['rain','window'] },
+  'fire':   { s:['by the fire','burning'], e:['intense','consuming'], a:['catching fire','burning slow'], t:['fire','spark'] },
+  'ocean':  { s:['by the ocean','vast blue'], e:['endless','deep'], a:['staring at waves','getting lost'], t:['ocean','wave'] },
+  'wind':   { s:['in the wind','carried away'], e:['weightless','drifting'], a:['letting the wind take it','feeling it pass'], t:['wind','breeze'] },
+  'star':   { s:['under the stars','watching them'], e:['small','hopeful'], a:['counting stars','wishing on one'], t:['star','sky'] },
+  'hurt':   { s:['after it hurts','the ache'], e:['raw','tender'], a:['hurting quietly','feeling it'], t:['hurt','scar'] },
+  'miss':   { s:['missing someone','the absence'], e:['longing','hollow'], a:['missing you','not being there'], t:['miss','gap'] },
+  'hold':   { s:['holding on','not letting go'], e:['tight','warm'], a:['holding close','keeping you'], t:['hold','embrace'] },
+  'song':   { s:['in this song','the melody'], e:['moving','personal'], a:['singing along','humming it'], t:['song','note'] },
+  'broken': { s:['broken pieces','after it breaks'], e:['fragile','aching'], a:['picking up pieces','mending'], t:['crack','piece'] },
+  'wait':   { s:['waiting','the in-between'], e:['patient','aching'], a:['waiting for you','counting time'], t:['wait','clock'] },
+  'fly':    { s:['in the air','taking off'], e:['free','weightless'], a:['flying away','lifting off'], t:['fly','wing'] },
+  'slow':   { s:['slowing down','taking time'], e:['calm','present'], a:['slowing the pace','breathing in'], t:['slow','pause'] },
+  'breathe': { s:['catching breath','exhaling'], e:['release','calm'], a:['breathing out','letting it go'], t:['breath','air'] },
+  'mystery': { s:['in the mystery','unanswered'], e:['curious','quiet'], a:['wondering','leaving it unknown'], t:['mystery','question'] },
+  'strange': { s:['feeling strange','out of place'], e:['lost','adrift'], a:['wandering','not fitting in'], t:['strange','drift'] },
+  'wonder': { s:['in wonder','looking around'], e:['amazed','gentle'], a:['wondering','marveling'], t:['wonder','awe'] },
+  'heaven': { s:['near heaven','almost there'], e:['bliss','light'], a:['reaching','almost touching'], t:['heaven','above'] },
+  'roses':  { s:['with roses','among petals'], e:['romantic','sweet'], a:['giving roses','holding them'], t:['rose','petal'] },
+  'cherry': { s:['under cherry blossoms'], e:['delicate','spring'], a:['watching petals fall'], t:['cherry','blossom'] },
+  'angel':  { s:['with angels','guarded'], e:['protected','soft'], a:['being watched over'], t:['angel','wing'] },
+  'king':   { s:['wearing a crown','ruling'], e:['strong','proud'], a:['standing tall','owning it'], t:['crown','throne'] },
+  'queen':  { s:['wearing a crown','ruling'], e:['powerful','beautiful'], a:['ruling','shining'], t:['crown','queen'] },
+  'monster': { s:['with monsters','hiding'], e:['scared','hidden'], a:['hiding the monster','being scared'], t:['monster','hide'] },
+  'paper':  { s:['on paper','written down'], e:['fragile','remembered'], a:['writing it down','folding it'], t:['paper','fold'] },
+  'castle': { s:['in a castle','protected'], e:['safe','grand'], a:['building castles','living inside'], t:['castle','wall'] },
+  'ghost':  { s:['like a ghost','haunting'], e:['haunting','unseen'], a:['haunting quietly','being invisible'], t:['ghost','whisper'] },
+  'golden': { s:['golden light','the gold hour'], e:['warm','precious'], a:['turning gold','glowing'], t:['gold','glow'] },
+}
+
+// ── Helper: extract dominant imagery from a title ────────────────────────
+function extractImagery(title, artist) {
+  const zh = []  // [{ char, scene, emotion, action, thing }]
+  const en = []  // [{ word, scene, emotion, action, thing }]
+
+  // Chinese character scan
+  for (const ch of title) {
+    const img = ZH_IMAGERY[ch]
+    if (img) zh.push({ ch, ...img })
+  }
+  // Also scan artist for Chinese chars
+  for (const ch of artist) {
+    const img = ZH_IMAGERY[ch]
+    if (img && !zh.find(x => x.ch === ch)) zh.push({ ch, ...img })
+  }
+
+  // English word scan
+  const words = title.toLowerCase().split(/[\s\-–—,.;:!?()（）《》"'']+/)
+  for (const w of words) {
+    const img = EN_IMAGERY[w]
+    if (img) en.push({ word: w, ...img })
+  }
+
+  return { zh, en }
+}
+
+// ── Deterministic seed from string ───────────────────────────────────────
+function pickFrom(s, arr) {
+  let h = 0
+  for (let i = 0; i < s.length; i++) h = ((h << 5) - h + s.charCodeAt(i)) | 0
+  return arr[Math.abs(h) % arr.length]
+}
+
+function pickIndex(s, len) {
+  let h = 0
+  for (let i = 0; i < s.length; i++) h = ((h << 5) - h + s.charCodeAt(i)) | 0
+  return Math.abs(h) % len
+}
+
+// ── Energy texture ───────────────────────────────────────────────────────
+const ENERGY_TEXTURE = {
+  '高': { pace:['快节奏','跃动','充满活力','不羁'], verb:['冲','跳起来','加速','释放'], feel:['痛快','畅快','淋漓'] },
+  '中': { pace:['缓缓流动','轻轻','舒展','自在'], verb:['摆动','摇晃','漂着','走着'], feel:['舒服','自在','刚刚好'] },
+  '低': { pace:['慢下来','柔软','安静','轻到几乎没有'], verb:['坐下来','歇着','靠着','闭上眼'], feel:['安静','柔软','小心翼翼'] },
+}
+
+// ── Mood-specific tone fragments ─────────────────────────────────────────
+const MOOD_TONE = {
+  '想你了':       { verbs:['想念','惦记','想起','想着'], nouns:['思念','记忆','距离','时间','夜'], adj:['温柔','酸涩','挥之不去','淡淡'] },
+  '开心开心':     { verbs:['笑了','晃起来','跟着节拍','摇'], nouns:['快乐','节奏','笑容','好天气','风'], adj:['轻盈','跳跃','闪闪发光','自在'] },
+  '今天很幸福':   { verbs:['珍惜','抱着','感受','留住'], nouns:['幸福','温度','满足','此刻','暖意'], adj:['温暖','满满','软软','甜'] },
+  '需要安慰':     { verbs:['陪着你','轻轻拍着','抱着','靠着'], nouns:['安慰','陪伴','眼泪','夜晚','肩膀'], adj:['温柔','安静','不说破','耐心'] },
+  '想被抱抱':     { verbs:['抱住','靠近','贴紧','依偎'], nouns:['拥抱','温度','怀抱','安全感','手臂'], adj:['柔软','暖暖','紧紧包裹','安心'] },
+  '有点苦恼':     { verbs:['想着','绕了又绕','解不开','纠结'], nouns:['心事','烦恼','结','死胡同','乱麻'], adj:['说不清','若隐若现','纠缠','闷闷'] },
+  '洗澡放松一下': { verbs:['冲掉','放下','放空','漂着'], nouns:['热水','雾气','疲惫','浴室','泡泡'], adj:['暖暖','轻飘飘','什么都不想','融化'] },
+  '想一个人发呆': { verbs:['发呆','漂着','走神','放空'], nouns:['空白','思绪','窗外','空气','浮云'], adj:['空空','安静','漫无目的','淡淡'] },
+  '今天有点累':   { verbs:['躺下来','歇着','闭上眼睛','放下'], nouns:['疲惫','床','今天','重量','身体'], adj:['沉沉','软软','不想动','缓缓'] },
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// 1. EMOTIONAL DESCRIPTION  (1 line, 15-40 chars, a poetic emotional tag)
 // ═══════════════════════════════════════════════════════════════════════════
 
-function getRomanticReason(artist, title, primaryMood, allMoods) {
-  const key = `${artist} - ${title}`
+function describeSong(title, artist, primaryMood, energyLevel, allMoods, full, zh) {
+  const img = extractImagery(title, artist)
+  const tone = MOOD_TONE[primaryMood] || MOOD_TONE['想一个人发呆']
+  const energy = ENERGY_TEXTURE[energyLevel] || ENERGY_TEXTURE['中']
+  const seed = title + primaryMood
 
-  const customReasons = {
-    // Top Chinese artists
+  // Pick adj/noun safely
+  const adj = () => pickFrom(seed + 'adj', tone.adj)
+  const noun = () => pickFrom(seed + 'noun', tone.nouns)
+
+  const patterns = [
+    // 1. imagery scene + emotion: "雨声里的温柔"
+    () => {
+      if (img.zh.length > 0) {
+        const i = pickFrom(seed + 'p1a', img.zh)
+        return `${pickFrom(seed + 'p1b', i.s)}里的${adj()}`
+      }
+      if (img.en.length > 0) {
+        const i = pickFrom(seed + 'p1c', img.en)
+        return `${pickFrom(seed + 'p1d', i.s)}, ${adj()}`
+      }
+      return `${pickFrom(seed + 'p1e', energy.pace)}的${noun()}`
+    },
+    // 2. action + feeling: "等雨停时的酸涩"
+    () => {
+      if (img.zh.length > 0) {
+        const i = pickFrom(seed + 'p2a', img.zh)
+        return `${pickFrom(seed + 'p2b', i.a)}的${adj()}`
+      }
+      if (img.en.length > 0) {
+        const i = pickFrom(seed + 'p2c', img.en)
+        return `the ${adj()} of ${pickFrom(seed + 'p2d', i.a)}`
+      }
+      return `${pickFrom(seed + 'p2e', energy.verb)}的${noun()}`
+    },
+    // 3. thing-based: "窗里的思念"
+    () => {
+      if (img.zh.length > 0) {
+        const i = pickFrom(seed + 'p3a', img.zh)
+        return `${pickFrom(seed + 'p3b', i.t)}里的${noun()}`
+      }
+      return `${pickFrom(seed + 'p3c', energy.feel)}的${adj()}`
+    },
+    // 4. emotion in scene: "安静中的温柔"
+    () => {
+      if (img.zh.length > 0) {
+        const i = pickFrom(seed + 'p4a', img.zh)
+        return `${pickFrom(seed + 'p4b', i.e)}里的${adj()}`
+      }
+      return `${pickFrom(seed + 'p4c', energy.feel)}的${noun()}`
+    },
+    // 5. English cinematic: "the tenderness in falling"
+    () => {
+      if (img.en.length > 0) {
+        const i = pickFrom(seed + 'p5a', img.en)
+        return `the ${pickFrom(seed + 'p5b', i.e)} in ${pickFrom(seed + 'p5c', i.a)}`
+      }
+      return `${adj()}的${pickFrom(seed + 'p5d', energy.feel)}`
+    },
+    // 6. pure texture: two adjs or adj+noun
+    () => `${adj()}的${noun()}`,
+    // 7. action: "漂着的空白"
+    () => `${pickFrom(seed + 'p7a', tone.verbs)}的${noun()}`,
+    // 8. pace + mood
+    () => `${pickFrom(seed + 'p8a', energy.pace)}的${adj()}`,
+  ]
+
+  return pickFrom(seed, patterns)()
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// 2. BEST FOR  (1 line, 20-60 chars, a personal, specific recommendation)
+// ═══════════════════════════════════════════════════════════════════════════
+
+function bestForSong(title, artist, primaryMood, energyLevel, allMoods, full, zh) {
+  const img = extractImagery(title, artist)
+  const tone = MOOD_TONE[primaryMood] || MOOD_TONE['想一个人发呆']
+  const seed = title + 'best'
+
+  const patterns = [
+    // 1. Scene-anchored: "当雨声响起，按下播放键"
+    () => {
+      if (img.zh.length > 0) {
+        const i = pickFrom(seed + 'b1', img.zh)
+        return `当${pickFrom(seed + 'b2', i.s)}，按下播放键`
+      }
+      if (img.en.length > 0) {
+        const i = pickFrom(seed + 'b3', img.en)
+        return `when ${pickFrom(seed + 'b4', i.s)}, press play`
+      }
+      return `${pickFrom(seed + 'b5', tone.verbs)}的时候，闭上眼睛听`
+    },
+    // 2. Action: "等雨停的那几分钟"
+    () => {
+      if (img.zh.length > 0) {
+        const i = pickFrom(seed + 'b6', img.zh)
+        return `${pickFrom(seed + 'b7', i.a)}的那几分钟`
+      }
+      return `${pickFrom(seed + 'b8', tone.verbs)}的那几分钟`
+    },
+    // 3. Specific mood-tied moment (handcrafted, varied per mood)
+    () => {
+      const moments = {
+        '想你了': ['想念一个人却不想说出来时','翻到旧照片的那一刻','深夜收到一条消息后'],
+        '开心开心': ['嘴角不自觉上扬时','想跟着节奏轻轻晃时','今天的快乐需要一个BGM'],
+        '今天很幸福': ['想把这份温暖轻轻留住时','觉得一切都刚刚好的那一刻','心里满满当当的时候'],
+        '需要安慰': ['不是不想说，只是不想解释时','眼泪快掉下来的时候','需要一个声音安静陪着时'],
+        '想被抱抱': ['想被紧紧抱着的时候','需要一点体温的那一刻','想靠在谁身上歇一会儿'],
+        '有点苦恼': ['心里绕来绕去绕不出来时','有些事想不通又放不下的那一刻','需要给自己一点空间的时候'],
+        '洗澡放松一下': ['用热水冲掉一天疲惫时','什么都不想就那么待着的时候','浴室雾气升起来的那一刻'],
+        '想一个人发呆': ['望着窗外放空的那一刻','思绪飘到哪儿算哪儿的时候','一个人安静待着的时光'],
+        '今天有点累': ['今天真的很努力了之后','躺在床上不想动的那一刻','需要一个温柔的声音接住你时'],
+      }
+      const arr = moments[primaryMood] || moments['想一个人发呆']
+      return pickFrom(seed + 'b9', arr)
+    },
+    // 4. Scene + emotion combo (for songs with 2+ imagery hits)
+    () => {
+      if (img.zh.length >= 2) {
+        const a = pickFrom(seed + 'b10', img.zh)
+        const rest = img.zh.filter(x => x !== a)
+        const b = pickFrom(seed + 'b11', rest.length ? rest : img.zh)
+        return `${pickFrom(seed + 'b12', a.s)}，${pickFrom(seed + 'b13', b.e)}的时候`
+      }
+      if (img.zh.length === 1) {
+        const i = img.zh[0]
+        return `${pickFrom(seed + 'b14', i.s)}的${pickFrom(seed + 'b15', tone.nouns)}`
+      }
+      return `${pickFrom(seed + 'b16', tone.nouns)}涌上来的那一刻`
+    },
+    // 5. Simple recommendation
+    () => `${pickFrom(seed + 'b17', tone.verbs)}的时候，是这首歌的时间`,
+  ]
+
+  return pickFrom(seed, patterns)()
+}
+
+// ═══════════════════════════════════════════════════════════════════════════
+// 3. ROMANTIC REASON  (1-3 lines, 30-120 chars — a memory, scene, fragment)
+// ═══════════════════════════════════════════════════════════════════════════
+
+function romanticReasonForSong(title, artist, primaryMood, allMoods, energyLevel, full, zhText) {
+  const img = extractImagery(title, artist)
+  const tone = MOOD_TONE[primaryMood] || MOOD_TONE['想一个人发呆']
+  const seed = title + artist + primaryMood
+
+  // ── First: check special per-song custom reasons (kept from original) ──
+  const key = `${artist} - ${title}`
+  const CUSTOM = customReasonMap()
+  if (CUSTOM[key]) return CUSTOM[key]
+
+  // ── Build context for template selection ──
+  const hasChinese = /[一-鿿]/.test(title)
+  const hasEnglish = /[a-zA-Z]{3,}/.test(title)
+  const imgRich = img.zh.length >= 2 || img.en.length >= 2
+
+  // ── Template banks ──
+  // Type A: "有些X，Y还是会Z。" (melancholy, nostalgic)
+  const typeA = () => {
+    const i = img.zh.length > 0 ? pickFrom(seed + 'a1', img.zh) : null
+    const j = img.zh.length > 1 ? pickFrom(seed + 'a2', img.zh.filter(x => x !== i)) : i
+    const ti = i ? pickFrom(seed + 'a3', i.t) : null
+    const tj = j ? pickFrom(seed + 'a4', j.t) : null
+    const thing = (ti && tj) ? `${ti}和${tj}` : (ti || pickFrom(seed + 'a5', tone.nouns))
+    const verb = i ? pickFrom(seed + 'a6', i.a) : pickFrom(seed + 'a7', tone.verbs)
+    return `有些${thing}，${verb}的时候还是会想起你。`
+  }
+
+  // Type B: "[scene]的时候，[feeling]。" (specific moment)
+  const typeB = () => {
+    if (img.zh.length > 0) {
+      const i = pickFrom(seed + 'b1', img.zh)
+      const feeling = pickFrom(seed + 'b2', tone.adj)
+      return `${pickFrom(seed + 'b3', i.s)}的时候，${feeling}。`
+    }
+    if (img.en.length > 0) {
+      const i = pickFrom(seed + 'b4', img.en)
+      return `${pickFrom(seed + 'b5', i.s)} — ${pickFrom(seed + 'b6', tone.adj)}.`
+    }
+    return `${pickFrom(seed + 'b7', tone.nouns)}的时候，${pickFrom(seed + 'b8', tone.verbs)}。`
+  }
+
+  // Type C: "[thing]里藏着[secret]，只有这首歌知道。" (intimate secret)
+  const typeC = () => {
+    const i = img.zh.length > 0 ? pickFrom(seed + 'c1', img.zh) : null
+    const thing = i ? pickFrom(seed + 'c2', i.t) : pickFrom(seed + 'c3', tone.nouns)
+    const secret = pickFrom(seed + 'c4', tone.nouns)
+    return `${thing}里藏着的${secret}，只有按下播放键才会浮起来。`
+  }
+
+  // Type D: "不是不想X，只是Y。" (deflection, understatement)
+  const typeD = () => {
+    const imgObj = img.zh.length > 0 ? pickFrom(seed + 'd1', img.zh) : null
+    const verb1 = imgObj ? pickFrom(seed + 'd1b', imgObj.a) : pickFrom(seed + 'd2', tone.verbs)
+    const rest = img.zh.length > 1 ? img.zh.filter(x => x !== img.zh[0]) : null
+    const imgObj2 = rest && rest.length > 0 ? pickFrom(seed + 'd3', rest) : null
+    const reason = imgObj2 ? pickFrom(seed + 'd3b', imgObj2.e) : pickFrom(seed + 'd4', tone.adj)
+    return `不是不想${verb1}，只是有些${reason}，还没准备好。`
+  }
+
+  // Type E: "如果X有Y，大概就是这首歌的样子。" (hypothetical)
+  const typeE = () => {
+    const i = img.zh.length > 0 ? pickFrom(seed + 'e1', img.zh) : null
+    const x = i ? pickFrom(seed + 'e2', i.e) : pickFrom(seed + 'e3', tone.nouns)
+    const y = pickFrom(seed + 'e4', tone.nouns)
+    return `如果${x}有${y}，大概就是这首歌的样子。`
+  }
+
+  // Type F: "那天[todo]的时候，[something happened]。" (memory)
+  const typeF = () => {
+    if (img.zh.length > 0) {
+      const i = pickFrom(seed + 'f1', img.zh)
+      const j = pickFrom(seed + 'f2', tone.adj)
+      return `那天${pickFrom(seed + 'f3', i.s)}，突然懂了什么叫${j}。`
+    }
+    if (img.en.length > 0) {
+      const i = pickFrom(seed + 'f4', img.en)
+      return `the moment ${pickFrom(seed + 'f5', i.s)}, something shifted.`
+    }
+    return `那天${pickFrom(seed + 'f6', tone.verbs)}的时候，突然有些明白了。`
+  }
+
+  // Type G: "X和Y之间，隔着Z。" (distance, gap)
+  const typeG = () => {
+    const a = pickFrom(seed + 'g1', tone.nouns)
+    const imgObj1 = img.zh.length > 0 ? pickFrom(seed + 'g2', img.zh) : null
+    const b = imgObj1 ? pickFrom(seed + 'g2b', imgObj1.e) : pickFrom(seed + 'g3', tone.adj)
+    const rest = img.zh.length > 1 ? img.zh.filter(x => x !== img.zh[0]) : null
+    const imgObj2 = rest && rest.length > 0 ? pickFrom(seed + 'g4', rest) : null
+    const c = imgObj2 ? pickFrom(seed + 'g4b', imgObj2.t) : pickFrom(seed + 'g5', tone.nouns)
+    return `${a}和${b}之间，隔着${c}。`
+  }
+
+  // Type H: "[action]，轻轻地，像[intro]的旋律。" (cinematic, music-anchored)
+  const typeH = () => {
+    const imgObj1 = img.zh.length > 0 ? pickFrom(seed + 'h1', img.zh) : null
+    const action = imgObj1 ? pickFrom(seed + 'h1b', imgObj1.a) : pickFrom(seed + 'h2', tone.verbs)
+    const imgObj2 = img.zh.length > 0 ? pickFrom(seed + 'h3', img.zh) : null
+    const like = imgObj2 ? pickFrom(seed + 'h3b', imgObj2.e) : pickFrom(seed + 'h4', tone.adj)
+    return `${action}，轻轻地，像${like}落在枕边。`
+  }
+
+  // Type I: "有些问题不需要回答，有些[thing]不需要理由。" (rhetorical)
+  const typeI = () => {
+    const imgObj = img.zh.length > 0 ? pickFrom(seed + 'i1', img.zh) : null
+    const thing = imgObj ? pickFrom(seed + 'i1b', imgObj.t) : pickFrom(seed + 'i2', tone.nouns)
+    return `有些问题不需要回答，有些${thing}不需要理由。`
+  }
+
+  // Type J: "你大概不知道，[secret]。" (confessional)
+  const typeJ = () => {
+    const imgObj = img.zh.length > 0 ? pickFrom(seed + 'j1', img.zh) : null
+    const verb = imgObj ? pickFrom(seed + 'j1b', imgObj.a) : pickFrom(seed + 'j2', tone.verbs)
+    const noun = pickFrom(seed + 'j3', tone.nouns)
+    return `你大概不知道，${verb}，是关于你的${noun}。`
+  }
+
+  // Type K: "[X]不是[X]，是[Y]。" (redefinition)
+  const typeK = () => {
+    const i = img.zh.length > 0 ? pickFrom(seed + 'k1', img.zh) : null
+    const x = i ? pickFrom(seed + 'k2', i.t) : pickFrom(seed + 'k3', tone.nouns)
+    const y = pickFrom(seed + 'k4', tone.nouns)
+    return `${x}不是${x}，是还没说出口的${y}。`
+  }
+
+  // Type L: English-specific intimate fragment
+  const typeL = () => {
+    if (img.en.length > 0) {
+      const i = pickFrom(seed + 'l1', img.en)
+      const j = pickFrom(seed + 'l2', tone.adj)
+      return `the space between ${pickFrom(seed + 'l3', i.s)} and ${j} is thinner than you think.`
+    }
+    const i = img.zh.length > 0 ? pickFrom(seed + 'l4', img.zh) : null
+    if (i) return `${pickFrom(seed + 'l5', i.s)}的${pickFrom(seed + 'l6', tone.nouns)}，像一首还没写完的诗。`
+    return `${pickFrom(seed + 'l7', tone.nouns)}${pickFrom(seed + 'l8', tone.adj)}，像一首还没写完的诗。`
+  }
+
+  // Type M: "[artist]唱这首歌的时候，[feeling]。" (artist-anchored)
+  const typeM = () => {
+    const shortArtist = artist.split(/[,，]/)[0].trim()
+    const feeling = pickFrom(seed + 'm1', tone.adj)
+    return `${shortArtist}唱这首歌的时候，${feeling}。`
+  }
+
+  // Type N: "[time/place]的[thing]，[action]。" (atmospheric)
+  const typeN = () => {
+    if (img.zh.length > 0) {
+      const i = pickFrom(seed + 'n1', img.zh)
+      const j = img.zh.length > 1 ? pickFrom(seed + 'n2', img.zh.filter(x => x !== i)) : i
+      return `${pickFrom(seed + 'n3', i.s)}${pickFrom(seed + 'n4', j.e)}，${pickFrom(seed + 'n5', tone.adj)}。`
+    }
+    if (img.en.length > 0) {
+      const i = pickFrom(seed + 'n6', img.en)
+      return `${pickFrom(seed + 'n7', i.s)} ${pickFrom(seed + 'n8', i.e)}, breathing slow.`
+    }
+    return `${pickFrom(seed + 'n9', tone.nouns)}里，${pickFrom(seed + 'n10', tone.verbs)}。`
+  }
+
+  // Type O: cinematic single-line scene
+  const typeO = () => {
+    if (img.zh.length >= 2) {
+      const a = pickFrom(seed + 'o1', img.zh)
+      const b = pickFrom(seed + 'o2', img.zh.filter(x => x !== a))
+      return `${pickFrom(seed + 'o3', a.s)}，${pickFrom(seed + 'o4', b.e)}，${pickFrom(seed + 'o5', tone.nouns)}。`
+    }
+    if (img.zh.length === 1) {
+      const i = img.zh[0]
+      return `${pickFrom(seed + 'o6', i.s)}，${pickFrom(seed + 'o7', tone.adj)}，${pickFrom(seed + 'o8', tone.nouns)}。`
+    }
+    return `${pickFrom(seed + 'o9', tone.adj)}，${pickFrom(seed + 'o10', tone.nouns)}，${pickFrom(seed + 'o11', tone.verbs)}。`
+  }
+
+  // Type P: "那些[adj]的[thing]，后来都变成了[noun]。" (retrospective)
+  const typeP = () => {
+    const adj = pickFrom(seed + 'p1', tone.adj)
+    const imgObj = img.zh.length > 0 ? pickFrom(seed + 'p2', img.zh) : null
+    const thing = imgObj ? pickFrom(seed + 'p2b', imgObj.t) : pickFrom(seed + 'p3', tone.nouns)
+    const noun = pickFrom(seed + 'p4', tone.nouns)
+    return `那些${adj}的${thing}，后来都变成了${noun}。`
+  }
+
+  // Type Q: English poetic fragment
+  const typeQ = () => {
+    if (img.en.length > 0) {
+      const i = pickFrom(seed + 'q1', img.en)
+      return `${pickFrom(seed + 'q2', i.a)} — quietly, without telling anyone.`
+    }
+    return `有些旋律听过就忘，有些你一唱就是一辈子。`
+  }
+
+  // Type R: "[emotion]不是[emotion]，是[redefinition]。"
+  const typeR = () => {
+    const e1 = pickFrom(seed + 'r1', tone.nouns)
+    const imgObj = img.zh.length > 0 ? pickFrom(seed + 'r2', img.zh) : null
+    const e2 = imgObj ? pickFrom(seed + 'r2b', imgObj.e) : pickFrom(seed + 'r3', tone.adj)
+    return `${e1}不是${e1}，是${e2}的另一种说法。`
+  }
+
+  // Type S: "你不在的时候，[thing]都变[adj]了。"
+  const typeS = () => {
+    const imgObj = img.zh.length > 0 ? pickFrom(seed + 's1', img.zh) : null
+    const thing = imgObj ? pickFrom(seed + 's1b', imgObj.s) : pickFrom(seed + 's2', tone.nouns)
+    const adj = pickFrom(seed + 's3', tone.adj)
+    return `你不在的时候，${thing}都变${adj}了。`
+  }
+
+  // Type T: "如果有一天[action]，这首歌就是答案。"
+  const typeT = () => {
+    const imgObj = img.zh.length > 0 ? pickFrom(seed + 't1', img.zh) : null
+    const action = imgObj ? pickFrom(seed + 't1b', imgObj.a) : pickFrom(seed + 't2', tone.verbs)
+    return `如果有一天你${action}，这首歌就是答案。`
+  }
+
+  // Type U: very short, cinematic, title-specific
+  const typeU = () => {
+    if (img.zh.length > 0) {
+      const i = pickFrom(seed + 'u1', img.zh)
+      return `${pickFrom(seed + 'u2', i.e)}在${pickFrom(seed + 'u3', i.t)}里，${pickFrom(seed + 'u4', tone.adj)}。`
+    }
+    return `它知道。`
+  }
+
+  // ── Select template based on song characteristics ──
+  const allTypes = [typeA, typeB, typeC, typeD, typeE, typeF, typeG, typeH, typeI, typeJ, typeK, typeL, typeM, typeN, typeO, typeP, typeQ, typeR, typeS, typeT, typeU]
+
+  // Favor certain types based on song attributes
+  let candidates = allTypes
+  // For English songs, prefer L/Q
+  if (hasEnglish && !hasChinese) {
+    candidates = [typeL, typeQ, typeB, typeF, typeM, typeN, typeA, typeC, typeH, typeD, typeE, typeG]
+  }
+  // For imagery-rich songs, prefer scene-based types
+  if (imgRich) {
+    const sceneTypes = [typeA, typeB, typeC, typeF, typeG, typeH, typeO, typeN, typeS, typeU]
+    candidates = [...sceneTypes, ...candidates.filter(t => !sceneTypes.includes(t))]
+  }
+  // For low energy, avoid brash types
+  if (energyLevel === '低') {
+    candidates = candidates.filter(t => t !== typeE)
+  }
+
+  // Pick from weighted candidates
+  return pickFrom(seed + 'main', candidates)()
+}
+
+// ── Custom reason map: specific artist-title pairs ───────────────────────
+// These are the original handcrafted entries — preserved because they capture
+// something specific that even a good template would miss.
+function customReasonMap() {
+  return {
     '薛之谦 - 演员': '每个人心里都有一个角色，只是不想再演了。',
     '薛之谦 - 暧昧': '暧昧是比喜欢更难说出口的东西。',
     '薛之谦 - 意外': '所有的爱都是意外，遇见你也是。',
-    '薛之谦 - 绅士': '最温柔的，是懂得克制的那种爱。',
-    '薛之谦 - 动物世界': '喜欢你这件事，比我想象的还要认真。',
-    '薛之谦 - 刚刚好': '不早不晚，在最对的时候遇见你。',
+    '薛之谦 - 绅士': '最温柔的，是懂得克制的爱。',
+    '薛之谦 - 刚刚好': '不早不晚，在对的时候遇见你。',
     '薛之谦 - 你还要我怎样': '有些话说了不如不说，不说又太难熬。',
-    '薛之谦 - 肆无忌惮': '爱一个人，就是想对他肆无忌惮。',
-    '薛之谦 - 一半': '你占了我的一半，另一半也想给你。',
-    '薛之谦 - 丑八怪': '所有人都看见的东西，有时候才是最美的。',
-    '薛之谦 - 最好': '你就是我想要的最好的那个。',
     '薛之谦 - 下雨了': '下雨了，只是想问问你有没有带伞。',
-    '薛之谦 - 小孩': '在你面前，我永远只想做个小孩。',
-    '薛之谦 - 几个你': '如果有几个你，每一个都想好好珍惜。',
-    '薛之谦 - 方圆几里': '方圆几里，只要你在，就是全世界。',
-    '薛之谦 - 慢半拍': '我总是慢半拍，但对你，我一直在。',
-    '薛之谦 - 深深爱过你(前世)': '前世深深爱过你，今生还在找你。',
     '薛之谦 - 天份': '爱你，是我这辈子最好的天分。',
-    '薛之谦 - 木偶人': '不想再假装了，在你面前只想做自己。',
-    '薛之谦 - 高尚': '爱一个人，不需要太多理由。',
-    '薛之谦 - 其实': '其实我一直都知道，只是不敢先说。',
-    '薛之谦 - 我知道你都知道': '有些心意，不用说出口也明白。',
-    '薛之谦 - 我好像在哪见过你': '第一次见你，就觉得你是对的人。',
-    '薛之谦 - 我想起你了': '不经意间，又想起了你。',
-    '薛之谦 - 有没有': '有没有人，会不顾一切地爱你。',
-    '薛之谦 - 我终于成了别人的女人': '那些遗憾，终究只剩一首歌来说。',
-    '薛之谦 - 那是你离开了北京的生活': '离开之后才明白，某些人是城市的一部分。',
-    '薛之谦 - 怪咖': '怪的人遇见怪的人，就是缘分。',
-    '薛之谦 - 潮流季': '流行过了，真心却从未过时。',
+    '薛之谦 - 方圆几里': '方圆几里，只要你在，就是全世界。',
+    '薛之谦 - 一半': '你占了我的一半，另一半也想给你。',
     '薛之谦 - 像风一样': '像风一样把你围绕，让你感觉到我。',
     '薛之谦 - 哑巴': '有些话，只能用沉默来说。',
+    '薛之谦 - 小孩': '在你面前，我永远只想做个小孩。',
+    '薛之谦 - 动物世界': '喜欢你这件事，比我想象的还要认真。',
+    '薛之谦 - 怪咖': '怪的人遇见怪的人，就是缘分。',
+    '薛之谦 - 几个你': '如果有几个你，每一个都想好好珍惜。',
     '薛之谦 - 陪你去流浪': '你去哪里，我就去哪里，不需要理由。',
     '薛之谦 - 这么久没见': '这么久没见，你还是我想的样子。',
-    '薛之谦 - 笑场': '在你面前笑了场，也不觉得丢脸。',
-
     '林俊杰 - 江南': '烟雨江南，最适合想一个人。',
     '林俊杰 - 她说': '有些话，只有音乐说得出口。',
     '林俊杰 - 茉莉雨': '雨里有你的影子，茉莉香里有你的名字。',
-    '林俊杰 - 熟能生巧': '爱一个人久了，连呼吸都成了习惯。',
     '林俊杰 - 记得': '记得你的每一个细节，一直都记得。',
-    '林俊杰 - 我还想她': '忘不掉，是因为太认真地喜欢过。',
-    '林俊杰 - 一千年以后': '一千年以后，我还是会认出你。',
-    '林俊杰 - 曹操': '爱一个人，也需要几分英雄气概。',
+    '林俊杰 - 一千年以后': '一千年以后，我要在人群中一眼认出你。',
     '林俊杰,蔡卓妍 - 小酒窝': '你笑起来的样子，是这世界上最好看的。',
-
     '周深 - 雪落下的声音 (Live)': '雪落下来的声音，安静得像你的名字。',
-    '周深 - 兰亭序': '故事写在水里，名字刻在心上。',
-    '周深 - 怜悯 (Live)': '不需要你的怜悯，只需要你的心。',
     '周深 - Monsters (Live)': '每个人心里都有一只怪兽，被你温柔对待时才安静下来。',
-
+    '陈粒 - 光': '你是所有黑暗里透进来的那道光。',
     '陈粒 - 走马': '走马观花，唯独你让我停下来。',
     '陈粒 - 小半': '你不是全部，你是比全部还多的那一点。',
-    '陈粒 - 易燃易爆炸': '遇见你之前，我不知道自己有多容易着火。',
     '陈粒 - 奇妙能力歌': '有你的世界，多了一种奇妙的颜色。',
-    '陈粒 - 光': '你是所有黑暗里透进来的那道光。',
-    '陈粒 - 虚拟': '现实里难以说出的话，都藏在这首歌里。',
     '陈粒 - 种种': '种种可能，我只想要有你的那一种。',
-
     '毛不易 - 呓语': '半梦半醒之间，说的都是你。',
     '毛不易 - 像我这样的人': '像我这样的人，也在认认真真地爱你。',
-    '毛不易 - 无问': '不问从何而来，不问去往何处，只要你在。',
-    '毛不易 - 小王日记': '生活里的小事，都想和你分享。',
-
     '孙燕姿 - 遇见': '遇见，是所有故事最好的开头。',
     '孙燕姿 - 开始懂了': '慢慢懂了，有些人是专门来让你心动的。',
     '孙燕姿 - 雨天': '下雨天，就想听这首歌。',
-    '孙燕姿 - 半句再见 (From At Café 6  Main Theme Song)': '半句再见，藏着太多没说出口的话。',
-
     'G.E.M.邓紫棋 - 光年之外': '跨越光年，只是为了找到你。',
     'G.E.M.邓紫棋 - 句号': '有些故事，不想画上句号。',
     'G.E.M.邓紫棋 - 多远都要在一起': '不管多远，都要在一起。',
     'G.E.M.邓紫棋 - 泡沫': '有些感情，像泡沫一样美，也一样易碎。',
-    'G.E.M.邓紫棋 - 倒数': '倒数着见你的日子，一天比一天期待。',
     'G.E.M.邓紫棋 - 来自天堂的魔鬼': '爱你是天堂，想你是魔鬼。',
-
+    'G.E.M.邓紫棋 - 倒数': '倒数着见你的日子，一天比一天期待。',
     '梁静茹 - 勇气': '爱你，是我做过最勇敢的事。',
     '梁静茹 - 分手快乐': '爱过了，就够了。',
-
     '陈奕迅 - 孤独患者': '孤独的人，需要一首懂他的歌。',
     '陈奕迅 - 浮夸': '所有的热闹，都是一个人的孤独。',
     '陈奕迅 - 阴天快乐': '阴天也要快乐，因为你在。',
-    '陈奕迅 - 爱情转移(国)': '把爱情转移，转移到你身上。',
-    '陈奕迅 - 富士山下': '富士山下，樱花如雪，思念如雨。',
-    '陈奕迅 - 最佳损友': '最好的朋友，也是最好的回忆。',
-
+    '陈奕迅 - 富士山下': '富士山下，思念如雪落满心底。',
     '郭顶 - 水星记': '两个人，围绕着彼此转，就像水星记里写的那样。',
     '郭顶 - 凄美地': '凄美地，有人在等你，有人在爱你。',
-
     '隔壁老樊 - 别怕 我在': '别怕，无论什么时候，我都在。',
     '隔壁老樊 - 多想在平庸的生活拥抱你': '就算平凡，也想每天都拥抱你。',
-    '隔壁老樊 - 醒着醉': '想你的感觉，像是清醒着喝醉了。',
-
-    '郁可唯 - 删了吧': '有些东西舍不得删，因为里面有你。',
-    '郁可唯 - 水中花': '水中花，镜中月，明知触碰不到还是伸出手。',
-
     '单依纯 - 想你时风起': '风一起，就想起你了。',
     '单依纯 - 爱的回归线 (Live版)': '绕了一圈，还是回到你身边。',
-    '单依纯 - 下雨天 (Live)': '下雨天，最想听的声音是你的名字。',
-    '单依纯 - 给电影人的情书 (Live)': '每一帧都像是在写给你的情书。',
-    '单依纯 - 踮起脚尖爱 (Live版)': '踮起脚尖，努力去触碰你。',
-
     '那英 - 默': '有些心情，只有沉默才说得清。',
-    '那英 - 梦一场': '如果是梦，希望梦里一直有你。',
-
-    '张杰 - 我们都一样': '你不孤单，我们都一样在认真生活。',
-    '张杰 - 他不懂': '他不懂你，但我懂。',
     '张杰 - 夜空中最亮的星 (Live)': '你是我夜空中最亮的那颗星。',
     '张杰 - 今生今世': '今生今世，只认你一个。',
-    '张杰 - 着魔': '遇见你，就像被你施了魔法。',
     '张杰 - 明天过后': '无论明天之后是什么，今晚我都想陪着你。',
-    '张杰 - 最接近天堂的地方': '有你的地方，就是最接近天堂的地方。',
-
     '张宇 - 雨一直下': '雨一直下，思念一直在。',
     '张宇 - 月亮惹的祸': '都是月亮惹的祸，让我这么想你。',
-    '张宇 - 给你们': '这首歌，是唱给你们的。',
     '张宇 - 趁早': '如果爱，就趁早。',
-    '张宇 - 囚鸟': '爱一个人，就像被困住的鸟。',
-    '张宇 - 单恋一枝花': '单恋就像一枝花，孤独地开着。',
-
-    '张芸京 - 偏爱': '偏偏是你，让我偏爱到无法自拔。',
-    '苏运莹 - 野子': '野子，自由而真实，像极了你的眼神。',
     '王贰浪 - 往后余生': '往后余生，都想和你一起过。',
     '王贰浪 - 盔甲': '你是我最软的心，也是我最硬的盔甲。',
-    '王贰浪 - 你也没有错': '你没有错，只是我们的缘分到了。',
-
     '八三夭 - 想见你想见你想见你': '想见你，想见你，想见你。',
     '逃跑计划 - 夜空中最亮的星': '夜空再黑，你是最亮的那一颗。',
-
-    '鬼卞 - 只想要你知道': '只想让你知道，我认真地喜欢过你。',
-    '鬼卞 - 佳人': '佳人，是你在我眼里永远的样子。',
-    '鬼卞 - 蝴蝶效应': '遇见你，改变了所有。',
-    '鬼卞 - 与你何涉': '与你有关的一切，都与我有关。',
-    '鬼卞 - 雌雄难辨': '有时候爱一个人，分不清是你还是我先动心。',
-
-    '李荣浩 - 年少有为': '年少时的我，没想到会这么喜欢你。',
-    '李荣浩 - 我看着你的时候': '看着你，就什么都不用说了。',
-    '李荣浩 - 在一起嘛好不好': '简单的一句话，装满了期待。',
-
-    '张信哲 - 爱如潮水': '爱如潮水，一浪接一浪地涌向你。',
-    '张信哲 - 别怕我伤心': '别怕我伤心，只要你开心就好。',
-
-    '莫文蔚 - 阴天': '阴天不代表没有阳光，只是躲起来了。',
-    '莫文蔚 - 如果没有你': '如果没有你，我就不完整了。',
-
-    '梁咏琪 - 短发': '剪了短发，是为了新的开始。',
-    '梁咏琪 - 胆小鬼': '在爱里，每个人都是胆小鬼。',
-
-    '陶喆 - 爱我还是他': '你的心里，真的只有我吗？',
-
-    '周传雄 - 黄昏': '黄昏时刻，最想牵着你的手。',
-    '周兴哲 - 永不失联的爱': '不管走多远，爱你这件事永远不断线。',
-
-    '徐佳莹 - 一样的月光': '同一片月光下，思念的是同一个你。',
-    '徐佳莹 - 一样的月光 (Live)': '同一片月光下，思念的是同一个你。',
-
-    '黄丽玲 - 幸福了 然后呢': '幸福了，然后呢？然后更幸福。',
-    '黄丽玲 - 有一种悲伤': '有一种悲伤，叫做明明爱你却说不出口。',
-    '黄丽玲 - 失恋无罪': '爱过了，输了也不是罪。',
-    '黄丽玲 - 失恋无罪 (A-Lin 2013 Feel-Lin)': '爱过了，输了也不是罪。',
-
-    '李宗盛 - 给自己的歌': '认真地活过，认真地爱过，就够了。',
-    '李宗盛 - 鬼迷心窍': '被你迷住，无法自拔。',
-
-    '萧亚轩 - 错的人': '错的时间遇见对的人，是心里最深的遗憾。',
-    '柏松 - 世间美好与你环环相扣': '所有美好，都和你连在一起。',
-    '张钰琪 - 陪你度过漫长岁月': '漫长岁月里，你是最温柔的那部分。',
-    '枯木逢春 - 这一生关于你的风景': '这一生，最美的风景，是你。',
-    '沈以诚 - 好奇': '好奇你想的是什么，好奇你的一切。',
-    '满舒克 - 慢热': '慢热的人爱起来，更加认真。',
-    '颜人中 - 遇到': '遇到你，是所有巧合里最好的一个。',
-    '颜人中 - 晚安': '晚安，愿你在梦里也被温柔对待。',
-    '颜人中 - 下一个天亮': '等到下一个天亮，还是会想起你。',
-    '高旭 - 不做你的朋友': '不想做你的朋友，只想做你最重要的人。',
-    '王天阳 - 借月': '借一轮明月，把思念带给你。',
-    '蓝心羽 - 阿拉斯加海湾': '有些感情，像阿拉斯加的海湾，辽阔又安静。',
-    '刘可以 - 阿拉斯加海湾': '把思念放在阿拉斯加的海湾，任它漂流。',
-    '于文文 - 奉陪': '你的每一段路，我都愿意奉陪。',
-    '于潼 - 寂寞沙洲冷': '寂寞的时候，有这首歌陪着你。',
-    '陈柏宇 - 行尸走肉': '遇见你之前，不知道自己只是行尸走肉。',
-    '戚薇 - 如果爱忘了': '有些爱，忘不了，就也别勉强忘。',
-    '井胧 - 丢了你': '丢了你，才知道有多重要。',
-    '曲肖冰 - 天亮以前说再见': '天亮以前，把所有想说的都说了。',
-    '韩红,孙楠 - 美丽的神话': '爱是一个美丽的神话，你让它变成真实。',
-    '曹格,卓文萱 - 梁山伯与茱丽叶': '隔了时空，爱还是爱。',
-    '段弋,hanji - 223\'s': '两个人，两百二十三个秘密。',
-
-    // New Chinese additions
-    '邓丽君 - 甜蜜蜜': '你笑起来，整个世界都是甜的。',
     '邓丽君 - 我只在乎你': '任时光匆匆流去，我只在乎你。',
-    '邓丽君 - 你怎么说': '你说什么都好，因为是你说的。',
+    '邓丽君 - 甜蜜蜜': '你笑起来，整个世界都是甜的。',
     '赵咏华 - 最浪漫的事': '最浪漫的事，就是和你一起慢慢变老。',
-    '张韶涵 - 隐形的翅膀': '每个人心里都有一双翅膀，带你飞向你想去的地方。',
     '王菲 - 红豆': '还没为你把红豆熬成缠绵的伤口。',
-    '刀郎 - 西海情歌': '西海的风，吹的都是对你的思念。',
     '娃娃 - 飘洋过海来看你': '飘洋过海，只是为了见你一面。',
     '庾澄庆 - 情非得已': '爱上你，是情非得已。',
-    '庾澄庆 - 春泥': '化作春泥，也是因为爱。',
-    '许美静 - 遗憾': '遗憾，是爱情里最常见的结局。',
-    '萨顶顶 - 左手指月': '左手指月，右手牵你。',
-    '许嵩 - 雅俗共赏': '雅俗共赏的，不只是歌，还有对你的感情。',
+    '张韶涵 - 隐形的翅膀': '每个人心里都有一双翅膀，带你飞向你想去的地方。',
+    '李健 - 传奇': '只是因为在人群中多看了你一眼。',
+    '水木年华 - 一生有你': '一生有你，就是最好的安排。',
     '许嵩 - 半城烟沙': '半城烟沙，一世牵挂。',
     '许嵩 - 如果当时': '如果当时，我会不会更勇敢一点。',
     '许嵩 - 山水之间': '山水之间，念的都是你。',
     '许嵩 - 燕归巢': '燕归巢，我归你。',
-    '李健 - 传奇': '只是因为在人群中多看了你一眼。',
-    '水木年华 - 一生有你': '一生有你，就是最好的安排。',
-    '陈淑桦 - 笑红尘': '红尘多可笑，痴情最无聊。',
     '费玉清 - 千里之外': '千里之外，思念不减。',
-    '郑智化 - 水手': '他说风雨中这点痛算什么。',
-    '郑源 - 一万个理由': '一万个理由，都不如一句我想你。',
-    '郑源 - 不要在我寂寞的时候说爱我': '寂寞的时候，最怕听到这首歌。',
-    '郭静 - 下一个天亮': '下一个天亮，我还是会想起你。',
-    '萧敬腾 - 怎么说我不爱你': '怎么说我不爱你，连自己都骗不过。',
-    '胡彦斌 - 月光': '月光洒在窗台上，像你的温柔。',
-    '胡彦斌 - 红颜': '红颜弹指老，刹那芳华。',
+    '刀郎 - 西海情歌': '西海的风，吹的都是对你的思念。',
+    '李宗盛 - 给自己的歌': '认真地活过，认真地爱过，就够了。',
+    '莫文蔚 - 阴天': '阴天不代表没有阳光，只是躲起来了。',
+    '莫文蔚 - 如果没有你': '如果没有你，我就不完整了。',
+    '张信哲 - 爱如潮水': '爱如潮水，一浪接一浪地涌向你。',
+    '陶喆 - 爱我还是他': '你的心里，真的只有我吗？',
+    '周传雄 - 黄昏': '黄昏时刻，最想牵着你的手。',
+    '周兴哲 - 永不失联的爱': '不管走多远，爱你这件事永远不断线。',
+    '徐佳莹 - 一样的月光': '同一片月光下，思念的是同一个你。',
+    '黄丽玲 - 幸福了 然后呢': '幸福了，然后呢？然后更幸福。',
+    '黄丽玲 - 失恋无罪': '爱过了，输了也不是罪。',
+    '萧亚轩 - 错的人': '错的时间遇见对的人，是心里最深的遗憾。',
+    '颜人中 - 晚安': '晚安，愿你在梦里也被温柔对待。',
+    '颜人中 - 遇到': '遇到你，是所有巧合里最好的一个。',
+    '于文文 - 奉陪': '你的每一段路，我都愿意奉陪。',
+    '井胧 - 丢了你': '丢了你，才知道有多重要。',
+    '韩红,孙楠 - 美丽的神话': '爱是一个美丽的神话，你让它变成真实。',
+    '曹格,卓文萱 - 梁山伯与茱丽叶': '隔了时空，爱还是爱。',
     '杨丞琳 - 雨爱': '雨中的爱，最难忘。',
-    '阿牛 - 桃花朵朵开': '桃花朵朵开，好运滚滚来。',
+    '王力宏 - 唯一': '你就是我的唯一。',
+    '许美静 - 遗憾': '遗憾，是爱情里最常见的结局。',
+    '蔡琴 - 南屏晚钟 (Remastered)': '晚钟响起的时候，想起的都是你。',
     '陈瑞 - 白狐': '千年修行，只为等你回头。',
-    '凤凰传奇 - 等爱的玫瑰': '等爱的玫瑰，盛开在你的世界。',
-    '韩宝仪 - 舞女泪': '舞女泪，滴滴都是为了谁。',
-    '蔡依林 - 大艺术家': '你是大艺术家，画出了最美的我。',
-    '王心凌 - 当你': '当你笑了，世界都变明亮了。',
-    '林忆莲,杨啟（满汉女神） - 为你我受冷风吹': '为你，我什么都愿意承受。',
-    '萧潇 - 爱要坦荡荡': '爱就要坦荡荡，不藏不躲。',
-    '杨培安 - 爱上你是一个错': '爱上你如果是错，我宁愿一错再错。',
+    '萨顶顶 - 左手指月': '左手指月，右手牵你。',
     '刘欢 - 凤凰于飞': '凤凰于飞，翙翙其羽。',
     '周华健 - 有没有一首歌会让你想起我': '有没有一首歌，会让你想起我。',
     '戴佩妮 - 怎样': '怎样，我都是爱你的那个。',
-    '印子月 - 落空': '所有的期待，最后都落了空。',
-    '田一龙 - 一定要爱你': '这辈子，一定要爱你。',
-    '办桌二人组 - 在心里从此永远有个你': '在心里，从此永远有个你。',
     '龙梅子 - 爱情专属权': '我的爱情，专属给你。',
-    '王力宏 - 唯一': '你就是我的唯一。',
-    '庞龙 - 你是我的玫瑰花': '你是我的玫瑰花，开在我心间。',
-    '丁当 - 我爱他': '我爱他，轰轰烈烈最疯狂。',
-    '缘为冰 - 千年': '千年等一回，只为遇见你。',
-    '李炜 - 剑魂': '剑魂不灭，爱亦不灭。',
-    '徐良 - 那时雨': '那时雨，淋湿了回忆。',
-    '小匆匆 - 若梦': '若梦，你我相逢。',
+    '蓝心羽 - 阿拉斯加海湾': '有些感情，像阿拉斯加的海湾，辽阔又安静。',
+    '枯木逢春 - 这一生关于你的风景': '这一生，最美的风景，是你。',
+    '柏松 - 世间美好与你环环相扣': '所有美好，都和你连在一起。',
     '尹昔眠 - 落在生命里的光': '你是落在我生命里的那道光。',
-    '孙子涵 - 唐人': '唐人街的灯，照亮了回家的路。',
-    '陈慧琳 - 今生你作伴': '今生有你作伴，什么都不怕。',
-    '群星 - 因为爱情': '因为爱情，简单的生长。',
-    '许飞 - 我要的飞翔': '我要的飞翔，是有你在的方向。',
-    '袁成杰 - 爱情睡醒了': '爱情睡醒了，才发现你一直在身边。',
-    '孟庭苇 - 羞答答的玫瑰静悄悄地开': '羞答答的玫瑰，静悄悄地为你开。',
-    '安琥 - 天使的翅膀': '天使的翅膀，护你一世安好。',
-    '小黑 - 天使的翅膀': '天使的翅膀，静静守护着你。',
-    '蔡琴 - 南屏晚钟 (Remastered)': '晚钟响起的时候，想起的都是你。',
-    '曾沛慈 - 一个人想着一个人': '一个人的时候，最想另一个人。',
-    '曹格 - 寂寞寂寞不好': '寂寞寂寞不好，有你就好了。',
     '杜宣达 - 如果可以': '如果可以，想一直陪在你身边。',
-    '陈奕迅 - 富士山下': '富士山下，思念如雪落满心底。',
-    '林俊杰 - 曹操': '爱你，也需要几分勇气和魄力。',
-    '林俊杰 - 一千年以后': '一千年以后，我要在人群中一眼认出你。',
-    '王赫野 - 大风吹': '大风吹乱了头发，吹不乱对你的心意。',
-    '凤凰传奇 - 大声唱': '大声唱出对你的喜欢。',
-    '张碧晨 - 光的方向 (Live)': '朝着光的方向，就能找到你。',
-    '张碧晨 - 梦幻诛仙': '梦幻诛仙，你的名字是我的咒语。',
-    '张远 - 看着我的眼睛说': '看着我的眼睛，说你爱我。',
-    '胡杨林 - 香水有毒': '香水有毒，但为你，我愿意中毒。',
-    '陈文杰的音悦 - 爱要坦荡荡': '爱要光明正大，不藏不掖。',
-    '戴羽彤 - 我们俩': '我们俩，就是最好的故事。',
-    '张宇 - 给你们': '这首歌，送给世上所有相爱的人。',
-    '张宇 - 囚鸟': '爱得太深，像一只囚鸟。',
-    '张宇 - 月亮惹的祸': '月亮惹的祸，让我这么想你。',
-    '张宇 - 单恋一枝花': '单恋如花，独自开在风里。',
-    ' 加木 - 两 难': '进退两难的时候，听听这首歌。',
-    '梦境里的算法 - 天赋': '爱你，是天生的天赋。',
-    '孙盛希 - 少一点天份': '爱一个人，不需要太多天分。',
-    '杨千嬅,王俊凯 - 花好月圆夜 (Live)': '花好月圆的夜晚，最适合想你。',
-    '王婧,老狼 - 想把我唱给你听': '想把我唱给你听，趁现在年少如花。',
-    '徐良,小凌 - 客官不可以': '客官不可以，因为心里只有你。',
-    '黄子弘凡,肖俊(XIAOJUN) - 人鱼的眼泪 (Live版)': '人鱼的眼泪，是为你流的。',
-    '张艺兴,火风 - 大花轿 (feat.火风)': '用大花轿，把你娶回家。',
-    '微醺卡带 - 你是我的玫瑰花': '你是我的玫瑰花，独一无二。',
-    '微醺卡带 - 微醺卡带-香水有毒-微醺卡带': '微醺的时候，最想和你说说话。',
-    '微醺卡带 - 我要找到你': '不管多远，都要找到你。',
-    '浪漫的大呲花 - 认真的雪 (R&B版)': '认真的雪，落在认真的心上。',
-    '红碎片 - 冲动的惩罚（R&B）': '冲动的惩罚，就是更想你。',
-    '余翊 - 童话 R&B': '童话里的爱情，R&B里有你的味道。',
-    '音乐风格电台 - 模特 (R&B版)': '做你的模特，画最美的我。',
-    '炫动小霸王 - 墨染': '墨染青衣，思念入骨。',
-    'Capt. Lilia Iwasko - 日不落r&b': '日不落的地方，有你在等我。',
-    'moonlight - 黄昏（R&B版）': '黄昏里，R&B的节奏是你的心跳。',
-    'By2 - 爱的双重魔力': '爱的双重魔力，让我欢喜让我忧。',
-    'Sweety - 樱花草': '樱花草开的时候，就是我想你的时候。',
-    'FORMOSA - 前世今生': '前世今生，我都愿意遇见你。',
-    'HuiuioOo,Crybird - 乖乖 (连不上我wifi)': '连不上wifi，连得上你的心。',
-    'Xun - 我要找到你': '不管你在哪里，我都要找到你。',
-    '颜人中 - 恶作剧 (Live版)': '所有的恶作剧，都是想引起你的注意。',
-    '刘至佳 - 危险派对 (live版)': '危险的派对，因为你变得安全。',
-    '揽小 - 和气生财': '和气生财，和你生爱。',
-    '男才女貌 - 外滩十八号': '外滩十八号，等风也等你。',
-    '王赫野,姚晓棠 - 虹之间 (Live版)': '虹之间，是我对你的想念。',
-    '周传雄,陆虎 - 寂寞沙洲冷 (Live)': '寂寞沙洲，因为有你不冷。',
-    '杨宗纬,宝石Gem,王宇宙Leto - 若月亮没来 (Live版)': '若月亮没来，就用这首歌替它陪你。',
-    'GAI周延,戴佩妮 - 用情 (Live版)': '用情至深，就是这首歌的温度。',
-    '薛之谦,韩红 - 小尖尖': '小尖尖，是你的小脾气。',
-    '伍佰 & China Blue - 梦醒时分': '梦醒时分，最想看见的是你。',
-    '张翰,朱梓骁,魏晨 - 星空物语': '星空物语，说的是你和我的故事。',
-
-    // English
-    'Ed Sheeran - Perfect': '你就是那个完美的人。',
-    'Ed Sheeran - Shape of You': '形状不同，偏偏契合在一起。',
-    'Adele - Easy On Me': '对我温柔一点，就像这首歌一样。',
-    'The Chainsmokers,Coldplay - Something Just Like This': '不需要超级英雄，只想要这样的你。',
-    'Taylor Swift - Cruel Summer': '残忍的夏天，因为你而变得值得。',
-    'Justin Bieber - Yummy': '你甜甜的笑容，比这首歌还要上瘾。',
-    'Justin Bieber - ALL I CAN TAKE': '能撑住的，都是为了你。',
-    'Justin Bieber - BAD HONEY': '甜蜜的事，不一定都是好的。',
-    'Justin Bieber - BETTER MAN': '因为你，想成为更好的人。',
-    'Justin Bieber - BUTTERFLIES': '每次见你，心里都有蝴蝶在飞。',
-    'Justin Bieber - DAISIES': '雏菊花海，都不如你。',
-    'Justin Bieber - EYE CANDY': '你是所有目光里最好看的那一个。',
-    'Justin Bieber - LOVE SONG': '所有情歌，都是为你写的。',
-    'Justin Bieber - NEED IT': '不需要很多，只需要你。',
-    'Justin Bieber - SPEED DEMON': '爱上你的速度，比什么都快。',
-    'Justin Bieber - WALKING AWAY': '转身离开，是最难的事。',
-    'Justin Bieber - WITCHYA': '和你在一起，一切都对。',
-    'Justin Bieber - YUKON': 'YUKON的冬天，不如你的温暖。',
-    'Justin Bieber - 405': '405号公路上，想的是你。',
-
-    'Anthem Lights,Megan Davies - A Thousand Years': '等你，等了一千年。',
-    'Anthem Lights - As Long as You Love Me': '只要你爱我，就什么都够了。',
-    'Camila Cabello - This Love': '这份爱，一直都在。',
-    'Lukas Graham - 7 Years': '七岁时的梦想，长大后你出现了。',
-    'Alan Walker - Faded': '消失在人群里，但对你来说，我一直都在。',
-    'OneRepublic - Apologize': '有些遗憾，只能用音乐来表达。',
-    'Owl City - Enchanted': '遇见你那一刻，我被彻底迷住了。',
-    'SLANDER,Dylan Matthew - Love Is Gone (Acoustic)': '爱消散了，但曾经有过，就值得。',
-    'Jeremy Zucker,Bea Miller - comethru': '深夜里，希望你能过来陪我。',
-    'Tamas Wells - Valder Fields': '有你的地方，才是我想去的地方。',
-    'Bruno Major - Easily': '爱上你，太容易了，轻而易举就沦陷了。',
-    'Lauv - Love Somebody': '想爱一个人，想爱得很认真。',
-    'Michael Hoppé - How Do I Love Thee': '用所有能想到的方式，爱你。',
-    'Richard Clayderman - Mariage d\'amour (Paul de Senneville)': '爱情的旋律，只需要钢琴就足够了。',
-    'Ariana Grande,Justin Bieber - Stuck with U': '被困在和你在一起的时光里，甘之如饴。',
-    'Westlife - Seasons In The Sun': '那些阳光灿烂的日子，是因为你在。',
-    'MOCCA - I Remember': '我记得，每一个关于你的瞬间。',
-    'Chris Medina - What Are Words': '只要你在，什么语言都不需要。',
-    'Anson Seabra - Keep Your Head Up Princess': '抬起头，你值得最好的一切。',
-    'Powfu,Kuzu Mellow - met at a party': '在最普通的地方相遇，却是最特别的故事。',
-    'Sasha Alex Sloan - Dancing With Your Ghost': '你不在了，但那支舞我还记得。',
-    'Savage Ga$p - an ocean of stars couldn\'t keep us apart': '整片星海，也拦不住我找到你的心。',
-    'GIVĒON - Stuck On You': '粘在你身上，不想离开。',
-    'Kendrick Lamar,SZA - luther': '有些旋律，一听就放不下。',
-    'Lady Gaga,Bruno Mars - Die With A Smile': '就算是最后一天，也要笑着想你。',
-    'Rihanna - Kiss It Better': '有些伤，亲吻就能愈合。',
-    'Sufjan Stevens - Mystery of Love': '爱是最大的谜，永远解不完。',
-    'Sufjan Stevens - Visions of Gideon': '那些幻象里，都是你的影子。',
-    'Troye Sivan - Strawberries & Cigarettes': '草莓和香烟，甜中带涩。',
-    'Dan + Shay,Justin Bieber - 10,000 Hours': '一万个小时，只想用来了解你。',
-    'Ed Sheeran,Taylor Swift - The Joker And The Queen (feat. Taylor Swift)': '小丑和王后，偏偏是最好的一对。',
+    '曲肖冰 - 天亮以前说再见': '天亮以前，把所有想说的都说了。',
+    '蔡徐坤 - Hug me (抱我)': '抱一下，比说什么都好。',
+    'Ed Sheeran - Perfect': 'You look perfect tonight.',
+    'Adele - Easy On Me': 'Go easy on me — I was still a child.',
+    'Justin Bieber - 405': 'Driving 405, thinking of you.',
+    '88rising,NIKI - La La Lost You (Acoustic Version)': '飞得再远，有些人还是会在夜里想起。',
+    '24kGoldn,iann dior - Mood': '今天不用想太多，跟着节奏轻轻晃就好了。',
+    '88rising,NIKI,Phum Viphurit - Strange Land (Acoustic Version)': '明明身边很多人，却还是像漂在陌生城市里。',
+    '88rising,AUGUST 08,Barney Bones - Calculator': '算了又算，还是算不过自己的心。',
+    'Justin Bieber - Yummy': '你一笑，连空气都是甜的。',
+    'Justin Bieber - BUTTERFLIES': '你靠近的时候，我的心脏在翻跟斗。',
+    'Justin Bieber - WITCHYA': '和你在一起，什么都不用想。',
+    'Justin Bieber - DAISIES': '如果你是一朵花，我愿做你的土壤。',
+    'Justin Bieber - YUKON': '开到Yukon，一路想的都是你。',
+    'Justin Bieber,Dijon - DEVOTION': '有些付出，不需要回报。',
+    'Kendrick Lamar,SZA - luther': '有些歌，一听就懂。有些人，一见就知道。',
   }
-
-  if (customReasons[key]) return customReasons[key]
-  return genericReason(primaryMood)
 }
-
-function genericReason(mood) {
-  const pool = {
-    '想你了': [
-      '这首歌，适合在深夜安静想念某个人。',
-      '旋律里藏着所有没说出口的想念。',
-      '有些音乐，一响起就让人想到那个人。',
-      '深夜听这首，脑海里浮现的是谁？',
-      '这首歌懂你，就像懂得想念是什么感觉。',
-    ],
-    '开心开心': [
-      '今天心情好，就配这首。',
-      '听这首歌，连步伐都会变得轻盈。',
-      '快乐的旋律，是最好的礼物。',
-      '跟着节拍动起来，今天属于你。',
-      '这首歌的能量，跟你今天一样耀眼。',
-    ],
-    '今天很幸福': [
-      '幸福的感觉，就是这首歌的温度。',
-      '把这份满足感留住，就像这首歌的旋律。',
-      '有你在的每一天，都值得一首这样的歌。',
-      '温柔的旋律，配上幸福的心情，刚刚好。',
-      '这首歌，献给今天的好心情。',
-    ],
-    '需要安慰': [
-      '没关系，这首歌陪着你。',
-      '让音乐替你说出那些说不出口的话。',
-      '有时候不需要解释，只需要一首好歌。',
-      '这首歌像一个温柔的拥抱，送给你。',
-      '一切都会好的，先听着这首歌。',
-    ],
-    '想被抱抱': [
-      '这首歌，就像一个温暖的拥抱。',
-      '听着这首，闭上眼睛，感受被爱的温度。',
-      '有人在想着你，隔着音符传递温暖。',
-      '软软的旋律，就是今晚最好的陪伴。',
-      '听这首歌，好像真的有人在身边。',
-    ],
-    '有点苦恼': [
-      '没关系，苦恼也是一种感受。',
-      '让这首歌帮你整理一下心情。',
-      '有些事想不明白，听听歌再说。',
-      '音乐懂你，就算说不清楚也没关系。',
-      '这首歌，安静地陪着你想事情。',
-    ],
-    '洗澡放松一下': [
-      '用这首歌冲走今天所有的疲惫。',
-      '热水加上好音乐，今晚好好放松。',
-      '什么都不用想，就跟着旋律漂一会儿。',
-      '这首歌，专为今晚的放松时光准备。',
-      '轻轻松松，就这样享受今晚的安静。',
-    ],
-    '想一个人发呆': [
-      '一个人静静的，这首歌最配。',
-      '漂着漂着，思绪就到了你想去的地方。',
-      '慢下来，什么都不想，只是感受音乐。',
-      '这首歌的节奏，就是今晚你的呼吸频率。',
-      '深夜一个人，有这首歌就够了。',
-    ],
-    '今天有点累': [
-      '今天已经很努力了，好好休息。',
-      '软软的旋律，帮你放下今天的重量。',
-      '什么都不用再做了，听着这首慢慢来。',
-      '这首歌，是今晚对你最温柔的告别。',
-      '你已经很好了，让音乐陪你休息。',
-    ],
-  }
-  const arr = pool[mood] || pool['想一个人发呆']
-  return arr[0]
-}
-
 // ═══════════════════════════════════════════════════════════════════════════
 // MAIN — Scan, classify, write
 // ═══════════════════════════════════════════════════════════════════════════
