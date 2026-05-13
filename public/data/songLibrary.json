@@ -6263,5 +6263,1453 @@
     "emotionalDescription": "温柔幸福感",
     "bestFor": "适合感到温柔满足、想把这份幸福留住的时候",
     "romanticReason": "喜欢你的时候，心里翻来覆去都是你。"
+  },
+  {
+    "title": "爱的双重魔力",
+    "artist": "By2",
+    "src": "/songs/By2 - 爱的双重魔力.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "日不落r&b",
+    "artist": "Capt. Lilia Iwasko",
+    "src": "/songs/Capt. Lilia Iwasko - 日不落r&b.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "前世今生",
+    "artist": "FORMOSA",
+    "src": "/songs/FORMOSA - 前世今生.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "用情 (Live版)",
+    "artist": "GAI周延,戴佩妮",
+    "src": "/songs/GAI周延,戴佩妮 - 用情 (Live版).mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "高",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "乖乖 (连不上我wifi)",
+    "artist": "HuiuioOo,Crybird",
+    "src": "/songs/HuiuioOo,Crybird - 乖乖 (连不上我wifi).mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "Yummy",
+    "artist": "Justin Bieber",
+    "src": "/songs/Justin Bieber - Yummy.mp3",
+    "moodTags": [
+      "开心开心",
+      "想被抱抱"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "轻盈欢快感",
+    "bestFor": "适合今天心情特别好、想跟着旋律动起来的时候",
+    "romanticReason": "今天心情好，就配这首。"
+  },
+  {
+    "title": "樱花草",
+    "artist": "Sweety",
+    "src": "/songs/Sweety - 樱花草.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "我要找到你",
+    "artist": "Xun",
+    "src": "/songs/Xun - 我要找到你.mp3",
+    "moodTags": [
+      "想你了"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "深夜思念感",
+    "bestFor": "适合深夜安静想念某个人的时候听",
+    "romanticReason": "这首歌，适合在深夜安静想念某个人。"
+  },
+  {
+    "title": "黄昏（R&B版）",
+    "artist": "moonlight",
+    "src": "/songs/moonlight - 黄昏（R&B版）.mp3",
+    "moodTags": [
+      "想一个人发呆",
+      "今天有点累"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "我爱他",
+    "artist": "丁当",
+    "src": "/songs/丁当 - 我爱他.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "梦醒时分",
+    "artist": "伍佰 & China Blue",
+    "src": "/songs/伍佰 & China Blue - 梦醒时分.mp3",
+    "moodTags": [
+      "洗澡放松一下"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "慵懒放松感",
+    "bestFor": "适合用热水冲走一天疲惫、什么都不用想的时候",
+    "romanticReason": "用这首歌冲走今天所有的疲惫。"
+  },
+  {
+    "title": "童话 R&B",
+    "artist": "余翊",
+    "src": "/songs/余翊 - 童话 R&B.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "大声唱",
+    "artist": "凤凰传奇",
+    "src": "/songs/凤凰传奇 - 大声唱.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "等爱的玫瑰",
+    "artist": "凤凰传奇",
+    "src": "/songs/凤凰传奇 - 等爱的玫瑰.mp3",
+    "moodTags": [
+      "开心开心",
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "轻盈欢快感",
+    "bestFor": "适合今天心情特别好、想跟着旋律动起来的时候",
+    "romanticReason": "今天心情好，就配这首。"
+  },
+  {
+    "title": "西海情歌",
+    "artist": "刀郎",
+    "src": "/songs/刀郎 - 西海情歌.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "凤凰于飞",
+    "artist": "刘欢",
+    "src": "/songs/刘欢 - 凤凰于飞.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "危险派对 (live版)",
+    "artist": "刘至佳",
+    "src": "/songs/刘至佳 - 危险派对 (live版).mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "高",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "在心里从此永远有个你",
+    "artist": "办桌二人组",
+    "src": "/songs/办桌二人组 - 在心里从此永远有个你.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "两 难",
+    "artist": "加木",
+    "src": "/songs/加木 - 两 难.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "落空",
+    "artist": "印子月",
+    "src": "/songs/印子月 - 落空.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "寂寞沙洲冷 (Live)",
+    "artist": "周传雄,陆虎",
+    "src": "/songs/周传雄,陆虎 - 寂寞沙洲冷 (Live).mp3",
+    "moodTags": [
+      "想一个人发呆",
+      "今天有点累"
+    ],
+    "energyLevel": "高",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "有没有一首歌会让你想起我",
+    "artist": "周华健",
+    "src": "/songs/周华健 - 有没有一首歌会让你想起我.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "飘洋过海来看你",
+    "artist": "娃娃",
+    "src": "/songs/娃娃 - 飘洋过海来看你.mp3",
+    "moodTags": [
+      "洗澡放松一下"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "慵懒放松感",
+    "bestFor": "适合用热水冲走一天疲惫、什么都不用想的时候",
+    "romanticReason": "用这首歌冲走今天所有的疲惫。"
+  },
+  {
+    "title": "唐人",
+    "artist": "孙子涵",
+    "src": "/songs/孙子涵 - 唐人.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "半句再见 (From At Café 6  Main Theme Song)",
+    "artist": "孙燕姿",
+    "src": "/songs/孙燕姿 - 半句再见 (From At Café 6  Main Theme Song).mp3",
+    "moodTags": [
+      "今天很幸福"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "温柔幸福感",
+    "bestFor": "适合感到温柔满足、想把这份幸福留住的时候",
+    "romanticReason": "幸福的感觉，就是这首歌的温度。"
+  },
+  {
+    "title": "雨天",
+    "artist": "孙燕姿",
+    "src": "/songs/孙燕姿 - 雨天.mp3",
+    "moodTags": [
+      "今天很幸福",
+      "想一个人发呆",
+      "今天有点累"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "温柔幸福感",
+    "bestFor": "适合感到温柔满足、想把这份幸福留住的时候",
+    "romanticReason": "幸福的感觉，就是这首歌的温度。"
+  },
+  {
+    "title": "少一点天份",
+    "artist": "孙盛希",
+    "src": "/songs/孙盛希 - 少一点天份.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "羞答答的玫瑰静悄悄地开",
+    "artist": "孟庭苇",
+    "src": "/songs/孟庭苇 - 羞答答的玫瑰静悄悄地开.mp3",
+    "moodTags": [
+      "开心开心"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "轻盈欢快感",
+    "bestFor": "适合今天心情特别好、想跟着旋律动起来的时候",
+    "romanticReason": "今天心情好，就配这首。"
+  },
+  {
+    "title": "天使的翅膀",
+    "artist": "安琥",
+    "src": "/songs/安琥 - 天使的翅膀.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "若梦",
+    "artist": "小匆匆",
+    "src": "/songs/小匆匆 - 若梦.mp3",
+    "moodTags": [
+      "洗澡放松一下",
+      "想一个人发呆"
+    ],
+    "energyLevel": "低",
+    "emotionalDescription": "慵懒放松感",
+    "bestFor": "适合用热水冲走一天疲惫、什么都不用想的时候",
+    "romanticReason": "用这首歌冲走今天所有的疲惫。"
+  },
+  {
+    "title": "天使的翅膀",
+    "artist": "小黑",
+    "src": "/songs/小黑 - 天使的翅膀.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "落在生命里的光",
+    "artist": "尹昔眠",
+    "src": "/songs/尹昔眠 - 落在生命里的光.mp3",
+    "moodTags": [
+      "洗澡放松一下",
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "慵懒放松感",
+    "bestFor": "适合用热水冲走一天疲惫、什么都不用想的时候",
+    "romanticReason": "用这首歌冲走今天所有的疲惫。"
+  },
+  {
+    "title": "你是我的玫瑰花",
+    "artist": "庞龙",
+    "src": "/songs/庞龙 - 你是我的玫瑰花.mp3",
+    "moodTags": [
+      "开心开心"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "轻盈欢快感",
+    "bestFor": "适合今天心情特别好、想跟着旋律动起来的时候",
+    "romanticReason": "今天心情好，就配这首。"
+  },
+  {
+    "title": "情非得已",
+    "artist": "庾澄庆",
+    "src": "/songs/庾澄庆 - 情非得已.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "春泥",
+    "artist": "庾澄庆",
+    "src": "/songs/庾澄庆 - 春泥.mp3",
+    "moodTags": [
+      "洗澡放松一下",
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "慵懒放松感",
+    "bestFor": "适合用热水冲走一天疲惫、什么都不用想的时候",
+    "romanticReason": "用这首歌冲走今天所有的疲惫。"
+  },
+  {
+    "title": "别怕我伤心",
+    "artist": "张信哲",
+    "src": "/songs/张信哲 - 别怕我伤心.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "单恋一枝花",
+    "artist": "张宇",
+    "src": "/songs/张宇 - 单恋一枝花.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "囚鸟",
+    "artist": "张宇",
+    "src": "/songs/张宇 - 囚鸟.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "月亮惹的祸",
+    "artist": "张宇",
+    "src": "/songs/张宇 - 月亮惹的祸.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "给你们",
+    "artist": "张宇",
+    "src": "/songs/张宇 - 给你们.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "趁早",
+    "artist": "张宇",
+    "src": "/songs/张宇 - 趁早.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "光的方向 (Live)",
+    "artist": "张碧晨",
+    "src": "/songs/张碧晨 - 光的方向 (Live).mp3",
+    "moodTags": [
+      "有点苦恼",
+      "洗澡放松一下",
+      "今天有点累"
+    ],
+    "energyLevel": "高",
+    "emotionalDescription": "淡淡郁结感",
+    "bestFor": "适合心里有点乱、需要安静整理情绪的时候",
+    "romanticReason": "没关系，苦恼也是一种感受。"
+  },
+  {
+    "title": "梦幻诛仙",
+    "artist": "张碧晨",
+    "src": "/songs/张碧晨 - 梦幻诛仙.mp3",
+    "moodTags": [
+      "有点苦恼",
+      "洗澡放松一下",
+      "今天有点累"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "淡淡郁结感",
+    "bestFor": "适合心里有点乱、需要安静整理情绪的时候",
+    "romanticReason": "没关系，苦恼也是一种感受。"
+  },
+  {
+    "title": "星空物语",
+    "artist": "张翰,朱梓骁,魏晨",
+    "src": "/songs/张翰,朱梓骁,魏晨 - 星空物语.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "大花轿 (feat.火风)",
+    "artist": "张艺兴,火风",
+    "src": "/songs/张艺兴,火风 - 大花轿 (feat.火风).mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "高",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "看着我的眼睛说",
+    "artist": "张远",
+    "src": "/songs/张远 - 看着我的眼睛说.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "隐形的翅膀",
+    "artist": "张韶涵",
+    "src": "/songs/张韶涵 - 隐形的翅膀.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "那时雨",
+    "artist": "徐良",
+    "src": "/songs/徐良 - 那时雨.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "低",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "客官不可以",
+    "artist": "徐良,小凌",
+    "src": "/songs/徐良,小凌 - 客官不可以.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "你是我的玫瑰花",
+    "artist": "微醺卡带",
+    "src": "/songs/微醺卡带 - 你是我的玫瑰花.mp3",
+    "moodTags": [
+      "开心开心"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "轻盈欢快感",
+    "bestFor": "适合今天心情特别好、想跟着旋律动起来的时候",
+    "romanticReason": "今天心情好，就配这首。"
+  },
+  {
+    "title": "微醺卡带-香水有毒-微醺卡带",
+    "artist": "微醺卡带",
+    "src": "/songs/微醺卡带 - 微醺卡带-香水有毒-微醺卡带.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "我要找到你",
+    "artist": "微醺卡带",
+    "src": "/songs/微醺卡带 - 我要找到你.mp3",
+    "moodTags": [
+      "想你了"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "深夜思念感",
+    "bestFor": "适合深夜安静想念某个人的时候听",
+    "romanticReason": "这首歌，适合在深夜安静想念某个人。"
+  },
+  {
+    "title": "怎样",
+    "artist": "戴佩妮",
+    "src": "/songs/戴佩妮 - 怎样.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "我们俩",
+    "artist": "戴羽彤",
+    "src": "/songs/戴羽彤 - 我们俩.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "和气生财",
+    "artist": "揽小",
+    "src": "/songs/揽小 - 和气生财.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "寂寞寂寞不好",
+    "artist": "曹格",
+    "src": "/songs/曹格 - 寂寞寂寞不好.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "传奇",
+    "artist": "李健",
+    "src": "/songs/李健 - 传奇.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "剑魂",
+    "artist": "李炜",
+    "src": "/songs/李炜 - 剑魂.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "如果可以",
+    "artist": "杜宣达",
+    "src": "/songs/杜宣达 - 如果可以.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "雨爱",
+    "artist": "杨丞琳",
+    "src": "/songs/杨丞琳 - 雨爱.mp3",
+    "moodTags": [
+      "开心开心"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "轻盈欢快感",
+    "bestFor": "适合今天心情特别好、想跟着旋律动起来的时候",
+    "romanticReason": "今天心情好，就配这首。"
+  },
+  {
+    "title": "花好月圆夜 (Live)",
+    "artist": "杨千嬅,王俊凯",
+    "src": "/songs/杨千嬅,王俊凯 - 花好月圆夜 (Live).mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "高",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "爱上你是一个错",
+    "artist": "杨培安",
+    "src": "/songs/杨培安 - 爱上你是一个错.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "若月亮没来 (Live版)",
+    "artist": "杨宗纬,宝石Gem,王宇宙Leto",
+    "src": "/songs/杨宗纬,宝石Gem,王宇宙Leto - 若月亮没来 (Live版).mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "高",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "一千年以后",
+    "artist": "林俊杰",
+    "src": "/songs/林俊杰 - 一千年以后.mp3",
+    "moodTags": [
+      "今天很幸福"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "温柔幸福感",
+    "bestFor": "适合感到温柔满足、想把这份幸福留住的时候",
+    "romanticReason": "幸福的感觉，就是这首歌的温度。"
+  },
+  {
+    "title": "曹操",
+    "artist": "林俊杰",
+    "src": "/songs/林俊杰 - 曹操.mp3",
+    "moodTags": [
+      "今天很幸福"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "温柔幸福感",
+    "bestFor": "适合感到温柔满足、想把这份幸福留住的时候",
+    "romanticReason": "幸福的感觉，就是这首歌的温度。"
+  },
+  {
+    "title": "为你我受冷风吹",
+    "artist": "林忆莲,杨啟（满汉女神）",
+    "src": "/songs/林忆莲,杨啟（满汉女神） - 为你我受冷风吹.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "胆小鬼",
+    "artist": "梁咏琪",
+    "src": "/songs/梁咏琪 - 胆小鬼.mp3",
+    "moodTags": [
+      "需要安慰"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "温柔陪伴感",
+    "bestFor": "适合心里有点难受、需要一个声音陪着的时候",
+    "romanticReason": "没关系，这首歌陪着你。"
+  },
+  {
+    "title": "天赋",
+    "artist": "梦境里的算法",
+    "src": "/songs/梦境里的算法 - 天赋.mp3",
+    "moodTags": [
+      "洗澡放松一下"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "慵懒放松感",
+    "bestFor": "适合用热水冲走一天疲惫、什么都不用想的时候",
+    "romanticReason": "用这首歌冲走今天所有的疲惫。"
+  },
+  {
+    "title": "一生有你",
+    "artist": "水木年华",
+    "src": "/songs/水木年华 - 一生有你.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "认真的雪 (R&B版)",
+    "artist": "浪漫的大呲花",
+    "src": "/songs/浪漫的大呲花 - 认真的雪 (R&B版).mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "墨染",
+    "artist": "炫动小霸王",
+    "src": "/songs/炫动小霸王 - 墨染.mp3",
+    "moodTags": [
+      "洗澡放松一下",
+      "想一个人发呆"
+    ],
+    "energyLevel": "低",
+    "emotionalDescription": "慵懒放松感",
+    "bestFor": "适合用热水冲走一天疲惫、什么都不用想的时候",
+    "romanticReason": "用这首歌冲走今天所有的疲惫。"
+  },
+  {
+    "title": "唯一",
+    "artist": "王力宏",
+    "src": "/songs/王力宏 - 唯一.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "想把我唱给你听",
+    "artist": "王婧,老狼",
+    "src": "/songs/王婧,老狼 - 想把我唱给你听.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "当你",
+    "artist": "王心凌",
+    "src": "/songs/王心凌 - 当你.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "红豆",
+    "artist": "王菲",
+    "src": "/songs/王菲 - 红豆.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "大风吹",
+    "artist": "王赫野",
+    "src": "/songs/王赫野 - 大风吹.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "虹之间 (Live版)",
+    "artist": "王赫野,姚晓棠",
+    "src": "/songs/王赫野,姚晓棠 - 虹之间 (Live版).mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "高",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "一定要爱你",
+    "artist": "田一龙",
+    "src": "/songs/田一龙 - 一定要爱你.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "外滩十八号",
+    "artist": "男才女貌",
+    "src": "/songs/男才女貌 - 外滩十八号.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "冲动的惩罚（R&B）",
+    "artist": "红碎片",
+    "src": "/songs/红碎片 - 冲动的惩罚（R&B）.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "千年",
+    "artist": "缘为冰",
+    "src": "/songs/缘为冰 - 千年.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "因为爱情",
+    "artist": "群星",
+    "src": "/songs/群星 - 因为爱情.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "月光",
+    "artist": "胡彦斌",
+    "src": "/songs/胡彦斌 - 月光.mp3",
+    "moodTags": [
+      "洗澡放松一下",
+      "今天有点累"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "慵懒放松感",
+    "bestFor": "适合用热水冲走一天疲惫、什么都不用想的时候",
+    "romanticReason": "用这首歌冲走今天所有的疲惫。"
+  },
+  {
+    "title": "红颜",
+    "artist": "胡彦斌",
+    "src": "/songs/胡彦斌 - 红颜.mp3",
+    "moodTags": [
+      "今天有点累"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "轻柔疗愈感",
+    "bestFor": "适合今天已经很努力了、可以慢慢休息的时候",
+    "romanticReason": "今天已经很努力了，好好休息。"
+  },
+  {
+    "title": "香水有毒",
+    "artist": "胡杨林",
+    "src": "/songs/胡杨林 - 香水有毒.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "怎么说我不爱你",
+    "artist": "萧敬腾",
+    "src": "/songs/萧敬腾 - 怎么说我不爱你.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "爱要坦荡荡",
+    "artist": "萧潇",
+    "src": "/songs/萧潇 - 爱要坦荡荡.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "左手指月",
+    "artist": "萨顶顶",
+    "src": "/songs/萨顶顶 - 左手指月.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "大艺术家",
+    "artist": "蔡依林",
+    "src": "/songs/蔡依林 - 大艺术家.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "小尖尖",
+    "artist": "薛之谦,韩红",
+    "src": "/songs/薛之谦,韩红 - 小尖尖.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "爱情睡醒了",
+    "artist": "袁成杰",
+    "src": "/songs/袁成杰 - 爱情睡醒了.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "半城烟沙",
+    "artist": "许嵩",
+    "src": "/songs/许嵩 - 半城烟沙.mp3",
+    "moodTags": [
+      "今天很幸福"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "温柔幸福感",
+    "bestFor": "适合感到温柔满足、想把这份幸福留住的时候",
+    "romanticReason": "幸福的感觉，就是这首歌的温度。"
+  },
+  {
+    "title": "如果当时",
+    "artist": "许嵩",
+    "src": "/songs/许嵩 - 如果当时.mp3",
+    "moodTags": [
+      "今天很幸福"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "温柔幸福感",
+    "bestFor": "适合感到温柔满足、想把这份幸福留住的时候",
+    "romanticReason": "幸福的感觉，就是这首歌的温度。"
+  },
+  {
+    "title": "山水之间",
+    "artist": "许嵩",
+    "src": "/songs/许嵩 - 山水之间.mp3",
+    "moodTags": [
+      "今天很幸福"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "温柔幸福感",
+    "bestFor": "适合感到温柔满足、想把这份幸福留住的时候",
+    "romanticReason": "幸福的感觉，就是这首歌的温度。"
+  },
+  {
+    "title": "雅俗共赏",
+    "artist": "许嵩",
+    "src": "/songs/许嵩 - 雅俗共赏.mp3",
+    "moodTags": [
+      "今天很幸福"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "温柔幸福感",
+    "bestFor": "适合感到温柔满足、想把这份幸福留住的时候",
+    "romanticReason": "幸福的感觉，就是这首歌的温度。"
+  },
+  {
+    "title": "遗憾",
+    "artist": "许美静",
+    "src": "/songs/许美静 - 遗憾.mp3",
+    "moodTags": [
+      "想你了"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "深夜思念感",
+    "bestFor": "适合深夜安静想念某个人的时候听",
+    "romanticReason": "这首歌，适合在深夜安静想念某个人。"
+  },
+  {
+    "title": "我要的飞翔",
+    "artist": "许飞",
+    "src": "/songs/许飞 - 我要的飞翔.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "千里之外",
+    "artist": "费玉清",
+    "src": "/songs/费玉清 - 千里之外.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "最浪漫的事",
+    "artist": "赵咏华",
+    "src": "/songs/赵咏华 - 最浪漫的事.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "你怎么说",
+    "artist": "邓丽君",
+    "src": "/songs/邓丽君 - 你怎么说.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "我只在乎你",
+    "artist": "邓丽君",
+    "src": "/songs/邓丽君 - 我只在乎你.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "甜蜜蜜",
+    "artist": "邓丽君",
+    "src": "/songs/邓丽君 - 甜蜜蜜.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "水手",
+    "artist": "郑智化",
+    "src": "/songs/郑智化 - 水手.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "一万个理由",
+    "artist": "郑源",
+    "src": "/songs/郑源 - 一万个理由.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "不要在我寂寞的时候说爱我",
+    "artist": "郑源",
+    "src": "/songs/郑源 - 不要在我寂寞的时候说爱我.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "下一个天亮",
+    "artist": "郭静",
+    "src": "/songs/郭静 - 下一个天亮.mp3",
+    "moodTags": [
+      "今天很幸福",
+      "需要安慰"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "温柔幸福感",
+    "bestFor": "适合感到温柔满足、想把这份幸福留住的时候",
+    "romanticReason": "幸福的感觉，就是这首歌的温度。"
+  },
+  {
+    "title": "桃花朵朵开",
+    "artist": "阿牛",
+    "src": "/songs/阿牛 - 桃花朵朵开.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "富士山下",
+    "artist": "陈奕迅",
+    "src": "/songs/陈奕迅 - 富士山下.mp3",
+    "moodTags": [
+      "需要安慰",
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "温柔陪伴感",
+    "bestFor": "适合心里有点难受、需要一个声音陪着的时候",
+    "romanticReason": "没关系，这首歌陪着你。"
+  },
+  {
+    "title": "今生你作伴",
+    "artist": "陈慧琳",
+    "src": "/songs/陈慧琳 - 今生你作伴.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "爱要坦荡荡",
+    "artist": "陈文杰的音悦",
+    "src": "/songs/陈文杰的音悦 - 爱要坦荡荡.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "笑红尘",
+    "artist": "陈淑桦",
+    "src": "/songs/陈淑桦 - 笑红尘.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "白狐",
+    "artist": "陈瑞",
+    "src": "/songs/陈瑞 - 白狐.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "爱我还是他",
+    "artist": "陶喆",
+    "src": "/songs/陶喆 - 爱我还是他.mp3",
+    "moodTags": [
+      "有点苦恼"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "淡淡郁结感",
+    "bestFor": "适合心里有点乱、需要安静整理情绪的时候",
+    "romanticReason": "没关系，苦恼也是一种感受。"
+  },
+  {
+    "title": "舞女泪",
+    "artist": "韩宝仪",
+    "src": "/songs/韩宝仪 - 舞女泪.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "模特 (R&B版)",
+    "artist": "音乐风格电台",
+    "src": "/songs/音乐风格电台 - 模特 (R&B版).mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "恶作剧 (Live版)",
+    "artist": "颜人中",
+    "src": "/songs/颜人中 - 恶作剧 (Live版).mp3",
+    "moodTags": [
+      "想你了",
+      "今天很幸福",
+      "开心开心",
+      "今天有点累"
+    ],
+    "energyLevel": "高",
+    "emotionalDescription": "深夜思念感",
+    "bestFor": "适合深夜安静想念某个人的时候听",
+    "romanticReason": "这首歌，适合在深夜安静想念某个人。"
+  },
+  {
+    "title": "失恋无罪 (A-Lin 2013 Feel-Lin)",
+    "artist": "黄丽玲",
+    "src": "/songs/黄丽玲 - 失恋无罪 (A-Lin 2013 Feel-Lin).mp3",
+    "moodTags": [
+      "需要安慰"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "温柔陪伴感",
+    "bestFor": "适合心里有点难受、需要一个声音陪着的时候",
+    "romanticReason": "没关系，这首歌陪着你。"
+  },
+  {
+    "title": "人鱼的眼泪 (Live版)",
+    "artist": "黄子弘凡,肖俊(XIAOJUN)",
+    "src": "/songs/黄子弘凡,肖俊(XIAOJUN) - 人鱼的眼泪 (Live版).mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "高",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
+  },
+  {
+    "title": "爱情专属权",
+    "artist": "龙梅子",
+    "src": "/songs/龙梅子 - 爱情专属权.mp3",
+    "moodTags": [
+      "想一个人发呆"
+    ],
+    "energyLevel": "中",
+    "emotionalDescription": "安静漂浮感",
+    "bestFor": "适合一个人安静漂着、思绪飘到哪儿算哪儿的时候",
+    "romanticReason": "一个人静静的，这首歌最配。"
   }
 ]
