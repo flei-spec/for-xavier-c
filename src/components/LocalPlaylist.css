@@ -156,39 +156,88 @@
   align-items: center;
   gap: 0.5rem;
   margin-bottom: 12px;
+  min-height: 20px;
 }
 
 .lp-card__time {
-  font-size: 0.65rem;
+  font-size: 0.62rem;
   color: var(--text-muted);
   font-variant-numeric: tabular-nums;
-  min-width: 2.2rem;
+  min-width: 2rem;
   flex-shrink: 0;
+  letter-spacing: 0.02em;
 }
 
 .lp-card__time:last-child { text-align: right; }
 
+.lp-card__time--current {
+  color: var(--rose);
+  font-weight: 500;
+}
+
+/* track — subtle, always visible */
 .lp-card__bar {
   flex: 1;
   height: 3px;
-  background: rgba(255, 255, 255, 0.07);
+  background: rgba(255, 255, 255, 0.06);
   border-radius: 3px;
+  position: relative;
+  overflow: visible;
+}
+
+/* slightly brighter track when active */
+.lp-card__bar--active {
+  background: rgba(255, 255, 255, 0.12);
   cursor: pointer;
+  height: 4px;
+  border-radius: 4px;
+}
+
+/* fill — mood accent with glow */
+.lp-card__bar-fill {
+  height: 100%;
+  border-radius: inherit;
+  background: linear-gradient(90deg, #e8967a, #e8b4c0);
+  transition: width 0.35s linear;
+  pointer-events: none;
+  width: 0%;
   position: relative;
 }
 
-.lp-card__bar-fill {
-  height: 100%;
-  background: linear-gradient(90deg, var(--rose-dark), var(--rose));
-  border-radius: 3px;
-  transition: width 0.5s linear;
-  pointer-events: none;
+/* glow on active fill */
+.lp-card__bar--active .lp-card__bar-fill {
+  box-shadow: 0 0 6px rgba(244, 161, 176, 0.35), 0 0 2px rgba(244, 161, 176, 0.25);
 }
 
+/* subtle shimmer across the active fill */
+.lp-card__bar--active .lp-card__bar-fill::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 20px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.3), transparent);
+  border-radius: inherit;
+  animation: card-shimmer 2.4s ease-in-out infinite;
+}
+
+@keyframes card-shimmer {
+  0%, 100% { opacity: 0; transform: translateX(0); }
+  50%      { opacity: 1; transform: translateX(-8px); }
+}
+
+/* larger touch target without changing visual height */
 .lp-card__bar::after {
   content: '';
   position: absolute;
-  top: -6px; left: 0; right: 0; bottom: -6px;
+  top: -10px; left: 0; right: 0; bottom: -10px;
+}
+
+/* active bar uses separate touch target to not conflict with shimmer */
+.lp-card__bar--active::after {
+  content: '';
+  position: absolute;
+  top: -10px; left: 0; right: 0; bottom: -10px;
+  z-index: 1;
 }
 
 /* ── reason ── */

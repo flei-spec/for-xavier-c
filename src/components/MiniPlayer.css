@@ -4,46 +4,75 @@
   left: 0;
   right: 0;
   z-index: 200;
-  background: rgba(12, 8, 18, 0.82);
-  backdrop-filter: blur(18px) saturate(1.4);
-  -webkit-backdrop-filter: blur(18px) saturate(1.4);
-  border-top: 1px solid rgba(255, 255, 255, 0.08);
-  box-shadow: 0 -4px 32px rgba(0, 0, 0, 0.45);
+  background: rgba(12, 8, 18, 0.85);
+  backdrop-filter: blur(20px) saturate(1.6);
+  -webkit-backdrop-filter: blur(20px) saturate(1.6);
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 -8px 40px rgba(0, 0, 0, 0.5);
 }
 
+/* subtle ambient glow above the bar */
 .mini-player__progress {
-  height: 2px;
-  background: rgba(255, 255, 255, 0.08);
-  overflow: hidden;
+  height: 3px;
+  background: rgba(255, 255, 255, 0.06);
+  overflow: visible;
   cursor: pointer;
   position: relative;
+}
+
+/* ambient glow line above the progress track */
+.mini-player__progress::before {
+  content: '';
+  position: absolute;
+  top: -6px; left: 0; right: 0;
+  height: 6px;
+  background: linear-gradient(to bottom, transparent, rgba(255, 255, 255, 0.02));
+  pointer-events: none;
 }
 
 /* larger touch target without changing visual height */
 .mini-player__progress::after {
   content: '';
   position: absolute;
-  top: -6px; left: 0; right: 0; bottom: -6px;
+  top: -8px; left: 0; right: 0; bottom: -8px;
 }
 
 .mini-player__fill {
   height: 100%;
-  transition: width 0.5s linear;
-  border-radius: 0 1px 1px 0;
+  transition: width 0.4s linear;
+  border-radius: 0 2px 2px 0;
+  position: relative;
+  box-shadow: 0 0 8px rgba(244, 161, 176, 0.4), 0 0 2px rgba(244, 161, 176, 0.3);
+}
+
+/* gloss shimmer on the fill */
+.mini-player__fill::after {
+  content: '';
+  position: absolute;
+  top: 0; right: 0; bottom: 0;
+  width: 24px;
+  background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.25), transparent);
+  border-radius: inherit;
+  animation: mp-shimmer 2.8s ease-in-out infinite;
+}
+
+@keyframes mp-shimmer {
+  0%, 100% { opacity: 0.3; }
+  50%      { opacity: 0.8; }
 }
 
 .mini-player__body {
   display: flex;
   align-items: center;
   gap: 10px;
-  padding: 10px 16px;
-  padding-bottom: max(10px, env(safe-area-inset-bottom));
+  padding: 8px 16px;
+  padding-bottom: max(8px, env(safe-area-inset-bottom));
 }
 
 .mini-player__mood {
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   flex-shrink: 0;
-  opacity: 0.9;
+  opacity: 0.85;
 }
 
 .mini-player__info {
@@ -56,80 +85,83 @@
 }
 
 .mini-player__title {
-  font-size: 0.82rem;
+  font-size: 0.8rem;
   font-weight: 500;
-  color: rgba(255, 255, 255, 0.92);
+  color: rgba(255, 255, 255, 0.94);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.02em;
 }
 
 .mini-player__artist {
-  font-size: 0.71rem;
-  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.68rem;
+  color: rgba(255, 255, 255, 0.42);
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+  letter-spacing: 0.02em;
 }
 
 .mini-player__time {
-  font-size: 0.68rem;
-  color: rgba(255, 255, 255, 0.3);
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.32);
   font-variant-numeric: tabular-nums;
   flex-shrink: 0;
+  letter-spacing: 0.03em;
 }
 
 .mini-player__controls {
   display: flex;
   align-items: center;
-  gap: 4px;
+  gap: 2px;
   flex-shrink: 0;
 }
 
 .mini-player__btn {
   background: none;
   border: none;
-  color: rgba(255, 255, 255, 0.6);
-  font-size: 0.9rem;
+  color: rgba(255, 255, 255, 0.55);
+  font-size: 0.85rem;
   cursor: pointer;
   padding: 6px 8px;
-  border-radius: 8px;
-  transition: color 0.15s, background 0.15s;
+  border-radius: 50%;
+  transition: color 0.2s, background 0.2s, transform 0.15s;
   line-height: 1;
 }
 
 .mini-player__btn:hover {
   color: rgba(255, 255, 255, 0.95);
   background: rgba(255, 255, 255, 0.08);
+  transform: scale(1.08);
 }
 
 .mini-player__btn--play {
-  font-size: 1rem;
-  padding: 6px 10px;
-  color: rgba(255, 255, 255, 0.85);
+  font-size: 1.05rem;
+  padding: 6px 8px;
+  color: rgba(255, 255, 255, 0.88);
 }
 
 .mini-player__return {
   background: none;
-  border: 1px solid rgba(255, 255, 255, 0.12);
-  color: rgba(255, 255, 255, 0.5);
-  font-size: 0.8rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.75rem;
   cursor: pointer;
-  padding: 5px 10px;
+  padding: 4px 10px;
   border-radius: 20px;
-  transition: all 0.15s;
+  transition: all 0.2s;
   flex-shrink: 0;
-  margin-left: 4px;
+  margin-left: 2px;
 }
 
 .mini-player__return:hover {
   color: rgba(255, 255, 255, 0.9);
-  border-color: rgba(255, 255, 255, 0.28);
+  border-color: rgba(255, 255, 255, 0.3);
   background: rgba(255, 255, 255, 0.06);
 }
 
 /* Push app content up so mini player doesn't cover bottom */
 .app--has-miniplayer {
-  padding-bottom: 68px;
+  padding-bottom: 64px;
 }

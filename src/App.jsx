@@ -137,7 +137,7 @@ export default function App() {
     if (selectedMood) setPage('station')
   }, [selectedMood])
 
-  const showMiniPlayer = page !== 'station' && !!audioPlayer.currentSong
+  const showMiniPlayer = !!audioPlayer.currentSong
 
   return (
     <div className={`app${showMiniPlayer ? ' app--has-miniplayer' : ''}`}>
@@ -150,7 +150,7 @@ export default function App() {
       />
       <AtmosphereParticles theme={atmosphere?.theme} />
 
-      {/* Persistent mini player — visible on all pages except the station */}
+      {/* Persistent mini player — visible on all pages during playback */}
       {showMiniPlayer && (
         <MiniPlayer onReturnToStation={handleReturnToStation} />
       )}

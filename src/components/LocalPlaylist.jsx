@@ -210,7 +210,7 @@ const reasonPool = [
 
 
 function SongCard({ song, playlist, index }) {
-  const { currentSong, isPlaying, currentTime, duration, loadPlaylist, pause, resumePlay, seek } = useAudioPlayer()
+  const { currentSong, currentMood, isPlaying, currentTime, duration, loadPlaylist, pause, resumePlay, seek } = useAudioPlayer()
 
   const isActive = currentSong?.src === song.src
   const playing = isActive && isPlaying
@@ -258,12 +258,22 @@ function SongCard({ song, playlist, index }) {
         </div>
       </div>
 
-      <div className="lp-card__progress-row">
-        <span className="lp-card__time">{isActive ? fmt(currentTime) : '--:--'}</span>
-        <div className="lp-card__bar" onClick={handleSeek}>
-          <div className="lp-card__bar-fill" style={{ width: `${progress}%` }} />
+      <div className={`lp-card__progress-row${isActive ? ' lp-card__progress-row--active' : ''}`}>
+        {isActive && (
+          <span className="lp-card__time lp-card__time--current">{fmt(currentTime)}</span>
+        )}
+        <div className={`lp-card__bar${isActive ? ' lp-card__bar--active' : ''}`} onClick={handleSeek}>
+          <div
+            className="lp-card__bar-fill"
+            style={{
+              width: `${progress}%`,
+              ...(isActive && currentMood?.accentColor ? { background: currentMood.accentColor } : {}),
+            }}
+          />
         </div>
-        <span className="lp-card__time">{displayDuration > 0 ? fmt(displayDuration) : '--:--'}</span>
+        {isActive && displayDuration > 0 && (
+          <span className="lp-card__time">{fmt(displayDuration)}</span>
+        )}
       </div>
 
       <p className="lp-card__reason">「{song.reason}」</p>

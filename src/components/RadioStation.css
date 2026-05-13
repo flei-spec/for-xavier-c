@@ -197,6 +197,21 @@
   .station__content { padding: 1.5rem 1rem 3rem; }
 }
 
+/* Extra bottom space when global MiniPlayer is visible */
+.app--has-miniplayer .station__content {
+  padding-bottom: 6rem;
+}
+
+.app--has-miniplayer .ls-toast {
+  bottom: 5rem;
+}
+
+@media (max-width: 480px) {
+  .app--has-miniplayer .station__content {
+    padding-bottom: 5rem;
+  }
+}
+
 /* ── Voice intro banner ── */
 .vb {
   display: flex;
@@ -274,7 +289,7 @@
   bottom: 2.2rem;
   left: 50%;
   transform: translateX(-50%);
-  z-index: 100;
+  z-index: 210;
   display: flex;
   align-items: center;
   gap: 0.6rem;
