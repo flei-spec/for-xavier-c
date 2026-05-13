@@ -256,14 +256,14 @@ function SongCard({ song, playlist, index }) {
           <p className="lp-card__title">{song.title}</p>
           {song.artist && <p className="lp-card__artist">{song.artist}</p>}
         </div>
-
-        {displayDuration > 0 && (
-          <span className="lp-card__dur">{fmt(displayDuration)}</span>
-        )}
       </div>
 
-      <div className="lp-card__bar" onClick={handleSeek}>
-        <div className="lp-card__bar-fill" style={{ width: `${progress}%` }} />
+      <div className="lp-card__progress-row">
+        <span className="lp-card__time">{isActive ? fmt(currentTime) : '--:--'}</span>
+        <div className="lp-card__bar" onClick={handleSeek}>
+          <div className="lp-card__bar-fill" style={{ width: `${progress}%` }} />
+        </div>
+        <span className="lp-card__time">{displayDuration > 0 ? fmt(displayDuration) : '--:--'}</span>
       </div>
 
       <p className="lp-card__reason">「{song.reason}」</p>

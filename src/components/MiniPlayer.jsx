@@ -11,12 +11,18 @@ export default function MiniPlayer({ onReturnToStation }) {
   const {
     currentSong, currentMood, isPlaying, currentTime, duration,
     pause, resumePlay, tapToPlay, autoplayBlocked,
-    nextSong, prevSong, isAiMatch,
+    nextSong, prevSong, isAiMatch, seek,
   } = useAudioPlayer()
 
   if (!currentSong) return null
 
   const progress = duration ? (currentTime / duration) * 100 : 0
+
+  const handleSeek = (e) => {
+    if (!duration) return
+    const rect = e.currentTarget.getBoundingClientRect()
+    seek(((e.clientX - rect.left) / rect.width) * duration)
+  }
 
   const handleToggle = () => {
     if (autoplayBlocked) {
@@ -32,7 +38,7 @@ export default function MiniPlayer({ onReturnToStation }) {
   return (
     <div className="mini-player">
       {/* progress bar at top edge */}
-      <div className="mini-player__progress">
+      <div className="mini-player__progress" onClick={handleSeek}>
         <div className="mini-player__fill" style={{ width: `${progress}%`, background: currentMood?.accentColor ?? '#e8b4c0' }} />
       </div>
 
