@@ -28,7 +28,7 @@ const __dirname  = path.dirname(fileURLToPath(import.meta.url))
 const BUCKET     = process.argv[2]
 const ACCOUNT_ID = process.argv[3]
 const SKIP       = process.argv.includes('--skip-existing')
-const SONGS_DIR  = path.resolve(__dirname, '../public/songs')
+const SONGS_DIR  = path.resolve(__dirname, '../songs_static')
 // Lower concurrency avoids SSL "bad record mac" errors from concurrent large-body PUT requests
 const CONCURRENCY = parseInt(process.env.CONCURRENCY ?? '2', 10)
 

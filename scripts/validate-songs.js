@@ -2,7 +2,7 @@
  * validate-songs.js
  *
  * Compares every src entry in songMoodMap.js against:
- *   (a) files actually on disk in public/songs/
+ *   (a) files actually on disk in songs_static/
  *   (b) optionally, HTTP HEAD requests to the CDN (when --check-cdn is passed)
  *
  * Usage:
@@ -20,7 +20,7 @@ import { fileURLToPath } from 'url'
 import { songMoodMap }   from '../src/data/songMoodMap.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const songsDir  = path.resolve(__dirname, '../public/songs')
+const songsDir  = path.resolve(__dirname, '../songs_static')
 const checkCDN  = process.argv.includes('--check-cdn')
 
 // ── 1. Disk check ─────────────────────────────────────────────────────────────

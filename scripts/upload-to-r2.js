@@ -2,7 +2,7 @@
 /**
  * upload-to-r2.js
  *
- * Uploads every MP3 in public/songs/ to a Cloudflare R2 bucket.
+ * Uploads every MP3 in songs_static/ to a Cloudflare R2 bucket.
  * Runs at CONCURRENCY=2 to stay well under R2's wrangler API rate limits.
  * Retries each failed upload up to MAX_RETRIES times with exponential back-off.
  * Files already on R2 (HTTP 200) are skipped to save time on re-runs.
@@ -32,7 +32,7 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
 const BUCKET       = process.argv[2]
 const SKIP         = process.argv.includes('--skip-existing')
-const SONGS_DIR    = resolve(__dirname, '../public/songs')
+const SONGS_DIR    = resolve(__dirname, '../songs_static')
 const CONCURRENCY  = 2       // 2 concurrent wrangler processes — R2 API limit safe
 const MAX_RETRIES  = 3       // retries per file with exponential back-off
 const CONTENT_TYPE = 'audio/mpeg'
@@ -152,7 +152,7 @@ if (files.length === 0) {
 
 console.log('─'.repeat(68))
 console.log(`  Bucket        : ${BUCKET}`)
-console.log(`  Folder        : public/songs/`)
+console.log(`  Folder        : songs_static/`)
 console.log(`  Files         : ${files.length}`)
 console.log(`  Concurrency   : ${CONCURRENCY}`)
 console.log(`  Max retries   : ${MAX_RETRIES}`)

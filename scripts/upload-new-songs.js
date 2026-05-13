@@ -27,7 +27,7 @@ const __dirname  = path.dirname(fileURLToPath(import.meta.url))
 const BUCKET     = 'xradio-music'
 const ACCOUNT_ID = '2be10945991cf09ef437b5c96449bd56'
 const CDN_BASE   = 'https://pub-df1f48ab69e14f6b9bb0f39061a69a27.r2.dev'
-const SONGS_DIR  = path.resolve(__dirname, '../public/songs')
+const SONGS_DIR  = path.resolve(__dirname, '../songs_static')
 const LIBRARY_JSON = path.resolve(__dirname, '../public/data/songLibrary.json')
 const CONCURRENCY = 2
 

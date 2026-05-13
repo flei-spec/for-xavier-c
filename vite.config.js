@@ -6,6 +6,10 @@ import { fileURLToPath } from 'url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
+// Songs live outside public/ so Vercel doesn't scan 4.6GB of MP3s during deploy.
+// In production, audio streams from Cloudflare R2 (VITE_CDN_BASE).
+const SONGS_DIR = path.resolve(__dirname, 'songs_static')
+
 function songsListPlugin() {
   const virtualId = 'virtual:songs-list'
   const resolvedId = '\0' + virtualId
@@ -17,9 +21,8 @@ function songsListPlugin() {
     },
     load(id) {
       if (id === resolvedId) {
-        const dir = path.resolve(__dirname, 'public/songs')
-        const files = fs.existsSync(dir)
-          ? fs.readdirSync(dir).filter(f => /\.mp3$/i.test(f)).sort()
+        const files = fs.existsSync(SONGS_DIR)
+          ? fs.readdirSync(SONGS_DIR).filter(f => /\.mp3$/i.test(f)).sort()
           : []
         return `export default ${JSON.stringify(files)}`
       }
@@ -27,6 +30,26 @@ function songsListPlugin() {
   }
 }
 
+// Dev-only: serve /songs/ from songs_static/ when CDN_BASE is not set
+function serveSongsPlugin() {
+  return {
+    name: 'serve-songs',
+    configureServer(server) {
+      server.middlewares.use('/songs', (req, res, next) => {
+        const filePath = path.join(SONGS_DIR, decodeURIComponent(req.url))
+        if (fs.existsSync(filePath)) {
+          const ext = path.extname(filePath).toLowerCase()
+          const types = { '.mp3': 'audio/mpeg', '.m4a': 'audio/mp4', '.wav': 'audio/wav' }
+          res.setHeader('Content-Type', types[ext] || 'application/octet-stream')
+          fs.createReadStream(filePath).pipe(res)
+        } else {
+          next()
+        }
+      })
+    },
+  }
+}
+
 export default defineConfig({
-  plugins: [react(), songsListPlugin()],
+  plugins: [react(), songsListPlugin(), serveSongsPlugin()],
 })

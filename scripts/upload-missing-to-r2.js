@@ -19,7 +19,7 @@ const __dirname = fileURLToPath(new URL('.', import.meta.url))
 
 const BUCKET     = 'xradio-music'
 const CDN_BASE   = 'https://pub-df1f48ab69e14f6b9bb0f39061a69a27.r2.dev'
-const SONGS_DIR  = resolve(__dirname, '../public/songs')
+const SONGS_DIR  = resolve(__dirname, '../songs_static')
 const CONCURRENCY = 1  // single-threaded — wrangler CLI handles its own auth
 const MAX_RETRIES = 3
 

@@ -3,7 +3,7 @@ import path from 'path'
 import { fileURLToPath } from 'url'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const songsDir = path.resolve(__dirname, '../public/songs')
+const songsDir = path.resolve(__dirname, '../songs_static')
 const files = fs.readdirSync(songsDir).filter(f => /\.mp3$/i.test(f)).sort()
 
 // ── classification helpers ──────────────────────────────────────────────────

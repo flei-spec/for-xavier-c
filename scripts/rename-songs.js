@@ -1,7 +1,7 @@
 /**
  * rename-songs.js
  *
- * Renames every file in public/songs/ to a Safari-safe kebab-case ASCII name
+ * Renames every file in songs_static/ to a Safari-safe kebab-case ASCII name
  * and updates the corresponding src field in src/data/songMoodMap.js.
  *
  * Usage:
@@ -10,7 +10,7 @@
  * --dry-run  Print the rename plan without touching any files.
  *
  * After this script completes:
- *   • Local files in public/songs/ have safe ASCII names.
+ *   • Local files in songs_static/ have safe ASCII names.
  *   • songMoodMap.js src fields are updated to match.
  *   • Re-upload to Cloudflare R2:
  *       node scripts/upload-to-r2.js YOUR-BUCKET-NAME
@@ -23,7 +23,7 @@ import { songMoodMap }   from '../src/data/songMoodMap.js'
 import { buildSongSlug } from '../src/utils/sanitizeFilename.js'
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
-const songsDir  = path.resolve(__dirname, '../public/songs')
+const songsDir  = path.resolve(__dirname, '../songs_static')
 const mapFile   = path.resolve(__dirname, '../src/data/songMoodMap.js')
 const DRY       = process.argv.includes('--dry-run')
 

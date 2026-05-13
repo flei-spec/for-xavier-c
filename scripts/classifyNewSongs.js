@@ -8,7 +8,7 @@ import { fileURLToPath } from 'url'
 const __dirname = path.dirname(fileURLToPath(import.meta.url))
 
 // ── Config ────────────────────────────────────────────────────────────────────
-const SONGS_DIR = path.resolve(__dirname, '../public/songs')
+const SONGS_DIR = path.resolve(__dirname, '../songs_static')
 const MOOD_MAP_PATH = path.resolve(__dirname, '../src/data/songMoodMap.js')
 const LIBRARY_JSON_PATH = path.resolve(__dirname, '../public/data/songLibrary.json')
 
