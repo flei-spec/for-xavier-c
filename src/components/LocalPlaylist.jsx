@@ -1,6 +1,7 @@
-import { useState, useRef, useMemo } from 'react'
+import { useState, useMemo } from 'react'
 import { useSongLibrary } from '../hooks/useSongLibrary'
 import { useAuth } from '../contexts/AuthContext'
+import { useAudioPlayer } from '../contexts/AudioPlayerContext'
 import './LocalPlaylist.css'
 
 const PARTNER_UID = '3f370ae9-a462-4a17-b2f4-5a05d4958c76'  // sees "你喜欢的歌"
@@ -208,41 +209,29 @@ const reasonPool = [
 ]
 
 
-function SongCard({ song }) {
-  const audioRef = useRef(null)
-  const [playing, setPlaying] = useState(false)
-  const [progress, setProgress] = useState(0)
-  const [duration, setDuration] = useState(0)
+function SongCard({ song, playlist, index }) {
+  const { currentSong, isPlaying, currentTime, duration, loadPlaylist, pause, resumePlay, seek } = useAudioPlayer()
 
-  const togglePlay = () => {
-    const audio = audioRef.current
-    if (!audio) return
-    if (playing) {
-      audio.pause()
+  const isActive = currentSong?.src === song.src
+  const playing = isActive && isPlaying
+
+  const handlePlay = () => {
+    if (isActive) {
+      isPlaying ? pause() : resumePlay()
     } else {
-      audio.play()
+      loadPlaylist(playlist, null, index, true)
     }
   }
 
-  const handleTimeUpdate = () => {
-    const audio = audioRef.current
-    if (!audio || !audio.duration) return
-    setProgress((audio.currentTime / audio.duration) * 100)
-  }
-
-  const handleLoadedMetadata = () => {
-    const audio = audioRef.current
-    if (audio) setDuration(audio.duration)
-  }
+  const progress = isActive && duration > 0 ? (currentTime / duration) * 100 : 0
+  const displayDuration = isActive && duration > 0 ? duration : 0
 
   const handleSeek = (e) => {
-    const audio = audioRef.current
-    if (!audio || !audio.duration) return
+    if (!isActive || !duration) return
     const rect = e.currentTarget.getBoundingClientRect()
     const x = e.clientX - rect.left
     const pct = x / rect.width
-    audio.currentTime = pct * audio.duration
-    setProgress(pct * 100)
+    seek(pct * duration)
   }
 
   const fmt = (s) => {
@@ -257,7 +246,7 @@ function SongCard({ song }) {
       <div className="lp-card__top">
         <button
           className={`lp-card__play ${playing ? 'lp-card__play--pause' : ''}`}
-          onClick={togglePlay}
+          onClick={handlePlay}
           aria-label={playing ? '暂停' : '播放'}
         >
           {playing ? '⏸' : '▶'}
@@ -268,8 +257,8 @@ function SongCard({ song }) {
           {song.artist && <p className="lp-card__artist">{song.artist}</p>}
         </div>
 
-        {duration > 0 && (
-          <span className="lp-card__dur">{fmt(duration)}</span>
+        {displayDuration > 0 && (
+          <span className="lp-card__dur">{fmt(displayDuration)}</span>
         )}
       </div>
 
@@ -278,18 +267,6 @@ function SongCard({ song }) {
       </div>
 
       <p className="lp-card__reason">「{song.reason}」</p>
-
-      <audio
-        ref={audioRef}
-        src={song.url}
-        crossOrigin="anonymous"
-        onPlay={() => setPlaying(true)}
-        onPause={() => setPlaying(false)}
-        onEnded={() => { setPlaying(false); setProgress(0) }}
-        onTimeUpdate={handleTimeUpdate}
-        onLoadedMetadata={handleLoadedMetadata}
-        preload="metadata"
-      />
     </div>
   )
 }
@@ -314,7 +291,8 @@ export default function LocalPlaylist() {
         title:    s.title,
         artist:   s.artist,
         reason,
-        url:      s.src, // already resolved by useSongLibrary
+        src:      s.src, // needed by AudioPlayerContext (loadPlaylist)
+        url:      s.src, // kept for backward compat
       }
     })
   }, [library])
@@ -366,8 +344,8 @@ export default function LocalPlaylist() {
       </div>
 
       <div className="lp-grid">
-        {visible.map(song => (
-          <SongCard key={song.filename} song={song} />
+        {visible.map((song, i) => (
+          <SongCard key={song.filename} song={song} playlist={allSongs} index={allSongs.indexOf(song)} />
         ))}
       </div>
 
