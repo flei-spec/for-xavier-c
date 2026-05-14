@@ -18,6 +18,7 @@ import { logMoodEvent } from './utils/moodHistory'
 import { fetchUnreadSecretLetters } from './utils/journal'
 import WhisperNotification from './components/WhisperNotification'
 import HiddenLoveLetter from './components/HiddenLoveLetter'
+import MonthlyEmotionalLetter from './components/MonthlyEmotionalLetter'
 import './App.css'
 
 // ── Timezone-aware fractional hour ────────────────────────────────────────────
@@ -40,6 +41,7 @@ export default function App() {
   const [isAiMatch, setIsAiMatch] = useState(false)
   const [whisperData,  setWhisperData]  = useState(null)  // { count } | null
   const [showLetterModal, setShowLetterModal] = useState(false)
+  const [showMonthlyLetter, setShowMonthlyLetter] = useState(false)
 
   const { data: atmosphere } = useAtmosphere()
 
@@ -115,6 +117,23 @@ export default function App() {
       }
     })
   }, [user, space?.id])
+
+  // ── Monthly letter: check for previous-month data once per month ──────
+  useEffect(() => {
+    if (!user) return
+    const now = new Date()
+    const MONTH_KEY = `xr_monthly_${now.getFullYear()}-${now.getMonth() + 1}`
+    if (sessionStorage.getItem(MONTH_KEY)) return
+
+    import('./utils/monthlyMoodAnalysis').then(({ getMonthlyStats }) => {
+      getMonthlyStats(user.id).then(stats => {
+        if (stats && stats.totalEntries > 0) {
+          sessionStorage.setItem(MONTH_KEY, '1')
+          setShowMonthlyLetter(true)
+        }
+      })
+    })
+  }, [user])
 
   // When user logs out, reset to welcome
   useEffect(() => {
@@ -225,6 +244,11 @@ export default function App() {
           {/* ── Direct letter modal (opened from whisper notification) ── */}
           {showLetterModal && (
             <HiddenLoveLetter onClose={() => setShowLetterModal(false)} />
+          )}
+
+          {/* ── Monthly emotional letter ── */}
+          {showMonthlyLetter && (
+            <MonthlyEmotionalLetter onClose={() => setShowMonthlyLetter(false)} />
           )}
         </>
       )}

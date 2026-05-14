@@ -1,0 +1,254 @@
+/* ── Overlay ────────────────────────────────────────────────────────────────── */
+.mel__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 310;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.5);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  padding: 1.5rem;
+  opacity: 0;
+  transition: opacity 0.4s ease;
+}
+
+.mel__overlay--in { opacity: 1; }
+
+/* ── Card ──────────────────────────────────────────────────────────────────── */
+.mel__card {
+  background: var(--glass-modal);
+  backdrop-filter: blur(var(--blur-modal));
+  -webkit-backdrop-filter: blur(var(--blur-modal));
+  border: 1px solid rgba(244, 161, 176, 0.13);
+  border-radius: 24px;
+  padding: 2rem 1.6rem 1.6rem;
+  max-width: 380px;
+  width: 100%;
+  max-height: 85vh;
+  overflow-y: auto;
+  text-align: center;
+  box-shadow: var(--shadow-modal), inset 0 1px 0 var(--glass-inner);
+  animation: mel-in 0.5s cubic-bezier(0.16, 1, 0.3, 1) both;
+}
+
+@keyframes mel-in {
+  from { transform: scale(0.9) translateY(28px); opacity: 0; }
+  to   { transform: scale(1)   translateY(0);    opacity: 1; }
+}
+
+/* ── Loading ────────────────────────────────────────────────────────────────── */
+.mel__loading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 2rem 0 1rem;
+}
+
+.mel__loading-icon {
+  font-size: 2rem;
+  animation: mel-float 2.5s ease-in-out infinite;
+}
+
+@keyframes mel-float {
+  0%, 100% { transform: translateY(0); }
+  50%      { transform: translateY(-8px); }
+}
+
+.mel__loading-text {
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  letter-spacing: 0.04em;
+}
+
+/* ── Empty ──────────────────────────────────────────────────────────────────── */
+.mel__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 1.5rem 0;
+}
+
+.mel__empty-icon { font-size: 2rem; opacity: 0.5; }
+
+.mel__empty-text {
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  line-height: 1.6;
+  letter-spacing: 0.03em;
+}
+
+/* ── Header ─────────────────────────────────────────────────────────────────── */
+.mel__header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 1.2rem;
+}
+
+.mel__seal {
+  font-size: 2rem;
+  animation: mel-float 3s ease-in-out infinite;
+}
+
+.mel__label {
+  font-family: 'Playfair Display', 'Georgia', serif;
+  font-size: 1.15rem;
+  color: var(--text-primary);
+  letter-spacing: 0.05em;
+}
+
+/* ── Poetic summary ─────────────────────────────────────────────────────────── */
+.mel__summary {
+  margin-bottom: 1.4rem;
+  padding: 0.8rem 0.4rem;
+}
+
+.mel__summary-text {
+  font-size: 0.88rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  line-height: 1.75;
+  letter-spacing: 0.04em;
+}
+
+/* ── Mood lines ─────────────────────────────────────────────────────────────── */
+.mel__moods {
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  margin-bottom: 1.2rem;
+  padding: 0 0.3rem;
+}
+
+.mel__mood-line {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.84rem;
+}
+
+.mel__mood-icon {
+  font-size: 0.95rem;
+  flex-shrink: 0;
+}
+
+.mel__mood-name {
+  color: var(--text-primary);
+  font-weight: 500;
+  flex-shrink: 0;
+}
+
+.mel__mood-dots {
+  flex: 1;
+  border-bottom: 1px dotted rgba(244, 161, 176, 0.15);
+  margin: 0 0.2rem;
+  min-width: 1rem;
+}
+
+.mel__mood-count {
+  color: var(--text-muted);
+  font-size: 0.76rem;
+  flex-shrink: 0;
+}
+
+/* ── Top songs ──────────────────────────────────────────────────────────────── */
+.mel__songs {
+  margin-bottom: 1rem;
+  padding: 0.6rem 0.4rem;
+}
+
+.mel__songs-label {
+  font-size: 0.72rem;
+  color: var(--text-muted);
+  letter-spacing: 0.06em;
+  margin-bottom: 0.5rem;
+}
+
+.mel__song {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  font-size: 0.8rem;
+  padding: 0.3rem 0;
+  color: var(--text-secondary);
+}
+
+.mel__song-icon {
+  font-size: 0.7rem;
+  color: var(--rose);
+  opacity: 0.5;
+  flex-shrink: 0;
+}
+
+.mel__song-title {
+  flex: 1;
+  text-align: left;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.mel__song-count {
+  font-size: 0.68rem;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+
+/* ── Sessions ───────────────────────────────────────────────────────────────── */
+.mel__sessions {
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  margin-bottom: 0.6rem;
+  letter-spacing: 0.03em;
+}
+
+.mel__sessions strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* ── Closer ─────────────────────────────────────────────────────────────────── */
+.mel__closer {
+  font-size: 0.8rem;
+  color: rgba(244, 161, 176, 0.6);
+  font-style: italic;
+  margin-bottom: 1rem;
+  letter-spacing: 0.04em;
+}
+
+/* ── Close button ───────────────────────────────────────────────────────────── */
+.mel__close-btn {
+  background: rgba(244, 161, 176, 0.1);
+  border: 1px solid rgba(244, 161, 176, 0.18);
+  border-radius: 24px;
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  padding: 0.5rem 2rem;
+  cursor: pointer;
+  transition: background 0.2s ease, border-color 0.2s ease;
+  letter-spacing: 0.04em;
+}
+
+.mel__close-btn:hover {
+  background: rgba(244, 161, 176, 0.18);
+  border-color: rgba(244, 161, 176, 0.3);
+}
+
+/* ── Mobile ── */
+@media (max-width: 480px) {
+  .mel__card {
+    max-width: 340px;
+    padding: 1.6rem 1.2rem 1.3rem;
+    border-radius: 22px;
+  }
+
+  .mel__summary-text { font-size: 0.82rem; }
+  .mel__label { font-size: 1.05rem; }
+}
