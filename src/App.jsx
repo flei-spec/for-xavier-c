@@ -15,6 +15,9 @@ import { useAudioPlayer } from './contexts/AudioPlayerContext'
 import { audioElement } from './audio/audioElement'
 import { preloadSongLibrary } from './hooks/useSongLibrary'
 import { logMoodEvent } from './utils/moodHistory'
+import { fetchUnreadSecretLetters } from './utils/journal'
+import WhisperNotification from './components/WhisperNotification'
+import HiddenLoveLetter from './components/HiddenLoveLetter'
 import './App.css'
 
 // ── Timezone-aware fractional hour ────────────────────────────────────────────
@@ -35,6 +38,8 @@ export default function App() {
   // resetting all state and triggering a fresh random song pick.
   const [stationKey, setStationKey] = useState(0)
   const [isAiMatch, setIsAiMatch] = useState(false)
+  const [whisperData,  setWhisperData]  = useState(null)  // { count } | null
+  const [showLetterModal, setShowLetterModal] = useState(false)
 
   const { data: atmosphere } = useAtmosphere()
 
@@ -95,6 +100,21 @@ export default function App() {
   useEffect(() => {
     if (import.meta.env.DEV) console.log('[Auth]', user)
   }, [user])
+
+  // ── Whisper notification: check unread letters once per session ────────
+  useEffect(() => {
+    if (!user) return
+    const KEY = 'xr_whisper_notified'
+    if (sessionStorage.getItem(KEY)) return
+
+    const spaceId = space?.id ?? null
+    fetchUnreadSecretLetters({ spaceId, userId: user.id }).then(letters => {
+      if (letters && letters.length > 0) {
+        sessionStorage.setItem(KEY, '1')
+        setWhisperData({ count: letters.length })
+      }
+    })
+  }, [user, space?.id])
 
   // When user logs out, reset to welcome
   useEffect(() => {
@@ -191,6 +211,20 @@ export default function App() {
               onBack={handleBack}
               atmosphere={atmosphere}
             />
+          )}
+
+          {/* ── Whisper notification ── */}
+          {whisperData && (
+            <WhisperNotification
+              count={whisperData.count}
+              onClick={() => { setWhisperData(null); setShowLetterModal(true) }}
+              onDismiss={() => setWhisperData(null)}
+            />
+          )}
+
+          {/* ── Direct letter modal (opened from whisper notification) ── */}
+          {showLetterModal && (
+            <HiddenLoveLetter onClose={() => setShowLetterModal(false)} />
           )}
         </>
       )}

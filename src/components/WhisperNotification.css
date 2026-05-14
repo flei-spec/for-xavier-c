@@ -1,0 +1,97 @@
+.wn {
+  position: fixed;
+  bottom: 2.8rem;
+  left: 50%;
+  transform: translateX(-50%) translateY(24px);
+  z-index: 250;
+  opacity: 0;
+  transition: opacity 0.45s ease, transform 0.45s cubic-bezier(0.22, 0.61, 0.36, 1);
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+
+.wn--in {
+  opacity: 1;
+  transform: translateX(-50%) translateY(0);
+}
+
+.wn__card {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  background: rgba(28, 24, 32, 0.88);
+  backdrop-filter: blur(20px) saturate(1.4);
+  -webkit-backdrop-filter: blur(20px) saturate(1.4);
+  border: 1px solid rgba(244, 161, 176, 0.16);
+  border-radius: 22px;
+  padding: 0.65rem 1.1rem;
+  box-shadow: 0 8px 40px rgba(0, 0, 0, 0.35), inset 0 1px 0 rgba(255, 255, 255, 0.04);
+  max-width: 340px;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+
+.wn__card:active {
+  transform: scale(0.97);
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.3);
+}
+
+.wn__icon {
+  font-size: 1.15rem;
+  flex-shrink: 0;
+  animation: wn-pulse 2.2s ease-in-out infinite;
+}
+
+@keyframes wn-pulse {
+  0%, 100% { transform: scale(1); opacity: 0.85; }
+  50%      { transform: scale(1.12); opacity: 1; }
+}
+
+.wn__body {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex: 1;
+  min-width: 0;
+}
+
+.wn__text {
+  font-size: 0.8rem;
+  color: rgba(235, 225, 230, 0.85);
+  font-style: italic;
+  letter-spacing: 0.03em;
+  line-height: 1.4;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.wn__badge {
+  font-size: 0.65rem;
+  color: rgba(244, 161, 176, 0.75);
+  background: rgba(244, 161, 176, 0.1);
+  border: 1px solid rgba(244, 161, 176, 0.15);
+  border-radius: 10px;
+  padding: 0.12rem 0.5rem;
+  flex-shrink: 0;
+}
+
+.wn__arrow {
+  font-size: 0.75rem;
+  color: rgba(244, 161, 176, 0.4);
+  flex-shrink: 0;
+}
+
+/* ── Mobile ── */
+@media (max-width: 480px) {
+  .wn {
+    bottom: 6.2rem;
+  }
+
+  .wn__card {
+    max-width: 300px;
+    padding: 0.6rem 0.9rem;
+    border-radius: 20px;
+  }
+
+  .wn__text { font-size: 0.76rem; }
+}
