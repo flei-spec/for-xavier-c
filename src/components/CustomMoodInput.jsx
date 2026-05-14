@@ -75,7 +75,7 @@ export default function CustomMoodInput({ onMatch, onClose }) {
 
       // Auto-navigate to the music after a brief cinematic pause
       transitionTimerRef.current = setTimeout(() => {
-        onMatch(moodObj)
+        onMatch(moodObj, trimmed)
       }, 2200)
     } catch (err) {
       if (err?.name === 'AbortError') return

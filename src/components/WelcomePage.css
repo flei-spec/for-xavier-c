@@ -166,6 +166,21 @@
 
 .welcome__cta:active { opacity: 0.74; }
 
+.welcome__recap-hint {
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  opacity: 0.55;
+  font-style: italic;
+  letter-spacing: 0.04em;
+  cursor: pointer;
+  transition: opacity 0.2s, color 0.2s;
+}
+
+.welcome__recap-hint:hover {
+  opacity: 0.85;
+  color: var(--rose);
+}
+
 .welcome__from {
   font-size: 0.77rem;
   color: var(--text-muted);

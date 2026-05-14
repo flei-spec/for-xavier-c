@@ -55,9 +55,9 @@ export default function MoodSelector({ onStart, onBack }) {
 
       {showCustomInput && (
         <CustomMoodInput
-          onMatch={(moodObj) => {
+          onMatch={(moodObj, originalText) => {
             setShowCustomInput(false)
-            onStart(moodObj, true)
+            onStart(moodObj, true, originalText)
           }}
           onClose={() => setShowCustomInput(false)}
         />

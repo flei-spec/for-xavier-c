@@ -1,0 +1,32 @@
+.rug {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  background: var(--glass-modal);
+  backdrop-filter: blur(var(--blur-modal));
+  -webkit-backdrop-filter: blur(var(--blur-modal));
+  border: 1px solid rgba(244,161,176,0.16);
+  border-radius: 16px;
+  padding: 0.8rem 1.2rem;
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+  letter-spacing: 0.03em;
+  line-height: 1.5;
+  max-width: 380px;
+  box-shadow: var(--shadow-md), inset 0 1px 0 var(--glass-inner);
+  animation: rug-in 0.5s ease both, rug-out 0.5s ease 7.5s forwards;
+  margin-bottom: 2.2rem;
+}
+
+.rug__icon { font-size: 1.05rem; flex-shrink: 0; }
+
+.rug__text { font-style: italic; }
+
+@keyframes rug-in {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes rug-out {
+  to { opacity: 0; transform: translateY(-6px); }
+}

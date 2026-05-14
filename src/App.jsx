@@ -14,6 +14,7 @@ import MiniPlayer from './components/MiniPlayer'
 import { useAudioPlayer } from './contexts/AudioPlayerContext'
 import { audioElement } from './audio/audioElement'
 import { preloadSongLibrary } from './hooks/useSongLibrary'
+import { logMoodEvent } from './utils/moodHistory'
 import './App.css'
 
 // ── Timezone-aware fractional hour ────────────────────────────────────────────
@@ -25,7 +26,7 @@ function getFractHour(tz) {
 }
 
 export default function App() {
-  const { user, loadingAuth } = useAuth()
+  const { user, space, loadingAuth } = useAuth()
   const audioPlayer = useAudioPlayer()
   const [page, setPage]               = useState('welcome')
   const [selectedMood, setSelectedMood] = useState(null)
@@ -90,6 +91,11 @@ export default function App() {
     if (user && guestMode) setGuestMode(false)
   }, [user, guestMode])
 
+  // Dev: log auth state
+  useEffect(() => {
+    if (import.meta.env.DEV) console.log('[Auth]', user)
+  }, [user])
+
   // When user logs out, reset to welcome
   useEffect(() => {
     if (!user && !loadingAuth && !guestMode) {
@@ -103,7 +109,7 @@ export default function App() {
     setPage('mood')
   }
 
-  const handleStartStation = (mood, fromAi = false) => {
+  const handleStartStation = (mood, fromAi = false, originalInput = null) => {
     audioPlayer.clearStation()
     setIsAiMatch(fromAi)
 
@@ -127,6 +133,18 @@ export default function App() {
     setSelectedMood(mood)
     setStationKey(k => k + 1)
     localStorage.setItem('xavier_last_mood', mood.id)
+
+    // Log mood event to Supabase (fire-and-forget)
+    if (user) {
+      logMoodEvent({
+        userId: user.id,
+        spaceId: space?.id ?? null,
+        source: fromAi ? 'custom_input' : 'mood_card',
+        originalInput,
+        matchedMood: mood.id,
+      }).catch(err => console.warn('[App] moodHistory log skipped:', err?.message))
+    }
+
     setPage('station')
   }
 

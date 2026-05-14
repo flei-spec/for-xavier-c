@@ -1,0 +1,149 @@
+.wr__overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 300;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(6px);
+  -webkit-backdrop-filter: blur(6px);
+  opacity: 0;
+  transition: opacity 0.35s ease;
+  padding: 1.5rem;
+}
+
+.wr__overlay--in { opacity: 1; }
+
+.wr__card {
+  background: var(--glass-modal);
+  backdrop-filter: blur(var(--blur-modal));
+  -webkit-backdrop-filter: blur(var(--blur-modal));
+  border: 1px solid rgba(244,161,176,0.14);
+  border-radius: 20px;
+  padding: 2rem 1.6rem 1.5rem;
+  max-width: 360px;
+  width: 100%;
+  text-align: center;
+  box-shadow: var(--shadow-lg), inset 0 1px 0 var(--glass-inner);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+}
+
+.wr__label {
+  font-family: 'Playfair Display', 'Georgia', serif;
+  font-size: 1.2rem;
+  color: var(--text-primary);
+  letter-spacing: 0.04em;
+}
+
+/* ── Loading ── */
+.wr__loading { padding: 1rem 0; }
+
+.wr__dots {
+  display: flex;
+  gap: 0.4rem;
+  justify-content: center;
+}
+
+.wr__dots span {
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: rgba(244,161,176,0.5);
+  animation: wr-bounce 0.8s ease infinite;
+}
+
+.wr__dots span:nth-child(2) { animation-delay: 0.15s; }
+.wr__dots span:nth-child(3) { animation-delay: 0.3s; }
+
+@keyframes wr-bounce {
+  0%, 80%, 100% { transform: scale(0.6); opacity: 0.4; }
+  40% { transform: scale(1); opacity: 1; }
+}
+
+.wr__empty {
+  font-size: 0.84rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  line-height: 1.5;
+  padding: 0.5rem 0;
+}
+
+/* ── Mood badges ── */
+.wr__moods {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.6rem;
+}
+
+.wr__mood-badge {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  background: rgba(244,161,176,0.08);
+  border: 1px solid rgba(244,161,176,0.14);
+  border-radius: 20px;
+  padding: 0.4rem 0.8rem;
+  font-size: 0.8rem;
+}
+
+.wr__mood-icon { font-size: 0.85rem; }
+
+.wr__mood-label {
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+.wr__mood-count {
+  color: var(--text-secondary);
+  font-size: 0.72rem;
+}
+
+/* ── Stats ── */
+.wr__count {
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+
+.wr__count strong {
+  color: var(--text-primary);
+  font-weight: 600;
+}
+
+/* ── Summary ── */
+.wr__summary {
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+  font-style: italic;
+  line-height: 1.6;
+  letter-spacing: 0.03em;
+  padding: 0 0.2rem;
+}
+
+/* ── Closer ── */
+.wr__closer {
+  font-size: 0.78rem;
+  color: rgba(244,161,176,0.65);
+  font-style: italic;
+}
+
+/* ── Close button ── */
+.wr__close-btn {
+  margin-top: 0.3rem;
+  background: rgba(244,161,176,0.12);
+  border: 1px solid rgba(244,161,176,0.2);
+  border-radius: 20px;
+  color: var(--text-secondary);
+  font-size: 0.82rem;
+  padding: 0.45rem 2rem;
+  cursor: pointer;
+  transition: background 0.2s ease;
+}
+
+.wr__close-btn:hover {
+  background: rgba(244,161,176,0.2);
+}

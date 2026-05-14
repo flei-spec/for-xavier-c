@@ -1,8 +1,11 @@
 import { useState, useEffect } from 'react'
 import { profile } from '../data/romanticProfile'
 import { useAuth } from '../contexts/AuthContext'
+import { getLatestMood, getWeeklyStats } from '../utils/moodHistory'
 import LocalAtmosphereCard from './LocalAtmosphereCard'
 import AuthModal from './AuthModal'
+import ReturningUserGreeting from './ReturningUserGreeting'
+import WeeklyRecap from './WeeklyRecap'
 import './WelcomePage.css'
 
 export default function WelcomePage({ onEnter, atmosphere }) {
@@ -10,10 +13,44 @@ export default function WelcomePage({ onEnter, atmosphere }) {
   const [ready,    setReady]    = useState(false)
   const [showAuth, setShowAuth] = useState(false)
 
+  const [lastMood,         setLastMood]         = useState(null)
+  const [greetingVisible,  setGreetingVisible]  = useState(false)
+  const [showRecap,        setShowRecap]        = useState(false)
+  const [hasWeeklyData,    setHasWeeklyData]    = useState(false)
+  const [recapAutoEnter,   setRecapAutoEnter]   = useState(false)
+
   useEffect(() => {
     const t = setTimeout(() => setReady(true), 80)
     return () => clearTimeout(t)
   }, [])
+
+  // Fetch latest mood for returning user greeting + check for weekly data
+  useEffect(() => {
+    if (!user) return
+    getLatestMood(user.id).then(entry => {
+      if (!entry) return
+      // Only show greeting if the last visit was within 7 days
+      const daysSince = (Date.now() - new Date(entry.created_at).getTime()) / (1000 * 60 * 60 * 24)
+      if (daysSince <= 7) {
+        setLastMood(entry.matched_mood)
+        setGreetingVisible(true)
+      }
+    })
+    getWeeklyStats(user.id).then(stats => {
+      if (stats && stats.totalEntries >= 3) {
+        setHasWeeklyData(true)
+      }
+    })
+  }, [user])
+
+  const handleEnter = () => {
+    if (hasWeeklyData) {
+      setRecapAutoEnter(true)
+      setShowRecap(true)
+    } else {
+      onEnter()
+    }
+  }
 
   return (
     <div className={`welcome ${ready ? 'welcome--ready' : ''}`}>
@@ -55,6 +92,14 @@ export default function WelcomePage({ onEnter, atmosphere }) {
           </h1>
         </div>
 
+        {/* ── Returning user greeting ── */}
+        {greetingVisible && lastMood && (
+          <ReturningUserGreeting
+            lastMood={lastMood}
+            onDismiss={() => setGreetingVisible(false)}
+          />
+        )}
+
         {/* ── Supporting copy ── */}
         <div className="welcome__text">
           <p className="welcome__sub">为每日、想念、和你而存在。</p>
@@ -64,9 +109,17 @@ export default function WelcomePage({ onEnter, atmosphere }) {
 
         {/* ── Call to action ── */}
         <div className="welcome__actions">
-          <button className="welcome__cta" onClick={onEnter}>
+          <button className="welcome__cta" onClick={handleEnter}>
             开始今日的电台
           </button>
+          {hasWeeklyData && (
+            <button
+              className="welcome__recap-hint"
+              onClick={() => { setRecapAutoEnter(false); setShowRecap(true) }}
+            >
+              看看这周的心情 ✦
+            </button>
+          )}
           <p className="welcome__from">来自 {profile.fromName}，带着全部的心意 ♡</p>
         </div>
 
@@ -74,6 +127,13 @@ export default function WelcomePage({ onEnter, atmosphere }) {
 
       {showAuth && (
         <AuthModal onSuccess={() => setShowAuth(false)} />
+      )}
+
+      {showRecap && (
+        <WeeklyRecap onClose={() => {
+          setShowRecap(false)
+          if (recapAutoEnter) onEnter()
+        }} />
       )}
     </div>
   )
