@@ -1,4 +1,5 @@
 import { useEffect } from 'react'
+import { moodMeta, FALLBACK_ICON } from '../config/moodMeta'
 import './ReturningUserGreeting.css'
 
 const GREETINGS = {
@@ -20,11 +21,12 @@ export default function ReturningUserGreeting({ lastMood, onDismiss }) {
   }, [onDismiss])
 
   const message = lastMood ? GREETINGS[lastMood] : null
+  const icon = lastMood ? (moodMeta[lastMood]?.icon ?? FALLBACK_ICON) : FALLBACK_ICON
   if (!message) return null
 
   return (
     <div className="rug" role="status">
-      <span className="rug__icon">💌</span>
+      <span className="rug__icon">{icon}</span>
       <span className="rug__text">{message}</span>
     </div>
   )

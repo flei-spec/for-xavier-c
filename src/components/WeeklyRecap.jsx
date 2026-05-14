@@ -1,5 +1,5 @@
 import { useState, useEffect } from 'react'
-import { moods } from '../data/romanticProfile'
+import { moodMeta, FALLBACK_ICON } from '../config/moodMeta'
 import { getWeeklyStats } from '../utils/moodHistory'
 import { useAuth } from '../contexts/AuthContext'
 import './WeeklyRecap.css'
@@ -87,10 +87,7 @@ export default function WeeklyRecap({ onClose }) {
     setTimeout(onClose, 350)
   }
 
-  const moodIcon = (moodId) => {
-    const found = moods.find(m => m.id === moodId)
-    return found ? found.icon : '✨'
-  }
+  const moodIcon = (moodId) => moodMeta[moodId]?.icon ?? FALLBACK_ICON
 
   const summary = stats ? getRecapSummary(stats.topMoods) : null
 

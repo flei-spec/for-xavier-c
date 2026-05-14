@@ -1,3 +1,5 @@
+import { moodMeta } from '../config/moodMeta'
+
 export const profile = {
   name: 'Xavier',
   fullName: 'Xavier.C',
@@ -46,77 +48,26 @@ export const profile = {
 Triston.L 💌`,
 }
 
+function m(id, accentColor, djIntro) {
+  const meta = moodMeta[id]
+  return {
+    id,
+    label: id,
+    icon: meta.icon,
+    description: meta.subtitle,
+    accentColor,
+    djIntro,
+  }
+}
+
 export const moods = [
-  {
-    id: '思念',
-    label: '思念',
-    icon: '☁️',
-    description: '回忆总在安静的时候出现',
-    accentColor: '#e8b4c8',
-    djIntro: `思念是很轻的东西，却重到能让深夜变得特别安静。小宝，我在这里陪你。`,
-  },
-  {
-    id: '幸福',
-    label: '幸福',
-    icon: '✨',
-    description: '世界今晚柔软了一点',
-    accentColor: '#ffcc80',
-    djIntro: `世界今晚好像柔软了一点。就这样枕着你的小幸福，让音乐轻轻抱着你。`,
-  },
-  {
-    id: '委屈',
-    label: '委屈',
-    icon: '🌧️',
-    description: '心里像下了一场小雨',
-    accentColor: '#90b8d8',
-    djIntro: `心里像下了一场小雨对不对，小宝？没关系，雨会停的，我就在这里陪你听。`,
-  },
-  {
-    id: '懊恼',
-    label: '懊恼',
-    icon: '💫',
-    description: '有些话还是没能说出口',
-    accentColor: '#c9a0dc',
-    djIntro: `有些话没说出口，压在心上会有点沉。今晚不说也没关系，让歌替你说。`,
-  },
-  {
-    id: '治愈',
-    label: '治愈',
-    icon: '🫧',
-    description: '今晚先别对自己太严格',
-    accentColor: '#80cbc4',
-    djIntro: `今晚先别对自己太严格了，小宝。你已经做得很好了，现在只需要好好听歌。`,
-  },
-  {
-    id: '放空',
-    label: '放空',
-    icon: '🌙',
-    description: '就这样慢慢漂一会儿',
-    accentColor: '#b39ddb',
-    djIntro: `什么都不用想，什么都不用做。就这样慢慢漂一会儿，思绪飘到哪里就到哪里。`,
-  },
-  {
-    id: '孤独',
-    label: '孤独',
-    icon: '🧸',
-    description: '人很多的时候也会想逃走',
-    accentColor: '#8d9db6',
-    djIntro: `人很多的时候也会想逃走吧。一个人待着不是不好的事，今晚这盏灯为你留着。`,
-  },
-  {
-    id: '疲惫',
-    label: '疲惫',
-    icon: '🌿',
-    description: '今天的你已经够好了',
-    accentColor: '#a5c8a0',
-    djIntro: `今天的你已经够好了，小宝。不用再证明什么，好好休息，歌会陪着你。`,
-  },
-  {
-    id: '心动',
-    label: '心动',
-    icon: '💗',
-    description: '喜欢有时候藏不住',
-    accentColor: '#f0a0a8',
-    djIntro: `喜欢有时候藏不住对不对？那种心跳轻轻跳一下的感觉，挺好的。让歌帮你记住这一刻。`,
-  },
+  m('思念', '#e8b4c8', `思念是很轻的东西，却重到能让深夜变得特别安静。小宝，我在这里陪你。`),
+  m('幸福', '#ffcc80', `世界今晚好像柔软了一点。就这样枕着你的小幸福，让音乐轻轻抱着你。`),
+  m('委屈', '#90b8d8', `心里像下了一场小雨对不对，小宝？没关系，雨会停的，我就在这里陪你听。`),
+  m('懊恼', '#c9a0dc', `有些话没说出口，压在心上会有点沉。今晚不说也没关系，让歌替你说。`),
+  m('治愈', '#80cbc4', `今晚先别对自己太严格了，小宝。你已经做得很好了，现在只需要好好听歌。`),
+  m('放空', '#b39ddb', `什么都不用想，什么都不用做。就这样慢慢漂一会儿，思绪飘到哪里就到哪里。`),
+  m('孤独', '#8d9db6', `人很多的时候也会想逃走吧。一个人待着不是不好的事，今晚这盏灯为你留着。`),
+  m('疲惫', '#a5c8a0', `今天的你已经够好了，小宝。不用再证明什么，好好休息，歌会陪着你。`),
+  m('心动', '#f0a0a8', `喜欢有时候藏不住对不对？那种心跳轻轻跳一下的感觉，挺好的。让歌帮你记住这一刻。`),
 ]
