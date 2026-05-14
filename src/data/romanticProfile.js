@@ -98,7 +98,7 @@ export const moods = [
   {
     id: '孤独',
     label: '孤独',
-    icon: '🕯️',
+    icon: '🧸',
     description: '人很多的时候也会想逃走',
     accentColor: '#8d9db6',
     djIntro: `人很多的时候也会想逃走吧。一个人待着不是不好的事，今晚这盏灯为你留着。`,
