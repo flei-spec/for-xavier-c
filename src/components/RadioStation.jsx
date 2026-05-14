@@ -24,7 +24,7 @@ import './RadioStation.css'
 
 // ── song matching ─────────────────────────────────────────────────────────────
 
-const FALLBACK_TAGS = ['需要安慰', '想被抱抱', '想一个人发呆']
+const FALLBACK_TAGS = ['思念', '孤独', '治愈']
 
 function pickRandomStartIndex(moodId, songs) {
   if (songs.length <= 1) return 0

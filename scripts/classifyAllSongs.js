@@ -113,219 +113,218 @@ const hasAny = (text, terms) => terms.some(t => text.includes(t))
 const ARTIST_PROFILES = {
 
   // ── Chinese: Ballad / Love Song Masters ──────────────────────────────
-  '薛之谦':     { moods:['想你了','有点苦恼','需要安慰'], intensity:8, warmth:5, solitude:8, night:9, style:'poetic heartbreak' },
-  '张宇':       { moods:['想你了','需要安慰','有点苦恼'], intensity:8, warmth:5, solitude:8, night:9, style:'dramatic ballad' },
-  '张信哲':     { moods:['想你了','今天很幸福'], intensity:7, warmth:7, solitude:7, night:8, style:'romantic ballad' },
-  '林俊杰':     { moods:['今天很幸福','想你了','想被抱抱'], intensity:7, warmth:8, solitude:6, night:7, style:'soaring romantic' },
-  '周兴哲':     { moods:['想你了','想被抱抱','今天很幸福'], intensity:6, warmth:8, solitude:7, night:8, style:'tender ballad' },
-  '王力宏':     { moods:['想你了','今天很幸福'], intensity:6, warmth:7, solitude:6, night:7, style:'classic romantic' },
-  '陶喆':       { moods:['有点苦恼','想你了'], intensity:7, warmth:6, solitude:7, night:8, style:'R&B ballad' },
-  '陈奕迅':     { moods:['想一个人发呆','有点苦恼','需要安慰'], intensity:7, warmth:6, solitude:8, night:9, style:'melancholic narrative' },
-  '李荣浩':     { moods:['有点苦恼','想你了','想一个人发呆'], intensity:6, warmth:5, solitude:8, night:8, style:'understated ballad' },
-  '萧敬腾':     { moods:['想你了','需要安慰'], intensity:8, warmth:5, solitude:7, night:8, style:'rock ballad' },
-  '曹格':       { moods:['想你了','需要安慰'], intensity:7, warmth:6, solitude:7, night:8, style:'emotional ballad' },
-  '杨培安':     { moods:['想你了','需要安慰'], intensity:8, warmth:6, solitude:7, night:8, style:'power ballad' },
-  '郑源':       { moods:['想你了','需要安慰'], intensity:7, warmth:6, solitude:8, night:9, style:'heartbreak ballad' },
-  '郑中基':     { moods:['想你了','有点苦恼'], intensity:6, warmth:6, solitude:7, night:8, style:'classic ballad' },
-  '庾澄庆':     { moods:['今天很幸福','想你了'], intensity:6, warmth:7, solitude:6, night:7, style:'warm ballad' },
-  '周华健':     { moods:['今天很幸福','想你了'], intensity:5, warmth:8, solitude:6, night:7, style:'classic warm' },
-  '张远':       { moods:['想你了','想被抱抱'], intensity:6, warmth:7, solitude:7, night:8, style:'tender ballad' },
-  '丁当':       { moods:['想你了','需要安慰'], intensity:7, warmth:6, solitude:7, night:8, style:'power ballad' },
-  '品冠':       { moods:['今天很幸福','想被抱抱'], intensity:5, warmth:9, solitude:6, night:7, style:'gentle ballad' },
-  '光良':       { moods:['今天很幸福','想你了'], intensity:5, warmth:8, solitude:6, night:7, style:'fairy tale ballad' },
+  '薛之谦':     { moods:['懊恼'], intensity:8, warmth:5, solitude:8, night:9, style:'poetic heartbreak' },
+  '张宇':       { moods:['思念'], intensity:8, warmth:5, solitude:8, night:9, style:'dramatic ballad' },
+  '张信哲':     { moods:['幸福'], intensity:7, warmth:7, solitude:7, night:8, style:'romantic ballad' },
+  '林俊杰':     { moods:['心动'], intensity:7, warmth:8, solitude:6, night:7, style:'soaring romantic' },
+  '周兴哲':     { moods:['心动'], intensity:6, warmth:8, solitude:7, night:8, style:'tender ballad' },
+  '王力宏':     { moods:['幸福'], intensity:6, warmth:7, solitude:6, night:7, style:'classic romantic' },
+  '陶喆':       { moods:['懊恼'], intensity:7, warmth:6, solitude:7, night:8, style:'R&B ballad' },
+  '陈奕迅':     { moods:['委屈'], intensity:7, warmth:6, solitude:8, night:9, style:'melancholic narrative' },
+  '李荣浩':     { moods:['懊恼'], intensity:6, warmth:5, solitude:8, night:8, style:'understated ballad' },
+  '萧敬腾':     { moods:['孤独'], intensity:8, warmth:5, solitude:7, night:8, style:'rock ballad' },
+  '曹格':       { moods:['治愈'], intensity:7, warmth:6, solitude:7, night:8, style:'emotional ballad' },
+  '杨培安':     { moods:['思念'], intensity:8, warmth:6, solitude:7, night:8, style:'power ballad' },
+  '郑源':       { moods:['治愈'], intensity:7, warmth:6, solitude:8, night:9, style:'heartbreak ballad' },
+  '郑中基':     { moods:['幸福'], intensity:6, warmth:6, solitude:7, night:8, style:'classic ballad' },
+  '庾澄庆':     { moods:['幸福'], intensity:6, warmth:7, solitude:6, night:7, style:'warm ballad' },
+  '周华健':     { moods:['幸福'], intensity:5, warmth:8, solitude:6, night:7, style:'classic warm' },
+  '张远':       { moods:['幸福'], intensity:6, warmth:7, solitude:7, night:8, style:'tender ballad' },
+  '丁当':       { moods:['治愈'], intensity:7, warmth:6, solitude:7, night:8, style:'power ballad' },
+  '品冠':       { moods:['幸福'], intensity:5, warmth:9, solitude:6, night:7, style:'gentle ballad' },
+  '光良':       { moods:['幸福'], intensity:5, warmth:8, solitude:6, night:7, style:'fairy tale ballad' },
 
   // ── Chinese: Female Ballad / Emotional ────────────────────────────────
-  'G.E.M.邓紫棋': { moods:['想你了','有点苦恼','需要安慰'], intensity:8, warmth:6, solitude:7, night:8, style:'powerful emotional' },
-  '黄丽玲':     { moods:['需要安慰','想你了','有点苦恼'], intensity:8, warmth:6, solitude:8, night:9, style:'soulful heartbreak' },
-  '孙燕姿':     { moods:['今天很幸福','想你了','想一个人发呆'], intensity:6, warmth:7, solitude:7, night:8, style:'clear emotional' },
-  '张惠妹':     { moods:['需要安慰','想你了'], intensity:8, warmth:6, solitude:7, night:8, style:'power ballad' },
-  '莫文蔚':     { moods:['有点苦恼','想一个人发呆','想你了'], intensity:6, warmth:6, solitude:8, night:8, style:'sensual melancholy' },
-  '梁静茹':     { moods:['今天很幸福','想被抱抱','需要安慰'], intensity:6, warmth:8, solitude:7, night:7, style:'warm comfort' },
-  '杨丞琳':     { moods:['开心开心','今天很幸福','想你了'], intensity:5, warmth:7, solitude:6, night:6, style:'sweet pop' },
-  '郭静':       { moods:['今天很幸福','需要安慰'], intensity:5, warmth:8, solitude:6, night:7, style:'pure ballad' },
-  '郁可唯':     { moods:['想你了','想一个人发呆'], intensity:6, warmth:7, solitude:8, night:8, style:'ethereal ballad' },
-  '梁咏琪':     { moods:['需要安慰','今天很幸福'], intensity:5, warmth:7, solitude:7, night:7, style:'clear ballad' },
-  '许美静':     { moods:['想你了','想一个人发呆','今天有点累'], intensity:6, warmth:5, solitude:9, night:10, style:'late-night melancholy' },
-  '王菲':       { moods:['想一个人发呆','想你了'], intensity:5, warmth:4, solitude:9, night:9, style:'ethereal cool' },
-  '刘若英':     { moods:['想你了','今天很幸福'], intensity:5, warmth:7, solitude:7, night:8, style:'narrative ballad' },
-  '那英':       { moods:['想你了','需要安慰'], intensity:7, warmth:6, solitude:7, night:8, style:'powerful ballad' },
-  '张碧晨':     { moods:['有点苦恼','想你了','需要安慰'], intensity:7, warmth:6, solitude:8, night:8, style:'dramatic ballad' },
-  '张韶涵':     { moods:['需要安慰','今天很幸福'], intensity:7, warmth:7, solitude:6, night:7, style:'inspirational pop' },
-  '王心凌':     { moods:['开心开心','想被抱抱'], intensity:4, warmth:8, solitude:5, night:5, style:'sweet pop' },
-  '蔡依林':     { moods:['开心开心'], intensity:7, warmth:5, solitude:5, night:6, style:'dance pop' },
-  '萧亚轩':     { moods:['有点苦恼','想你了'], intensity:6, warmth:5, solitude:7, night:7, style:'urban ballad' },
-  '徐佳莹':     { moods:['想你了','想一个人发呆'], intensity:6, warmth:7, solitude:8, night:8, style:'delicate ballad' },
-  '戴佩妮':     { moods:['有点苦恼','想你了'], intensity:6, warmth:6, solitude:7, night:8, style:'literary ballad' },
-  '孙盛希':     { moods:['想你了','有点苦恼'], intensity:6, warmth:6, solitude:7, night:8, style:'R&B ballad' },
+  'G.E.M.邓紫棋': { moods:['懊恼'], intensity:8, warmth:6, solitude:7, night:8, style:'powerful emotional' },
+  '黄丽玲':     { moods:['治愈'], intensity:8, warmth:6, solitude:8, night:9, style:'soulful heartbreak' },
+  '孙燕姿':     { moods:['幸福'], intensity:6, warmth:7, solitude:7, night:8, style:'clear emotional' },
+  '张惠妹':     { moods:['治愈'], intensity:8, warmth:6, solitude:7, night:8, style:'power ballad' },
+  '莫文蔚':     { moods:['委屈'], intensity:6, warmth:6, solitude:8, night:8, style:'sensual melancholy' },
+  '梁静茹':     { moods:['治愈'], intensity:6, warmth:8, solitude:7, night:7, style:'warm comfort' },
+  '杨丞琳':     { moods:['幸福'], intensity:5, warmth:7, solitude:6, night:6, style:'sweet pop' },
+  '郭静':       { moods:['幸福'], intensity:5, warmth:8, solitude:6, night:7, style:'pure ballad' },
+  '郁可唯':     { moods:['思念'], intensity:6, warmth:7, solitude:8, night:8, style:'ethereal ballad' },
+  '梁咏琪':     { moods:['治愈'], intensity:5, warmth:7, solitude:7, night:7, style:'clear ballad' },
+  '许美静':     { moods:['疲惫'], intensity:6, warmth:5, solitude:9, night:10, style:'late-night melancholy' },
+  '王菲':       { moods:['思念'], intensity:5, warmth:4, solitude:9, night:9, style:'ethereal cool' },
+  '刘若英':     { moods:['委屈'], intensity:5, warmth:7, solitude:7, night:8, style:'narrative ballad' },
+  '那英':       { moods:['治愈'], intensity:7, warmth:6, solitude:7, night:8, style:'powerful ballad' },
+  '张碧晨':     { moods:['懊恼'], intensity:7, warmth:6, solitude:8, night:8, style:'dramatic ballad' },
+  '张韶涵':     { moods:['治愈'], intensity:7, warmth:7, solitude:6, night:7, style:'inspirational pop' },
+  '王心凌':     { moods:['幸福'], intensity:4, warmth:8, solitude:5, night:5, style:'sweet pop' },
+  '蔡依林':     { moods:['幸福'], intensity:7, warmth:5, solitude:5, night:6, style:'dance pop' },
+  '萧亚轩':     { moods:['懊恼'], intensity:6, warmth:5, solitude:7, night:7, style:'urban ballad' },
+  '徐佳莹':     { moods:['心动'], intensity:6, warmth:7, solitude:8, night:8, style:'delicate ballad' },
+  '戴佩妮':     { moods:['懊恼'], intensity:6, warmth:6, solitude:7, night:8, style:'literary ballad' },
+  '孙盛希':     { moods:['思念'], intensity:6, warmth:6, solitude:7, night:8, style:'R&B ballad' },
 
   // ── Chinese: Poetic / Folk / Literary ──────────────────────────────────
-  '许嵩':       { moods:['想一个人发呆','今天很幸福','想你了'], intensity:5, warmth:6, solitude:8, night:9, style:'literary poetic' },
-  '陈粒':       { moods:['想一个人发呆','有点苦恼'], intensity:7, warmth:4, solitude:9, night:9, style:'indie art-pop' },
-  '毛不易':     { moods:['想一个人发呆','今天有点累','需要安慰'], intensity:5, warmth:7, solitude:9, night:9, style:'weary folk' },
-  '李健':       { moods:['想一个人发呆','今天很幸福'], intensity:5, warmth:7, solitude:8, night:9, style:'poetic folk' },
-  '赵雷':       { moods:['想一个人发呆','想你了'], intensity:5, warmth:6, solitude:8, night:8, style:'folk narrative' },
-  '朴树':       { moods:['想一个人发呆','今天有点累'], intensity:6, warmth:5, solitude:8, night:8, style:'melancholic folk' },
-  '宋冬野':     { moods:['想一个人发呆','需要安慰'], intensity:6, warmth:5, solitude:9, night:9, style:'deep folk' },
+  '许嵩':       { moods:['思念'], intensity:5, warmth:6, solitude:8, night:9, style:'literary poetic' },
+  '陈粒':       { moods:['孤独'], intensity:7, warmth:4, solitude:9, night:9, style:'indie art-pop' },
+  '毛不易':     { moods:['疲惫'], intensity:5, warmth:7, solitude:9, night:9, style:'weary folk' },
+  '李健':       { moods:['孤独'], intensity:5, warmth:7, solitude:8, night:9, style:'poetic folk' },
+  '赵雷':       { moods:['思念'], intensity:5, warmth:6, solitude:8, night:8, style:'folk narrative' },
+  '朴树':       { moods:['疲惫'], intensity:6, warmth:5, solitude:8, night:8, style:'melancholic folk' },
+  '宋冬野':     { moods:['孤独'], intensity:6, warmth:5, solitude:9, night:9, style:'deep folk' },
 
   // ── Chinese: Powerful / Dramatic ──────────────────────────────────────
-  '周深':       { moods:['想一个人发呆','今天很幸福'], intensity:7, warmth:7, solitude:8, night:8, style:'ethereal vocal' },
-  '萨顶顶':     { moods:['想一个人发呆','洗澡放松一下'], intensity:8, warmth:5, solitude:8, night:8, style:'ethereal world' },
-  '韩红':       { moods:['今天很幸福','想被抱抱'], intensity:7, warmth:8, solitude:6, night:7, style:'powerful warm' },
-  '张杰':       { moods:['今天很幸福','想你了','想被抱抱'], intensity:8, warmth:7, solitude:6, night:7, style:'soaring romantic' },
-  '华晨宇':     { moods:['有点苦恼','想一个人发呆'], intensity:9, warmth:3, solitude:8, night:8, style:'avant-garde' },
-  '邓丽君':     { moods:['今天很幸福','想你了'], intensity:5, warmth:10, solitude:7, night:8, style:'timeless warm' },
-  '蔡琴':       { moods:['想一个人发呆','今天很幸福'], intensity:5, warmth:9, solitude:8, night:9, style:'classic warm' },
-  '费玉清':     { moods:['想一个人发呆','想你了'], intensity:5, warmth:8, solitude:7, night:8, style:'classic ballad' },
-  '陈淑桦':     { moods:['想你了','今天很幸福'], intensity:6, warmth:7, solitude:7, night:8, style:'classic ballad' },
-  '孟庭苇':     { moods:['今天很幸福','想你了'], intensity:5, warmth:8, solitude:7, night:8, style:'soft classic' },
-  '赵咏华':     { moods:['今天很幸福','想被抱抱'], intensity:5, warmth:9, solitude:7, night:7, style:'warm romantic' },
+  '周深':       { moods:['孤独'], intensity:7, warmth:7, solitude:8, night:8, style:'ethereal vocal' },
+  '萨顶顶':     { moods:['放空'], intensity:8, warmth:5, solitude:8, night:8, style:'ethereal world' },
+  '韩红':       { moods:['幸福'], intensity:7, warmth:8, solitude:6, night:7, style:'powerful warm' },
+  '张杰':       { moods:['幸福'], intensity:8, warmth:7, solitude:6, night:7, style:'soaring romantic' },
+  '华晨宇':     { moods:['懊恼'], intensity:9, warmth:3, solitude:8, night:8, style:'avant-garde' },
+  '邓丽君':     { moods:['幸福'], intensity:5, warmth:10, solitude:7, night:8, style:'timeless warm' },
+  '蔡琴':       { moods:['孤独'], intensity:5, warmth:9, solitude:8, night:9, style:'classic warm' },
+  '费玉清':     { moods:['思念'], intensity:5, warmth:8, solitude:7, night:8, style:'classic ballad' },
+  '陈淑桦':     { moods:['幸福'], intensity:6, warmth:7, solitude:7, night:8, style:'classic ballad' },
+  '孟庭苇':     { moods:['幸福'], intensity:5, warmth:8, solitude:7, night:8, style:'soft classic' },
+  '赵咏华':     { moods:['幸福'], intensity:5, warmth:9, solitude:7, night:7, style:'warm romantic' },
 
   // ── Chinese: Contemporary / R&B / Indie ───────────────────────────────
-  '单依纯':     { moods:['想你了','想一个人发呆','需要安慰'], intensity:6, warmth:7, solitude:8, night:8, style:'soulful ballad' },
-  '颜人中':     { moods:['想你了','今天很幸福','想被抱抱'], intensity:6, warmth:7, solitude:7, night:8, style:'warm R&B' },
-  '杜宣达':     { moods:['想你了','想一个人发呆'], intensity:5, warmth:7, solitude:8, night:9, style:'bedroom R&B' },
-  '刘至佳':     { moods:['开心开心','想一个人发呆'], intensity:6, warmth:6, solitude:7, night:7, style:'alt R&B' },
-  '徐秉龙':     { moods:['想一个人发呆','今天有点累','想你了'], intensity:5, warmth:7, solitude:9, night:9, style:'bedroom folk' },
-  '太一':       { moods:['想一个人发呆','有点苦恼'], intensity:7, warmth:4, solitude:9, night:9, style:'experimental' },
-  '鬼卞':       { moods:['有点苦恼','想一个人发呆'], intensity:8, warmth:3, solitude:9, night:9, style:'dark hip-hop' },
-  'Jony J':     { moods:['有点苦恼','想一个人发呆'], intensity:6, warmth:4, solitude:8, night:8, style:'conscious rap' },
-  '刘思鉴':     { moods:['想一个人发呆','有点苦恼'], intensity:5, warmth:5, solitude:9, night:9, style:'atmospheric' },
-  '满舒克':     { moods:['想一个人发呆','有点苦恼'], intensity:5, warmth:6, solitude:8, night:9, style:'melodic rap' },
-  '太一':       { moods:['想一个人发呆','有点苦恼'], intensity:7, warmth:4, solitude:9, night:9, style:'experimental' },
-  '王贰浪':     { moods:['想被抱抱','想你了'], intensity:6, warmth:7, solitude:7, night:8, style:'tender ballad' },
-  '隔壁老樊':   { moods:['需要安慰','想被抱抱','想你了'], intensity:7, warmth:6, solitude:8, night:8, style:'husky ballad' },
-  '枯木逢春':   { moods:['今天很幸福','想你了'], intensity:5, warmth:7, solitude:7, night:8, style:'folk ballad' },
-  '柏松':       { moods:['今天很幸福','想被抱抱'], intensity:5, warmth:8, solitude:7, night:7, style:'warm folk' },
-  '于文文':     { moods:['想你了','有点苦恼'], intensity:6, warmth:5, solitude:7, night:8, style:'rock ballad' },
-  '胡彦斌':     { moods:['想你了','有点苦恼'], intensity:7, warmth:5, solitude:7, night:8, style:'R&B ballad' },
+  '单依纯':     { moods:['治愈'], intensity:6, warmth:7, solitude:8, night:8, style:'soulful ballad' },
+  '颜人中':     { moods:['心动'], intensity:6, warmth:7, solitude:7, night:8, style:'warm R&B' },
+  '杜宣达':     { moods:['思念'], intensity:5, warmth:7, solitude:8, night:9, style:'bedroom R&B' },
+  '刘至佳':     { moods:['幸福'], intensity:6, warmth:6, solitude:7, night:7, style:'alt R&B' },
+  '徐秉龙':     { moods:['疲惫'], intensity:5, warmth:7, solitude:9, night:9, style:'bedroom folk' },
+  '鬼卞':       { moods:['懊恼'], intensity:8, warmth:3, solitude:9, night:9, style:'dark hip-hop' },
+  'Jony J':     { moods:['懊恼'], intensity:6, warmth:4, solitude:8, night:8, style:'conscious rap' },
+  '刘思鉴':     { moods:['孤独'], intensity:5, warmth:5, solitude:9, night:9, style:'atmospheric' },
+  '满舒克':     { moods:['孤独'], intensity:5, warmth:6, solitude:8, night:9, style:'melodic rap' },
+  '太一':       { moods:['孤独','懊恼'], intensity:7, warmth:4, solitude:9, night:9, style:'experimental' },
+  '王贰浪':     { moods:['治愈'], intensity:6, warmth:7, solitude:7, night:8, style:'tender ballad' },
+  '隔壁老樊':   { moods:['治愈'], intensity:7, warmth:6, solitude:8, night:8, style:'husky ballad' },
+  '枯木逢春':   { moods:['幸福'], intensity:5, warmth:7, solitude:7, night:8, style:'folk ballad' },
+  '柏松':       { moods:['幸福'], intensity:5, warmth:8, solitude:7, night:7, style:'warm folk' },
+  '于文文':     { moods:['懊恼'], intensity:6, warmth:5, solitude:7, night:8, style:'rock ballad' },
+  '胡彦斌':     { moods:['懊恼'], intensity:7, warmth:5, solitude:7, night:8, style:'R&B ballad' },
 
   // ── Chinese: Folk / National Style ────────────────────────────────────
-  '凤凰传奇':   { moods:['开心开心'], intensity:7, warmth:7, solitude:4, night:5, style:'folk-pop energetic' },
-  '刀郎':       { moods:['想一个人发呆','想你了'], intensity:7, warmth:6, solitude:8, night:8, style:'desert folk' },
-  '郑智化':     { moods:['有点苦恼','想一个人发呆'], intensity:7, warmth:5, solitude:8, night:8, style:'folk rock' },
-  '伍佰':       { moods:['想一个人发呆','有点苦恼'], intensity:7, warmth:5, solitude:7, night:8, style:'rock ballad' },
-  '许巍':       { moods:['想一个人发呆','今天有点累'], intensity:6, warmth:6, solitude:8, night:8, style:'folk rock' },
+  '凤凰传奇':   { moods:['幸福'], intensity:7, warmth:7, solitude:4, night:5, style:'folk-pop energetic' },
+  '刀郎':       { moods:['思念'], intensity:7, warmth:6, solitude:8, night:8, style:'desert folk' },
+  '郑智化':     { moods:['懊恼'], intensity:7, warmth:5, solitude:8, night:8, style:'folk rock' },
+  '伍佰':       { moods:['孤独'], intensity:7, warmth:5, solitude:7, night:8, style:'rock ballad' },
+  '许巍':       { moods:['疲惫'], intensity:6, warmth:6, solitude:8, night:8, style:'folk rock' },
 
   // ── Chinese: Duets / Collaborations ───────────────────────────────────
-  '薛之谦,韩红':     { moods:['想你了','想被抱抱'], intensity:7, warmth:7, solitude:7, night:8, style:'duet ballad' },
-  '林俊杰,蔡卓妍':   { moods:['开心开心','今天很幸福'], intensity:6, warmth:8, solitude:5, night:6, style:'sweet duet' },
-  '韩红,孙楠':       { moods:['今天很幸福'], intensity:7, warmth:8, solitude:6, night:7, style:'power duet' },
-  '周传雄,陆虎':     { moods:['想一个人发呆','今天有点累'], intensity:6, warmth:6, solitude:8, night:9, style:'melancholic duet' },
-  '杨宗纬,宝石Gem,王宇宙Leto': { moods:['想一个人发呆','想你了'], intensity:6, warmth:6, solitude:8, night:9, style:'atmospheric collab' },
-  '王赫野,姚晓棠':   { moods:['想一个人发呆','想你了'], intensity:6, warmth:7, solitude:8, night:9, style:'duet ballad' },
-  'GAI周延,戴佩妮':  { moods:['想一个人发呆','想你了'], intensity:7, warmth:5, solitude:8, night:9, style:'rap ballad' },
+  '薛之谦,韩红':     { moods:['治愈'], intensity:7, warmth:7, solitude:7, night:8, style:'duet ballad' },
+  '林俊杰,蔡卓妍':   { moods:['幸福'], intensity:6, warmth:8, solitude:5, night:6, style:'sweet duet' },
+  '韩红,孙楠':       { moods:['幸福'], intensity:7, warmth:8, solitude:6, night:7, style:'power duet' },
+  '周传雄,陆虎':     { moods:['孤独'], intensity:6, warmth:6, solitude:8, night:9, style:'melancholic duet' },
+  '杨宗纬,宝石Gem,王宇宙Leto': { moods:['孤独'], intensity:6, warmth:6, solitude:8, night:9, style:'atmospheric collab' },
+  '王赫野,姚晓棠':   { moods:['思念'], intensity:6, warmth:7, solitude:8, night:9, style:'duet ballad' },
+  'GAI周延,戴佩妮':  { moods:['孤独'], intensity:7, warmth:5, solitude:8, night:9, style:'rap ballad' },
 
   // ── English: Emotional Ballads ────────────────────────────────────────
-  'Adele':          { moods:['需要安慰','想你了','有点苦恼'], intensity:8, warmth:7, solitude:8, night:9, style:'soulful ballad' },
-  'Ed Sheeran':     { moods:['今天很幸福','想被抱抱'], intensity:6, warmth:9, solitude:6, night:7, style:'warm acoustic' },
-  'Sam Smith':      { moods:['需要安慰','想你了'], intensity:7, warmth:7, solitude:8, night:9, style:'soulful ballad' },
-  'Lewis Capaldi':  { moods:['需要安慰','想你了'], intensity:7, warmth:7, solitude:8, night:9, style:'heartfelt ballad' },
-  'James Arthur':   { moods:['想你了','需要安慰'], intensity:7, warmth:6, solitude:8, night:8, style:'emotional ballad' },
-  'Coldplay':       { moods:['想一个人发呆','今天很幸福'], intensity:7, warmth:6, solitude:7, night:8, style:'atmospheric rock' },
-  'John Legend':    { moods:['今天很幸福','想被抱抱'], intensity:6, warmth:9, solitude:6, night:7, style:'romantic soul' },
-  'Bruno Mars':     { moods:['开心开心','想被抱抱'], intensity:7, warmth:8, solitude:5, night:7, style:'funky romantic' },
+  'Adele':          { moods:['委屈'], intensity:8, warmth:7, solitude:8, night:9, style:'soulful ballad' },
+  'Ed Sheeran':     { moods:['心动'], intensity:6, warmth:9, solitude:6, night:7, style:'warm acoustic' },
+  'Sam Smith':      { moods:['委屈'], intensity:7, warmth:7, solitude:8, night:9, style:'soulful ballad' },
+  'Lewis Capaldi':  { moods:['幸福'], intensity:7, warmth:7, solitude:8, night:9, style:'heartfelt ballad' },
+  'James Arthur':   { moods:['幸福'], intensity:7, warmth:6, solitude:8, night:8, style:'emotional ballad' },
+  'Coldplay':       { moods:['幸福'], intensity:7, warmth:6, solitude:7, night:8, style:'atmospheric rock' },
+  'John Legend':    { moods:['幸福'], intensity:6, warmth:9, solitude:6, night:7, style:'romantic soul' },
+  'Bruno Mars':     { moods:['心动'], intensity:7, warmth:8, solitude:5, night:7, style:'funky romantic' },
 
   // ── English: Pop / R&B ────────────────────────────────────────────────
-  'Justin Bieber':  { moods:['想被抱抱','开心开心','今天很幸福'], intensity:6, warmth:8, solitude:6, night:7, style:'romantic R&B' },
-  'Ariana Grande':  { moods:['开心开心','洗澡放松一下'], intensity:6, warmth:7, solitude:5, night:6, style:'sweet pop' },
-  'The Weeknd':     { moods:['想一个人发呆','有点苦恼'], intensity:7, warmth:4, solitude:8, night:9, style:'dark R&B' },
-  'Taylor Swift':   { moods:['想你了','开心开心'], intensity:6, warmth:7, solitude:7, night:7, style:'narrative pop' },
-  'Rihanna':        { moods:['有点苦恼','想一个人发呆'], intensity:6, warmth:5, solitude:7, night:8, style:'edgy R&B' },
-  'Beyoncé':        { moods:['开心开心'], intensity:8, warmth:6, solitude:5, night:6, style:'power pop' },
-  'Kendrick Lamar': { moods:['有点苦恼'], intensity:8, warmth:3, solitude:7, night:8, style:'conscious rap' },
-  'SZA':            { moods:['想一个人发呆','有点苦恼'], intensity:6, warmth:5, solitude:8, night:9, style:'alt R&B' },
-  'Frank Ocean':    { moods:['想一个人发呆','想你了'], intensity:5, warmth:5, solitude:9, night:9, style:'atmospheric R&B' },
-  'Daniel Caesar':  { moods:['想被抱抱','想一个人发呆'], intensity:5, warmth:8, solitude:8, night:9, style:'warm R&B' },
-  'H.E.R.':         { moods:['想你了','想一个人发呆'], intensity:5, warmth:7, solitude:8, night:9, style:'soulful R&B' },
-  'Giveon':         { moods:['想你了','想被抱抱'], intensity:6, warmth:7, solitude:8, night:9, style:'deep R&B' },
-  'Khalid':         { moods:['想一个人发呆','洗澡放松一下'], intensity:5, warmth:7, solitude:7, night:8, style:'chill R&B' },
+  'Justin Bieber':  { moods:['治愈'], intensity:6, warmth:8, solitude:6, night:7, style:'romantic R&B' },
+  'Ariana Grande':  { moods:['幸福'], intensity:6, warmth:7, solitude:5, night:6, style:'sweet pop' },
+  'The Weeknd':     { moods:['幸福'], intensity:7, warmth:4, solitude:8, night:9, style:'dark R&B' },
+  'Taylor Swift':   { moods:['心动'], intensity:6, warmth:7, solitude:7, night:7, style:'narrative pop' },
+  'Rihanna':        { moods:['懊恼'], intensity:6, warmth:5, solitude:7, night:8, style:'edgy R&B' },
+  'Beyoncé':        { moods:['幸福'], intensity:8, warmth:6, solitude:5, night:6, style:'power pop' },
+  'Kendrick Lamar': { moods:['懊恼'], intensity:8, warmth:3, solitude:7, night:8, style:'conscious rap' },
+  'SZA':            { moods:['委屈'], intensity:6, warmth:5, solitude:8, night:9, style:'alt R&B' },
+  'Frank Ocean':    { moods:['孤独'], intensity:5, warmth:5, solitude:9, night:9, style:'atmospheric R&B' },
+  'Daniel Caesar':  { moods:['心动'], intensity:5, warmth:8, solitude:8, night:9, style:'warm R&B' },
+  'H.E.R.':         { moods:['思念'], intensity:5, warmth:7, solitude:8, night:9, style:'soulful R&B' },
+  'Giveon':         { moods:['思念'], intensity:6, warmth:7, solitude:8, night:9, style:'deep R&B' },
+  'Khalid':         { moods:['放空'], intensity:5, warmth:7, solitude:7, night:8, style:'chill R&B' },
 
   // ── English: Indie / Alternative ──────────────────────────────────────
-  'Lana Del Rey':      { moods:['想一个人发呆','想你了'], intensity:6, warmth:5, solitude:9, night:9, style:'cinematic pop' },
-  'Sufjan Stevens':    { moods:['想一个人发呆','今天有点累'], intensity:5, warmth:6, solitude:10, night:9, style:'indie folk' },
-  'Bon Iver':          { moods:['想一个人发呆','今天有点累'], intensity:5, warmth:5, solitude:10, night:10, style:'winter folk' },
-  'Phoebe Bridgers':   { moods:['想一个人发呆','需要安慰'], intensity:6, warmth:5, solitude:9, night:10, style:'indie folk' },
-  'Troye Sivan':       { moods:['想你了','想被抱抱'], intensity:5, warmth:7, solitude:7, night:8, style:'dream pop' },
-  'Lorde':             { moods:['想一个人发呆','有点苦恼'], intensity:6, warmth:4, solitude:8, night:9, style:'art pop' },
-  'Billie Eilish':     { moods:['想一个人发呆','有点苦恼'], intensity:5, warmth:4, solitude:9, night:9, style:'whisper pop' },
-  'Clairo':            { moods:['想一个人发呆','洗澡放松一下'], intensity:4, warmth:7, solitude:8, night:8, style:'bedroom pop' },
-  'mxmtoon':           { moods:['洗澡放松一下','想一个人发呆'], intensity:4, warmth:8, solitude:7, night:7, style:'ukulele pop' },
-  'beabadoobee':       { moods:['想被抱抱','洗澡放松一下'], intensity:5, warmth:8, solitude:7, night:7, style:'indie pop' },
+  'Lana Del Rey':      { moods:['思念'], intensity:6, warmth:5, solitude:9, night:9, style:'cinematic pop' },
+  'Sufjan Stevens':    { moods:['思念'], intensity:5, warmth:6, solitude:10, night:9, style:'indie folk' },
+  'Bon Iver':          { moods:['思念'], intensity:5, warmth:5, solitude:10, night:10, style:'winter folk' },
+  'Phoebe Bridgers':   { moods:['孤独'], intensity:6, warmth:5, solitude:9, night:10, style:'indie folk' },
+  'Troye Sivan':       { moods:['治愈'], intensity:5, warmth:7, solitude:7, night:8, style:'dream pop' },
+  'Lorde':             { moods:['思念'], intensity:6, warmth:4, solitude:8, night:9, style:'art pop' },
+  'Billie Eilish':     { moods:['委屈'], intensity:5, warmth:4, solitude:9, night:9, style:'whisper pop' },
+  'Clairo':            { moods:['放空'], intensity:4, warmth:7, solitude:8, night:8, style:'bedroom pop' },
+  'mxmtoon':           { moods:['放空'], intensity:4, warmth:8, solitude:7, night:7, style:'ukulele pop' },
+  'beabadoobee':       { moods:['放空'], intensity:5, warmth:8, solitude:7, night:7, style:'indie pop' },
 
   // ── English: Electronic / Ambient ─────────────────────────────────────
-  'Alan Walker':       { moods:['想一个人发呆','今天有点累'], intensity:7, warmth:4, solitude:8, night:8, style:'electronic' },
-  'Marshmello':        { moods:['开心开心'], intensity:6, warmth:5, solitude:5, night:6, style:'EDM pop' },
-  'The Chainsmokers':  { moods:['开心开心','想一个人发呆'], intensity:6, warmth:5, solitude:6, night:7, style:'EDM pop' },
-  'Owl City':          { moods:['今天很幸福','洗澡放松一下'], intensity:5, warmth:8, solitude:6, night:7, style:'synth pop' },
-  'Zedd':              { moods:['开心开心'], intensity:7, warmth:5, solitude:5, night:6, style:'EDM' },
-  'Calvin Harris':     { moods:['开心开心'], intensity:7, warmth:6, solitude:4, night:6, style:'EDM' },
-  'Kygo':              { moods:['洗澡放松一下','今天很幸福'], intensity:5, warmth:7, solitude:6, night:7, style:'tropical house' },
+  'Alan Walker':       { moods:['幸福'], intensity:7, warmth:4, solitude:8, night:8, style:'electronic' },
+  'Marshmello':        { moods:['幸福'], intensity:6, warmth:5, solitude:5, night:6, style:'EDM pop' },
+  'The Chainsmokers':  { moods:['幸福'], intensity:6, warmth:5, solitude:6, night:7, style:'EDM pop' },
+  'Owl City':          { moods:['幸福'], intensity:5, warmth:8, solitude:6, night:7, style:'synth pop' },
+  'Zedd':              { moods:['幸福'], intensity:7, warmth:5, solitude:5, night:6, style:'EDM' },
+  'Calvin Harris':     { moods:['幸福'], intensity:7, warmth:6, solitude:4, night:6, style:'EDM' },
+  'Kygo':              { moods:['放空'], intensity:5, warmth:7, solitude:6, night:7, style:'tropical house' },
 
   // ── English: Acoustic / Singer-Songwriter ─────────────────────────────
-  'Anson Seabra':      { moods:['想一个人发呆','今天有点累','需要安慰'], intensity:5, warmth:7, solitude:9, night:9, style:'bedroom piano' },
-  'Jeremy Zucker':     { moods:['想一个人发呆','今天有点累'], intensity:5, warmth:7, solitude:8, night:9, style:'bedroom pop' },
-  'Lauv':              { moods:['想被抱抱','想你了'], intensity:5, warmth:7, solitude:7, night:8, style:'tender pop' },
-  'Alexander 23':      { moods:['想被抱抱','想一个人发呆'], intensity:5, warmth:7, solitude:7, night:8, style:'bedroom pop' },
-  'Conan Gray':        { moods:['有点苦恼','想一个人发呆'], intensity:5, warmth:6, solitude:8, night:8, style:'bedroom pop' },
-  'Tate McRae':        { moods:['有点苦恼','想一个人发呆'], intensity:5, warmth:5, solitude:8, night:8, style:'dark pop' },
-  'Gracie Abrams':     { moods:['想一个人发呆','想你了'], intensity:5, warmth:6, solitude:9, night:9, style:'bedroom folk' },
-  'Lizzy McAlpine':    { moods:['想一个人发呆','想你了'], intensity:5, warmth:6, solitude:9, night:9, style:'folk pop' },
-  'Tamas Wells':       { moods:['洗澡放松一下','想一个人发呆'], intensity:3, warmth:8, solitude:8, night:7, style:'gentle folk' },
-  'Bruno Major':       { moods:['想被抱抱','今天很幸福'], intensity:4, warmth:9, solitude:7, night:8, style:'warm jazz' },
+  'Anson Seabra':      { moods:['疲惫'], intensity:5, warmth:7, solitude:9, night:9, style:'bedroom piano' },
+  'Jeremy Zucker':     { moods:['疲惫'], intensity:5, warmth:7, solitude:8, night:9, style:'bedroom pop' },
+  'Lauv':              { moods:['心动'], intensity:5, warmth:7, solitude:7, night:8, style:'tender pop' },
+  'Alexander 23':      { moods:['治愈'], intensity:5, warmth:7, solitude:7, night:8, style:'bedroom pop' },
+  'Conan Gray':        { moods:['懊恼'], intensity:5, warmth:6, solitude:8, night:8, style:'bedroom pop' },
+  'Tate McRae':        { moods:['懊恼'], intensity:5, warmth:5, solitude:8, night:8, style:'dark pop' },
+  'Gracie Abrams':     { moods:['思念'], intensity:5, warmth:6, solitude:9, night:9, style:'bedroom folk' },
+  'Lizzy McAlpine':    { moods:['思念'], intensity:5, warmth:6, solitude:9, night:9, style:'folk pop' },
+  'Tamas Wells':       { moods:['放空'], intensity:3, warmth:8, solitude:8, night:7, style:'gentle folk' },
+  'Bruno Major':       { moods:['治愈'], intensity:4, warmth:9, solitude:7, night:8, style:'warm jazz' },
 
   // ── English: R&B / Soul Covers & Special ──────────────────────────────
-  'Boyce Avenue':      { moods:['想你了','需要安慰'], intensity:5, warmth:8, solitude:7, night:8, style:'acoustic cover' },
-  'MADILYN':           { moods:['想你了','需要安慰'], intensity:5, warmth:7, solitude:7, night:8, style:'acoustic cover' },
-  'Anthem Lights':     { moods:['今天很幸福','想被抱抱'], intensity:5, warmth:8, solitude:6, night:7, style:'acoustic cover' },
-  'Kina':              { moods:['想一个人发呆','今天有点累'], intensity:4, warmth:5, solitude:9, night:9, style:'lo-fi' },
-  '88rising':          { moods:['洗澡放松一下','想你了'], intensity:5, warmth:6, solitude:7, night:8, style:'Asian R&B' },
-  'NIKI':              { moods:['想你了','想一个人发呆'], intensity:5, warmth:6, solitude:8, night:9, style:'R&B ballad' },
-  'Joji':              { moods:['想一个人发呆','今天有点累'], intensity:5, warmth:4, solitude:9, night:10, style:'lo-fi R&B' },
-  'Rich Brian':        { moods:['想一个人发呆'], intensity:5, warmth:5, solitude:8, night:8, style:'alt rap' },
+  'Boyce Avenue':      { moods:['幸福'], intensity:5, warmth:8, solitude:7, night:8, style:'acoustic cover' },
+  'MADILYN':           { moods:['幸福'], intensity:5, warmth:7, solitude:7, night:8, style:'acoustic cover' },
+  'Anthem Lights':     { moods:['幸福'], intensity:5, warmth:8, solitude:6, night:7, style:'acoustic cover' },
+  'Kina':              { moods:['思念'], intensity:4, warmth:5, solitude:9, night:9, style:'lo-fi' },
+  '88rising':          { moods:['思念'], intensity:5, warmth:6, solitude:7, night:8, style:'Asian R&B' },
+  'NIKI':              { moods:['思念'], intensity:5, warmth:6, solitude:8, night:9, style:'R&B ballad' },
+  'Joji':              { moods:['疲惫'], intensity:5, warmth:4, solitude:9, night:10, style:'lo-fi R&B' },
+  'Rich Brian':        { moods:['孤独'], intensity:5, warmth:5, solitude:8, night:8, style:'alt rap' },
 
   // ── Chinese: New generation / R&B covers ──────────────────────────────
-  '微醺卡带':     { moods:['洗澡放松一下','想一个人发呆'], intensity:4, warmth:7, solitude:8, night:9, style:'lo-fi R&B cover' },
-  '浪漫的大呲花': { moods:['洗澡放松一下','想一个人发呆'], intensity:4, warmth:7, solitude:8, night:9, style:'lo-fi R&B cover' },
-  '音乐风格电台': { moods:['洗澡放松一下','想一个人发呆'], intensity:4, warmth:7, solitude:8, night:9, style:'lo-fi R&B cover' },
-  '红碎片':       { moods:['洗澡放松一下','想一个人发呆'], intensity:5, warmth:6, solitude:8, night:9, style:'R&B cover' },
-  '炫动小霸王':   { moods:['洗澡放松一下','想一个人发呆'], intensity:5, warmth:6, solitude:8, night:9, style:'R&B cover' },
-  '梦境里的算法': { moods:['想一个人发呆','洗澡放松一下'], intensity:4, warmth:6, solitude:9, night:9, style:'ambient' },
-  '揽小':         { moods:['洗澡放松一下','今天很幸福'], intensity:4, warmth:7, solitude:7, night:8, style:'lo-fi' },
-  '小黑':         { moods:['想一个人发呆'], intensity:5, warmth:6, solitude:8, night:8, style:'acoustic cover' },
+  '微醺卡带':     { moods:['放空'], intensity:4, warmth:7, solitude:8, night:9, style:'lo-fi R&B cover' },
+  '浪漫的大呲花': { moods:['放空'], intensity:4, warmth:7, solitude:8, night:9, style:'lo-fi R&B cover' },
+  '音乐风格电台': { moods:['放空'], intensity:4, warmth:7, solitude:8, night:9, style:'lo-fi R&B cover' },
+  '红碎片':       { moods:['放空'], intensity:5, warmth:6, solitude:8, night:9, style:'R&B cover' },
+  '炫动小霸王':   { moods:['放空'], intensity:5, warmth:6, solitude:8, night:9, style:'R&B cover' },
+  '梦境里的算法': { moods:['放空'], intensity:4, warmth:6, solitude:9, night:9, style:'ambient' },
+  '揽小':         { moods:['放空'], intensity:4, warmth:7, solitude:7, night:8, style:'lo-fi' },
+  '小黑':         { moods:['孤独'], intensity:5, warmth:6, solitude:8, night:8, style:'acoustic cover' },
 
   // ── Chinese: Classic / Old School ─────────────────────────────────────
-  '韩宝仪':       { moods:['开心开心','今天很幸福'], intensity:5, warmth:7, solitude:5, night:6, style:'classic pop' },
-  '龙梅子':       { moods:['开心开心','今天很幸福'], intensity:5, warmth:7, solitude:6, night:6, style:'classic pop' },
-  '庞龙':         { moods:['开心开心','想你了'], intensity:6, warmth:7, solitude:6, night:7, style:'folk pop' },
-  '阿牛':         { moods:['开心开心'], intensity:5, warmth:8, solitude:5, night:5, style:'happy folk' },
-  '陈慧琳':       { moods:['想你了','今天很幸福'], intensity:6, warmth:7, solitude:7, night:8, style:'classic ballad' },
-  '办桌二人组':   { moods:['想你了','需要安慰'], intensity:6, warmth:6, solitude:7, night:8, style:'classic ballad' },
-  '娃娃':         { moods:['想你了','今天有点累'], intensity:6, warmth:7, solitude:8, night:9, style:'classic ballad' },
-  '胡杨林':       { moods:['想你了','需要安慰'], intensity:6, warmth:6, solitude:7, night:8, style:'classic ballad' },
-  '陈瑞':         { moods:['想你了','想一个人发呆'], intensity:6, warmth:5, solitude:8, night:9, style:'classic ballad' },
-  '袁成杰':       { moods:['想你了','今天很幸福'], intensity:5, warmth:7, solitude:7, night:7, style:'classic pop' },
-  '孙子涵':       { moods:['想你了','想一个人发呆'], intensity:5, warmth:6, solitude:8, night:8, style:'classic ballad' },
-  '印子月':       { moods:['想你了','需要安慰'], intensity:5, warmth:6, solitude:7, night:8, style:'classic ballad' },
-  '田一龙':       { moods:['想你了','今天很幸福'], intensity:6, warmth:7, solitude:7, night:8, style:'classic ballad' },
+  '韩宝仪':       { moods:['幸福'], intensity:5, warmth:7, solitude:5, night:6, style:'classic pop' },
+  '龙梅子':       { moods: ['幸福'], intensity:5, warmth:7, solitude:6, night:6, style:'classic pop' },
+  '庞龙':         { moods:['幸福'], intensity:6, warmth:7, solitude:6, night:7, style:'folk pop' },
+  '阿牛':         { moods:['幸福'], intensity:5, warmth:8, solitude:5, night:5, style:'happy folk' },
+  '陈慧琳':       { moods:['幸福'], intensity:6, warmth:7, solitude:7, night:8, style:'classic ballad' },
+  '办桌二人组':   { moods:['治愈'], intensity:6, warmth:6, solitude:7, night:8, style:'classic ballad' },
+  '娃娃':         { moods:['思念'], intensity:6, warmth:7, solitude:8, night:9, style:'classic ballad' },
+  '胡杨林':       { moods:['治愈'], intensity:6, warmth:6, solitude:7, night:8, style:'classic ballad' },
+  '陈瑞':         { moods:['思念'], intensity:6, warmth:5, solitude:8, night:9, style:'classic ballad' },
+  '袁成杰':       { moods:['幸福'], intensity:5, warmth:7, solitude:7, night:7, style:'classic pop' },
+  '孙子涵':       { moods:['思念'], intensity:5, warmth:6, solitude:8, night:8, style:'classic ballad' },
+  '印子月':       { moods:['治愈'], intensity:5, warmth:6, solitude:7, night:8, style:'classic ballad' },
+  '田一龙':       { moods:['幸福'], intensity:6, warmth:7, solitude:7, night:8, style:'classic ballad' },
 
   // ── Chinese: Web / Indie Artists ──────────────────────────────────────
-  '加木':         { moods:['想一个人发呆','有点苦恼'], intensity:5, warmth:5, solitude:8, night:9, style:'indie' },
-  '余翊':         { moods:['洗澡放松一下','想一个人发呆'], intensity:4, warmth:7, solitude:8, night:9, style:'R&B cover' },
-  '小匆匆':       { moods:['想一个人发呆','想你了'], intensity:5, warmth:6, solitude:8, night:9, style:'acoustic cover' },
-  '缘为冰':       { moods:['想一个人发呆','想你了'], intensity:5, warmth:5, solitude:9, night:9, style:'atmospheric' },
-  '尹昔眠':       { moods:['想一个人发呆','洗澡放松一下'], intensity:5, warmth:6, solitude:8, night:9, style:'folk ballad' },
-  '戴羽彤':       { moods:['想一个人发呆','想你了'], intensity:5, warmth:7, solitude:8, night:8, style:'acoustic cover' },
-  '王赫野':       { moods:['想一个人发呆'], intensity:5, warmth:6, solitude:7, night:8, style:'pop' },
-  '男才女貌':     { moods:['想你了','今天很幸福'], intensity:5, warmth:7, solitude:7, night:7, style:'classic pop' },
-  '陈文杰的音悦': { moods:['洗澡放松一下','想一个人发呆'], intensity:4, warmth:7, solitude:8, night:9, style:'R&B cover' },
-  '群星':         { moods:['今天很幸福','想你了'], intensity:5, warmth:7, solitude:6, night:7, style:'classic' },
-  'By2':          { moods:['开心开心','想被抱抱'], intensity:5, warmth:7, solitude:6, night:6, style:'sweet pop' },
-  'Sweety':       { moods:['今天很幸福','开心开心'], intensity:4, warmth:8, solitude:6, night:6, style:'sweet pop' },
-  'Xun':          { moods:['想你了'], intensity:5, warmth:6, solitude:7, night:8, style:'pop ballad' },
-  'FORMOSA':      { moods:['想一个人发呆','洗澡放松一下'], intensity:5, warmth:6, solitude:8, night:8, style:'atmospheric' },
-  'HuiuioOo,Crybird': { moods:['开心开心','洗澡放松一下'], intensity:4, warmth:7, solitude:7, night:7, style:'lo-fi' },
-  'moonlight':    { moods:['想一个人发呆','今天有点累'], intensity:5, warmth:5, solitude:9, night:10, style:'R&B cover' },
-  'Capt. Lilia Iwasko': { moods:['洗澡放松一下','想一个人发呆'], intensity:4, warmth:7, solitude:8, night:9, style:'R&B cover' },
+  '加木':         { moods:['孤独'], intensity:5, warmth:5, solitude:8, night:9, style:'indie' },
+  '余翊':         { moods:['放空','孤独'], intensity:4, warmth:7, solitude:8, night:9, style:'R&B cover' },
+  '小匆匆':       { moods:['孤独','思念'], intensity:5, warmth:6, solitude:8, night:9, style:'acoustic cover' },
+  '缘为冰':       { moods:['孤独','思念'], intensity:5, warmth:5, solitude:9, night:9, style:'atmospheric' },
+  '尹昔眠':       { moods:['孤独','放空'], intensity:5, warmth:6, solitude:8, night:9, style:'folk ballad' },
+  '戴羽彤':       { moods:['孤独','思念'], intensity:5, warmth:7, solitude:8, night:8, style:'acoustic cover' },
+  '王赫野':       { moods:['孤独'], intensity:5, warmth:6, solitude:7, night:8, style:'pop' },
+  '男才女貌':     { moods:['思念','幸福'], intensity:5, warmth:7, solitude:7, night:7, style:'classic pop' },
+  '陈文杰的音悦': { moods:['放空','孤独'], intensity:4, warmth:7, solitude:8, night:9, style:'R&B cover' },
+  '群星':         { moods:['幸福','思念'], intensity:5, warmth:7, solitude:6, night:7, style:'classic' },
+  'By2':          { moods:['幸福','治愈'], intensity:5, warmth:7, solitude:6, night:6, style:'sweet pop' },
+  'Sweety':       { moods:['幸福','幸福'], intensity:4, warmth:8, solitude:6, night:6, style:'sweet pop' },
+  'Xun':          { moods:['思念'], intensity:5, warmth:6, solitude:7, night:8, style:'pop ballad' },
+  'FORMOSA':      { moods:['孤独','放空'], intensity:5, warmth:6, solitude:8, night:8, style:'atmospheric' },
+  'HuiuioOo,Crybird': { moods:['幸福','放空'], intensity:4, warmth:7, solitude:7, night:7, style:'lo-fi' },
+  'moonlight':    { moods:['孤独','疲惫'], intensity:5, warmth:5, solitude:9, night:10, style:'R&B cover' },
+  'Capt. Lilia Iwasko': { moods:['放空','孤独'], intensity:4, warmth:7, solitude:8, night:9, style:'R&B cover' },
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -334,7 +333,13 @@ const ARTIST_PROFILES = {
 
 const MOOD_KEYWORDS = {
 
-  '想你了': {
+  '思念': {
+    english: [
+      'miss you','missing you','miss u','without you','waiting for you',
+      'far away','gone','lost you','come back','where are you',
+      'remember','memory','think of you','apart','distance',
+      'wait for','waiting','lonely alone','still love',
+    ],
     relationship: [
       '想你','想他','想她','思念','想念','牵挂','惦记','见不到','异地','距离',
       '远方','天涯','海角','分隔','离开','不在','缺席','等你','候你','望你',
@@ -356,7 +361,13 @@ const MOOD_KEYWORDS = {
     ],
   },
 
-  '开心开心': {
+  '幸福': {
+    english: [
+      'happy','happiness','joy','wonderful','perfect',
+      'beautiful','amazing','great','best day','good day',
+      'love you','in love','together','forever','celebrate',
+      'sunshine','sunny','bright','smile','lucky','blessed',
+    ],
     energy: [
       '开心','快乐','高兴','笑了','哈哈','好棒','太好了','太棒','爽',
       '跳舞','跳舞','狂欢','派对','party','PARTY','庆祝','嗨','燥',
@@ -374,9 +385,6 @@ const MOOD_KEYWORDS = {
       '跟着','摇摆','舞动','跳起来','起飞','飞起','放',
       '喊出来','唱出来','嗨起来','野','疯','燃',
     ],
-  },
-
-  '今天很幸福': {
     relationship: [
       '幸福','满足','甜','甜蜜','被爱','被爱着','珍惜','感恩','感谢',
       '拥有','有你在','因为有你','你来了','遇见','相遇','认识',
@@ -392,18 +400,23 @@ const MOOD_KEYWORDS = {
     emotional: [
       '幸运','美好','圆满','珍贵','完美','刚刚好','真好',
       '值得','感恩','满足','够了','就好','这样就好',
-      '浪漫','心动','悸动','脸红','心跳',
+      '浪漫',
     ],
   },
 
-  '需要安慰': {
-    emotional: [
+  '治愈': {
+    english: [
+      'heal','healing','comfort','hold me','safe',
+      'it is okay','be okay','alright','better now',
+      'stay with me','do not leave','need you',
+      'hug','hold tight','warm embrace','tender','gentle',
+    ],
+    sadness: [
       '难过','伤心','难受','心疼','痛苦','心碎','崩溃','撑不住',
       '哭了','流泪','眼泪','泪','泣','哽咽','无声',
-      '委屈','不被理解','没人懂','没人知道','说不出口',
-      '失望','绝望','心寒','心冷','心酸','心痛','心碎',
-      '一个人','独自','孤单','孤独','寂寞','无依','无靠',
+      '失望','绝望','心寒','心冷','心酸','心痛',
       '失败','输了','不行','不能','没办法','无奈',
+      '需要安慰','想要安慰','求安慰','需要你',
     ],
     healing: [
       '没关系','会好的','没事','会过去','会好','慢慢来',
@@ -414,15 +427,12 @@ const MOOD_KEYWORDS = {
       '深夜','下雨','阴天','冷','冬天','一个人在家',
       '关灯','黑暗','黑','暗','角落','蜷','缩',
     ],
-  },
-
-  '想被抱抱': {
     physical: [
       '抱抱','抱紧','拥抱','搂','靠','贴近','贴','挨','依偎',
       '怀里','胸前','肩膀','臂弯','身旁','旁边',
       '抱着','搂着','牵着手','手牵手','十指',
     ],
-    emotional: [
+    warmth: [
       '被爱','被需要','被保护','安全感','安心','暖',
       '温柔','轻轻','软软','暖暖','温暖','温度',
       '需要你','想要你','别走','留下来','不要走',
@@ -435,7 +445,12 @@ const MOOD_KEYWORDS = {
     ],
   },
 
-  '有点苦恼': {
+  '懊恼': {
+    english: [
+      'frustrated','annoyed','stressed','anxious','worried',
+      'overthinking','cannot decide','confused','lost',
+      'regret','what if','why','doubt','uncertain',
+    ],
     emotional: [
       '烦恼','苦恼','纠结','矛盾','挣扎','两难','为难',
       '压力','焦虑','紧张','不安','忐忑','心慌','烦躁',
@@ -456,7 +471,12 @@ const MOOD_KEYWORDS = {
     ],
   },
 
-  '洗澡放松一下': {
+  '放空': {
+    english: [
+      'zone out','space out','empty mind','drift','float',
+      'shower','bath','relax','unwind','chill',
+      'nothing','blank','quiet','peace','slow',
+    ],
     physical: [
       '洗澡','泡澡','热水','水','冲','洗','浴','沐浴',
       '放松','卸下','放下','释放','松懈','松散',
@@ -478,7 +498,14 @@ const MOOD_KEYWORDS = {
     ],
   },
 
-  '想一个人发呆': {
+  '孤独': {
+    english: [
+      'alone','lonely','solitude','by myself',
+      'late night','midnight','3am','2am','insomnia',
+      'can not sleep','awake','empty','hollow','numb',
+      'silence','quiet','nobody','disappear','ghost',
+      'smoke','cigarette','rainy night',
+    ],
     emotional: [
       '发呆','放空','空白','空洞','出神','走神','恍神',
       '不想说话','不想动','懒得','累了','倦了',
@@ -506,7 +533,13 @@ const MOOD_KEYWORDS = {
     ],
   },
 
-  '今天有点累': {
+  '疲惫': {
+    english: [
+      'tired','exhausted','drained','worn out','burn out',
+      'can not go on','give up','enough','done',
+      'rest','sleep','lay down','heavy','weight',
+      'overwhelmed','fatigue','depleted',
+    ],
     physical: [
       '累','疲惫','疲倦','困','乏','无力','没力气',
       '撑不住','撑不下去','不行了','到极限','透支',
@@ -522,6 +555,63 @@ const MOOD_KEYWORDS = {
       '夜深','深夜','凌晨','晚上','天黑',
       '安静','轻轻的','慢慢','缓缓','软',
       '床','枕头','被窝','沙发','椅子','灯',
+    ],
+  },
+
+  '心动': {
+    english: [
+      'crush','butterflies','heartbeat','heart skip',
+      'falling for','first sight','blush',
+      'can not stop thinking','daydream',
+      'cute','adorable','lovely','sweet love',
+    ],
+    emotional: [
+      '心动','悸动','心跳','扑通','跳了一下',
+      '喜欢','好喜欢','喜欢你','crush','上头',
+      '想到就笑','偷偷看','忍不住','藏不住',
+      '害羞','不好意思','脸红了','心跳加速',
+      '甜甜','甜到','甜蜜','sweet',
+    ],
+    scene: [
+      '月光','晚风','星空','路灯下','霓虹',
+      '散步','并肩','擦肩','偶遇','遇见',
+      '微笑','目光','眼神','偷看',
+    ],
+    physical: [
+      '心跳好快','心跳加速','耳朵红了','手心出汗',
+      '嘴角上扬','傻笑','睡不着','辗转',
+    ],
+    action: [
+      '想和你','想见你','想约你','想告诉你',
+      '等你消息','不停看手机','想发消息又删掉',
+    ],
+  },
+
+  '委屈': {
+    english: [
+      'unfair','not fair','why me','misunderstood',
+      'holding back','hold back tears','do not cry',
+      'hurt','hurting','heartbroken','crying',
+      'sad tears','teardrops','rainy sad',
+      'nobody knows','invisible','overlooked',
+    ],
+    emotional: [
+      '委屈','好委屈','被冤枉','不公平','凭什么','为什么是我',
+      '不被理解','没人懂','没人知道','说不出','说不出口',
+      '憋着','忍着','压抑','忍住','不敢说','不能哭',
+      '难过却不说','偷偷难过','偷偷哭','想哭却忍着',
+      '被误会','被忽视','被冷落','被辜负',
+      '难过','伤心','难受','心疼',
+    ],
+    scene: [
+      '下雨','小雨','阴天','淋雨','雨天','雨夜',
+      '关了灯','黑暗','角落','蜷缩','一个人',
+      '窗边','望着窗外','不说话',
+    ],
+    physical: [
+      '心里堵','胸闷','喉咙紧','鼻子酸','眼睛红',
+      '想哭','忍泪','咬嘴唇','低头','抱膝盖',
+      '拉着被子','转过身','不想说话',
     ],
   },
 }
@@ -551,15 +641,15 @@ function computeScores(artistProfile, moodTags, energyLevel, full, zh) {
   if (energyLevel === '低') { intensity = Math.max(1, intensity - 1); solitude = Math.min(10, solitude + 1); night = Math.min(10, night + 1) }
 
   // Adjust by mood tags
-  if (moodTags.includes('开心开心'))      { warmth = Math.min(10, warmth + 2); solitude = Math.max(1, solitude - 2); night = Math.max(1, night - 2) }
-  if (moodTags.includes('今天很幸福'))    { warmth = Math.min(10, warmth + 2); solitude = Math.max(1, solitude - 1) }
-  if (moodTags.includes('想被抱抱'))      { warmth = Math.min(10, warmth + 2) }
-  if (moodTags.includes('想你了'))        { solitude = Math.min(10, solitude + 1); night = Math.min(10, night + 1) }
-  if (moodTags.includes('想一个人发呆'))  { solitude = Math.min(10, solitude + 2); night = Math.min(10, night + 2) }
-  if (moodTags.includes('今天有点累'))    { solitude = Math.min(10, solitude + 1); night = Math.min(10, night + 2); intensity = Math.max(1, intensity - 1) }
-  if (moodTags.includes('需要安慰'))      { warmth = Math.max(1, warmth - 1); intensity = Math.min(10, intensity + 1) }
-  if (moodTags.includes('有点苦恼'))      { warmth = Math.max(1, warmth - 1); night = Math.min(10, night + 1) }
-  if (moodTags.includes('洗澡放松一下'))  { warmth = Math.min(10, warmth + 1); solitude = Math.min(10, solitude + 1) }
+  if (moodTags.includes('幸福'))      { warmth = Math.min(10, warmth + 2); solitude = Math.max(1, solitude - 2); night = Math.max(1, night - 2) }
+  if (moodTags.includes('治愈'))      { warmth = Math.min(10, warmth + 2); intensity = Math.min(10, intensity + 1) }
+  if (moodTags.includes('思念'))        { solitude = Math.min(10, solitude + 1); night = Math.min(10, night + 1) }
+  if (moodTags.includes('委屈'))        { warmth = Math.min(10, warmth + 1); solitude = Math.min(10, solitude + 1); night = Math.min(10, night + 1); intensity = Math.max(1, intensity - 1) }
+  if (moodTags.includes('心动'))        { warmth = Math.min(10, warmth + 2); solitude = Math.max(1, solitude - 1); intensity = Math.min(10, intensity + 1) }
+  if (moodTags.includes('孤独'))  { solitude = Math.min(10, solitude + 2); night = Math.min(10, night + 2) }
+  if (moodTags.includes('疲惫'))    { solitude = Math.min(10, solitude + 1); night = Math.min(10, night + 2); intensity = Math.max(1, intensity - 1) }
+  if (moodTags.includes('懊恼'))      { warmth = Math.max(1, warmth - 1); night = Math.min(10, night + 1) }
+  if (moodTags.includes('放空'))  { warmth = Math.min(10, warmth + 1); solitude = Math.min(10, solitude + 1) }
 
   // Title-based adjustments
   if (has(full, 'live', 'remix', 'remastered')) { intensity = Math.min(10, intensity + 1) }
@@ -587,60 +677,60 @@ function inferArtistProfile(artist, title) {
   // R&B / Lo-fi / Chill covers
   if (has(zh, 'R&B', 'r&b', 'rb', '卡带', '微醺', '大呲花', '电台', '音悦')
       || has(a, 'chill', 'lofi', 'lo-fi', 'cover', 'remix')) {
-    return { moods: ['洗澡放松一下', '想一个人发呆'], intensity: 4, warmth: 7, solitude: 8, night: 9, style: 'R&B cover' }
+    return { moods: ['放空'], intensity: 4, warmth: 7, solitude: 8, night: 9, style: 'R&B cover' }
   }
 
   // Live / concert versions
   if (has(zh, 'Live', 'live版', 'Live版', '现场')) {
-    return { moods: ['想一个人发呆', '想你了'], intensity: 7, warmth: 6, solitude: 7, night: 8, style: 'live' }
+    return { moods: ['孤独'], intensity: 7, warmth: 6, solitude: 7, night: 8, style: 'live' }
   }
 
   // English pop divas
   if (has(a, 'ariana', 'beyoncé', 'beyonce', 'rihanna', 'lady gaga', 'katy perry', 'dua lipa', 'selena'))
-    return { moods: ['开心开心', '洗澡放松一下'], intensity: 7, warmth: 6, solitude: 5, night: 6, style: 'pop diva' }
+    return { moods: ['幸福'], intensity: 7, warmth: 6, solitude: 5, night: 6, style: 'pop diva' }
 
   // English male pop/R&B
   if (has(a, 'justin', 'bieber', 'drake', 'weeknd', 'frank ocean', 'daniel caesar', 'giveon', 'khalid', 'chris brown', 'usher', 'miguel'))
-    return { moods: ['想被抱抱', '想你了'], intensity: 6, warmth: 7, solitude: 7, night: 8, style: 'R&B romantic' }
+    return { moods: ['孤独'], intensity: 6, warmth: 7, solitude: 7, night: 8, style: 'R&B romantic' }
 
   // English indie/folk
   if (has(a, 'bon iver', 'phoebe', 'sufjan', 'iron & wine', 'fleet foxes', 'novo amor', 'vancouver sleep clinic'))
-    return { moods: ['想一个人发呆', '今天有点累'], intensity: 5, warmth: 5, solitude: 10, night: 10, style: 'indie folk' }
+    return { moods: ['孤独'], intensity: 5, warmth: 5, solitude: 10, night: 10, style: 'indie folk' }
 
   // English singer-songwriter
   if (has(a, 'gracie', 'lizzy', 'tate mcrae', 'conan gray', 'alexander 23', 'ansone', 'jeremy zucker', 'lauv', 'chelsea cutler'))
-    return { moods: ['想一个人发呆', '想你了'], intensity: 5, warmth: 7, solitude: 8, night: 9, style: 'bedroom pop' }
+    return { moods: ['孤独'], intensity: 5, warmth: 7, solitude: 8, night: 9, style: 'bedroom pop' }
 
   // EDM / Electronic
   if (has(a, 'alan walker', 'marshmello', 'chainsmokers', 'zedd', 'kygo', 'calvin harris', 'illenium', 'odesza', 'flume'))
-    return { moods: ['想一个人发呆', '洗澡放松一下'], intensity: 6, warmth: 5, solitude: 7, night: 8, style: 'electronic' }
+    return { moods: ['幸福'], intensity: 6, warmth: 5, solitude: 7, night: 8, style: 'electronic' }
 
   // Acoustic covers
   if (has(a, 'boyce avenue', 'madilyn', 'anthem lights', 'kurt hugo', 'walk off the earth', 'pentatonix'))
-    return { moods: ['想你了', '需要安慰'], intensity: 5, warmth: 8, solitude: 7, night: 8, style: 'acoustic cover' }
+    return { moods: ['治愈'], intensity: 5, warmth: 8, solitude: 7, night: 8, style: 'acoustic cover' }
 
   // Chinese artists — love ballad (情歌) indicators
   if (has(zh, '爱', '情', '恋', '想你', '思念', '分手', '别离', '等你', '忘记', '忘不了', '舍不得'))
-    return { moods: ['想你了', '需要安慰'], intensity: 6, warmth: 6, solitude: 7, night: 8, style: 'love ballad' }
+    return { moods: ['治愈'], intensity: 6, warmth: 6, solitude: 7, night: 8, style: 'love ballad' }
 
-  // Chinese artists — warm/romantic
+  // Chinese artists — warm/romantic → 心动
   if (has(zh, '幸福', '甜蜜', '在一起', '遇见', '陪伴', '陪着你', '永远', '婚', '嫁', '牵'))
-    return { moods: ['今天很幸福', '想被抱抱'], intensity: 5, warmth: 8, solitude: 6, night: 7, style: 'warm romantic' }
+    return { moods: ['心动'], intensity: 5, warmth: 8, solitude: 6, night: 7, style: 'warm romantic' }
 
-  // Chinese artists — melancholy/sad
+  // Chinese artists — melancholy/sad → 委屈
   if (has(zh, '伤', '泪', '哭', '痛', '悲', '暗', '冷', '寂寞', '孤独', '遗憾', '失去', '离开', '错过'))
-    return { moods: ['需要安慰', '想你了', '想一个人发呆'], intensity: 7, warmth: 5, solitude: 8, night: 9, style: 'melancholy' }
+    return { moods: ['委屈'], intensity: 7, warmth: 5, solitude: 8, night: 9, style: 'melancholy' }
 
   // Chinese artists — anicent/wuxia/poetic
   if (has(zh, '剑', '侠', '江湖', '天下', '江山', '烟沙', '千年', '前世', '墨', '青', '弦', '琴', '箫', '笛', '山水'))
-    return { moods: ['想一个人发呆', '想你了'], intensity: 6, warmth: 5, solitude: 9, night: 9, style: 'poetic ballad' }
+    return { moods: ['孤独'], intensity: 6, warmth: 5, solitude: 9, night: 9, style: 'poetic ballad' }
 
   // Chinese artists — classic oldies
   if (has(zh, '邓丽君', '蔡琴', '费玉清', '凤飞飞', '龙飘飘', '韩宝仪', '陈淑桦', '孟庭苇', '赵咏华', '娃娃'))
-    return { moods: ['今天很幸福', '想你了'], intensity: 5, warmth: 9, solitude: 7, night: 8, style: 'classic warm' }
+    return { moods: ['幸福'], intensity: 5, warmth: 9, solitude: 7, night: 8, style: 'classic warm' }
 
-  // Default — still try to be smarter than just "想一个人发呆"
-  return { moods: ['想一个人发呆', '想你了'], intensity: 5, warmth: 6, solitude: 8, night: 9, style: 'unknown ballad' }
+  // Default — conservative, let keywords do the work
+  return { moods: ['孤独'], intensity: 5, warmth: 6, solitude: 8, night: 9, style: 'unknown ballad' }
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -650,117 +740,140 @@ function inferArtistProfile(artist, title) {
 
 const CHAR_SENTIMENT = {
   // Love / longing
-  '爱': ['想你了', '今天很幸福'],
-  '情': ['想你了'],
-  '恋': ['想你了', '今天很幸福'],
-  '思': ['想你了'],
-  '念': ['想你了'],
-  '想': ['想你了'],
-  '你': ['想你了'],
-  '他': ['想你了'],
-  '她': ['想你了'],
-  '等': ['想你了'],
-  '候': ['想你了'],
-  '牵': ['想被抱抱', '今天很幸福'],
-  '吻': ['想被抱抱', '今天很幸福'],
-  '抱': ['想被抱抱'],
-  '拥': ['想被抱抱'],
-  '暖': ['想被抱抱', '今天很幸福'],
-  '甜': ['今天很幸福', '开心开心'],
-  '幸': ['今天很幸福'],
-  '福': ['今天很幸福'],
-  '美': ['今天很幸福'],
-  '好': ['今天很幸福', '开心开心'],
-  '圆': ['今天很幸福'],
-  '满': ['今天很幸福'],
+  '爱': ['思念', '幸福'],
+  '情': ['思念'],
+  '恋': ['思念', '幸福'],
+  '思': ['思念'],
+  '念': ['思念'],
+  '想': ['思念'],
+  '你': ['思念'],
+  '他': ['思念'],
+  '她': ['思念'],
+  '等': ['思念'],
+  '候': ['思念'],
+  '牵': ['治愈', '幸福'],
+  '吻': ['治愈', '幸福'],
+  '抱': ['治愈'],
+  '拥': ['治愈'],
+  '暖': ['治愈', '幸福'],
+  '甜': ['幸福', '幸福'],
+  '幸': ['幸福'],
+  '福': ['幸福'],
+  '美': ['幸福'],
+  '好': ['幸福', '幸福'],
+  '圆': ['幸福'],
+  '满': ['幸福'],
 
   // Happiness
-  '笑': ['开心开心'],
-  '乐': ['开心开心', '今天很幸福'],
-  '欢': ['开心开心'],
-  '喜': ['开心开心', '今天很幸福'],
-  '庆': ['开心开心'],
-  '舞': ['开心开心'],
-  '跳': ['开心开心'],
-  '歌': ['开心开心'],
-  '唱': ['开心开心'],
-  '阳': ['开心开心', '今天很幸福'],
-  '晴': ['开心开心', '今天很幸福'],
-  '花': ['开心开心', '今天很幸福'],
-  '春': ['今天很幸福', '洗澡放松一下'],
-  '光': ['今天很幸福', '洗澡放松一下'],
+  '笑': ['幸福'],
+  '乐': ['幸福', '幸福'],
+  '欢': ['幸福'],
+  '喜': ['幸福', '幸福'],
+  '庆': ['幸福'],
+  '舞': ['幸福'],
+  '跳': ['幸福'],
+  '歌': ['幸福'],
+  '唱': ['幸福'],
+  '阳': ['幸福', '幸福'],
+  '晴': ['幸福', '幸福'],
+  '花': ['幸福', '幸福'],
+  '春': ['幸福', '放空'],
+  '光': ['幸福', '放空'],
 
   // Sadness / comfort needed
-  '伤': ['需要安慰'],
-  '泪': ['需要安慰'],
-  '哭': ['需要安慰'],
-  '痛': ['需要安慰'],
-  '悲': ['需要安慰'],
-  '暗': ['需要安慰', '想一个人发呆'],
-  '黑': ['需要安慰', '想一个人发呆'],
-  '冷': ['需要安慰', '想一个人发呆'],
-  '寒': ['需要安慰', '想一个人发呆'],
-  '孤': ['想一个人发呆', '需要安慰'],
-  '独': ['想一个人发呆'],
-  '寂': ['想一个人发呆', '今天有点累'],
-  '寞': ['想一个人发呆', '今天有点累'],
-  '空': ['想一个人发呆'],
-  '静': ['想一个人发呆', '洗澡放松一下'],
-  '默': ['想一个人发呆'],
-  '憾': ['想你了', '需要安慰'],
-  '错': ['有点苦恼', '想你了'],
-  '失': ['需要安慰', '想你了'],
-  '落': ['想一个人发呆', '今天有点累'],
+  '伤': ['委屈', '治愈'],
+  '泪': ['委屈'],
+  '哭': ['委屈'],
+  '痛': ['委屈', '治愈'],
+  '悲': ['委屈'],
+  '暗': ['孤独', '委屈'],
+  '黑': ['孤独', '委屈'],
+  '冷': ['孤独', '治愈'],
+  '寒': ['孤独'],
+
+  // 委屈 — quiet hurt, emotional suppression
+  '委': ['委屈'],
+  '屈': ['委屈'],
+  '冤': ['委屈'],
+  '憋': ['委屈'],
+  '忍': ['治愈', '委屈'],
+  '抑': ['委屈'],
+  '闷': ['委屈', '懊恼'],
+  '堵': ['委屈', '懊恼'],
+  '不': ['委屈', '懊恼'],
+  '懂': ['懊恼', '委屈'],
+  '孤': ['孤独', '治愈'],
+  '独': ['孤独'],
+  '寂': ['孤独', '疲惫'],
+  '寞': ['孤独', '疲惫'],
+  '空': ['孤独'],
+  '静': ['孤独', '放空'],
+  '默': ['孤独'],
+
+  // 心动 — butterflies, warmth, romantic tension
+  '动': ['心动'],
+  '跳': ['心动', '幸福'],
+  '悸': ['心动'],
+  '羞': ['心动'],
+  '怯': ['心动', '懊恼'],
+  '醉': ['心动', '幸福'],
+  '魂': ['心动'],
+  '勾': ['心动'],
+  '电': ['心动'],
+  '憾': ['思念', '治愈'],
+  '错': ['懊恼', '思念'],
+  '失': ['治愈', '思念'],
+  '落': ['孤独', '疲惫'],
 
   // Conflict / distress
-  '烦': ['有点苦恼'],
-  '恼': ['有点苦恼'],
-  '愁': ['有点苦恼', '想一个人发呆'],
-  '困': ['有点苦恼', '今天有点累'],
-  '惑': ['有点苦恼'],
-  '疑': ['有点苦恼'],
-  '迷': ['有点苦恼', '想一个人发呆'],
-  '乱': ['有点苦恼'],
-  '慌': ['有点苦恼'],
+  '烦': ['懊恼'],
+  '恼': ['懊恼'],
+  '愁': ['懊恼', '孤独'],
+  '困': ['懊恼', '疲惫'],
+  '惑': ['懊恼'],
+  '疑': ['懊恼'],
+  '迷': ['懊恼', '孤独'],
+  '乱': ['懊恼'],
+  '慌': ['懊恼'],
 
   // Relaxation
-  '漂': ['洗澡放松一下', '想一个人发呆'],
-  '浮': ['洗澡放松一下', '想一个人发呆'],
-  '流': ['洗澡放松一下', '想一个人发呆'],
-  '风': ['洗澡放松一下', '想一个人发呆'],
-  '云': ['洗澡放松一下', '想一个人发呆'],
-  '水': ['洗澡放松一下', '想一个人发呆'],
-  '海': ['洗澡放松一下', '想一个人发呆'],
-  '湖': ['洗澡放松一下', '想一个人发呆'],
-  '烟': ['想一个人发呆', '洗澡放松一下'],
-  '雾': ['想一个人发呆'],
-  '梦': ['想一个人发呆', '今天有点累'],
-  '幻': ['想一个人发呆'],
-  '虚': ['想一个人发呆'],
-  '醉': ['洗澡放松一下', '想一个人发呆'],
-  '悠': ['洗澡放松一下'],
-  '逍': ['洗澡放松一下'],
-  '遥': ['洗澡放松一下'],
-  '慢': ['洗澡放松一下', '今天有点累'],
-  '轻': ['洗澡放松一下'],
-  '柔': ['洗澡放松一下', '想被抱抱'],
-  '雪': ['想一个人发呆'],
-  '雨': ['想一个人发呆', '需要安慰'],
-  '夜': ['想一个人发呆', '今天有点累'],
-  '晚': ['想一个人发呆'],
-  '昏': ['想一个人发呆', '今天有点累'],
-  '夕': ['想一个人发呆'],
-  '月': ['想一个人发呆', '想你了'],
-  '星': ['想一个人发呆', '今天很幸福'],
+  '漂': ['放空', '孤独'],
+  '浮': ['放空', '孤独'],
+  '流': ['放空', '孤独'],
+  '风': ['放空', '孤独'],
+  '云': ['放空', '孤独'],
+  '水': ['放空', '孤独'],
+  '海': ['放空', '孤独'],
+  '湖': ['放空', '孤独'],
+  '烟': ['孤独', '放空'],
+  '雾': ['孤独'],
+  '梦': ['孤独', '疲惫'],
+  '幻': ['孤独'],
+  '虚': ['孤独'],
+  '醉': ['放空', '孤独'],
+  '悠': ['放空'],
+  '逍': ['放空'],
+  '遥': ['放空'],
+  '慢': ['放空', '疲惫'],
+  '轻': ['放空'],
+  '柔': ['放空', '治愈'],
+  '雪': ['孤独'],
+  '雨': ['孤独', '治愈'],
+  '夜': ['孤独', '疲惫'],
+  '晚': ['孤独'],
+  '昏': ['孤独', '疲惫'],
+  '夕': ['孤独'],
+  '月': ['孤独', '思念'],
+  '星': ['孤独', '幸福'],
 
   // Fatigue
-  '累': ['今天有点累'],
-  '倦': ['今天有点累'],
-  '疲': ['今天有点累'],
-  '乏': ['今天有点累'],
-  '歇': ['今天有点累'],
-  '停': ['今天有点累'],
-  '休': ['今天有点累'],
+  '累': ['疲惫'],
+  '倦': ['疲惫'],
+  '疲': ['疲惫'],
+  '乏': ['疲惫'],
+  '歇': ['疲惫'],
+  '停': ['疲惫'],
+  '休': ['疲惫'],
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -800,21 +913,23 @@ function classify(filename) {
     }
   }
   // Add any mood with 2+ character matches (strong signal)
+  // For broader moods (思念, 治愈, 幸福) require 3+ to reduce over-matching
   for (const [mood, count] of Object.entries(charMoodCounts)) {
-    if (count >= 2) moodSet.add(mood)
+    const threshold = 2
+    if (count >= threshold) moodSet.add(mood)
   }
 
   // Ensure at least 1 mood
   if (moodSet.size === 0) {
-    moodSet.add('想一个人发呆')
+    moodSet.add('孤独')
   }
 
   // ── Deduplicate & order by priority ───────────────────────────
   const moodPriority = [
-    '今天很幸福', '开心开心', '想被抱抱', '想你了',
-    '需要安慰', '有点苦恼', '洗澡放松一下', '想一个人发呆', '今天有点累',
+    '心动', '委屈', '疲惫', '懊恼', '放空',
+    '孤独', '治愈', '幸福', '思念',
   ]
-  const uniqueTags = moodPriority.filter(m => moodSet.has(m))
+  const uniqueTags = moodPriority.filter(m => moodSet.has(m)).slice(0, 3)
 
   // ── Energy level ─────────────────────────────────────────────────
   let energyLevel = '中'
@@ -860,7 +975,7 @@ function classify(filename) {
   // ── Scores — use resolved profile (explicit or inferred) ─────
   const scores = computeScores(artistProfile, uniqueTags, energyLevel, full, zh)
 
-  const primaryMood = uniqueTags[0] || '想一个人发呆'
+  const primaryMood = uniqueTags[0] || '孤独'
 
   // ── Song-specific emotional generation ───────────────────────────
   const emotionalDescription = describeSong(title, artist, primaryMood, energyLevel, uniqueTags, full, zh)
@@ -1062,22 +1177,22 @@ function pickIndex(s, len) {
 
 // ── Energy texture ───────────────────────────────────────────────────────
 const ENERGY_TEXTURE = {
-  '高': { pace:['快节奏','跃动','充满活力','不羁'], verb:['冲','跳起来','加速','释放'], feel:['痛快','畅快','淋漓'] },
-  '中': { pace:['缓缓流动','轻轻','舒展','自在'], verb:['摆动','摇晃','漂着','走着'], feel:['舒服','自在','刚刚好'] },
-  '低': { pace:['慢下来','柔软','安静','轻到几乎没有'], verb:['坐下来','歇着','靠着','闭上眼'], feel:['安静','柔软','小心翼翼'] },
+  '高': { pace:['跃动','明亮','充满活力','不羁'], verb:['奔跑','释放','飞扬','闪耀'], feel:['痛快','畅快','淋漓'] },
+  '中': { pace:['缓缓','轻轻','舒展','自在'], verb:['摇曳','漫步','漂着','走着'], feel:['舒服','自在','刚刚好'] },
+  '低': { pace:['柔软','安静','缓慢','轻到几乎没有'], verb:['坐下来','歇着','靠着','闭上眼'], feel:['安静','柔软','小心翼翼'] },
 }
 
 // ── Mood-specific tone fragments ─────────────────────────────────────────
 const MOOD_TONE = {
-  '想你了':       { verbs:['想念','惦记','想起','想着'], nouns:['思念','记忆','距离','时间','夜'], adj:['温柔','酸涩','挥之不去','淡淡'] },
-  '开心开心':     { verbs:['笑了','晃起来','跟着节拍','摇'], nouns:['快乐','节奏','笑容','好天气','风'], adj:['轻盈','跳跃','闪闪发光','自在'] },
-  '今天很幸福':   { verbs:['珍惜','抱着','感受','留住'], nouns:['幸福','温度','满足','此刻','暖意'], adj:['温暖','满满','软软','甜'] },
-  '需要安慰':     { verbs:['陪着你','轻轻拍着','抱着','靠着'], nouns:['安慰','陪伴','眼泪','夜晚','肩膀'], adj:['温柔','安静','不说破','耐心'] },
-  '想被抱抱':     { verbs:['抱住','靠近','贴紧','依偎'], nouns:['拥抱','温度','怀抱','安全感','手臂'], adj:['柔软','暖暖','紧紧包裹','安心'] },
-  '有点苦恼':     { verbs:['想着','绕了又绕','解不开','纠结'], nouns:['心事','烦恼','结','死胡同','乱麻'], adj:['说不清','若隐若现','纠缠','闷闷'] },
-  '洗澡放松一下': { verbs:['冲掉','放下','放空','漂着'], nouns:['热水','雾气','疲惫','浴室','泡泡'], adj:['暖暖','轻飘飘','什么都不想','融化'] },
-  '想一个人发呆': { verbs:['发呆','漂着','走神','放空'], nouns:['空白','思绪','窗外','空气','浮云'], adj:['空空','安静','漫无目的','淡淡'] },
-  '今天有点累':   { verbs:['躺下来','歇着','闭上眼睛','放下'], nouns:['疲惫','床','今天','重量','身体'], adj:['沉沉','软软','不想动','缓缓'] },
+  '思念': { verbs:['想念','惦记','想起','望着远方'], nouns:['思念','旧照片','距离','深夜','回忆'], adj:['温柔','酸涩','漫长','淡淡','很远','挥之不去'] },
+  '幸福': { verbs:['笑了','珍惜','抱着','轻轻晃着'], nouns:['快乐','温度','满足','好天气','阳光'], adj:['轻盈','温暖','闪闪发光','刚刚好','甜'] },
+  '委屈': { verbs:['忍着','低下头','转过身','抱着膝盖'], nouns:['小雨','眼泪','心事','喉咙','窗边'], adj:['湿漉漉','说不出口','闷闷','悄无声息','软软'] },
+  '治愈': { verbs:['陪着你','靠近','轻轻拍着','裹紧'], nouns:['安慰','温度','夜晚','肩膀','光'], adj:['温柔','柔软','不说破','暖暖','安静'] },
+  '懊恼': { verbs:['想着','绕了又绕','解不开','反复'], nouns:['心事','烦恼','结','矛盾','乱麻'], adj:['说不清','若隐若现','纠缠','闷闷','解不开'] },
+  '放空': { verbs:['冲掉','放下','漂着','融化'], nouns:['热水','雾气','空白','音乐','气泡'], adj:['轻飘飘','什么都不想','软软','慢慢','暖暖'] },
+  '孤独': { verbs:['发呆','走神','望着窗外','独坐'], nouns:['空白','思绪','窗外','空气','灯光'], adj:['空空','安静','漫无目的','淡淡','远远'] },
+  '疲惫': { verbs:['躺下来','歇着','闭上眼睛','松开'], nouns:['床','今天','重量','身体','夜色'], adj:['沉沉','软软','不想动','缓缓','很轻'] },
+  '心动': { verbs:['心跳','偷看','傻笑','惦记着'], nouns:['悸动','脸红','晚风','月光','酒窝'], adj:['甜甜','轻轻跳','微微发热','藏不住','痒痒'] },
 }
 
 // ═══════════════════════════════════════════════════════════════════════════
@@ -1086,7 +1201,7 @@ const MOOD_TONE = {
 
 function describeSong(title, artist, primaryMood, energyLevel, allMoods, full, zh) {
   const img = extractImagery(title, artist)
-  const tone = MOOD_TONE[primaryMood] || MOOD_TONE['想一个人发呆']
+  const tone = MOOD_TONE[primaryMood] || MOOD_TONE['孤独']
   const energy = ENERGY_TEXTURE[energyLevel] || ENERGY_TEXTURE['中']
   const seed = title + primaryMood
 
@@ -1105,7 +1220,7 @@ function describeSong(title, artist, primaryMood, energyLevel, allMoods, full, z
         const i = pickFrom(seed + 'p1c', img.en)
         return `${pickFrom(seed + 'p1d', i.s)}, ${adj()}`
       }
-      return `${pickFrom(seed + 'p1e', energy.pace)}的${noun()}`
+      return `${adj()}的${noun()}`
     },
     // 2. action + feeling: "等雨停时的酸涩"
     () => {
@@ -1117,7 +1232,7 @@ function describeSong(title, artist, primaryMood, energyLevel, allMoods, full, z
         const i = pickFrom(seed + 'p2c', img.en)
         return `the ${adj()} of ${pickFrom(seed + 'p2d', i.a)}`
       }
-      return `${pickFrom(seed + 'p2e', energy.verb)}的${noun()}`
+      return `${pickFrom(seed + 'p2e', tone.verbs)}的${noun()}`
     },
     // 3. thing-based: "窗里的思念"
     () => {
@@ -1125,7 +1240,7 @@ function describeSong(title, artist, primaryMood, energyLevel, allMoods, full, z
         const i = pickFrom(seed + 'p3a', img.zh)
         return `${pickFrom(seed + 'p3b', i.t)}里的${noun()}`
       }
-      return `${pickFrom(seed + 'p3c', energy.feel)}的${adj()}`
+      return `${adj()}的${noun()}`
     },
     // 4. emotion in scene: "安静中的温柔"
     () => {
@@ -1133,7 +1248,7 @@ function describeSong(title, artist, primaryMood, energyLevel, allMoods, full, z
         const i = pickFrom(seed + 'p4a', img.zh)
         return `${pickFrom(seed + 'p4b', i.e)}里的${adj()}`
       }
-      return `${pickFrom(seed + 'p4c', energy.feel)}的${noun()}`
+      return `${adj()}的${noun()}`
     },
     // 5. English cinematic: "the tenderness in falling"
     () => {
@@ -1141,14 +1256,14 @@ function describeSong(title, artist, primaryMood, energyLevel, allMoods, full, z
         const i = pickFrom(seed + 'p5a', img.en)
         return `the ${pickFrom(seed + 'p5b', i.e)} in ${pickFrom(seed + 'p5c', i.a)}`
       }
-      return `${adj()}的${pickFrom(seed + 'p5d', energy.feel)}`
+      return `${adj()}的${noun()}`
     },
     // 6. pure texture: two adjs or adj+noun
     () => `${adj()}的${noun()}`,
     // 7. action: "漂着的空白"
     () => `${pickFrom(seed + 'p7a', tone.verbs)}的${noun()}`,
-    // 8. pace + mood
-    () => `${pickFrom(seed + 'p8a', energy.pace)}的${adj()}`,
+    // 8. verb + noun: "想起的深夜"
+    () => `${pickFrom(seed + 'p8a', tone.verbs)}的${noun()}`,
   ]
 
   return pickFrom(seed, patterns)()
@@ -1160,7 +1275,7 @@ function describeSong(title, artist, primaryMood, energyLevel, allMoods, full, z
 
 function bestForSong(title, artist, primaryMood, energyLevel, allMoods, full, zh) {
   const img = extractImagery(title, artist)
-  const tone = MOOD_TONE[primaryMood] || MOOD_TONE['想一个人发呆']
+  const tone = MOOD_TONE[primaryMood] || MOOD_TONE['孤独']
   const seed = title + 'best'
 
   const patterns = [
@@ -1187,17 +1302,17 @@ function bestForSong(title, artist, primaryMood, energyLevel, allMoods, full, zh
     // 3. Specific mood-tied moment (handcrafted, varied per mood)
     () => {
       const moments = {
-        '想你了': ['想念一个人却不想说出来时','翻到旧照片的那一刻','深夜收到一条消息后'],
-        '开心开心': ['嘴角不自觉上扬时','想跟着节奏轻轻晃时','今天的快乐需要一个BGM'],
-        '今天很幸福': ['想把这份温暖轻轻留住时','觉得一切都刚刚好的那一刻','心里满满当当的时候'],
-        '需要安慰': ['不是不想说，只是不想解释时','眼泪快掉下来的时候','需要一个声音安静陪着时'],
-        '想被抱抱': ['想被紧紧抱着的时候','需要一点体温的那一刻','想靠在谁身上歇一会儿'],
-        '有点苦恼': ['心里绕来绕去绕不出来时','有些事想不通又放不下的那一刻','需要给自己一点空间的时候'],
-        '洗澡放松一下': ['用热水冲掉一天疲惫时','什么都不想就那么待着的时候','浴室雾气升起来的那一刻'],
-        '想一个人发呆': ['望着窗外放空的那一刻','思绪飘到哪儿算哪儿的时候','一个人安静待着的时光'],
-        '今天有点累': ['今天真的很努力了之后','躺在床上不想动的那一刻','需要一个温柔的声音接住你时'],
+        '思念': ['想念一个人却不想说出来时','翻到旧照片的那一刻','深夜收到一条消息后'],
+        '幸福': ['嘴角不自觉上扬时','想跟着节奏轻轻晃时','今天的快乐需要一个BGM'],
+        '幸福': ['想把这份温暖轻轻留住时','觉得一切都刚刚好的那一刻','心里满满当当的时候'],
+        '治愈': ['不是不想说，只是不想解释时','眼泪快掉下来的时候','需要一个声音安静陪着时'],
+        '治愈': ['想被紧紧抱着的时候','需要一点体温的那一刻','想靠在谁身上歇一会儿'],
+        '懊恼': ['心里绕来绕去绕不出来时','有些事想不通又放不下的那一刻','需要给自己一点空间的时候'],
+        '放空': ['用热水冲掉一天疲惫时','什么都不想就那么待着的时候','浴室雾气升起来的那一刻'],
+        '孤独': ['望着窗外放空的那一刻','思绪飘到哪儿算哪儿的时候','一个人安静待着的时光'],
+        '疲惫': ['今天真的很努力了之后','躺在床上不想动的那一刻','需要一个温柔的声音接住你时'],
       }
-      const arr = moments[primaryMood] || moments['想一个人发呆']
+      const arr = moments[primaryMood] || moments['孤独']
       return pickFrom(seed + 'b9', arr)
     },
     // 4. Scene + emotion combo (for songs with 2+ imagery hits)
@@ -1227,7 +1342,7 @@ function bestForSong(title, artist, primaryMood, energyLevel, allMoods, full, zh
 
 function romanticReasonForSong(title, artist, primaryMood, allMoods, energyLevel, full, zhText) {
   const img = extractImagery(title, artist)
-  const tone = MOOD_TONE[primaryMood] || MOOD_TONE['想一个人发呆']
+  const tone = MOOD_TONE[primaryMood] || MOOD_TONE['孤独']
   const seed = title + artist + primaryMood
 
   // ── First: check special per-song custom reasons (kept from original) ──

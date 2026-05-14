@@ -47,7 +47,7 @@ function classify(filename) {
 
   const moodTags = []
 
-  // ── 想你了 ──
+  // ── 思念 ──
   if (has(zh,
     '想你','想念','删了','多想','思念','再也没有','不再联系','离你',
     '还是分开','你走了','没有你','分手','原谅','遺憾','遗憾','消散',
@@ -74,9 +74,9 @@ function classify(filename) {
     'tequila sunrise','oscar winning tears','kiss it better',
     'die with a smile','luther','sweet spot','devotion','walking away',
     'all i can take','need it','love song','daisies',
-  )) moodTags.push('想你了')
+  )) moodTags.push('思念')
 
-  // ── 想被抱抱 ──
+  // ── 治愈（抱抱） ──
   if (has(zh,
     '别怕 我在','多想在平庸','抱我','拥抱','蔡徐坤','hug me','Hug me',
     '隔壁老樊','下辈子如果','盔甲','靠着你','在你的身边','美丽的神话',
@@ -90,9 +90,9 @@ function classify(filename) {
     'enchanted','good times','love somebody','love me like you do',
     '10,000 hours','10000 hours','devotion','butterflies',
     'the joker','bad honey',
-  )) moodTags.push('想被抱抱')
+  )) moodTags.push('治愈')
 
-  // ── 今天很幸福 ──
+  // ── 幸福（甜蜜） ──
   if (has(zh,
     '幸福了','世间美好','永不失联','往后余生','遇见','勇气',
     '今生今世','最接近天堂','陪你度过','一样的月光','直到遇见了你',
@@ -113,9 +113,9 @@ function classify(filename) {
     'mariage d\'amour','new soul','bamboo','how do i love thee',
     'i love you 3000','die with a smile','calculator','love song',
     'joker and the queen',
-  )) moodTags.push('今天很幸福')
+  )) moodTags.push('幸福')
 
-  // ── 开心开心 ──
+  // ── 幸福（开心） ──
   if (has(zh,
     '开心','快乐','野子','再不疯狂','恶作剧','古巨基','必杀技',
     '小酒窝','李宇春','再不疯狂','苏运莹','坤木Joymo','PARTY',
@@ -138,9 +138,9 @@ function classify(filename) {
     '405','bad honey','speed demon','yukon','witchya',
     'eye candy','butterflies','sweet spot','calculator',
     'tequila sunrise','hey kong','更好的曼',
-  )) moodTags.push('开心开心')
+  )) moodTags.push('幸福')
 
-  // ── 需要安慰 ──
+  // ── 治愈（安慰） ──
   if (has(zh,
     '像我这样的人','山丘','如果没有你','没有人心疼我','行尸走肉',
     '你也没有错','负重一万斤长大','无问','陈雪凝','毛不易',
@@ -162,9 +162,9 @@ function classify(filename) {
     'love is gone','pray','bad day','i\'m with you',
     'innocence','bleeding love','all i can take','need it',
     'oscar winning tears',
-  )) moodTags.push('需要安慰')
+  )) moodTags.push('治愈')
 
-  // ── 有点苦恼 ──
+  // ── 懊恼 ──
   if (has(zh,
     '演员','易燃易爆炸','出卖','怪咖','木偶人','几个你','有一种悲伤',
     '那是你离开了北京','暗巷','肆无忌惮','你还要我怎样','我终于成了',
@@ -182,9 +182,9 @@ function classify(filename) {
     'therefore i am','bad guy','now or never','you so done',
     'omen','ex ','ex,','kiana','shouldn\'t couldn\'t wouldn\'t',
     'kiss it better','luther',
-  )) moodTags.push('有点苦恼')
+  )) moodTags.push('懊恼')
 
-  // ── 洗澡放松一下 ──
+  // ── 放空（放松） ──
   if (has(zh,
     '逍遥','野子','奇妙能力歌','光','虚拟','风月','梦','飘','悠',
     '风的颜色','炫动小霸王','墨染','新诚觉一','青玉恋','陈其钢','秦淮景',
@@ -203,9 +203,9 @@ function classify(filename) {
     'bored','pasta','hush','lowkey','tease','chillin',
     'la la lost you','strange land','visions of gideon',
     'mystery of love','strawberries','april encounter',
-  )) moodTags.push('洗澡放松一下')
+  )) moodTags.push('放空')
 
-  // ── 想一个人发呆 ──
+  // ── 孤独（发呆） ──
   if (has(zh,
     '水星记','凄美地','走马','兰亭序','雪落下的声音','小半','呓语',
     '借月','风月','黄昏','那时雨','就让这大雨','阿拉斯加海湾',
@@ -230,9 +230,9 @@ function classify(filename) {
     'la la lost you','strange land','visions of gideon',
     'mystery of love','strawberries','stuck on you',
     'shouldn\'t couldn\'t wouldn\'t',
-  )) moodTags.push('想一个人发呆')
+  )) moodTags.push('孤独')
 
-  // ── 今天有点累 ──
+  // ── 疲惫 ──
   if (has(zh,
     '累','呓语','山丘','负重一万斤','无问','我很好','孤身',
     '消散对白','张碧晨','慢冷','满舒克','慢热','刘大壮','会不会',
@@ -254,22 +254,22 @@ function classify(filename) {
     'met at a party','love is gone (acoustic)',
     'slander','comethru','walking away','all i can take',
     'visions of gideon',
-  )) moodTags.push('今天有点累')
+  )) moodTags.push('疲惫')
 
   // ── fallback ──
   if (moodTags.length === 0) {
-    if (has(zh, 'Justin Bieber', 'Justin')) moodTags.push('开心开心', '想被抱抱')
-    else if (has(zh, 'Adele')) moodTags.push('需要安慰', '想你了')
-    else if (has(full, 'swift', 'taylor')) moodTags.push('开心开心')
-    else if (has(full, 'beyoncé', 'beyonce')) moodTags.push('开心开心')
-    else if (has(full, 'ariana', 'grande')) moodTags.push('开心开心', '洗澡放松一下')
-    else if (has(full, '88rising')) moodTags.push('洗澡放松一下', '想你了')
-    else if (has(full, 'kendrick', 'sza')) moodTags.push('有点苦恼', '想你了')
-    else if (has(full, 'lady gaga', 'bruno mars')) moodTags.push('今天很幸福', '想你了')
-    else if (has(zh, 'G.E.M', '句号')) moodTags.push('有点苦恼', '想你了')
-    else if (has(zh, '张三的歌')) moodTags.push('今天很幸福', '洗澡放松一下')
-    else if (has(zh, '梦外的婚礼')) moodTags.push('有点苦恼', '想你了')
-    else moodTags.push('想一个人发呆')
+    if (has(zh, 'Justin Bieber', 'Justin')) moodTags.push('幸福', '治愈')
+    else if (has(zh, 'Adele')) moodTags.push('治愈', '思念')
+    else if (has(full, 'swift', 'taylor')) moodTags.push('幸福')
+    else if (has(full, 'beyoncé', 'beyonce')) moodTags.push('幸福')
+    else if (has(full, 'ariana', 'grande')) moodTags.push('幸福', '放空')
+    else if (has(full, '88rising')) moodTags.push('放空', '思念')
+    else if (has(full, 'kendrick', 'sza')) moodTags.push('懊恼', '思念')
+    else if (has(full, 'lady gaga', 'bruno mars')) moodTags.push('幸福', '思念')
+    else if (has(zh, 'G.E.M', '句号')) moodTags.push('懊恼', '思念')
+    else if (has(zh, '张三的歌')) moodTags.push('幸福', '放空')
+    else if (has(zh, '梦外的婚礼')) moodTags.push('懊恼', '思念')
+    else moodTags.push('孤独')
   }
 
   // ── energy level ──
@@ -311,29 +311,29 @@ function classify(filename) {
 
   // ── bestFor ──
   const bestForMap = {
-    '想你了':       '适合深夜安静想念某个人的时候听',
-    '开心开心':     '适合今天心情特别好、想跟着旋律动起来的时候',
-    '今天很幸福':   '适合感到温柔满足、想把这份幸福留住的时候',
-    '需要安慰':     '适合心里有点难受、需要一个声音陪着的时候',
-    '想被抱抱':     '适合想被人好好抱着、感受温暖的时候',
-    '有点苦恼':     '适合心里有点乱、需要安静整理情绪的时候',
-    '洗澡放松一下': '适合用热水冲走一天疲惫、什么都不用想的时候',
-    '想一个人发呆': '适合一个人安静漂着、思绪飘到哪儿算哪儿的时候',
-    '今天有点累':   '适合今天已经很努力了、可以慢慢休息的时候',
+    '思念':       '适合深夜安静想念某个人的时候听',
+    '幸福':     '适合今天心情特别好、想跟着旋律动起来的时候',
+    '幸福':   '适合感到温柔满足、想把这份幸福留住的时候',
+    '治愈':     '适合心里有点难受、需要一个声音陪着的时候',
+    '治愈':     '适合想被人好好抱着、感受温暖的时候',
+    '懊恼':     '适合心里有点乱、需要安静整理情绪的时候',
+    '放空': '适合用热水冲走一天疲惫、什么都不用想的时候',
+    '孤独': '适合一个人安静漂着、思绪飘到哪儿算哪儿的时候',
+    '疲惫':   '适合今天已经很努力了、可以慢慢休息的时候',
   }
   const bestFor = bestForMap[moodTags[0]] || '适合静静独处、感受音乐的时候'
 
   // ── emotionalDescription ──
   const emoDescMap = {
-    '想你了':       '深夜思念感',
-    '开心开心':     '轻盈欢快感',
-    '今天很幸福':   '温柔幸福感',
-    '需要安慰':     '温柔陪伴感',
-    '想被抱抱':     '温暖包裹感',
-    '有点苦恼':     '淡淡郁结感',
-    '洗澡放松一下': '慵懒放松感',
-    '想一个人发呆': '安静漂浮感',
-    '今天有点累':   '轻柔疗愈感',
+    '思念':       '深夜思念感',
+    '幸福':     '轻盈欢快感',
+    '幸福':   '温柔幸福感',
+    '治愈':     '温柔陪伴感',
+    '治愈':     '温暖包裹感',
+    '懊恼':     '淡淡郁结感',
+    '放空': '慵懒放松感',
+    '孤独': '安静漂浮感',
+    '疲惫':   '轻柔疗愈感',
   }
   const emotionalDescription = emoDescMap[moodTags[0]] || '情绪流动感'
 
@@ -422,63 +422,63 @@ function classify(filename) {
 
 function genericReason(mood) {
   const pool = {
-    '想你了': [
+    '思念': [
       '这首歌，适合在深夜安静想念某个人。',
       '旋律里藏着所有没说出口的想念。',
       '有些音乐，一响起就让人想到那个人。',
       '深夜听这首，脑海里浮现的是谁？',
       '这首歌懂你，就像懂得想念是什么感觉。',
     ],
-    '开心开心': [
+    '幸福': [
       '今天心情好，就配这首。',
       '听这首歌，连步伐都会变得轻盈。',
       '快乐的旋律，是最好的礼物。',
       '跟着节拍动起来，今天属于你。',
       '这首歌的能量，跟你今天一样耀眼。',
     ],
-    '今天很幸福': [
+    '幸福': [
       '幸福的感觉，就是这首歌的温度。',
       '把这份满足感留住，就像这首歌的旋律。',
       '有你在的每一天，都值得一首这样的歌。',
       '温柔的旋律，配上幸福的心情，刚刚好。',
       '这首歌，献给今天的好心情。',
     ],
-    '需要安慰': [
+    '治愈': [
       '没关系，这首歌陪着你。',
       '让音乐替你说出那些说不出口的话。',
       '有时候不需要解释，只需要一首好歌。',
       '这首歌像一个温柔的拥抱，送给你。',
       '一切都会好的，先听着这首歌。',
     ],
-    '想被抱抱': [
+    '治愈': [
       '这首歌，就像一个温暖的拥抱。',
       '听着这首，闭上眼睛，感受被爱的温度。',
       '有人在想着你，隔着音符传递温暖。',
       '软软的旋律，就是今晚最好的陪伴。',
       '听这首歌，好像真的有人在身边。',
     ],
-    '有点苦恼': [
+    '懊恼': [
       '没关系，苦恼也是一种感受。',
       '让这首歌帮你整理一下心情。',
       '有些事想不明白，听听歌再说。',
       '音乐懂你，就算说不清楚也没关系。',
       '这首歌，安静地陪着你想事情。',
     ],
-    '洗澡放松一下': [
+    '放空': [
       '用这首歌冲走今天所有的疲惫。',
       '热水加上好音乐，今晚好好放松。',
       '什么都不用想，就跟着旋律漂一会儿。',
       '这首歌，专为今晚的放松时光准备。',
       '轻轻松松，就这样享受今晚的安静。',
     ],
-    '想一个人发呆': [
+    '孤独': [
       '一个人静静的，这首歌最配。',
       '漂着漂着，思绪就到了你想去的地方。',
       '慢下来，什么都不想，只是感受音乐。',
       '这首歌的节奏，就是今晚你的呼吸频率。',
       '深夜一个人，有这首歌就够了。',
     ],
-    '今天有点累': [
+    '疲惫': [
       '今天已经很努力了，好好休息。',
       '软软的旋律，帮你放下今天的重量。',
       '什么都不用再做了，听着这首慢慢来。',
@@ -486,7 +486,7 @@ function genericReason(mood) {
       '你已经很好了，让音乐陪你休息。',
     ],
   }
-  const arr = pool[mood] || pool['想一个人发呆']
+  const arr = pool[mood] || pool['孤独']
   return arr[0]
 }
 
