@@ -179,7 +179,7 @@
 .lp-card__bar {
   flex: 1;
   height: 3px;
-  background: rgba(255, 255, 255, 0.06);
+  background: var(--fill-subtle-strong);
   border-radius: 3px;
   position: relative;
   overflow: visible;
@@ -187,7 +187,7 @@
 
 /* slightly brighter track when active */
 .lp-card__bar--active {
-  background: rgba(255, 255, 255, 0.12);
+  background: var(--fill-subtle-strong);
   cursor: pointer;
   height: 4px;
   border-radius: 4px;
@@ -255,7 +255,7 @@
   margin: 24px auto 0;
   padding: 0.7rem 2rem;
   border-radius: 20px;
-  border: 1px dashed rgba(255, 255, 255, 0.14);
+  border: 1px dashed var(--glass-border);
   background: none;
   color: var(--text-muted);
   font-size: 0.8rem;
@@ -265,7 +265,7 @@
 }
 
 .lp-more:hover {
-  border-color: rgba(244, 161, 176, 0.4);
+  border-color: var(--rose-glass-border);
   color: var(--rose);
 }
 

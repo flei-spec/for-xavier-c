@@ -194,7 +194,7 @@ function VoiceTab({ user, space }) {
 
 // ── Root ──────────────────────────────────────────────────────────────────────
 
-export default function DiaryRecords({ onClose }) {
+export default function DiaryRecords({ onClose, onCloseAll }) {
   const { user, space } = useAuth()
   const [visible,    setVisible]    = useState(false)
   const [activeTab,  setActiveTab]  = useState('text')   // 'text' | 'voice'
@@ -209,13 +209,19 @@ export default function DiaryRecords({ onClose }) {
     setTimeout(onClose, 380)
   }
 
+  const closeAll = () => {
+    setVisible(false)
+    setTimeout(onCloseAll ?? onClose, 380)
+  }
+
   return (
     <div
       className={`dr__overlay ${visible ? 'dr__overlay--in' : ''}`}
       onClick={e => { if (e.target === e.currentTarget) close() }}
     >
       <div className="dr__modal">
-        <button className="dr__close" onClick={close} aria-label="关闭">✕</button>
+        <button className="dr__back" onClick={close}>← 返回</button>
+        <button className="dr__close" onClick={closeAll} aria-label="关闭">✕</button>
 
         <div className="dr__header">
           <span className="dr__icon">📖</span>

@@ -122,8 +122,8 @@
 }
 
 .countdown__select {
-  background: rgba(255, 255, 255, 0.05);
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  background: var(--fill-subtle);
+  border: 1px solid var(--glass-border);
   border-radius: 8px;
   color: var(--text-primary);
   font-size: 0.8rem;
@@ -135,17 +135,17 @@
 }
 
 .countdown__select:focus {
-  border-color: rgba(244, 161, 176, 0.35);
+  border-color: var(--rose-glass-border);
 }
 
 .countdown__select option {
-  background: #0e0e20;
+  background: var(--bg-dark);
   color: var(--text-primary);
 }
 
 .countdown__form-error {
   font-size: 0.7rem;
-  color: #f48080;
+  color: var(--error-text);
   letter-spacing: 0.02em;
 }
 
@@ -170,7 +170,7 @@
 
 .countdown__form-cancel {
   padding: 0.32rem 0.85rem;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--glass-border);
   border-radius: 20px;
   color: var(--text-muted);
   font-size: 0.78rem;

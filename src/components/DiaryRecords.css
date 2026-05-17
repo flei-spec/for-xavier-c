@@ -59,6 +59,24 @@
 }
 .dr__close:hover { background: rgba(255,255,255,0.1); color: var(--text-primary); }
 
+.dr__back {
+  position: absolute;
+  top: 1.1rem;
+  left: 1.1rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  opacity: 0.5;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: opacity 0.2s, color 0.2s;
+  padding: 0.3rem 0.4rem;
+}
+
+.dr__back:hover {
+  opacity: 0.85;
+  color: var(--rose);
+}
+
 /* ── Header ── */
 .dr__header {
   text-align: center;
@@ -130,7 +148,7 @@
 
 .dr__delete-err {
   font-size: 0.78rem;
-  color: #f48080;
+  color: var(--error-text);
   text-align: center;
   padding: 0.3rem 0;
   letter-spacing: 0.02em;
@@ -260,7 +278,7 @@
 
 .dr__delete:hover:not(:disabled) {
   opacity: 0.8;
-  color: #f48080;
+  color: var(--error-text);
 }
 
 .dr__delete:disabled { cursor: default; }
@@ -286,7 +304,7 @@
 
 .dr__confirm-yes {
   font-size: 0.7rem;
-  color: #f48080;
+  color: var(--error-text);
   letter-spacing: 0.04em;
   cursor: pointer;
   transition: opacity 0.2s;

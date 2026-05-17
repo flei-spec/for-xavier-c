@@ -10,7 +10,7 @@ function formatDate(iso) {
   return d.toLocaleDateString('zh-CN', { month: 'long', day: 'numeric' })
 }
 
-export default function MemoryDiary({ onClose, mood, currentSong }) {
+export default function MemoryDiary({ onClose, onCloseAll, mood, currentSong }) {
   const { user, space } = useAuth()
   const [visible,   setVisible]   = useState(false)
   const [text,      setText]      = useState('')
@@ -40,6 +40,11 @@ export default function MemoryDiary({ onClose, mood, currentSong }) {
   const close = () => {
     setVisible(false)
     setTimeout(onClose, 380)
+  }
+
+  const closeAll = () => {
+    setVisible(false)
+    setTimeout(onCloseAll ?? onClose, 380)
   }
 
   const handleSave = async () => {
@@ -74,7 +79,8 @@ export default function MemoryDiary({ onClose, mood, currentSong }) {
     >
       <div className="diary__modal">
 
-        <button className="diary__close" onClick={close} aria-label="关闭">✕</button>
+        <button className="diary__back" onClick={close}>← 返回</button>
+        <button className="diary__close" onClick={closeAll} aria-label="关闭">✕</button>
 
         <div className="diary__header">
           <span className="diary__icon">✎</span>

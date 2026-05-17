@@ -16,7 +16,7 @@ function fmtTime(ms) {
   return `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`
 }
 
-export default function VoiceMailbox({ onClose }) {
+export default function VoiceMailbox({ onClose, onCloseAll }) {
   const { user, space } = useAuth()
   const [visible,    setVisible]    = useState(false)
   const [recording,  setRecording]  = useState(false)
@@ -49,6 +49,13 @@ export default function VoiceMailbox({ onClose }) {
     if (mrRef.current?.state === 'recording') mrRef.current.stop()
     clearInterval(timerRef.current)
     setTimeout(onClose, 380)
+  }
+
+  const closeAll = () => {
+    setVisible(false)
+    if (mrRef.current?.state === 'recording') mrRef.current.stop()
+    clearInterval(timerRef.current)
+    setTimeout(onCloseAll ?? onClose, 380)
   }
 
   const startRecording = async () => {
@@ -130,7 +137,8 @@ export default function VoiceMailbox({ onClose }) {
       onClick={e => { if (e.target === e.currentTarget) close() }}
     >
       <div className="vm__modal">
-        <button className="vm__close" onClick={close} aria-label="关闭">✕</button>
+        <button className="vm__back" onClick={close}>← 返回</button>
+        <button className="vm__close" onClick={closeAll} aria-label="关闭">✕</button>
 
         <div className="vm__header">
           <span className="vm__icon">📻</span>

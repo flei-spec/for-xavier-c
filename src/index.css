@@ -49,6 +49,24 @@
   /* ── Atmosphere glows (overridden by theme) ── */
   --atm-glow-1: rgba(244,161,176,0.06);
   --atm-glow-2: rgba(100,80,160,0.04);
+
+  /* ── Interactive tints (night defaults) ── */
+  --hover-tint:        rgba(255,255,255,0.05);
+  --hover-tint-strong: rgba(255,255,255,0.10);
+  --fill-subtle:       rgba(255,255,255,0.03);
+  --fill-subtle-strong: rgba(255,255,255,0.06);
+
+  /* ── Semantic feedback (night defaults) ── */
+  --error-text:   #f48080;
+  --success-text: #81c784;
+
+  /* ── Energy badge colours (night defaults) ── */
+  --energy-low:  #b39ddb;
+  --energy-high: #ffd54f;
+
+  /* ── Rose-tinted glass (night defaults) ── */
+  --rose-glass-border: rgba(244,161,176,0.18);
+  --rose-glass-bg:     rgba(244,161,176,0.06);
 }
 
 /* ── Atmosphere themes (data-atm) ───────────────────────────────────────────── */
@@ -121,6 +139,24 @@
   --gold:       #9a6d0a;
   --gold-light: #b28a1c;
   --lavender:   #6a4fac;
+
+  /* ── Interactive tints (day) ── */
+  --hover-tint:        rgba(26,45,74,0.04);
+  --hover-tint-strong: rgba(26,45,74,0.08);
+  --fill-subtle:       rgba(26,45,74,0.03);
+  --fill-subtle-strong: rgba(26,45,74,0.05);
+
+  /* ── Semantic feedback (day) ── */
+  --error-text:   #c0392b;
+  --success-text: #2e7d32;
+
+  /* ── Energy badge colours (day) ── */
+  --energy-low:  #5c3d8f;
+  --energy-high: #b8860b;
+
+  /* ── Rose-tinted glass (day) ── */
+  --rose-glass-border: rgba(200,79,109,0.22);
+  --rose-glass-bg:     rgba(200,79,109,0.05);
 }
 
 /* ── Sunset / golden hour theme ─────────────────────────────────────────────── */
@@ -163,6 +199,24 @@
   --gold:       #b06000;
   --gold-light: #cc7d18;
   --lavender:   #8030a0;
+
+  /* ── Interactive tints (sunset) ── */
+  --hover-tint:        rgba(160,85,20,0.06);
+  --hover-tint-strong: rgba(160,85,20,0.10);
+  --fill-subtle:       rgba(160,85,20,0.04);
+  --fill-subtle-strong: rgba(160,85,20,0.07);
+
+  /* ── Semantic feedback (sunset) ── */
+  --error-text:   #c0392b;
+  --success-text: #2e7d32;
+
+  /* ── Energy badge colours (sunset) ── */
+  --energy-low:  #5c3d8f;
+  --energy-high: #b8860b;
+
+  /* ── Rose-tinted glass (sunset) ── */
+  --rose-glass-border: rgba(200,56,40,0.24);
+  --rose-glass-bg:     rgba(200,56,40,0.06);
 }
 
 /* Sunset: stars fade, warm scrollbar */

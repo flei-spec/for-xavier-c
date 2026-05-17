@@ -10,7 +10,7 @@ function formatDate(iso) {
   })
 }
 
-export default function HiddenLoveLetter({ onClose }) {
+export default function HiddenLoveLetter({ onClose, onCloseAll }) {
   const { user, space } = useAuth()
   const [visible, setVisible] = useState(false)
 
@@ -47,6 +47,11 @@ export default function HiddenLoveLetter({ onClose }) {
     setTimeout(onClose, 380)
   }
 
+  const closeAll = () => {
+    setVisible(false)
+    setTimeout(onCloseAll ?? onClose, 380)
+  }
+
   const handleSend = async () => {
     if (!text.trim() || sending) return
     setSending(true)
@@ -69,7 +74,8 @@ export default function HiddenLoveLetter({ onClose }) {
       onClick={e => { if (e.target === e.currentTarget) close() }}
     >
       <div className="letter__modal">
-        <button className="letter__close" onClick={close}>✕</button>
+        <button className="letter__back" onClick={close}>← 返回</button>
+        <button className="letter__close" onClick={closeAll}>✕</button>
 
         <div className="letter__header">
           <span className="letter__seal">💌</span>

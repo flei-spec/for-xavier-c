@@ -14,7 +14,6 @@ import MiniPlayer from './components/MiniPlayer'
 import { useAudioPlayer } from './contexts/AudioPlayerContext'
 import { audioElement } from './audio/audioElement'
 import { preloadSongLibrary } from './hooks/useSongLibrary'
-import { logMoodEvent } from './utils/moodHistory'
 import { fetchUnreadSecretLetters } from './utils/journal'
 import WhisperNotification from './components/WhisperNotification'
 import HiddenLoveLetter from './components/HiddenLoveLetter'
@@ -42,6 +41,7 @@ export default function App() {
   const [whisperData,  setWhisperData]  = useState(null)  // { count } | null
   const [showLetterModal, setShowLetterModal] = useState(false)
   const [showMonthlyLetter, setShowMonthlyLetter] = useState(false)
+  const [trackingOriginalInput, setTrackingOriginalInput] = useState(null)
 
   const { data: atmosphere } = useAtmosphere()
 
@@ -173,16 +173,9 @@ export default function App() {
     setStationKey(k => k + 1)
     localStorage.setItem('xavier_last_mood', mood.id)
 
-    // Log mood event to Supabase (fire-and-forget)
-    if (user) {
-      logMoodEvent({
-        userId: user.id,
-        spaceId: space?.id ?? null,
-        source: fromAi ? 'custom_input' : 'mood_card',
-        originalInput,
-        matchedMood: mood.id,
-      }).catch(err => console.warn('[App] moodHistory log skipped:', err?.message))
-    }
+    // Store tracking params for deferred logging in RadioStation
+    // (mood is only logged after playback actually starts + 10s duration)
+    setTrackingOriginalInput(originalInput)
 
     setPage('station')
   }
@@ -229,6 +222,7 @@ export default function App() {
               isAiMatch={isAiMatch}
               onBack={handleBack}
               atmosphere={atmosphere}
+              trackingOriginalInput={trackingOriginalInput}
             />
           )}
 

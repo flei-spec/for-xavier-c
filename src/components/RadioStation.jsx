@@ -16,6 +16,8 @@ import VoiceMailbox from './VoiceMailbox'
 import { useAuth } from '../contexts/AuthContext'
 import { useAudioPlayer } from '../contexts/AudioPlayerContext'
 import { useSongLibrary } from '../hooks/useSongLibrary'
+import { fetchUnreadLetterCount } from '../utils/journal'
+import { logMoodEvent } from '../utils/moodHistory'
 import { moodVoiceMap } from '../data/moodVoiceMap'
 import { devValidateSongs } from '../data/songConfig'
 import { LONG_STAY } from '../utils/atmosphere'
@@ -154,12 +156,78 @@ function LongStayToast({ message, onDismiss }) {
 const INTRO_AUTH_UID  = '3f370ae9-a462-4a17-b2f4-5a05d4958c76'
 const PRIVATE_SPACE_ID = '89f07d46-af87-4aea-b7e8-e4a804cb21d1'
 
-export default function RadioStation({ mood, onBack, atmosphere, isAiMatch }) {
+export default function RadioStation({ mood, onBack, atmosphere, isAiMatch, trackingOriginalInput = null }) {
   const { user, space, loadingAuth, loadingSpace, refreshSpace, signOut } = useAuth()
   const { library, loading: libLoading } = useSongLibrary()
   const audioPlayer = useAudioPlayer()
 
   const isIntroAuthorized = user?.id === INTRO_AUTH_UID
+
+  // ── Fetch unread secret-letter count when HeartUnlock opens ─────────────────
+  useEffect(() => {
+    if (!showUnlock || !user || space?.id !== PRIVATE_SPACE_ID) return
+    fetchUnreadLetterCount({ spaceId: space.id, userId: user.id }).then(setUnreadLetterCount)
+  }, [showUnlock, user?.id, space?.id])
+
+  // ── Deferred mood tracking ──────────────────────────────────────────────────
+  // Only log a mood event after playback actually starts AND lasts ≥ 10 seconds.
+  // Guards: skips hot-reload mounts, enforces 10-min cooldown per mood, cancels
+  // on unmount or mood change.
+  const wasPlayingOnMount = useRef(audioPlayer.isPlaying)
+  const hasTrackedForSession = useRef(false)
+  const trackingTimer = useRef(null)
+  const isPlayingRef = useRef(audioPlayer.isPlaying)
+  useEffect(() => { isPlayingRef.current = audioPlayer.isPlaying }, [audioPlayer.isPlaying])
+
+  useEffect(() => {
+    // Only interested in the transition to genuine playlist playback.
+    if (!audioPlayer.isPlaying || introPhase !== 'ready') return
+    if (wasPlayingOnMount.current) return   // hot reload / tab revisit — skip
+    if (hasTrackedForSession.current) return // already tracked for this station
+    if (!user) return                       // must be authenticated
+
+    hasTrackedForSession.current = true
+
+    trackingTimer.current = setTimeout(() => {
+      // Playback must still be active when the timer fires.
+      if (!isPlayingRef.current) {
+        console.log('[RadioStation] mood tracking skipped — playback stopped before 10s')
+        return
+      }
+
+      // ── Cooldown: skip if same mood was tracked within the last 10 minutes ──
+      const MOOD_KEY = `xr_mood_tracked_${mood.id}`
+      const lastTracked = sessionStorage.getItem(MOOD_KEY)
+      const COOLDOWN_MS = 10 * 60 * 1000
+      if (lastTracked) {
+        const elapsed = Date.now() - parseInt(lastTracked, 10)
+        if (elapsed < COOLDOWN_MS) {
+          console.log('[RadioStation] mood tracking skipped — cooldown active for:', mood.id)
+          return
+        }
+      }
+
+      const source = isAiMatch ? 'custom_input' : 'mood_card'
+      logMoodEvent({
+        userId: user.id,
+        spaceId: space?.id ?? null,
+        source,
+        originalInput: trackingOriginalInput,
+        matchedMood: mood.id,
+        currentTrackTitle: audioPlayer.currentSong?.title || null,
+      }).catch(err => console.warn('[RadioStation] moodHistory log:', err?.message))
+
+      sessionStorage.setItem(MOOD_KEY, String(Date.now()))
+      console.log('[RadioStation] mood tracked:', mood.id, '| source:', source)
+    }, 10000)
+
+    return () => {
+      if (trackingTimer.current) {
+        clearTimeout(trackingTimer.current)
+        trackingTimer.current = null
+      }
+    }
+  }, [audioPlayer.isPlaying, introPhase, mood.id, user?.id])
 
   // ── Song data ─────────────────────────────────────────────────────────────
   const initialIndexMoodRef = useRef(null)
@@ -176,11 +244,8 @@ export default function RadioStation({ mood, onBack, atmosphere, isAiMatch }) {
 
   // ── UI states ─────────────────────────────────────────────────────────────
   const [heartBeat,        setHeartBeat]        = useState(false)
-  const [showUnlock,       setShowUnlock]        = useState(false)
-  const [showLetter,       setShowLetter]        = useState(false)
-  const [showDiary,        setShowDiary]         = useState(false)
-  const [showRecords,      setShowRecords]       = useState(false)
-  const [showVoiceMailbox, setShowVoiceMailbox]  = useState(false)
+  const [showUnlock,  setShowUnlock]  = useState(false)
+  const [privateView, setPrivateView] = useState(null) // 'letter' | 'diary' | 'records' | 'voice' | 'space'
   const [djVisible,        setDjVisible]         = useState(false)
   const [introPhase,       setIntroPhase]        = useState(() =>
     isIntroAuthorized && !!moodVoiceMap[mood.id] ? 'playing' : 'ready'
@@ -191,6 +256,7 @@ export default function RadioStation({ mood, onBack, atmosphere, isAiMatch }) {
   const [longStayMsg, setLongStayMsg] = useState(null)
   const [songError,   setSongError]   = useState(null)
 
+  const [unreadLetterCount, setUnreadLetterCount] = useState(0)
   const [showAuthModal,  setShowAuthModal]  = useState(false)
   const [showSpaceGate,  setShowSpaceGate]  = useState(false)
   const [pendingAction,  setPendingAction]  = useState(null)
@@ -214,17 +280,16 @@ export default function RadioStation({ mood, onBack, atmosphere, isAiMatch }) {
     if (loadingAuth) return
     if (!user) { setShowAuthModal(true); return }
 
-    if (pendingAction === 'letter') { setPendingAction(null); setShowLetter(true); return }
-    if (pendingAction === 'space')  { setPendingAction(null); setShowSpaceGate(true); return }
-    if (pendingAction === 'voice')  { setPendingAction(null); setShowVoiceMailbox(true); return }
+    if (pendingAction === 'letter') { setPendingAction(null); setPrivateView('letter'); return }
+    if (pendingAction === 'space')  { setPendingAction(null); setPrivateView('space'); return }
+    if (pendingAction === 'voice')  { setPendingAction(null); setPrivateView('voice'); return }
 
     if (pendingAction === 'diary' || pendingAction === 'records') {
       if (loadingSpace) return
-      if (!space) { setShowSpaceGate(true); return }
+      if (!space) { setPrivateView('space'); return }
       const action = pendingAction
       setPendingAction(null)
-      if (action === 'diary') setShowDiary(true)
-      else                    setShowRecords(true)
+      setPrivateView(action === 'diary' ? 'diary' : 'records')
     }
   }, [user, space, loadingAuth, loadingSpace, pendingAction])
 
@@ -325,37 +390,36 @@ export default function RadioStation({ mood, onBack, atmosphere, isAiMatch }) {
   }
 
   const handleLetterFromUnlock = () => {
-    setShowUnlock(false)
-    setPendingAction('letter')
+    if (!user) { setPendingAction('letter'); setShowAuthModal(true); return }
+    setPrivateView('letter')
   }
 
   const handleDiaryFromUnlock = async () => {
-    setShowUnlock(false)
     if (!user) { setPendingAction('diary'); setShowAuthModal(true); return }
     const freshSpace = await refreshSpace()
-    if (!freshSpace) { setPendingAction('diary'); setShowSpaceGate(true); return }
-    setShowDiary(true)
+    if (!freshSpace) { setPrivateView('space'); return }
+    setPrivateView('diary')
   }
 
   const handleSpaceFromUnlock = () => {
-    setShowUnlock(false)
     if (!user) { setPendingAction('space'); setShowAuthModal(true); return }
-    setShowSpaceGate(true)
+    setPrivateView('space')
   }
 
   const handleRecordsFromUnlock = async () => {
-    setShowUnlock(false)
     if (!user) { setPendingAction('records'); setShowAuthModal(true); return }
     const freshSpace = await refreshSpace()
-    if (!freshSpace) { setPendingAction('records'); setShowSpaceGate(true); return }
-    setShowRecords(true)
+    if (!freshSpace) { setPrivateView('space'); return }
+    setPrivateView('records')
   }
 
   const handleVoiceFromUnlock = () => {
-    setShowUnlock(false)
     if (!user) { setPendingAction('voice'); setShowAuthModal(true); return }
-    setShowVoiceMailbox(true)
+    setPrivateView('voice')
   }
+
+  const handleBackToMenu  = () => setPrivateView(null)
+  const handleCloseAll    = () => { setPrivateView(null); setShowUnlock(false) }
 
   // ── Derived display values ────────────────────────────────────────────────
 
@@ -462,7 +526,7 @@ export default function RadioStation({ mood, onBack, atmosphere, isAiMatch }) {
 
       {showUnlock && (
         <HeartUnlock
-          onClose={() => setShowUnlock(false)}
+          onClose={() => { setShowUnlock(false); setUnreadLetterCount(0) }}
           onLetter={handleLetterFromUnlock}
           onDiary={handleDiaryFromUnlock}
           onSpace={handleSpaceFromUnlock}
@@ -470,23 +534,33 @@ export default function RadioStation({ mood, onBack, atmosphere, isAiMatch }) {
           onVoice={handleVoiceFromUnlock}
           onLogout={user ? () => { setShowUnlock(false); signOut() } : undefined}
           isPrivateSpace={space?.id === PRIVATE_SPACE_ID}
+          unreadLetterCount={unreadLetterCount}
         />
       )}
 
-      {showLetter && <HiddenLoveLetter onClose={() => setShowLetter(false)} />}
+      {privateView === 'letter' && (
+        <HiddenLoveLetter onClose={handleBackToMenu} onCloseAll={handleCloseAll} />
+      )}
 
-      {showDiary && (
+      {privateView === 'diary' && (
         <MemoryDiary
-          onClose={() => setShowDiary(false)}
+          onClose={handleBackToMenu}
+          onCloseAll={handleCloseAll}
           mood={mood}
           currentSong={currentSong}
         />
       )}
 
       {showAuthModal && <AuthModal onSuccess={() => setShowAuthModal(false)} />}
-      {showSpaceGate && <SpaceGate onSuccess={() => setShowSpaceGate(false)} />}
-      {showRecords   && <DiaryRecords onClose={() => setShowRecords(false)} />}
-      {showVoiceMailbox && <VoiceMailbox onClose={() => setShowVoiceMailbox(false)} />}
+      {privateView === 'space' && (
+        <SpaceGate onSuccess={handleBackToMenu} onCloseAll={handleCloseAll} />
+      )}
+      {privateView === 'records' && (
+        <DiaryRecords onClose={handleBackToMenu} onCloseAll={handleCloseAll} />
+      )}
+      {privateView === 'voice' && (
+        <VoiceMailbox onClose={handleBackToMenu} onCloseAll={handleCloseAll} />
+      )}
 
       {/* Tap-to-enter overlay — browser blocked autoplay */}
       {audioPlayer.autoplayBlocked && (

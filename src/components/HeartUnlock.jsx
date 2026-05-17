@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'react'
 import './HeartUnlock.css'
 
-export default function HeartUnlock({ onLetter, onDiary, onSpace, onRecords, onVoice, onClose, onLogout, isPrivateSpace }) {
+export default function HeartUnlock({ onLetter, onDiary, onSpace, onRecords, onVoice, onClose, onLogout, isPrivateSpace, unreadLetterCount = 0 }) {
   const [visible, setVisible] = useState(false)
 
   useEffect(() => {
@@ -50,9 +50,18 @@ export default function HeartUnlock({ onLetter, onDiary, onSpace, onRecords, onV
           </button>
 
           {isPrivateSpace ? (
-            <button className="hu__choice hu__choice--letter" onClick={onLetter}>
+            <button
+              className={`hu__choice hu__choice--letter${unreadLetterCount > 0 ? ' hu__choice--unread' : ''}`}
+              onClick={onLetter}
+            >
               <span className="hu__choice-icon">💌</span>
               <span className="hu__choice-text">读悄悄话</span>
+              {unreadLetterCount > 0 && (
+                <span className="hu__unread-hint">
+                  <span className="hu__unread-dot" />
+                  你收到了一封悄悄话
+                </span>
+              )}
             </button>
           ) : (
             <button className="hu__choice hu__choice--voice" onClick={onVoice}>

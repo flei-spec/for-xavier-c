@@ -46,8 +46,8 @@
   color: var(--text-primary);
 }
 
-.songs__row:hover         { background: rgba(255,255,255,0.05); }
-.songs__row--active       { background: rgba(244,161,176,0.07); }
+.songs__row:hover         { background: var(--hover-tint); }
+.songs__row--active       { background: var(--fill-subtle-strong); }
 
 .songs__num {
   width: 22px;
@@ -108,7 +108,7 @@
 
 .songs__energy--低 {
   background: rgba(179, 157, 219, 0.15);
-  color: #b39ddb;
+  color: var(--energy-low);
 }
 
 .songs__energy--中 {
@@ -118,7 +118,7 @@
 
 .songs__energy--高 {
   background: rgba(255, 213, 79, 0.15);
-  color: #ffd54f;
+  color: var(--energy-high);
 }
 
 /* ── Search row ── */
@@ -202,7 +202,7 @@
   margin-top: 0.4rem;
   border-radius: 12px;
   background: none;
-  border: 1px dashed rgba(255, 255, 255, 0.12);
+  border: 1px dashed var(--glass-border);
   color: var(--text-muted);
   font-size: 0.78rem;
   letter-spacing: 0.06em;
@@ -211,7 +211,7 @@
 }
 
 .songs__more:hover {
-  border-color: rgba(244, 161, 176, 0.4);
+  border-color: var(--rose-glass-border);
   color: var(--rose);
 }
 

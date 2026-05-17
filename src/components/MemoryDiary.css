@@ -61,6 +61,24 @@
   color: var(--text-primary);
 }
 
+.diary__back {
+  position: absolute;
+  top: 1.1rem;
+  left: 1.1rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  opacity: 0.5;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: opacity 0.2s, color 0.2s;
+  padding: 0.3rem 0.4rem;
+}
+
+.diary__back:hover {
+  opacity: 0.85;
+  color: var(--rose);
+}
+
 /* ── Header ──────────────────────────────────────────────────────────────────── */
 .diary__header {
   text-align: center;

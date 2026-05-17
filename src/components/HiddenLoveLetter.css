@@ -59,6 +59,24 @@
   color: var(--text-primary);
 }
 
+.letter__back {
+  position: absolute;
+  top: 1.2rem;
+  left: 1.2rem;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  opacity: 0.5;
+  cursor: pointer;
+  letter-spacing: 0.04em;
+  transition: opacity 0.2s, color 0.2s;
+  padding: 0.3rem 0.4rem;
+}
+
+.letter__back:hover {
+  opacity: 0.85;
+  color: var(--rose);
+}
+
 .letter__header {
   text-align: center;
   margin-bottom: 2rem;

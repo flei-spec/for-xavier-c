@@ -53,7 +53,7 @@
 .rec__btn--play {
   background: rgba(129,199,132,0.1);
   border: 1px solid rgba(129,199,132,0.25);
-  color: #81c784;
+  color: var(--success-text);
 }
 
 .rec__btn--reset {

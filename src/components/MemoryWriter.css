@@ -10,8 +10,8 @@
   gap: 0.55rem;
   width: 100%;
   padding: 0.85rem 1.2rem;
-  background: rgba(255, 255, 255, 0.025);
-  border: 1px solid rgba(255, 255, 255, 0.07);
+  background: var(--fill-subtle);
+  border: 1px solid var(--glass-border);
   border-radius: 14px;
   color: var(--text-muted);
   font-size: 0.84rem;
@@ -36,8 +36,8 @@
 }
 
 .mw--open {
-  background: rgba(255, 255, 255, 0.028);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--fill-subtle-strong);
+  border: 1px solid var(--glass-border);
   padding: 1rem 1.2rem 0.9rem;
   animation: mw-in 0.2s ease;
 }
@@ -52,8 +52,8 @@
 
 .mw__textarea {
   width: 100%;
-  background: rgba(255, 255, 255, 0.025);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: var(--fill-subtle);
+  border: 1px solid var(--glass-border);
   border-radius: 8px;
   color: var(--text-primary);
   font-family: 'Noto Sans SC', 'PingFang SC', 'Inter', sans-serif;
@@ -97,7 +97,7 @@
 .mw__cancel {
   padding: 0.38rem 1rem;
   background: transparent;
-  border: 1px solid rgba(255, 255, 255, 0.1);
+  border: 1px solid var(--glass-border);
   border-radius: 20px;
   color: var(--text-muted);
   font-size: 0.79rem;
@@ -106,7 +106,7 @@
 }
 
 .mw__cancel:hover {
-  border-color: rgba(255, 255, 255, 0.18);
+  border-color: var(--glass-border);
   color: var(--text-secondary);
 }
 
@@ -151,7 +151,7 @@
 /* ── Today already written ───────────────────────────────────────────────────── */
 .mw--done {
   padding: 0.85rem 1.2rem;
-  background: rgba(255, 255, 255, 0.022);
+  background: var(--fill-subtle);
   border: 1px solid rgba(255, 255, 255, 0.065);
   border-radius: 14px;
 }

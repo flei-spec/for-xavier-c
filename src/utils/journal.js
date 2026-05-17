@@ -118,6 +118,21 @@ export async function fetchUnreadSecretLetters({ spaceId, userId }) {
   return data ?? []
 }
 
+// Lightweight count-only query — never loads letter content.
+// Used for the subtle unread indicator on the HeartUnlock menu.
+export async function fetchUnreadLetterCount({ spaceId, userId }) {
+  if (!spaceId || !userId) return 0
+  const { count, error } = await supabase
+    .from('diary_entries')
+    .select('*', { count: 'exact', head: true })
+    .eq('entry_type', 'secret_letter')
+    .eq('is_read', false)
+    .neq('user_id', userId)
+    .eq('space_id', spaceId)
+  if (error) { console.error('[journal] fetchUnreadLetterCount error:', error.message, error); return 0 }
+  return count ?? 0
+}
+
 // Mark a secret letter as read.
 export async function markLetterAsRead(entryId, userId) {
   console.log('[journal] markLetterAsRead — id:', entryId, 'by user:', userId)

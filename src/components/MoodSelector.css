@@ -129,7 +129,7 @@
   padding: 1.1rem 1.4rem;
   border-style: dashed;
   border-color: rgba(244,161,176,0.22);
-  --accent: #f4a1b0;
+  --accent: var(--rose);
 }
 .mood__card--custom:hover {
   border-color: rgba(244,161,176,0.45);

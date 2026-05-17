@@ -339,7 +339,7 @@ function SetupView({ onSuccess }) {
 
 // ── Root component ─────────────────────────────────────────────────────────────
 
-export default function SpaceGate({ onSuccess }) {
+export default function SpaceGate({ onSuccess, onCloseAll }) {
   const { space } = useAuth()
   const [visible, setVisible] = useState(false)
 
@@ -348,9 +348,24 @@ export default function SpaceGate({ onSuccess }) {
     return () => clearTimeout(t)
   }, [])
 
+  const close = () => {
+    setVisible(false)
+    setTimeout(onSuccess, 380)
+  }
+
+  const closeAll = () => {
+    setVisible(false)
+    setTimeout(onCloseAll ?? onSuccess, 380)
+  }
+
   return (
-    <div className={`sg__overlay ${visible ? 'sg__overlay--in' : ''}`}>
+    <div
+      className={`sg__overlay ${visible ? 'sg__overlay--in' : ''}`}
+      onClick={e => { if (e.target === e.currentTarget) close() }}
+    >
       <div className="sg__card">
+        <button className="sg__back-btn" onClick={close}>← 返回</button>
+        <button className="sg__close" onClick={closeAll} aria-label="关闭">✕</button>
         <span className="sg__seal">♡</span>
         <p className="sg__title">你们的专属空间</p>
         <p className="sg__sub">只属于你们两个人</p>

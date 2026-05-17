@@ -87,8 +87,8 @@
   gap: 0.45rem;
   padding: 0.9rem 0.5rem;
   border-radius: 14px;
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--glass-border);
+  background: var(--fill-subtle);
   color: var(--text-secondary);
   cursor: pointer;
   transition: background 0.2s, border-color 0.2s, color 0.2s, transform 0.15s;
@@ -174,3 +174,42 @@
 }
 
 .hu__logout:hover { opacity: 0.65; }
+
+/* ── Unread secret letter indicator ────────────────────────────────────────── */
+.hu__choice--unread {
+  border-color: rgba(244, 161, 176, 0.28);
+  background: rgba(244, 161, 176, 0.06);
+  box-shadow: 0 0 18px rgba(244, 161, 176, 0.08);
+}
+
+.hu__choice--unread:hover {
+  border-color: rgba(244, 161, 176, 0.38);
+  background: rgba(244, 161, 176, 0.10);
+  box-shadow: 0 0 24px rgba(244, 161, 176, 0.14);
+}
+
+.hu__unread-hint {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.64rem;
+  color: var(--rose);
+  opacity: 0.62;
+  letter-spacing: 0.04em;
+  margin-top: 0.1rem;
+}
+
+.hu__unread-dot {
+  display: inline-block;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background: var(--rose);
+  flex-shrink: 0;
+  animation: hu-dot-pulse 2s ease-in-out infinite;
+}
+
+@keyframes hu-dot-pulse {
+  0%, 100% { opacity: 1;   transform: scale(1); }
+  50%      { opacity: 0.4; transform: scale(1.6); }
+}
