@@ -38,6 +38,8 @@ export default function App() {
   // resetting all state and triggering a fresh random song pick.
   const [stationKey, setStationKey] = useState(0)
   const [isAiMatch, setIsAiMatch] = useState(false)
+  const [playbackSource, setPlaybackSource] = useState('moodCard')
+  // 'moodCard' | 'aiRecommendation' | 'manualSong' | 'playlist' | 'resume'
   const [whisperData,  setWhisperData]  = useState(null)  // { count } | null
   const [showLetterModal, setShowLetterModal] = useState(false)
   const [showMonthlyLetter, setShowMonthlyLetter] = useState(false)
@@ -151,6 +153,7 @@ export default function App() {
   const handleStartStation = (mood, fromAi = false, originalInput = null) => {
     audioPlayer.clearStation()
     setIsAiMatch(fromAi)
+    setPlaybackSource(fromAi ? 'aiRecommendation' : 'moodCard')
 
     // Unlock WebAudio (Safari requires AudioContext in a user gesture)
     try {
@@ -220,6 +223,7 @@ export default function App() {
               key={stationKey}
               mood={selectedMood}
               isAiMatch={isAiMatch}
+              playbackSource={playbackSource}
               onBack={handleBack}
               atmosphere={atmosphere}
               trackingOriginalInput={trackingOriginalInput}

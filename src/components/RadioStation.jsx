@@ -156,12 +156,24 @@ function LongStayToast({ message, onDismiss }) {
 const INTRO_AUTH_UID  = '3f370ae9-a462-4a17-b2f4-5a05d4958c76'
 const PRIVATE_SPACE_ID = '89f07d46-af87-4aea-b7e8-e4a804cb21d1'
 
-export default function RadioStation({ mood, onBack, atmosphere, isAiMatch, trackingOriginalInput = null }) {
+function shouldPlayVoiceIntro({ playbackSource, userId, moodId }) {
+  const isAuthorized = userId === INTRO_AUTH_UID
+  const hasVoice      = !!moodVoiceMap[moodId]
+  const allowed       = isAuthorized && playbackSource === 'moodCard' && hasVoice
+  console.log(
+    '[VoiceIntro] source:', playbackSource,
+    '| userId:', userId?.slice(0, 8) + '…',
+    '| isAuthorized:', isAuthorized,
+    '| hasVoice:', hasVoice,
+    '| allowed:', allowed,
+  )
+  return allowed
+}
+
+export default function RadioStation({ mood, onBack, atmosphere, isAiMatch, playbackSource = 'moodCard', trackingOriginalInput = null }) {
   const { user, space, loadingAuth, loadingSpace, refreshSpace, signOut } = useAuth()
   const { library, loading: libLoading } = useSongLibrary()
   const audioPlayer = useAudioPlayer()
-
-  const isIntroAuthorized = user?.id === INTRO_AUTH_UID
 
   // ── Fetch unread secret-letter count when HeartUnlock opens ─────────────────
   useEffect(() => {
@@ -248,10 +260,10 @@ export default function RadioStation({ mood, onBack, atmosphere, isAiMatch, trac
   const [privateView, setPrivateView] = useState(null) // 'letter' | 'diary' | 'records' | 'voice' | 'space'
   const [djVisible,        setDjVisible]         = useState(false)
   const [introPhase,       setIntroPhase]        = useState(() =>
-    isIntroAuthorized && !isAiMatch && !!moodVoiceMap[mood.id] ? 'playing' : 'ready'
+    shouldPlayVoiceIntro({ playbackSource, userId: user?.id, moodId: mood.id }) ? 'playing' : 'ready'
   )
   const [showBanner,  setShowBanner]  = useState(() =>
-    isIntroAuthorized && !isAiMatch && !!moodVoiceMap[mood.id]
+    shouldPlayVoiceIntro({ playbackSource, userId: user?.id, moodId: mood.id })
   )
   const [longStayMsg, setLongStayMsg] = useState(null)
   const [songError,   setSongError]   = useState(null)
