@@ -248,10 +248,10 @@ export default function RadioStation({ mood, onBack, atmosphere, isAiMatch, trac
   const [privateView, setPrivateView] = useState(null) // 'letter' | 'diary' | 'records' | 'voice' | 'space'
   const [djVisible,        setDjVisible]         = useState(false)
   const [introPhase,       setIntroPhase]        = useState(() =>
-    isIntroAuthorized && !!moodVoiceMap[mood.id] ? 'playing' : 'ready'
+    isIntroAuthorized && !isAiMatch && !!moodVoiceMap[mood.id] ? 'playing' : 'ready'
   )
   const [showBanner,  setShowBanner]  = useState(() =>
-    isIntroAuthorized && !!moodVoiceMap[mood.id]
+    isIntroAuthorized && !isAiMatch && !!moodVoiceMap[mood.id]
   )
   const [longStayMsg, setLongStayMsg] = useState(null)
   const [songError,   setSongError]   = useState(null)
