@@ -155,8 +155,6 @@ function LongStayToast({ message, onDismiss }) {
 
 // ── Main ──────────────────────────────────────────────────────────────────────
 
-// PRIVATE_SPACE_ID and INTRO_AUTH_UID imported from src/config/spaces.js
-
 export default function RadioStation({ mood, onBack, atmosphere, isAiMatch, playbackSource = 'moodCard', trackingOriginalInput = null }) {
   const { user, space, loadingAuth, loadingSpace, refreshSpace, signOut } = useAuth()
   const { library, loading: libLoading, error: libError } = useSongLibrary()
@@ -197,7 +195,6 @@ export default function RadioStation({ mood, onBack, atmosphere, isAiMatch, play
 
   const [unreadLetterCount, setUnreadLetterCount] = useState(0)
   const [showAuthModal,  setShowAuthModal]  = useState(false)
-  const [showSpaceGate,  setShowSpaceGate]  = useState(false)
   const [pendingAction,  setPendingAction]  = useState(null)
 
   // ── Refs ──────────────────────────────────────────────────────────────────
