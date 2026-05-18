@@ -8,6 +8,33 @@ import ReturningUserGreeting from './ReturningUserGreeting'
 import WeeklyRecap from './WeeklyRecap'
 import './WelcomePage.css'
 
+// ── Weekly recap gate ─────────────────────────────────────────────────────────
+// The recap auto-pops once per week: only on Monday, only if the user hasn't
+// already seen it this week. localStorage persists the seen-state across
+// refreshes and navigation without requiring a DB round-trip.
+const RECAP_SEEN_KEY = 'xr_weekly_recap_week'
+
+function getMondayId() {
+  // Returns the ISO date string (YYYY-MM-DD) of this week's Monday.
+  // Used as a stable, weekly-rotating key.
+  const now = new Date()
+  const day = now.getDay()                       // 0 = Sun, 1 = Mon, …
+  const diff = day === 0 ? -6 : 1 - day         // days back to Monday
+  const monday = new Date(now)
+  monday.setDate(now.getDate() + diff)
+  return monday.toISOString().slice(0, 10)       // e.g. "2026-05-18"
+}
+
+function isMonday() { return new Date().getDay() === 1 }
+
+function hasSeenThisWeeksRecap() {
+  try { return localStorage.getItem(RECAP_SEEN_KEY) === getMondayId() } catch { return false }
+}
+
+function markWeeklyRecapSeen() {
+  try { localStorage.setItem(RECAP_SEEN_KEY, getMondayId()) } catch {}
+}
+
 export default function WelcomePage({ onEnter, atmosphere }) {
   const { user, signOut } = useAuth()
   const [ready,    setReady]    = useState(false)
@@ -44,7 +71,9 @@ export default function WelcomePage({ onEnter, atmosphere }) {
   }, [user])
 
   const handleEnter = () => {
-    if (hasWeeklyData) {
+    // Auto-show the weekly recap only on Monday, and only once per week.
+    // Any other day, or once already seen this week → go straight to radio.
+    if (hasWeeklyData && isMonday() && !hasSeenThisWeeksRecap()) {
       setRecapAutoEnter(true)
       setShowRecap(true)
     } else {
@@ -131,6 +160,7 @@ export default function WelcomePage({ onEnter, atmosphere }) {
 
       {showRecap && (
         <WeeklyRecap onClose={() => {
+          markWeeklyRecapSeen()   // persist: don't auto-show again this week
           setShowRecap(false)
           if (recapAutoEnter) onEnter()
         }} />
