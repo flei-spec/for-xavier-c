@@ -161,13 +161,69 @@ export default function RadioStation({ mood, onBack, atmosphere, isAiMatch, play
   const { library, loading: libLoading } = useSongLibrary()
   const audioPlayer = useAudioPlayer()
 
-  // ── Fetch unread secret-letter count when HeartUnlock opens ─────────────────
+  // ── Intro authorization — single source of truth, evaluated before hooks ──
+  // Both isAiMatch and playbackSource must agree: if either signals AI/non-card,
+  // skip the intro. This is computed as a plain const (not inside a lazy
+  // initializer) so it can never be re-evaluated with stale closure values.
+  const introAllowed =
+    user?.id === INTRO_AUTH_UID &&
+    !isAiMatch &&
+    playbackSource === 'moodCard' &&
+    !!(moodVoiceMap?.[mood.id])
+
+  // ── Song data ─────────────────────────────────────────────────────────────
+  const initialIndexMoodRef = useRef(null)
+  const moodSongs = useMemo(() => filterMoodSongs(library, mood.id), [library, mood.id])
+
+  const [runtimeInvalidSrcs, setRuntimeInvalidSrcs] = useState(() => new Set())
+
+  const songs = useMemo(() => {
+    if (!runtimeInvalidSrcs.size) return moodSongs
+    const filtered = moodSongs.filter(s => !runtimeInvalidSrcs.has(s.src))
+    console.warn('[RadioStation] Invalid songs removed from queue:', [...runtimeInvalidSrcs])
+    return filtered
+  }, [moodSongs, runtimeInvalidSrcs])
+
+  // ── UI states ─────────────────────────────────────────────────────────────
+  const [heartBeat,        setHeartBeat]        = useState(false)
+  const [showUnlock,  setShowUnlock]  = useState(false)
+  const [privateView, setPrivateView] = useState(null) // 'letter' | 'diary' | 'records' | 'voice' | 'space'
+  const [djVisible,        setDjVisible]         = useState(false)
+  const [introPhase,       setIntroPhase]        = useState(introAllowed ? 'playing' : 'ready')
+  const [showBanner,  setShowBanner]  = useState(introAllowed)
+  const [longStayMsg, setLongStayMsg] = useState(null)
+  const [songError,   setSongError]   = useState(null)
+
+  const [unreadLetterCount, setUnreadLetterCount] = useState(0)
+  const [showAuthModal,  setShowAuthModal]  = useState(false)
+  const [showSpaceGate,  setShowSpaceGate]  = useState(false)
+  const [pendingAction,  setPendingAction]  = useState(null)
+
+  // ── Refs ──────────────────────────────────────────────────────────────────
+  const heartBeatRef    = useRef(null)
+  const readyTimerRef   = useRef(null)
+  const skipTimerRef    = useRef(null)
+  const stayStartRef    = useRef(Date.now())
+  const shownStayRef    = useRef(new Set())
+  const stayIntervalRef = useRef(null)
+  // Stable ref so songs effect can read introPhase without it as a dep
+  const introPhaseRef   = useRef(introPhase)
+  useEffect(() => { introPhaseRef.current = introPhase }, [introPhase])
+
+  // ── Mount-time trace ──────────────────────────────────────────────────────
+  useEffect(() => {
+    console.log('[VoiceIntro] introAllowed:', introAllowed, '| source:', playbackSource, '| isAiMatch:', isAiMatch, '| uid:', user?.id?.slice(0, 8) + '…')
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
+  // ── Fetch unread secret-letter count when HeartUnlock opens ──────────────
+  // (placed here, after showUnlock and unreadLetterCount are declared above)
   useEffect(() => {
     if (!showUnlock || !user || space?.id !== PRIVATE_SPACE_ID) return
     fetchUnreadLetterCount({ spaceId: space.id, userId: user.id }).then(setUnreadLetterCount)
   }, [showUnlock, user?.id, space?.id])
 
-  // ── Deferred mood tracking ──────────────────────────────────────────────────
+  // ── Deferred mood tracking ────────────────────────────────────────────────
   // Only log a mood event after playback actually starts AND lasts ≥ 10 seconds.
   // Guards: skips hot-reload mounts, enforces 10-min cooldown per mood, cancels
   // on unmount or mood change.
@@ -178,22 +234,19 @@ export default function RadioStation({ mood, onBack, atmosphere, isAiMatch, play
   useEffect(() => { isPlayingRef.current = audioPlayer.isPlaying }, [audioPlayer.isPlaying])
 
   useEffect(() => {
-    // Only interested in the transition to genuine playlist playback.
     if (!audioPlayer.isPlaying || introPhase !== 'ready') return
-    if (wasPlayingOnMount.current) return   // hot reload / tab revisit — skip
-    if (hasTrackedForSession.current) return // already tracked for this station
-    if (!user) return                       // must be authenticated
+    if (wasPlayingOnMount.current) return
+    if (hasTrackedForSession.current) return
+    if (!user) return
 
     hasTrackedForSession.current = true
 
     trackingTimer.current = setTimeout(() => {
-      // Playback must still be active when the timer fires.
       if (!isPlayingRef.current) {
         console.log('[RadioStation] mood tracking skipped — playback stopped before 10s')
         return
       }
 
-      // ── Cooldown: skip if same mood was tracked within the last 10 minutes ──
       const MOOD_KEY = `xr_mood_tracked_${mood.id}`
       const lastTracked = sessionStorage.getItem(MOOD_KEY)
       const COOLDOWN_MS = 10 * 60 * 1000
@@ -226,56 +279,6 @@ export default function RadioStation({ mood, onBack, atmosphere, isAiMatch, play
       }
     }
   }, [audioPlayer.isPlaying, introPhase, mood.id, user?.id])
-
-  // ── Song data ─────────────────────────────────────────────────────────────
-  const initialIndexMoodRef = useRef(null)
-  const moodSongs = useMemo(() => filterMoodSongs(library, mood.id), [library, mood.id])
-
-  const [runtimeInvalidSrcs, setRuntimeInvalidSrcs] = useState(() => new Set())
-
-  const songs = useMemo(() => {
-    if (!runtimeInvalidSrcs.size) return moodSongs
-    const filtered = moodSongs.filter(s => !runtimeInvalidSrcs.has(s.src))
-    console.warn('[RadioStation] Invalid songs removed from queue:', [...runtimeInvalidSrcs])
-    return filtered
-  }, [moodSongs, runtimeInvalidSrcs])
-
-  // ── UI states ─────────────────────────────────────────────────────────────
-  const [heartBeat,        setHeartBeat]        = useState(false)
-  const [showUnlock,  setShowUnlock]  = useState(false)
-  const [privateView, setPrivateView] = useState(null) // 'letter' | 'diary' | 'records' | 'voice' | 'space'
-  const [djVisible,        setDjVisible]         = useState(false)
-  const [introPhase,       setIntroPhase]        = useState(() => {
-    const isAuthorized = user?.id === INTRO_AUTH_UID
-    const hasVoice     = !!(moodVoiceMap && moodVoiceMap[mood.id])
-    const allowed      = isAuthorized && playbackSource === 'moodCard' && hasVoice
-    console.log('[VoiceIntro] source:', playbackSource, '| userId:', user?.id?.slice(0, 8) + '…', '| isAuthorized:', isAuthorized, '| hasVoice:', hasVoice, '| allowed:', allowed)
-    return allowed ? 'playing' : 'ready'
-  })
-  const [showBanner,  setShowBanner]  = useState(() => {
-    const isAuthorized = user?.id === INTRO_AUTH_UID
-    const hasVoice     = !!(moodVoiceMap && moodVoiceMap[mood.id])
-    const allowed      = isAuthorized && playbackSource === 'moodCard' && hasVoice
-    return allowed
-  })
-  const [longStayMsg, setLongStayMsg] = useState(null)
-  const [songError,   setSongError]   = useState(null)
-
-  const [unreadLetterCount, setUnreadLetterCount] = useState(0)
-  const [showAuthModal,  setShowAuthModal]  = useState(false)
-  const [showSpaceGate,  setShowSpaceGate]  = useState(false)
-  const [pendingAction,  setPendingAction]  = useState(null)
-
-  // ── Refs ──────────────────────────────────────────────────────────────────
-  const heartBeatRef    = useRef(null)
-  const readyTimerRef   = useRef(null)
-  const skipTimerRef    = useRef(null)
-  const stayStartRef    = useRef(Date.now())
-  const shownStayRef    = useRef(new Set())
-  const stayIntervalRef = useRef(null)
-  // Stable ref so songs effect can read introPhase without it as a dep
-  const introPhaseRef   = useRef(introPhase)
-  useEffect(() => { introPhaseRef.current = introPhase }, [introPhase])
 
   const voiceSrc = moodVoiceMap[mood.id]
 
@@ -443,8 +446,8 @@ export default function RadioStation({ mood, onBack, atmosphere, isAiMatch, play
   return (
     <div className="station">
 
-      {/* hidden intro audio */}
-      {introPhase === 'playing' && voiceSrc && (
+      {/* hidden intro audio — double-gated: introAllowed AND introPhase */}
+      {introAllowed && introPhase === 'playing' && voiceSrc && (
         <VoiceIntroPlayer key={mood.id} src={voiceSrc} onEnded={handleIntroEnded} />
       )}
 
@@ -496,7 +499,7 @@ export default function RadioStation({ mood, onBack, atmosphere, isAiMatch, play
           </div>
         )}
 
-        {showBanner && (
+        {showBanner && introAllowed && (
           <VoiceIntroBanner phase={introPhase} accentColor={mood.accentColor} />
         )}
 

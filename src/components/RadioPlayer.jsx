@@ -16,9 +16,14 @@ export default function RadioPlayer({ mood, introPhase }) {
     pause, resumePlay, startAfterIntro, nextSong, prevSong, seek,
   } = useAudioPlayer()
 
-  // When the voice intro ends, tell the context to start playback
+  // When the voice intro ends, tell the context to start playback.
+  // mountedWithIntro guards against spurious startAfterIntro() calls: the
+  // transition 'playing' → 'ready' can only legitimately fire if this
+  // RadioPlayer instance actually mounted while the intro was playing.
+  const mountedWithIntro = useRef(introPhase === 'playing')
   const prevPhase = useRef(introPhase)
   useEffect(() => {
+    if (!mountedWithIntro.current) return
     if (prevPhase.current === 'playing' && introPhase === 'ready') {
       startAfterIntro()
     }
