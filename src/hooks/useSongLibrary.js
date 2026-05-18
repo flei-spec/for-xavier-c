@@ -38,6 +38,7 @@ export function preloadSongLibrary() {
 export function useSongLibrary() {
   const [library, setLibrary] = useState(_cache)
   const [loading, setLoading] = useState(_cache === null)
+  const [error,   setError]   = useState(false)
 
   useEffect(() => {
     if (_cache !== null) {
@@ -49,9 +50,9 @@ export function useSongLibrary() {
     let live = true
     _promise
       .then(data => { if (live) { setLibrary(data); setLoading(false) } })
-      .catch(() => { if (live) setLoading(false) })
+      .catch(() => { if (live) { setLoading(false); setError(true) } })
     return () => { live = false }
   }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
-  return { library: library ?? [], loading }
+  return { library: library ?? [], loading, error }
 }

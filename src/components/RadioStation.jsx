@@ -160,7 +160,7 @@ function LongStayToast({ message, onDismiss }) {
 
 export default function RadioStation({ mood, onBack, atmosphere, isAiMatch, playbackSource = 'moodCard', trackingOriginalInput = null }) {
   const { user, space, loadingAuth, loadingSpace, refreshSpace, signOut } = useAuth()
-  const { library, loading: libLoading } = useSongLibrary()
+  const { library, loading: libLoading, error: libError } = useSongLibrary()
   const audioPlayer = useAudioPlayer()
 
   // ── Intro authorization — single source of truth, evaluated before hooks ──
@@ -221,7 +221,7 @@ export default function RadioStation({ mood, onBack, atmosphere, isAiMatch, play
   // ── Fetch unread secret-letter count when HeartUnlock opens or a private
   // view closes (so the dot refreshes after the user has read a letter) ────────
   useEffect(() => {
-    if (!showUnlock || !user || space?.id !== PRIVATE_SPACE_ID) return
+    if (!showUnlock || !user || !space) return
     if (privateView !== null) return  // a view is open — wait until it closes
     fetchUnreadLetterCount({ spaceId: space.id, userId: user.id }).then(setUnreadLetterCount)
   }, [showUnlock, user?.id, space?.id, privateView])
@@ -511,6 +511,12 @@ export default function RadioStation({ mood, onBack, atmosphere, isAiMatch, play
         {songError && (
           <p style={{ color: '#f88', textAlign: 'center', fontSize: '0.85rem', margin: '0.5rem 0' }}>
             ⚠️ 歌曲加载失败：{songError}
+          </p>
+        )}
+
+        {libError && !libLoading && songs.length === 0 && (
+          <p className="station__lib-error">
+            电台暂时无法连接，请刷新页面重试 ✦
           </p>
         )}
 

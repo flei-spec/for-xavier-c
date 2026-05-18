@@ -52,4 +52,12 @@ function serveSongsPlugin() {
 
 export default defineConfig({
   plugins: [react(), songsListPlugin(), serveSongsPlugin()],
+
+  // Strip console.log / console.info / console.debug from production bundles.
+  // esbuild treats them as "pure" (no side-effects) so they are removed during
+  // minification when their return values are unused.
+  // console.warn and console.error are intentionally kept for error visibility.
+  esbuild: {
+    pure: ['console.log', 'console.info', 'console.debug'],
+  },
 })

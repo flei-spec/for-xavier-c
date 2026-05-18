@@ -373,3 +373,12 @@
   letter-spacing: 0.06em;
   opacity: 0.8;
 }
+
+.station__lib-error {
+  text-align: center;
+  font-size: 0.82rem;
+  color: var(--text-muted);
+  font-style: italic;
+  padding: 1.5rem 0;
+  letter-spacing: 0.03em;
+}
