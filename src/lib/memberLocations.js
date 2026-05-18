@@ -5,6 +5,71 @@ import { supabase } from './supabase'
 // If the user denies permission, we store 'denied' so we don't keep asking.
 const SESSION_KEY = 'xr_loc_captured'
 
+// ── City name normalization ───────────────────────────────────────────────────
+// Nominatim with accept-language=zh-CN sometimes returns semicolon-separated
+// alternatives like "旧金山;旧金山;三藩". This function picks one clean name.
+
+const CITY_ALIASES = {
+  '三藩':         '旧金山',
+  '三藩市':       '旧金山',
+  'san francisco':'旧金山',
+  'shanghai':     '上海',
+  'beijing':      '北京',
+  'peking':       '北京',
+  'shenzhen':     '深圳',
+  'guangzhou':    '广州',
+  'canton':       '广州',
+  'chengdu':      '成都',
+  'hangzhou':     '杭州',
+  'nanjing':      '南京',
+  'wuhan':        '武汉',
+  "xi'an":        '西安',
+  'xian':         '西安',
+  'chongqing':    '重庆',
+  'tianjin':      '天津',
+  'suzhou':       '苏州',
+  'new york':     '纽约',
+  'los angeles':  '洛杉矶',
+  'chicago':      '芝加哥',
+  'houston':      '休斯顿',
+  'seattle':      '西雅图',
+  'boston':       '波士顿',
+  'london':       '伦敦',
+  'paris':        '巴黎',
+  'tokyo':        '东京',
+  'seoul':        '首尔',
+  'sydney':       '悉尼',
+  'toronto':      '多伦多',
+  'vancouver':    '温哥华',
+}
+
+export function normalizeCityName(raw) {
+  if (!raw) return null
+
+  // Split on semicolons, commas (ASCII + Chinese), pipes — Nominatim uses `;`
+  const parts = raw.split(/[;；,，|｜]/).map(s => s.trim()).filter(Boolean)
+
+  // Deduplicate case-insensitively, preserving first occurrence
+  const seen  = new Set()
+  const unique = []
+  for (const p of parts) {
+    const k = p.toLowerCase()
+    if (!seen.has(k)) { seen.add(k); unique.push(p) }
+  }
+
+  // Strip trailing Chinese admin suffixes on each part
+  const cleaned = unique.map(p => p.replace(/[市区县镇村州省]$/, ''))
+
+  // Apply alias map — return preferred name on first match
+  for (const part of cleaned) {
+    const mapped = CITY_ALIASES[part] ?? CITY_ALIASES[part.toLowerCase()]
+    if (mapped) return mapped
+  }
+
+  // Return the first clean deduplicated part
+  return cleaned[0] ?? null
+}
+
 // ── Haversine distance ────────────────────────────────────────────────────────
 
 export function haversineKm(lat1, lon1, lat2, lon2) {
@@ -39,9 +104,8 @@ async function reverseGeocode(lat, lon) {
     const addr = data.address ?? {}
     // city > town > village > county > state — most specific non-null locality
     const raw = addr.city || addr.town || addr.village || addr.county || addr.state || null
-    if (!raw) return null
-    // Strip common Chinese admin suffixes: 上海市→上海, 黄浦区→黄浦
-    return raw.replace(/[市区县镇村]$/, '')
+    // normalizeCityName handles semicolon-separated alternatives + alias mapping
+    return normalizeCityName(raw)
   } catch {
     return null
   }

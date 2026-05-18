@@ -6,6 +6,7 @@ import {
   fetchSpaceLocations,
   haversineKm,
   formatDistanceKm,
+  normalizeCityName,
 } from '../lib/memberLocations'
 import './DistanceCard.css'
 
@@ -57,8 +58,9 @@ export default function DistanceCard() {
     ? haversineKm(myLoc.latitude, myLoc.longitude, theirLoc.latitude, theirLoc.longitude)
     : null
 
-  const myCity    = myLoc?.city    || null
-  const theirCity = theirLoc?.city || null
+  // normalizeCityName cleans any dirty values already stored in the DB
+  const myCity    = normalizeCityName(myLoc?.city)    || null
+  const theirCity = normalizeCityName(theirLoc?.city) || null
 
   return (
     <div className="dist-card">
@@ -69,7 +71,7 @@ export default function DistanceCard() {
       ) : bothPresent ? (
         <>
           <p className="dist-card__cities">
-            我在{myCity || '某处'}，你在{theirCity || '某处'}
+            我在{myCity || '某处'}，对方在{theirCity || '某处'}
           </p>
           <p className="dist-card__distance">
             相隔 <strong>{formatDistanceKm(distanceKm)}</strong>
@@ -83,7 +85,7 @@ export default function DistanceCard() {
         </>
       ) : theirLoc ? (
         <>
-          <p className="dist-card__waiting">你在{theirCity || '某处'}留下了位置</p>
+          <p className="dist-card__waiting">对方在{theirCity || '某处'}留下了位置</p>
           <p className="dist-card__caption">允许位置访问后<br />就能看到你们的距离了</p>
         </>
       ) : (
