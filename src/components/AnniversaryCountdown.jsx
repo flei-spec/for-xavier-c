@@ -3,10 +3,8 @@ import { profile } from '../data/romanticProfile'
 import { useAuth } from '../contexts/AuthContext'
 import { loadStoryStartDate, saveStoryStartDate } from '../lib/relationshipSettings'
 import { shanghaiTodayStr, daysBetween, shanghaiYear } from '../utils/relationshipTime'
+import { PRIVATE_SPACE_ID } from '../config/spaces'
 import './AnniversaryCountdown.css'
-
-// Anniversary/notes section is only shown inside this couple space.
-const PRIVATE_SPACE_ID = '89f07d46-af87-4aea-b7e8-e4a804cb21d1'
 
 const THIS_YEAR = shanghaiYear()
 const YEARS  = Array.from({ length: 11 }, (_, i) => THIS_YEAR - 10 + i)

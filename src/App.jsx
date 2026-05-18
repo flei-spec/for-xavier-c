@@ -20,6 +20,17 @@ import HiddenLoveLetter from './components/HiddenLoveLetter'
 import MonthlyEmotionalLetter from './components/MonthlyEmotionalLetter'
 import './App.css'
 
+// ── Whisper seen-IDs helper ───────────────────────────────────────────────────
+// Persists acknowledged letter IDs to localStorage so the notification never
+// re-appears for the same letters across sessions or new tabs.
+function markWhisperSeen(ids) {
+  if (!ids?.length) return
+  try {
+    const existing = JSON.parse(localStorage.getItem('xr_whisper_seen_ids') ?? '[]')
+    localStorage.setItem('xr_whisper_seen_ids', JSON.stringify([...new Set([...existing, ...ids])]))
+  } catch {}
+}
+
 // ── Timezone-aware fractional hour ────────────────────────────────────────────
 function getFractHour(tz) {
   const now = tz
@@ -40,7 +51,7 @@ export default function App() {
   const [isAiMatch, setIsAiMatch] = useState(false)
   const [playbackSource, setPlaybackSource] = useState('moodCard')
   // 'moodCard' | 'aiRecommendation' | 'manualSong' | 'playlist' | 'resume'
-  const [whisperData,  setWhisperData]  = useState(null)  // { count } | null
+  const [whisperData,  setWhisperData]  = useState(null)  // { count, ids } | null
   const [showLetterModal, setShowLetterModal] = useState(false)
   const [showMonthlyLetter, setShowMonthlyLetter] = useState(false)
   const [trackingOriginalInput, setTrackingOriginalInput] = useState(null)
@@ -105,32 +116,44 @@ export default function App() {
     if (import.meta.env.DEV) console.log('[Auth]', user)
   }, [user])
 
-  // ── Whisper notification: check unread letters once per session ────────
+  // ── Whisper notification ───────────────────────────────────────────────────
+  // Two-layer guard:
+  //   1. sessionStorage — avoid a DB query on every page navigation within a tab
+  //   2. localStorage   — track which letter IDs were already notified so the
+  //      same unread letters don't re-trigger the notification on a new tab/session.
   useEffect(() => {
     if (!user) return
-    const KEY = 'xr_whisper_notified'
-    if (sessionStorage.getItem(KEY)) return
+    const SESSION_KEY = `xr_whisper_checked_${space?.id ?? 'none'}`
+    if (sessionStorage.getItem(SESSION_KEY)) return
+    sessionStorage.setItem(SESSION_KEY, '1')   // mark checked for this tab/space
 
     const spaceId = space?.id ?? null
     fetchUnreadSecretLetters({ spaceId, userId: user.id }).then(letters => {
-      if (letters && letters.length > 0) {
-        sessionStorage.setItem(KEY, '1')
-        setWhisperData({ count: letters.length })
+      if (!letters || letters.length === 0) return
+
+      // Filter out letters that have already been acknowledged in a previous session
+      let seenIds = []
+      try { seenIds = JSON.parse(localStorage.getItem('xr_whisper_seen_ids') ?? '[]') } catch {}
+      const newLetters = letters.filter(l => !seenIds.includes(l.id))
+
+      if (newLetters.length > 0) {
+        setWhisperData({ count: newLetters.length, ids: newLetters.map(l => l.id) })
       }
     })
   }, [user, space?.id])
 
-  // ── Monthly letter: check for previous-month data once per month ──────
+  // ── Monthly letter: show once per calendar month, persisted in localStorage ──
+  // localStorage (not sessionStorage) so opening a new tab doesn't re-trigger.
   useEffect(() => {
     if (!user) return
     const now = new Date()
     const MONTH_KEY = `xr_monthly_${now.getFullYear()}-${now.getMonth() + 1}`
-    if (sessionStorage.getItem(MONTH_KEY)) return
+    try { if (localStorage.getItem(MONTH_KEY)) return } catch { return }
 
     import('./utils/monthlyMoodAnalysis').then(({ getMonthlyStats }) => {
       getMonthlyStats(user.id).then(stats => {
         if (stats && stats.totalEntries > 0) {
-          sessionStorage.setItem(MONTH_KEY, '1')
+          try { localStorage.setItem(MONTH_KEY, '1') } catch {}
           setShowMonthlyLetter(true)
         }
       })
@@ -234,8 +257,15 @@ export default function App() {
           {whisperData && (
             <WhisperNotification
               count={whisperData.count}
-              onClick={() => { setWhisperData(null); setShowLetterModal(true) }}
-              onDismiss={() => setWhisperData(null)}
+              onClick={() => {
+                markWhisperSeen(whisperData.ids)
+                setWhisperData(null)
+                setShowLetterModal(true)
+              }}
+              onDismiss={() => {
+                markWhisperSeen(whisperData.ids)
+                setWhisperData(null)
+              }}
             />
           )}
 

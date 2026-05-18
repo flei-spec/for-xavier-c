@@ -3,11 +3,9 @@ import { profile } from '../data/romanticProfile'
 import { useAuth } from '../contexts/AuthContext'
 import { loadMeetingDate, saveMeetingDate } from '../lib/meetingDate'
 import { shanghaiTodayStr, daysBetween, shanghaiYear } from '../utils/relationshipTime'
+import { PRIVATE_SPACE_ID } from '../config/spaces'
 import AuthModal from './AuthModal'
 import './AnniversaryCountdown.css'
-
-// Profile-default fallback is only used for this specific couple space.
-const PRIVATE_SPACE_ID = '89f07d46-af87-4aea-b7e8-e4a804cb21d1'
 
 const WAITING_LINES = [
   '再等一下，我们就快见面了。',

@@ -23,6 +23,7 @@ import { moodVoiceMap } from '../data/moodVoiceMap'
 import { devValidateSongs } from '../data/songConfig'
 import { LONG_STAY } from '../utils/atmosphere'
 import { audioElement } from '../audio/audioElement'
+import { PRIVATE_SPACE_ID, INTRO_AUTH_UID } from '../config/spaces'
 import './RadioStation.css'
 
 // ── song matching ─────────────────────────────────────────────────────────────
@@ -154,8 +155,7 @@ function LongStayToast({ message, onDismiss }) {
 
 // ── Main ──────────────────────────────────────────────────────────────────────
 
-const INTRO_AUTH_UID  = '3f370ae9-a462-4a17-b2f4-5a05d4958c76'
-const PRIVATE_SPACE_ID = '89f07d46-af87-4aea-b7e8-e4a804cb21d1'
+// PRIVATE_SPACE_ID and INTRO_AUTH_UID imported from src/config/spaces.js
 
 export default function RadioStation({ mood, onBack, atmosphere, isAiMatch, playbackSource = 'moodCard', trackingOriginalInput = null }) {
   const { user, space, loadingAuth, loadingSpace, refreshSpace, signOut } = useAuth()
@@ -217,12 +217,13 @@ export default function RadioStation({ mood, onBack, atmosphere, isAiMatch, play
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  // ── Fetch unread secret-letter count when HeartUnlock opens ──────────────
-  // (placed here, after showUnlock and unreadLetterCount are declared above)
+  // ── Fetch unread secret-letter count when HeartUnlock opens or a private
+  // view closes (so the dot refreshes after the user has read a letter) ────────
   useEffect(() => {
     if (!showUnlock || !user || space?.id !== PRIVATE_SPACE_ID) return
+    if (privateView !== null) return  // a view is open — wait until it closes
     fetchUnreadLetterCount({ spaceId: space.id, userId: user.id }).then(setUnreadLetterCount)
-  }, [showUnlock, user?.id, space?.id])
+  }, [showUnlock, user?.id, space?.id, privateView])
 
   // ── Deferred mood tracking ────────────────────────────────────────────────
   // Only log a mood event after playback actually starts AND lasts ≥ 10 seconds.
