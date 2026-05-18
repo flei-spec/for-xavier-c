@@ -1,20 +1,33 @@
 import { supabase } from '../lib/supabase'
+import { shanghaiTodayStr } from './relationshipTime'
 
-// ── Date helpers ──────────────────────────────────────────────────────────────
+// ── Date helpers (Asia/Shanghai) ──────────────────────────────────────────────
+// Month boundaries use an explicit +08:00 offset so the Supabase query window
+// is correct regardless of the browser's local timezone.
 
 function previousMonthRange() {
-  const now = new Date()
-  // Start of current month
-  const startCurrent = new Date(now.getFullYear(), now.getMonth(), 1)
-  // Start of previous month
-  const startPrev = new Date(now.getFullYear(), now.getMonth() - 1, 1)
-  return { start: startPrev.toISOString(), end: startCurrent.toISOString() }
+  const todayStr = shanghaiTodayStr()              // YYYY-MM-DD in Shanghai
+  const [y, m]   = todayStr.split('-').map(Number) // current Shanghai year + month
+
+  const curYear  = y
+  const curMonth = String(m).padStart(2, '0')
+
+  const prevMonth = m === 1 ? 12 : m - 1
+  const prevYear  = m === 1 ? y - 1 : y
+  const prevMonthStr = String(prevMonth).padStart(2, '0')
+
+  return {
+    start: new Date(`${prevYear}-${prevMonthStr}-01T00:00:00+08:00`).toISOString(),
+    end:   new Date(`${curYear}-${curMonth}-01T00:00:00+08:00`).toISOString(),
+  }
 }
 
 function monthLabel() {
-  const now = new Date()
-  const prev = new Date(now.getFullYear(), now.getMonth() - 1, 1)
-  return `${prev.getFullYear()}年${prev.getMonth() + 1}月`
+  const todayStr  = shanghaiTodayStr()
+  const [y, m]    = todayStr.split('-').map(Number)
+  const prevMonth = m === 1 ? 12 : m - 1
+  const prevYear  = m === 1 ? y - 1 : y
+  return `${prevYear}年${prevMonth}月`
 }
 
 // ── Queries ──────────────────────────────────────────────────────────────────

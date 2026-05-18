@@ -1,7 +1,8 @@
 .station {
   position: relative;
   z-index: 1;
-  min-height: 100vh;
+  min-height: 100vh;      /* fallback for older browsers */
+  min-height: 100dvh;     /* iOS Safari 15.4+: excludes address bar */
 }
 
 /* ── Header ── */

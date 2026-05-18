@@ -1,5 +1,6 @@
 import { useState, useEffect, useRef } from 'react'
 import { getFallbackLine } from '../utils/aiFallback'
+import { shanghaiHour } from '../utils/relationshipTime'
 import './AIRadioLine.css'
 
 // Session-scoped cache — keyed by moodId.
@@ -8,7 +9,7 @@ import './AIRadioLine.css'
 const lineCache = new Map()
 
 function getTimeOfDay() {
-  const h = new Date().getHours()
+  const h = shanghaiHour()
   if (h < 6)  return '深夜'
   if (h < 12) return '早上'
   if (h < 18) return '下午'

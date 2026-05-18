@@ -15,6 +15,7 @@ import { useAudioPlayer } from './contexts/AudioPlayerContext'
 import { audioElement } from './audio/audioElement'
 import { preloadSongLibrary } from './hooks/useSongLibrary'
 import { fetchUnreadSecretLetters } from './utils/journal'
+import { shanghaiTodayStr } from './utils/relationshipTime'
 import WhisperNotification from './components/WhisperNotification'
 import HiddenLoveLetter from './components/HiddenLoveLetter'
 import MonthlyEmotionalLetter from './components/MonthlyEmotionalLetter'
@@ -144,10 +145,11 @@ export default function App() {
 
   // ── Monthly letter: show once per calendar month, persisted in localStorage ──
   // localStorage (not sessionStorage) so opening a new tab doesn't re-trigger.
+  // MONTH_KEY uses Asia/Shanghai date so the month boundary is always Chinese time.
   useEffect(() => {
     if (!user) return
-    const now = new Date()
-    const MONTH_KEY = `xr_monthly_${now.getFullYear()}-${now.getMonth() + 1}`
+    const [y, m] = shanghaiTodayStr().split('-').map(Number)
+    const MONTH_KEY = `xr_monthly_${y}-${m}`
     try { if (localStorage.getItem(MONTH_KEY)) return } catch { return }
 
     import('./utils/monthlyMoodAnalysis').then(({ getMonthlyStats }) => {

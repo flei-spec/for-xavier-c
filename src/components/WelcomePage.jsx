@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react'
 import { profile } from '../data/romanticProfile'
 import { useAuth } from '../contexts/AuthContext'
 import { getLatestMood, getWeeklyStats } from '../utils/moodHistory'
+import { shanghaiTodayStr } from '../utils/relationshipTime'
 import LocalAtmosphereCard from './LocalAtmosphereCard'
 import AuthModal from './AuthModal'
 import ReturningUserGreeting from './ReturningUserGreeting'
@@ -15,17 +16,20 @@ import './WelcomePage.css'
 const RECAP_SEEN_KEY = 'xr_weekly_recap_week'
 
 function getMondayId() {
-  // Returns the ISO date string (YYYY-MM-DD) of this week's Monday.
-  // Used as a stable, weekly-rotating key.
-  const now = new Date()
-  const day = now.getDay()                       // 0 = Sun, 1 = Mon, …
-  const diff = day === 0 ? -6 : 1 - day         // days back to Monday
-  const monday = new Date(now)
-  monday.setDate(now.getDate() + diff)
-  return monday.toISOString().slice(0, 10)       // e.g. "2026-05-18"
+  // Returns the YYYY-MM-DD of this week's Monday in Asia/Shanghai time.
+  const todayStr = shanghaiTodayStr()              // "YYYY-MM-DD" already in Shanghai
+  const [y, m, d] = todayStr.split('-').map(Number)
+  const day  = new Date(y, m - 1, d).getDay()     // 0 = Sun, 1 = Mon, …
+  const diff = day === 0 ? -6 : 1 - day
+  const mon  = new Date(y, m - 1, d + diff)
+  return `${mon.getFullYear()}-${String(mon.getMonth() + 1).padStart(2, '0')}-${String(mon.getDate()).padStart(2, '0')}`
 }
 
-function isMonday() { return new Date().getDay() === 1 }
+function isMonday() {
+  const todayStr = shanghaiTodayStr()
+  const [y, m, d] = todayStr.split('-').map(Number)
+  return new Date(y, m - 1, d).getDay() === 1
+}
 
 function hasSeenThisWeeksRecap() {
   try { return localStorage.getItem(RECAP_SEEN_KEY) === getMondayId() } catch { return false }

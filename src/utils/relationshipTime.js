@@ -32,3 +32,15 @@ export function shanghaiYear() {
     new Date().toLocaleDateString('en-CA', { timeZone: TZ, year: 'numeric' }),
   )
 }
+
+/** Date object whose local-time methods (getHours, getDay, getMonth, etc.)
+ *  reflect Asia/Shanghai.  Use for time-of-day comparisons and day-of-week
+ *  checks that must match Chinese local time regardless of browser timezone. */
+export function shanghaiNow() {
+  return new Date(new Date().toLocaleString('en-US', { timeZone: TZ }))
+}
+
+/** Current hour in Asia/Shanghai (0–23). */
+export function shanghaiHour() {
+  return shanghaiNow().getHours()
+}

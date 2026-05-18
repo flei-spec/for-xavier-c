@@ -237,7 +237,8 @@ body {
   background-color: var(--bg-deep);
   color: var(--text-primary);
   font-family: 'Inter', 'Noto Sans SC', 'PingFang SC', 'Microsoft YaHei', sans-serif;
-  min-height: 100vh;
+  min-height: 100vh;      /* fallback for older browsers */
+  min-height: 100dvh;     /* iOS Safari 15.4+: excludes address bar */
   overflow-x: hidden;
   line-height: 1.6;
   -webkit-font-smoothing: antialiased;

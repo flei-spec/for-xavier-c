@@ -20,6 +20,7 @@ import { useSongLibrary } from '../hooks/useSongLibrary'
 import { fetchUnreadLetterCount } from '../utils/journal'
 import { logMoodEvent } from '../utils/moodHistory'
 import { moodVoiceMap } from '../data/moodVoiceMap'
+import { shanghaiHour } from '../utils/relationshipTime'
 import { devValidateSongs } from '../data/songConfig'
 import { LONG_STAY } from '../utils/atmosphere'
 import { audioElement } from '../audio/audioElement'
@@ -434,7 +435,7 @@ export default function RadioStation({ mood, onBack, atmosphere, isAiMatch, play
   // ── Derived display values ────────────────────────────────────────────────
 
   const showDjCard  = user != null && space?.id === PRIVATE_SPACE_ID
-  const djTimeLabel = new Date().getHours() < 18 ? '今天的话' : '今晚的话'
+  const djTimeLabel = shanghaiHour() < 18 ? '今天的话' : '今晚的话'
 
   // Show RadioPlayer only once the context has loaded this mood's playlist.
   // Prevents mounting RadioPlayer before the random song is determined.
