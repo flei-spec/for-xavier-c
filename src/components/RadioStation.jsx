@@ -2,6 +2,7 @@ import { useState, useEffect, useRef, useCallback, useMemo } from 'react'
 import RadioPlayer from './RadioPlayer'
 import SongList from './SongList'
 import AnniversaryCountdown from './AnniversaryCountdown'
+import DistanceCard from './DistanceCard'
 import MeetingCountdown from './MeetingCountdown'
 import HeartUnlock from './HeartUnlock'
 import MemoryDiary from './MemoryDiary'
@@ -524,6 +525,7 @@ export default function RadioStation({ mood, onBack, atmosphere, isAiMatch, play
 
         <div className="station__cards">
           <AnniversaryCountdown />
+          <DistanceCard />
           <MeetingCountdown />
         </div>
 
