@@ -7,6 +7,7 @@ import MeetingCountdown from './MeetingCountdown'
 import HeartUnlock from './HeartUnlock'
 import MemoryDiary from './MemoryDiary'
 import HiddenLoveLetter from './HiddenLoveLetter'
+import PhotoAlbum from './PhotoAlbum'
 import LocalPlaylist from './LocalPlaylist'
 import LocalAtmosphereCard from './LocalAtmosphereCard'
 import AIRadioLine from './AIRadioLine'
@@ -290,6 +291,7 @@ export default function RadioStation({ mood, onBack, atmosphere, isAiMatch, play
     if (pendingAction === 'letter') { setPendingAction(null); setPrivateView('letter'); return }
     if (pendingAction === 'space')  { setPendingAction(null); setPrivateView('space'); return }
     if (pendingAction === 'voice')  { setPendingAction(null); setPrivateView('voice'); return }
+    if (pendingAction === 'album')  { setPendingAction(null); setPrivateView('album'); return }
 
     if (pendingAction === 'diary' || pendingAction === 'records') {
       if (loadingSpace) return
@@ -425,6 +427,11 @@ export default function RadioStation({ mood, onBack, atmosphere, isAiMatch, play
     setPrivateView('voice')
   }
 
+  const handleAlbumFromUnlock = () => {
+    if (!user) { setPendingAction('album'); setShowAuthModal(true); return }
+    setPrivateView('album')
+  }
+
   const handleBackToMenu  = () => setPrivateView(null)
   const handleCloseAll    = () => { setPrivateView(null); setShowUnlock(false) }
 
@@ -546,6 +553,7 @@ export default function RadioStation({ mood, onBack, atmosphere, isAiMatch, play
           onSpace={handleSpaceFromUnlock}
           onRecords={handleRecordsFromUnlock}
           onVoice={handleVoiceFromUnlock}
+          onAlbum={handleAlbumFromUnlock}
           onLogout={user ? () => { setShowUnlock(false); signOut() } : undefined}
           isPrivateSpace={space?.id === PRIVATE_SPACE_ID}
           unreadLetterCount={unreadLetterCount}
@@ -574,6 +582,10 @@ export default function RadioStation({ mood, onBack, atmosphere, isAiMatch, play
       )}
       {privateView === 'voice' && (
         <VoiceMailbox onClose={handleBackToMenu} onCloseAll={handleCloseAll} />
+      )}
+
+      {privateView === 'album' && (
+        <PhotoAlbum onClose={handleBackToMenu} onCloseAll={handleCloseAll} />
       )}
 
       {/* Tap-to-enter overlay — browser blocked autoplay */}

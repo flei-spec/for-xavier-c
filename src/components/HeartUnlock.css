@@ -161,6 +161,23 @@
 .hu__choice--space .hu__choice-icon { font-size: 1.1rem; }
 .hu__choice--space .hu__choice-text { font-size: 0.85rem; }
 
+/* Photo album button */
+.hu__choice--album {
+  border-color: rgba(147, 197, 253, 0.10);
+}
+.hu__choice--album:hover {
+  background: rgba(147, 197, 253, 0.06);
+  border-color: rgba(147, 197, 253, 0.28);
+}
+
+/* When space shares its row with album — remove full-width span */
+.hu__choice--space-half {
+  grid-column: auto;
+  flex-direction: column;
+}
+.hu__choice--space-half .hu__choice-icon { font-size: 1.3rem; }
+.hu__choice--space-half .hu__choice-text { font-size: 0.8rem; }
+
 /* Logout — very subtle text link at the bottom */
 .hu__logout {
   display: block;
