@@ -11,6 +11,21 @@ const YEARS  = Array.from({ length: 11 }, (_, i) => THIS_YEAR - 10 + i)
 const MONTHS = Array.from({ length: 12 }, (_, i) => i + 1)
 const DAYS   = Array.from({ length: 31 }, (_, i) => i + 1)
 
+// ── Milestone definitions ─────────────────────────────────────────────────────
+const MILESTONES = [
+  { days: 100,  label: '一百天',     note: '一百个日夜，每一个都是你。' },
+  { days: 200,  label: '两百天',     note: '两百天了，你已经是习惯的一部分。' },
+  { days: 365,  label: '一年',       note: '整整一年。谢谢你在这里。' },
+  { days: 500,  label: '五百天',     note: '五百天，好像才刚开始。' },
+  { days: 730,  label: '两年',       note: '两年了。更深了，也更稳了。' },
+  { days: 1000, label: '一千天',     note: '一千天。这不是在计数，这是我们的故事。' },
+  { days: 1095, label: '三年',       note: '三年。以后还有很长。' },
+  { days: 1460, label: '四年',       note: '四年了，原来时间可以这样过。' },
+  { days: 1500, label: '一千五百天', note: '一千五百天了，还是你。' },
+  { days: 1825, label: '五年',       note: '五年。不知不觉，也心甘情愿。' },
+  { days: 2000, label: '两千天',     note: '两千天，感谢你一直在。' },
+]
+
 // Exclusive day counting — all dates are interpreted as Asia/Shanghai.
 // daysTogether = 0 on the start date, 1 after 24 h, etc.
 // Math.max(1, …) guards the display so "0 天" is never shown.
@@ -82,6 +97,19 @@ export default function AnniversaryCountdown() {
   const daysUntilAnniv = useMemo(
     () => isPrivateSpace ? calcDaysUntilAnniv(profile.anniversaryDate) : null,
     [isPrivateSpace],
+  )
+
+  // Milestone: exact match today → special display
+  const todayMilestone = useMemo(
+    () => daysTogether != null ? MILESTONES.find(m => m.days === daysTogether) ?? null : null,
+    [daysTogether],
+  )
+  // Upcoming: within 7 days, not already a milestone day
+  const upcomingMilestone = useMemo(
+    () => !todayMilestone && daysTogether != null
+      ? MILESTONES.find(m => m.days > daysTogether && m.days - daysTogether <= 7) ?? null
+      : null,
+    [daysTogether, todayMilestone],
   )
 
   const startEditing = () => {
@@ -176,10 +204,30 @@ export default function AnniversaryCountdown() {
     <div className="countdown">
       <p className="countdown__label">我们的故事</p>
 
-      <div className="countdown__stat">
-        <span className="countdown__num">{loading ? '…' : daysTogether?.toLocaleString()}</span>
-        <span className="countdown__unit">天，在一起</span>
-      </div>
+      {loading ? (
+        <div className="countdown__stat">
+          <span className="countdown__num">…</span>
+          <span className="countdown__unit">天，在一起</span>
+        </div>
+      ) : todayMilestone ? (
+        <div className="countdown__milestone">
+          <span className="countdown__milestone-star">✦</span>
+          <span className="countdown__milestone-num">{daysTogether?.toLocaleString()}</span>
+          <span className="countdown__milestone-label">{todayMilestone.label}</span>
+          <p className="countdown__milestone-note">「{todayMilestone.note}」</p>
+        </div>
+      ) : (
+        <div className="countdown__stat">
+          <span className="countdown__num">{daysTogether?.toLocaleString()}</span>
+          <span className="countdown__unit">天，在一起</span>
+        </div>
+      )}
+
+      {upcomingMilestone && !editing && (
+        <p className="countdown__upcoming">
+          还有 {upcomingMilestone.days - daysTogether} 天，就是我们的{upcomingMilestone.label} ✦
+        </p>
+      )}
 
       {!loading && !editing && (
         <button className="countdown__edit-btn" onClick={startEditing} title="修改开始日期">✎</button>
