@@ -34,6 +34,33 @@ export async function ensureProfile(userId, email) {
   if (error) console.error('[profiles] ensureProfile error:', error.message, error)
 }
 
+// Fetch per-user seen flags (weekly recap week, monthly letter month).
+// Returns {} on error so callers always get a safe fallback.
+export async function fetchSeenFlags(userId) {
+  if (!userId) return {}
+  const { data, error } = await supabase
+    .from('profiles')
+    .select('weekly_recap_week, monthly_letter_month')
+    .eq('id', userId)
+    .maybeSingle()
+  if (error) {
+    console.error('[profiles] fetchSeenFlags error:', error.message)
+    return {}
+  }
+  return data ?? {}
+}
+
+// Persist one or more seen flags to the profile row.
+// Accepts any subset of { weekly_recap_week, monthly_letter_month }.
+export async function saveSeenFlag(userId, flags) {
+  if (!userId || !flags) return
+  const { error } = await supabase
+    .from('profiles')
+    .upsert({ id: userId, ...flags, updated_at: new Date().toISOString() },
+             { onConflict: 'id' })
+  if (error) console.error('[profiles] saveSeenFlag error:', error.message)
+}
+
 // Update (or create) the current user's display name.
 // Uses upsert so a missing profile row is created automatically.
 export async function updateDisplayName(userId, name) {

@@ -3,6 +3,7 @@ import { profile } from '../data/romanticProfile'
 import { useAuth } from '../contexts/AuthContext'
 import { getLatestMood, getWeeklyStats } from '../utils/moodHistory'
 import { shanghaiTodayStr } from '../utils/relationshipTime'
+import { fetchSeenFlags, saveSeenFlag } from '../lib/profiles'
 import LocalAtmosphereCard from './LocalAtmosphereCard'
 import AuthModal from './AuthModal'
 import ReturningUserGreeting from './ReturningUserGreeting'
@@ -49,18 +50,18 @@ export default function WelcomePage({ onEnter, atmosphere }) {
   const [showRecap,        setShowRecap]        = useState(false)
   const [hasWeeklyData,    setHasWeeklyData]    = useState(false)
   const [recapAutoEnter,   setRecapAutoEnter]   = useState(false)
+  const [dbSeenWeek,       setDbSeenWeek]       = useState(null)
 
   useEffect(() => {
     const t = setTimeout(() => setReady(true), 80)
     return () => clearTimeout(t)
   }, [])
 
-  // Fetch latest mood for returning user greeting + check for weekly data
+  // Fetch latest mood, weekly stats, and DB seen flags in parallel
   useEffect(() => {
     if (!user) return
     getLatestMood(user.id).then(entry => {
       if (!entry) return
-      // Only show greeting if the last visit was within 7 days
       const daysSince = (Date.now() - new Date(entry.created_at).getTime()) / (1000 * 60 * 60 * 24)
       if (daysSince <= 7) {
         setLastMood(entry.matched_mood)
@@ -68,16 +69,18 @@ export default function WelcomePage({ onEnter, atmosphere }) {
       }
     })
     getWeeklyStats(user.id).then(stats => {
-      if (stats && stats.totalEntries >= 3) {
-        setHasWeeklyData(true)
-      }
+      if (stats && stats.totalEntries >= 3) setHasWeeklyData(true)
+    })
+    // Fetch DB seen flag so cross-device seen state is respected
+    fetchSeenFlags(user.id).then(flags => {
+      setDbSeenWeek(flags.weekly_recap_week ?? null)
     })
   }, [user])
 
   const handleEnter = () => {
-    // Auto-show the weekly recap only on Monday, and only once per week.
-    // Any other day, or once already seen this week → go straight to radio.
-    if (hasWeeklyData && isMonday() && !hasSeenThisWeeksRecap()) {
+    // Seen if localStorage OR DB (other device) already recorded this week's recap
+    const alreadySeen = hasSeenThisWeeksRecap() || dbSeenWeek === getMondayId()
+    if (hasWeeklyData && isMonday() && !alreadySeen) {
       setRecapAutoEnter(true)
       setShowRecap(true)
     } else {
@@ -164,7 +167,9 @@ export default function WelcomePage({ onEnter, atmosphere }) {
 
       {showRecap && (
         <WeeklyRecap onClose={() => {
-          markWeeklyRecapSeen()   // persist: don't auto-show again this week
+          markWeeklyRecapSeen()                                           // localStorage
+          if (user) saveSeenFlag(user.id, { weekly_recap_week: getMondayId() })  // DB sync
+          setDbSeenWeek(getMondayId())                                    // local state
           setShowRecap(false)
           if (recapAutoEnter) onEnter()
         }} />

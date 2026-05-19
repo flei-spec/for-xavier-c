@@ -17,6 +17,7 @@ import { preloadSongLibrary } from './hooks/useSongLibrary'
 import { fetchUnreadSecretLetters } from './utils/journal'
 import { getMonthlyStats } from './utils/monthlyMoodAnalysis'
 import { shanghaiTodayStr } from './utils/relationshipTime'
+import { fetchSeenFlags, saveSeenFlag } from './lib/profiles'
 import WhisperNotification from './components/WhisperNotification'
 import HiddenLoveLetter from './components/HiddenLoveLetter'
 import MonthlyEmotionalLetter from './components/MonthlyEmotionalLetter'
@@ -144,20 +145,33 @@ export default function App() {
     })
   }, [user, space?.id])
 
-  // ── Monthly letter: show once per calendar month, persisted in localStorage ──
-  // localStorage (not sessionStorage) so opening a new tab doesn't re-trigger.
-  // MONTH_KEY uses Asia/Shanghai date so the month boundary is always Chinese time.
+  // ── Monthly letter: show once per calendar month, synced across devices ──────
+  // Layer 1: localStorage (fast, same device)
+  // Layer 2: DB profile column (cross-device sync)
   useEffect(() => {
     if (!user) return
     const [y, m] = shanghaiTodayStr().split('-').map(Number)
-    const MONTH_KEY = `xr_monthly_${y}-${m}`
-    try { if (localStorage.getItem(MONTH_KEY)) return } catch { return }
+    const MONTH_KEY   = `xr_monthly_${y}-${m}`
+    const monthValue  = `${y}-${m}`
 
-    getMonthlyStats(user.id).then(stats => {
-      if (stats && stats.totalEntries > 0) {
+    // Fast path — already seen on this device
+    try { if (localStorage.getItem(MONTH_KEY)) return } catch {}
+
+    // Slow path — check DB (covers second device scenario)
+    fetchSeenFlags(user.id).then(flags => {
+      if (flags.monthly_letter_month === monthValue) {
+        // Seen elsewhere — sync locally and skip
         try { localStorage.setItem(MONTH_KEY, '1') } catch {}
-        setShowMonthlyLetter(true)
+        return
       }
+      // Not seen on any device — check if there's data to show
+      getMonthlyStats(user.id).then(stats => {
+        if (stats && stats.totalEntries > 0) {
+          try { localStorage.setItem(MONTH_KEY, '1') } catch {}
+          saveSeenFlag(user.id, { monthly_letter_month: monthValue })
+          setShowMonthlyLetter(true)
+        }
+      })
     })
   }, [user])
 
