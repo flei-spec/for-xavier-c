@@ -146,6 +146,45 @@
 .dr__list::-webkit-scrollbar-track { background: transparent; }
 .dr__list::-webkit-scrollbar-thumb { background: rgba(255,255,255,0.08); border-radius: 2px; }
 
+/* ── Month groups ── */
+.dr__month-group {
+  display: flex;
+  flex-direction: column;
+  gap: 0.7rem;
+}
+
+.dr__month-header {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  padding: 0.1rem 0;
+}
+
+.dr__month-label {
+  font-family: 'Playfair Display', serif;
+  font-size: 0.7rem;
+  color: var(--rose);
+  opacity: 0.55;
+  letter-spacing: 0.1em;
+  white-space: nowrap;
+  font-style: italic;
+}
+
+.dr__month-count {
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  opacity: 0.3;
+  letter-spacing: 0.04em;
+}
+
+/* Decorative trailing line after the month label */
+.dr__month-header::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: linear-gradient(to right, rgba(244, 161, 176, 0.18), transparent);
+}
+
 .dr__delete-err {
   font-size: 0.78rem;
   color: var(--error-text);

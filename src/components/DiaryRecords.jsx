@@ -5,11 +5,33 @@ import { getProfiles } from '../lib/profiles'
 import { useAuth } from '../contexts/AuthContext'
 import './DiaryRecords.css'
 
+// Full date (used when there's no month header context)
 function formatDate(iso) {
   const d = new Date(iso)
   return d.toLocaleDateString('zh-CN', {
     month: 'long', day: 'numeric', hour: '2-digit', minute: '2-digit',
   })
+}
+
+// Shorter date used inside a month group — month is already shown in the header
+function formatDayTime(iso) {
+  const d    = new Date(iso)
+  const date = d.toLocaleDateString('zh-CN', { day: 'numeric', weekday: 'short' })
+  const time = d.toLocaleTimeString('zh-CN', { hour: '2-digit', minute: '2-digit', hour12: false })
+  return `${date} ${time}`
+}
+
+// Group an array of {created_at, ...} records into [[monthLabel, [entries]], ...]
+// Preserves the existing sort order (most-recent first from the query).
+function groupByMonth(records) {
+  const groups = new Map()
+  for (const r of records) {
+    const d   = new Date(r.created_at)
+    const key = `${d.getFullYear()}年${d.getMonth() + 1}月`
+    if (!groups.has(key)) groups.set(key, [])
+    groups.get(key).push(r)
+  }
+  return [...groups.entries()]
 }
 
 function fmtDuration(ms) {
@@ -60,42 +82,52 @@ function TextTab({ user, space }) {
   if (loading) return <p className="dr__empty">加载中…</p>
   if (entries.length === 0) return <p className="dr__empty">还没有任何文字记录。</p>
 
+  const groups = groupByMonth(entries)
+
   return (
     <>
       {deleteErr && <p className="dr__delete-err">{deleteErr}</p>}
-      {entries.map(entry => {
-        const authorName = profileMap[entry.user_id] || '有人'
-        const typeLabel  = entry.entry_type === 'secret_letter' ? '悄悄话' : '今天我想说'
-        return (
-          <div key={entry.id} className="dr__entry">
-            <div className="dr__entry-type-row">
-              <span className="dr__entry-author">{authorName}</span>
-              <span className="dr__entry-type">{typeLabel}</span>
-            </div>
-            <div className="dr__entry-meta">
-              <span className="dr__entry-date">{formatDate(entry.created_at)}</span>
-              {entry.mood && <span className="dr__entry-mood">{entry.mood}</span>}
-            </div>
-            {entry.title && <p className="dr__entry-song">♪ {entry.title}</p>}
-            <p className="dr__entry-content">{entry.content}</p>
-            {confirmId === entry.id ? (
-              <div className="dr__confirm">
-                <span className="dr__confirm-text">确认删除这条记录吗？</span>
-                <div className="dr__confirm-btns">
-                  <button className="dr__confirm-yes" onClick={handleDeleteConfirm} disabled={deleting === entry.id}>
-                    {deleting === entry.id ? '删除中…' : '确认删除'}
-                  </button>
-                  <button className="dr__confirm-no" onClick={handleDeleteCancel}>取消</button>
-                </div>
-              </div>
-            ) : (
-              <button className="dr__delete" onClick={() => handleDeleteRequest(entry.id)} disabled={deleting === entry.id}>
-                删除
-              </button>
-            )}
+      {groups.map(([month, monthEntries]) => (
+        <div key={month} className="dr__month-group">
+          <div className="dr__month-header">
+            <span className="dr__month-label">{month}</span>
+            <span className="dr__month-count">{monthEntries.length} 条</span>
           </div>
-        )
-      })}
+          {monthEntries.map(entry => {
+            const authorName = profileMap[entry.user_id] || '有人'
+            const typeLabel  = entry.entry_type === 'secret_letter' ? '悄悄话' : '今天我想说'
+            return (
+              <div key={entry.id} className="dr__entry">
+                <div className="dr__entry-type-row">
+                  <span className="dr__entry-author">{authorName}</span>
+                  <span className="dr__entry-type">{typeLabel}</span>
+                </div>
+                <div className="dr__entry-meta">
+                  <span className="dr__entry-date">{formatDayTime(entry.created_at)}</span>
+                  {entry.mood && <span className="dr__entry-mood">{entry.mood}</span>}
+                </div>
+                {entry.title && <p className="dr__entry-song">♪ {entry.title}</p>}
+                <p className="dr__entry-content">{entry.content}</p>
+                {confirmId === entry.id ? (
+                  <div className="dr__confirm">
+                    <span className="dr__confirm-text">确认删除这条记录吗？</span>
+                    <div className="dr__confirm-btns">
+                      <button className="dr__confirm-yes" onClick={handleDeleteConfirm} disabled={deleting === entry.id}>
+                        {deleting === entry.id ? '删除中…' : '确认删除'}
+                      </button>
+                      <button className="dr__confirm-no" onClick={handleDeleteCancel}>取消</button>
+                    </div>
+                  </div>
+                ) : (
+                  <button className="dr__delete" onClick={() => handleDeleteRequest(entry.id)} disabled={deleting === entry.id}>
+                    删除
+                  </button>
+                )}
+              </div>
+            )
+          })}
+        </div>
+      ))}
     </>
   )
 }
@@ -143,51 +175,61 @@ function VoiceTab({ user, space }) {
   if (loading) return <p className="dr__empty">加载中…</p>
   if (messages.length === 0) return <p className="dr__empty">还没有语音留言。</p>
 
+  const groups = groupByMonth(messages)
+
   return (
     <>
       {deleteErr && <p className="dr__delete-err">{deleteErr}</p>}
-      {messages.map(msg => {
-        const authorName = profileMap[msg.user_id] || '有人'
-        return (
-          <div key={msg.id} className="dr__entry">
-            <div className="dr__entry-type-row">
-              <span className="dr__entry-author">{authorName}</span>
-              <span className="dr__entry-type dr__entry-type--voice">语音</span>
-            </div>
-            <div className="dr__entry-meta">
-              <span className="dr__entry-date">{formatDate(msg.created_at)}</span>
-              {msg.duration_ms && (
-                <span className="dr__entry-duration">{fmtDuration(msg.duration_ms)}</span>
-              )}
-            </div>
-            {msg.audio_url ? (
-              <audio
-                className="dr__audio"
-                src={msg.audio_url}
-                controls
-                preload="metadata"
-              />
-            ) : (
-              <p className="dr__audio-loading">音频地址不可用</p>
-            )}
-            {confirmId === msg.id ? (
-              <div className="dr__confirm">
-                <span className="dr__confirm-text">确认删除这条语音吗？</span>
-                <div className="dr__confirm-btns">
-                  <button className="dr__confirm-yes" onClick={handleDeleteConfirm} disabled={deleting === msg.id}>
-                    {deleting === msg.id ? '删除中…' : '确认删除'}
-                  </button>
-                  <button className="dr__confirm-no" onClick={handleDeleteCancel}>取消</button>
-                </div>
-              </div>
-            ) : (
-              <button className="dr__delete" onClick={() => handleDeleteRequest(msg.id)} disabled={deleting === msg.id}>
-                删除
-              </button>
-            )}
+      {groups.map(([month, monthMsgs]) => (
+        <div key={month} className="dr__month-group">
+          <div className="dr__month-header">
+            <span className="dr__month-label">{month}</span>
+            <span className="dr__month-count">{monthMsgs.length} 条</span>
           </div>
-        )
-      })}
+          {monthMsgs.map(msg => {
+            const authorName = profileMap[msg.user_id] || '有人'
+            return (
+              <div key={msg.id} className="dr__entry">
+                <div className="dr__entry-type-row">
+                  <span className="dr__entry-author">{authorName}</span>
+                  <span className="dr__entry-type dr__entry-type--voice">语音</span>
+                </div>
+                <div className="dr__entry-meta">
+                  <span className="dr__entry-date">{formatDayTime(msg.created_at)}</span>
+                  {msg.duration_ms && (
+                    <span className="dr__entry-duration">{fmtDuration(msg.duration_ms)}</span>
+                  )}
+                </div>
+                {msg.audio_url ? (
+                  <audio
+                    className="dr__audio"
+                    src={msg.audio_url}
+                    controls
+                    preload="metadata"
+                  />
+                ) : (
+                  <p className="dr__audio-loading">音频地址不可用</p>
+                )}
+                {confirmId === msg.id ? (
+                  <div className="dr__confirm">
+                    <span className="dr__confirm-text">确认删除这条语音吗？</span>
+                    <div className="dr__confirm-btns">
+                      <button className="dr__confirm-yes" onClick={handleDeleteConfirm} disabled={deleting === msg.id}>
+                        {deleting === msg.id ? '删除中…' : '确认删除'}
+                      </button>
+                      <button className="dr__confirm-no" onClick={handleDeleteCancel}>取消</button>
+                    </div>
+                  </div>
+                ) : (
+                  <button className="dr__delete" onClick={() => handleDeleteRequest(msg.id)} disabled={deleting === msg.id}>
+                    删除
+                  </button>
+                )}
+              </div>
+            )
+          })}
+        </div>
+      ))}
     </>
   )
 }
