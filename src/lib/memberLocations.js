@@ -143,6 +143,19 @@ async function saveLocation({ userId, spaceId, city, latitude, longitude }) {
   return !error
 }
 
+// ── Relative time helper ──────────────────────────────────────────────────────
+
+export function formatRelativeTime(isoString) {
+  if (!isoString) return null
+  const diff = Date.now() - new Date(isoString).getTime()
+  const mins = Math.floor(diff / 60_000)
+  if (mins < 1)  return '刚刚'
+  if (mins < 60) return `${mins} 分钟前`
+  const hrs = Math.floor(mins / 60)
+  if (hrs < 24)  return `${hrs} 小时前`
+  return `${Math.floor(hrs / 24)} 天前`
+}
+
 // ── Location capture (called once per session) ────────────────────────────────
 
 export async function captureLocation(userId, spaceId) {
@@ -179,4 +192,13 @@ export async function captureLocation(userId, spaceId) {
       { timeout: 8000, maximumAge: 3_600_000 } // accept a position cached ≤ 1 h
     )
   })
+}
+
+// ── Manual refresh — bypasses the session guard ───────────────────────────────
+// Called from the "更新我的位置" button. Clears the session flag so
+// captureLocation runs a fresh geolocation request regardless of prior captures.
+
+export async function refreshMyLocation(userId, spaceId) {
+  try { sessionStorage.removeItem(SESSION_KEY) } catch {}
+  return captureLocation(userId, spaceId)
 }

@@ -3,9 +3,11 @@ import { supabase } from '../lib/supabase'
 import { useAuth } from '../contexts/AuthContext'
 import {
   captureLocation,
+  refreshMyLocation,
   fetchSpaceLocations,
   haversineKm,
   formatDistanceKm,
+  formatRelativeTime,
   normalizeCityName,
 } from '../lib/memberLocations'
 import './DistanceCard.css'
@@ -13,10 +15,11 @@ import './DistanceCard.css'
 export default function DistanceCard() {
   const { user, space } = useAuth()
 
-  const [show,     setShow]     = useState(false)   // confirmed 2-member space
-  const [myLoc,    setMyLoc]    = useState(null)
-  const [theirLoc, setTheirLoc] = useState(null)
-  const [loaded,   setLoaded]   = useState(false)
+  const [show,       setShow]       = useState(false)  // confirmed 2-member space
+  const [myLoc,      setMyLoc]      = useState(null)
+  const [theirLoc,   setTheirLoc]   = useState(null)
+  const [loaded,     setLoaded]     = useState(false)
+  const [refreshing, setRefreshing] = useState(false)
 
   const applyLocations = useCallback((locs) => {
     if (!user) return
@@ -51,6 +54,15 @@ export default function DistanceCard() {
     })
   }, [user?.id, space?.id]) // eslint-disable-line react-hooks/exhaustive-deps
 
+  const handleRefresh = useCallback(async () => {
+    if (!user || !space || refreshing) return
+    setRefreshing(true)
+    await refreshMyLocation(user.id, space.id)
+    const locs = await fetchSpaceLocations(space.id)
+    applyLocations(locs)
+    setRefreshing(false)
+  }, [user?.id, space?.id, refreshing, applyLocations]) // eslint-disable-line react-hooks/exhaustive-deps
+
   if (!show) return null
 
   const bothPresent = myLoc !== null && theirLoc !== null
@@ -62,11 +74,13 @@ export default function DistanceCard() {
   const myCity    = normalizeCityName(myLoc?.city)    || null
   const theirCity = normalizeCityName(theirLoc?.city) || null
 
+  const myUpdated = formatRelativeTime(myLoc?.updated_at)
+
   return (
     <div className="dist-card">
       <p className="dist-card__title">我们之间</p>
 
-      {!loaded ? (
+      {!loaded || refreshing ? (
         <div className="dist-card__dots"><span /><span /><span /></div>
       ) : bothPresent ? (
         <>
@@ -76,17 +90,28 @@ export default function DistanceCard() {
           <p className="dist-card__distance">
             相隔 <strong>{formatDistanceKm(distanceKm)}</strong>
           </p>
-          <p className="dist-card__caption">以上次打开网站的位置为准</p>
+          <p className="dist-card__caption">
+            {myUpdated ? `我的位置：${myUpdated}` : '以上次打开网站的位置为准'}
+          </p>
+          <button className="dist-card__refresh" onClick={handleRefresh}>
+            📍 更新我的位置
+          </button>
         </>
       ) : myLoc ? (
         <>
           <p className="dist-card__waiting">正在等你回来…</p>
           <p className="dist-card__caption">对方下次打开网站时<br />就能看到我们的距离了</p>
+          <button className="dist-card__refresh" onClick={handleRefresh}>
+            📍 更新我的位置
+          </button>
         </>
       ) : theirLoc ? (
         <>
           <p className="dist-card__waiting">对方在{theirCity || '某处'}留下了位置</p>
           <p className="dist-card__caption">允许位置访问后<br />就能看到你们的距离了</p>
+          <button className="dist-card__refresh" onClick={handleRefresh}>
+            📍 更新我的位置
+          </button>
         </>
       ) : (
         <>
