@@ -13,8 +13,6 @@ const DAYS   = Array.from({ length: 31 }, (_, i) => i + 1)
 
 // ── Milestone definitions ─────────────────────────────────────────────────────
 const MILESTONES = [
-  { days: 100,  label: '一百天',     note: '一百个日夜，每一个都是你。' },
-  { days: 200,  label: '两百天',     note: '两百天了，你已经是习惯的一部分。' },
   { days: 365,  label: '一年',       note: '整整一年。谢谢你在这里。' },
   { days: 500,  label: '五百天',     note: '五百天，好像才刚开始。' },
   { days: 730,  label: '两年',       note: '两年了。更深了，也更稳了。' },
