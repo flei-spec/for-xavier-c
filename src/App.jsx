@@ -15,6 +15,7 @@ import { useAudioPlayer } from './contexts/AudioPlayerContext'
 import { audioElement } from './audio/audioElement'
 import { preloadSongLibrary } from './hooks/useSongLibrary'
 import { fetchUnreadSecretLetters } from './utils/journal'
+import { getMonthlyStats } from './utils/monthlyMoodAnalysis'
 import { shanghaiTodayStr } from './utils/relationshipTime'
 import WhisperNotification from './components/WhisperNotification'
 import HiddenLoveLetter from './components/HiddenLoveLetter'
@@ -152,13 +153,11 @@ export default function App() {
     const MONTH_KEY = `xr_monthly_${y}-${m}`
     try { if (localStorage.getItem(MONTH_KEY)) return } catch { return }
 
-    import('./utils/monthlyMoodAnalysis').then(({ getMonthlyStats }) => {
-      getMonthlyStats(user.id).then(stats => {
-        if (stats && stats.totalEntries > 0) {
-          try { localStorage.setItem(MONTH_KEY, '1') } catch {}
-          setShowMonthlyLetter(true)
-        }
-      })
+    getMonthlyStats(user.id).then(stats => {
+      if (stats && stats.totalEntries > 0) {
+        try { localStorage.setItem(MONTH_KEY, '1') } catch {}
+        setShowMonthlyLetter(true)
+      }
     })
   }, [user])
 
